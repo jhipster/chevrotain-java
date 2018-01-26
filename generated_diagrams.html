@@ -1,0 +1,95 @@
+
+<!-- This is a generated file -->
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+  body {
+    background-color: hsl(30, 20%, 95%)
+  }
+</style>
+
+
+<link rel='stylesheet' href='https://unpkg.com/chevrotain@1.0.1/diagrams/diagrams.css'>
+
+<script src='https://unpkg.com/chevrotain@1.0.1/diagrams/vendor/railroad-diagrams.js'></script>
+<script src='https://unpkg.com/chevrotain@1.0.1/diagrams/src/diagrams_builder.js'></script>
+<script src='https://unpkg.com/chevrotain@1.0.1/diagrams/src/diagrams_behavior.js'></script>
+<script src='https://unpkg.com/chevrotain@1.0.1/diagrams/src/main.js'></script>
+
+<div id="diagrams" align="center"></div>    
+
+<script>
+    window.serializedGrammar = [
+  {
+    "type": "Rule",
+    "name": "compilationUnit",
+    "definition": [
+      {
+        "type": "Option",
+        "definition": [
+          {
+            "type": "NonTerminal",
+            "name": "packageDeclaration",
+            "occurrenceInParent": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "packageDeclaration",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "Package",
+        "label": "'package'",
+        "occurrenceInParent": 1,
+        "pattern": "package"
+      },
+      {
+        "type": "NonTerminal",
+        "name": "qualifiedName",
+        "occurrenceInParent": 1
+      },
+      {
+        "type": "Terminal",
+        "name": "SemiColon",
+        "label": "';'",
+        "occurrenceInParent": 1,
+        "pattern": ";"
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "qualifiedName",
+    "definition": [
+      {
+        "type": "RepetitionMandatoryWithSeparator",
+        "separator": {
+          "type": "Terminal",
+          "name": "Dot",
+          "label": "'.'",
+          "occurrenceInParent": 1,
+          "pattern": "\\."
+        },
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "Identifier",
+            "label": "Identifier",
+            "occurrenceInParent": 1,
+            "pattern": "[a-zA-Z]\\w*"
+          }
+        ]
+      }
+    ]
+  }
+];
+</script>
+
+<script>
+    var diagramsDiv = document.getElementById("diagrams");
+    main.drawDiagramsFromSerializedGrammar(serializedGrammar, diagramsDiv);
+</script>

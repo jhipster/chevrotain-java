@@ -1,0 +1,34 @@
+{
+  "name": "chevrotain-java",
+  "version": "0.0.1",
+  "description": "java parser based on chevrotain",
+  "main": "index.js",
+  "repository": "url",
+  "author": "Thorben von Hacht",
+  "license": "MIT",
+  "dependencies": {
+    "chevrotain": "^1.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^4.16.0",
+    "eslint-config-google": "^0.9.1",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jest": "^21.7.0",
+    "eslint-plugin-prettier": "^2.5.0",
+    "jest": "^22.1.4",
+    "jest-cli": "^22.1.4",
+    "jest-runner-eslint": "^0.4.0",
+    "prettier": "^1.10.2"
+  },
+  "scripts": {
+    "build": "node src/gen_diagrams.js",
+    "lint": "jest -c jest.eslint.config.js",
+    "test": "jest"
+  },
+  "jest": {
+    "projects": [
+      "<rootDir>/jest.*.config.js"
+    ]
+  }
+}
