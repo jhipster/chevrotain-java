@@ -4,4 +4,4 @@ A javascript based java parser based on chevrotain. Mainly developed to be used 
 
 # grammar diagram
 
-[open](/generated_diagrams.html)
+[open](https://rawgit.com/thorbenvh8/chevrotain-java/master/generated_diagrams.html)
