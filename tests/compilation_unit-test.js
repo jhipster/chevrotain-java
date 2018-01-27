@@ -88,6 +88,7 @@ describe("compilationUnit", () => {
       types: [
         {
           type: "TYPE_DECLARATION",
+          modifiers: [],
           declaration: {
             type: "CLASS_DECLARATION",
             name: "A",
@@ -110,6 +111,7 @@ describe("compilationUnit", () => {
       types: [
         {
           type: "TYPE_DECLARATION",
+          modifiers: [],
           declaration: {
             type: "CLASS_DECLARATION",
             name: "A",
@@ -120,6 +122,7 @@ describe("compilationUnit", () => {
         },
         {
           type: "TYPE_DECLARATION",
+          modifiers: [],
           declaration: {
             type: "CLASS_DECLARATION",
             name: "B",
@@ -142,6 +145,7 @@ describe("compilationUnit", () => {
       types: [
         {
           type: "TYPE_DECLARATION",
+          modifiers: [],
           declaration: {
             type: "ENUM_DECLARATION",
             name: "A"
@@ -161,6 +165,7 @@ describe("compilationUnit", () => {
       types: [
         {
           type: "TYPE_DECLARATION",
+          modifiers: [],
           declaration: {
             type: "ENUM_DECLARATION",
             name: "A"
@@ -168,6 +173,7 @@ describe("compilationUnit", () => {
         },
         {
           type: "TYPE_DECLARATION",
+          modifiers: [],
           declaration: {
             type: "ENUM_DECLARATION",
             name: "B"
@@ -187,6 +193,7 @@ describe("compilationUnit", () => {
       types: [
         {
           type: "TYPE_DECLARATION",
+          modifiers: [],
           declaration: {
             type: "INTERFACE_DECLARATION",
             name: "A",
@@ -211,6 +218,7 @@ describe("compilationUnit", () => {
       types: [
         {
           type: "TYPE_DECLARATION",
+          modifiers: [],
           declaration: {
             type: "INTERFACE_DECLARATION",
             name: "A",
@@ -221,6 +229,7 @@ describe("compilationUnit", () => {
         },
         {
           type: "TYPE_DECLARATION",
+          modifiers: [],
           declaration: {
             type: "INTERFACE_DECLARATION",
             name: "B",
@@ -243,6 +252,7 @@ describe("compilationUnit", () => {
       types: [
         {
           type: "TYPE_DECLARATION",
+          modifiers: [],
           declaration: {
             type: "ANNOTATION_TYPE_DECLARATION",
             name: "A",
@@ -267,6 +277,7 @@ describe("compilationUnit", () => {
       types: [
         {
           type: "TYPE_DECLARATION",
+          modifiers: [],
           declaration: {
             type: "ANNOTATION_TYPE_DECLARATION",
             name: "A",
@@ -277,6 +288,7 @@ describe("compilationUnit", () => {
         },
         {
           type: "TYPE_DECLARATION",
+          modifiers: [],
           declaration: {
             type: "ANNOTATION_TYPE_DECLARATION",
             name: "B",

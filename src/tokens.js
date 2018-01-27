@@ -22,10 +22,46 @@ const Import = createKeywordToken({
   label: "'import'"
 });
 
+const Public = createKeywordToken({
+  name: "Public",
+  pattern: /public/,
+  label: "'public'"
+});
+
+const Protected = createKeywordToken({
+  name: "Protected",
+  pattern: /protected/,
+  label: "'protected'"
+});
+
+const Private = createKeywordToken({
+  name: "Private",
+  pattern: /private/,
+  label: "'private'"
+});
+
 const Static = createKeywordToken({
   name: "Static",
   pattern: /static/,
   label: "'static'"
+});
+
+const Abstract = createKeywordToken({
+  name: "Abstract",
+  pattern: /abstract/,
+  label: "'abstract'"
+});
+
+const Final = createKeywordToken({
+  name: "Final",
+  pattern: /final/,
+  label: "'final'"
+});
+
+const Strictfp = createKeywordToken({
+  name: "Strictfp",
+  pattern: /strictfp/,
+  label: "'strictfp'"
 });
 
 const Class = createKeywordToken({
@@ -46,6 +82,18 @@ const Interface = createKeywordToken({
   label: "'interface'"
 });
 
+const LBrace = createToken({
+  name: "LBrace",
+  pattern: /\(/,
+  label: "'('"
+});
+
+const RBrace = createToken({
+  name: "RBrace",
+  pattern: /\)/,
+  label: "')'"
+});
+
 const LCurly = createToken({
   name: "LCurly",
   pattern: /{/,
@@ -64,10 +112,22 @@ const Dot = createToken({
   label: "'.'"
 });
 
+const Comma = createToken({
+  name: "Comma",
+  pattern: /,/,
+  label: "','"
+});
+
 const SemiColon = createToken({
   name: "SemiColon",
   pattern: /;/,
   label: "';'"
+});
+
+const Equal = createToken({
+  name: "Equal",
+  pattern: /=/,
+  label: "'='"
 });
 
 const At = createToken({
@@ -89,11 +149,25 @@ const WhiteSpace = createToken({
   line_breaks: true
 });
 
+// | PUBLIC
+// | PROTECTED
+// | PRIVATE
+// | STATIC
+// | ABSTRACT
+// | FINAL    // FINAL for class only -- does not apply to interfaces
+// | STRICTFP
+
 // note we are placing WhiteSpace first as it is very common thus it will speed up the lexer.
 const allTokens = [
   WhiteSpace,
   // "keywords" appear before the Identifier
+  Public,
+  Protected,
+  Private,
   Static,
+  Abstract,
+  Final,
+  Strictfp,
   Class,
   Enum,
   Interface,
@@ -102,7 +176,11 @@ const allTokens = [
   // The Identifier must appear after the keywords because all keywords are valid identifiers.
   Identifier,
   Dot,
+  Comma,
   SemiColon,
+  Equal,
+  LBrace,
+  RBrace,
   LCurly,
   RCurly,
   At,
@@ -113,7 +191,13 @@ module.exports = {
   allTokens,
   tokens: {
     WhiteSpace,
+    Public,
+    Protected,
+    Private,
     Static,
+    Abstract,
+    Final,
+    Strictfp,
     Class,
     Enum,
     Interface,
@@ -121,7 +205,11 @@ module.exports = {
     Package,
     Identifier,
     Dot,
+    Comma,
     SemiColon,
+    Equal,
+    LBrace,
+    RBrace,
     LCurly,
     RCurly,
     At,

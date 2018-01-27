@@ -10,6 +10,8 @@ class SelectParser extends chevrotain.Parser {
 
     const $ = this;
 
+    // compilationUnit
+    // : packageDeclaration? importDeclaration* typeDeclaration* EOF
     $.RULE("compilationUnit", () => {
       $.OPTION(() => {
         $.SUBRULE($.packageDeclaration);
@@ -22,12 +24,16 @@ class SelectParser extends chevrotain.Parser {
       });
     });
 
+    // packageDeclaration
+    // : annotation* PACKAGE qualifiedName ';'
     $.RULE("packageDeclaration", () => {
       $.CONSUME(tokens.Package);
       $.SUBRULE($.qualifiedName);
       $.CONSUME(tokens.SemiColon);
     });
 
+    // importDeclaration
+    // : IMPORT STATIC? qualifiedName ('.' '*')? ';'
     $.RULE("importDeclaration", () => {
       $.CONSUME(tokens.Import);
       $.OPTION(() => {
@@ -45,11 +51,10 @@ class SelectParser extends chevrotain.Parser {
     // : classOrInterfaceModifier*
     //   (classDeclaration | enumDeclaration | interfaceDeclaration | annotationTypeDeclaration)
     // | ';'
-    // ;
     $.RULE("typeDeclaration", () => {
-      // $.MANY(() => {
-      //   $.SUBRULE($.classOrInterfaceModifier);
-      // });
+      $.MANY(() => {
+        $.SUBRULE($.classOrInterfaceModifier);
+      });
       $.OR([
         {
           ALT: () => {
@@ -74,12 +79,150 @@ class SelectParser extends chevrotain.Parser {
       ]);
     });
 
+    // classOrInterfaceModifier
+    // : annotation
+    // | PUBLIC
+    // | PROTECTED
+    // | PRIVATE
+    // | STATIC
+    // | ABSTRACT
+    // | FINAL    // FINAL for class only -- does not apply to interfaces
+    // | STRICTFP
+    $.RULE("classOrInterfaceModifier", () => {
+      $.OR([
+        {
+          ALT: () => {
+            $.SUBRULE($.annotation);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Public);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Protected);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Private);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Static);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Abstract);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Final);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Strictfp);
+          }
+        }
+      ]);
+    });
+
+    // annotation
+    // : '@' qualifiedName ('(' ( elementValuePairs | elementValue )? ')')?
+    $.RULE("annotation", () => {
+      $.CONSUME(tokens.At);
+      $.SUBRULE($.qualifiedName);
+      $.OPTION(() => {
+        $.CONSUME(tokens.LBrace);
+        $.OPTION2(() => {
+          $.OR([
+            {
+              ALT: () => {
+                $.SUBRULE($.elementValuePairs);
+              }
+            },
+            {
+              ALT: () => {
+                $.SUBRULE($.elementValue);
+              }
+            }
+          ]);
+        });
+        $.CONSUME(tokens.RBrace);
+      });
+    });
+
+    // elementValuePairs
+    // : elementValuePair (',' elementValuePair)*
+    $.RULE("elementValuePairs", () => {
+      $.AT_LEAST_ONE_SEP({
+        SEP: tokens.Comma,
+        DEF: () => {
+          $.SUBRULE($.elementValuePair);
+        }
+      });
+    });
+
+    // elementValuePair
+    // : IDENTIFIER '=' elementValue
+    $.RULE("elementValuePair", () => {
+      $.CONSUME(tokens.Identifier);
+      $.CONSUME(tokens.Equal);
+      $.SUBRULE($.elementValue);
+    });
+
+    // elementValue
+    // : expression
+    // | annotation
+    // | elementValueArrayInitializer
+    $.RULE("elementValue", () => {
+      $.OR([
+        //     {
+        //       ALT: () => {
+        //         $.SUBRULE($.epxression);
+        //       }
+        //     },
+        {
+          ALT: () => {
+            $.SUBRULE($.annotation);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.elementValueArrayInitializer);
+          }
+        }
+      ]);
+    });
+
+    // elementValueArrayInitializer
+    // : '{' (elementValue (',' elementValue)*)? (',')? '}'
+    $.RULE("elementValueArrayInitializer", () => {
+      $.CONSUME(tokens.LCurly);
+      $.OPTION(() => {
+        $.SUBRULE($.elementValue);
+        $.MANY(() => {
+          $.CONSUME(tokens.Comma);
+          $.SUBRULE2($.elementValue);
+        });
+      });
+      $.OPTION2(() => {
+        $.CONSUME2(tokens.Comma);
+      });
+      $.CONSUME(tokens.RCurly);
+    });
+
     // classDeclaration
     // : CLASS IDENTIFIER typeParameters?
     //   (EXTENDS typeType)?
     //   (IMPLEMENTS typeList)?
     //   classBody
-    // ;
     $.RULE("classDeclaration", () => {
       $.CONSUME(tokens.Class);
       $.CONSUME(tokens.Identifier);
@@ -99,7 +242,6 @@ class SelectParser extends chevrotain.Parser {
 
     // classBody
     // : '{' classBodyDeclaration* '}'
-    // ;
     $.RULE("classBody", () => {
       $.CONSUME(tokens.LCurly);
       // $.MANY(() => {
@@ -110,7 +252,6 @@ class SelectParser extends chevrotain.Parser {
 
     // enumDeclaration
     // : ENUM IDENTIFIER (IMPLEMENTS typeList)? '{' enumConstants? ','? enumBodyDeclarations? '}'
-    // ;
     $.RULE("enumDeclaration", () => {
       $.CONSUME(tokens.Enum);
       $.CONSUME(tokens.Identifier);
@@ -133,7 +274,6 @@ class SelectParser extends chevrotain.Parser {
 
     // interfaceDeclaration
     // : INTERFACE IDENTIFIER typeParameters? (EXTENDS typeList)? interfaceBody
-    // ;
     $.RULE("interfaceDeclaration", () => {
       $.CONSUME(tokens.Interface);
       $.CONSUME(tokens.Identifier);
@@ -149,7 +289,6 @@ class SelectParser extends chevrotain.Parser {
 
     // interfaceBody
     // : '{' interfaceBodyDeclaration* '}'
-    // ;
     $.RULE("interfaceBody", () => {
       $.CONSUME(tokens.LCurly);
       // $.MANY(() => {
@@ -160,7 +299,6 @@ class SelectParser extends chevrotain.Parser {
 
     // annotationTypeDeclaration
     // : '@' INTERFACE IDENTIFIER annotationTypeBody
-    // ;
     $.RULE("annotationTypeDeclaration", () => {
       $.CONSUME(tokens.At);
       $.CONSUME(tokens.Interface);
@@ -170,7 +308,6 @@ class SelectParser extends chevrotain.Parser {
 
     // annotationTypeBody
     // : '{' (annotationTypeElementDeclaration)* '}'
-    // ;
     $.RULE("annotationTypeBody", () => {
       $.CONSUME(tokens.LCurly);
       // $.MANY(() => {
@@ -179,6 +316,8 @@ class SelectParser extends chevrotain.Parser {
       $.CONSUME(tokens.RCurly);
     });
 
+    // qualifiedName
+    // : IDENTIFIER ('.' IDENTIFIER)*
     $.RULE("qualifiedName", () => {
       $.CONSUME(tokens.Identifier);
       $.MANY({

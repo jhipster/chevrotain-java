@@ -54,6 +54,9 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   typeDeclaration(ctx) {
+    const modifiers = ctx.classOrInterfaceModifier.map(modifier =>
+      this.visit(modifier)
+    );
     let declaration = this.visit(ctx.classDeclaration);
     if (!declaration) {
       declaration = this.visit(ctx.enumDeclaration);
@@ -67,7 +70,96 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
     return {
       type: "TYPE_DECLARATION",
+      modifiers: modifiers,
       declaration: declaration
+    };
+  }
+
+  classOrInterfaceModifier(ctx) {
+    if (ctx.annotation.length > 0) {
+      return this.visit(ctx.annotation);
+    }
+
+    let value = "";
+    if (ctx.Public.length > 0) {
+      value = "public";
+    } else if (ctx.Protected.length > 0) {
+      value = "protected";
+    } else if (ctx.Private.length > 0) {
+      value = "private";
+    } else if (ctx.Static.length > 0) {
+      value = "static";
+    } else if (ctx.Abstract.length > 0) {
+      value = "abstract";
+    } else if (ctx.Final.length > 0) {
+      value = "final";
+    } else if (ctx.Strictfp.length > 0) {
+      value = "strictfp";
+    }
+
+    return {
+      type: "MODIFIER",
+      value: value
+    };
+  }
+
+  annotation(ctx) {
+    const name = this.visit(ctx.qualifiedName);
+    const hasBraces = ctx.LBrace.length > 0;
+    let value = undefined;
+    if (hasBraces) {
+      if (ctx.elementValue.length > 0) {
+        value = this.visit(ctx.elementValue);
+      } else if (ctx.elementValuePairs.length > 0) {
+        value = this.visit(ctx.elementValuePairs);
+      }
+    }
+
+    return {
+      type: "ANNOTATION",
+      name: name,
+      hasBraces: hasBraces,
+      value: value
+    };
+  }
+
+  elementValuePairs(ctx) {
+    const pairs = ctx.elementValuePair.map(elementValuePair =>
+      this.visit(elementValuePair)
+    );
+
+    return {
+      type: "ELEMENT_VALUE_PAIRS",
+      pairs: pairs
+    };
+  }
+
+  elementValuePair(ctx) {
+    const key = ctx.Identifier[0].image;
+    const value = this.visit(ctx.elementValue);
+
+    return {
+      type: "ELEMENT_VALUE_PAIR",
+      key: key,
+      value: value
+    };
+  }
+
+  elementValue(ctx) {
+    if (ctx.annotation.length > 0) {
+      return this.visit(ctx.annotation);
+    } else if (ctx.elementValueArrayInitializer.length > 0) {
+      return this.visit(ctx.elementValueArrayInitializer);
+    }
+  }
+
+  elementValueArrayInitializer(ctx) {
+    const elementValues = ctx.elementValue.map(elementValue =>
+      this.visit(elementValue)
+    );
+    return {
+      type: "ELEMENT_VALUE_ARRAY_INITIALIZER",
+      values: elementValues
     };
   }
 

@@ -142,6 +142,16 @@
     "name": "typeDeclaration",
     "definition": [
       {
+        "type": "Repetition",
+        "definition": [
+          {
+            "type": "NonTerminal",
+            "name": "classOrInterfaceModifier",
+            "occurrenceInParent": 1
+          }
+        ]
+      },
+      {
         "type": "Alternation",
         "definition": [
           {
@@ -185,6 +195,316 @@
             ]
           }
         ]
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "classOrInterfaceModifier",
+    "definition": [
+      {
+        "type": "Alternation",
+        "definition": [
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "NonTerminal",
+                "name": "annotation",
+                "occurrenceInParent": 1
+              }
+            ]
+          },
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "Terminal",
+                "name": "Public",
+                "label": "'public'",
+                "occurrenceInParent": 1,
+                "pattern": "public"
+              }
+            ]
+          },
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "Terminal",
+                "name": "Protected",
+                "label": "'protected'",
+                "occurrenceInParent": 1,
+                "pattern": "protected"
+              }
+            ]
+          },
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "Terminal",
+                "name": "Private",
+                "label": "'private'",
+                "occurrenceInParent": 1,
+                "pattern": "private"
+              }
+            ]
+          },
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "Terminal",
+                "name": "Static",
+                "label": "'static'",
+                "occurrenceInParent": 1,
+                "pattern": "static"
+              }
+            ]
+          },
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "Terminal",
+                "name": "Abstract",
+                "label": "'abstract'",
+                "occurrenceInParent": 1,
+                "pattern": "abstract"
+              }
+            ]
+          },
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "Terminal",
+                "name": "Final",
+                "label": "'final'",
+                "occurrenceInParent": 1,
+                "pattern": "final"
+              }
+            ]
+          },
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "Terminal",
+                "name": "Strictfp",
+                "label": "'strictfp'",
+                "occurrenceInParent": 1,
+                "pattern": "strictfp"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "annotation",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "At",
+        "label": "'@'",
+        "occurrenceInParent": 1,
+        "pattern": "@"
+      },
+      {
+        "type": "NonTerminal",
+        "name": "qualifiedName",
+        "occurrenceInParent": 1
+      },
+      {
+        "type": "Option",
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "LBrace",
+            "label": "'('",
+            "occurrenceInParent": 1,
+            "pattern": "\\("
+          },
+          {
+            "type": "Option",
+            "definition": [
+              {
+                "type": "Alternation",
+                "definition": [
+                  {
+                    "type": "Flat",
+                    "definition": [
+                      {
+                        "type": "NonTerminal",
+                        "name": "elementValuePairs",
+                        "occurrenceInParent": 1
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Flat",
+                    "definition": [
+                      {
+                        "type": "NonTerminal",
+                        "name": "elementValue",
+                        "occurrenceInParent": 1
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "Terminal",
+            "name": "RBrace",
+            "label": "')'",
+            "occurrenceInParent": 1,
+            "pattern": "\\)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "elementValuePairs",
+    "definition": [
+      {
+        "type": "RepetitionMandatoryWithSeparator",
+        "separator": {
+          "type": "Terminal",
+          "name": "Comma",
+          "label": "','",
+          "occurrenceInParent": 1,
+          "pattern": ","
+        },
+        "definition": [
+          {
+            "type": "NonTerminal",
+            "name": "elementValuePair",
+            "occurrenceInParent": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "elementValuePair",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "Identifier",
+        "label": "Identifier",
+        "occurrenceInParent": 1,
+        "pattern": "[a-zA-Z]\\w*"
+      },
+      {
+        "type": "Terminal",
+        "name": "Equal",
+        "label": "'='",
+        "occurrenceInParent": 1,
+        "pattern": "="
+      },
+      {
+        "type": "NonTerminal",
+        "name": "elementValue",
+        "occurrenceInParent": 1
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "elementValue",
+    "definition": [
+      {
+        "type": "Alternation",
+        "definition": [
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "NonTerminal",
+                "name": "annotation",
+                "occurrenceInParent": 1
+              }
+            ]
+          },
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "NonTerminal",
+                "name": "elementValueArrayInitializer",
+                "occurrenceInParent": 1
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "elementValueArrayInitializer",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "LCurly",
+        "label": "'{'",
+        "occurrenceInParent": 1,
+        "pattern": "{"
+      },
+      {
+        "type": "Option",
+        "definition": [
+          {
+            "type": "NonTerminal",
+            "name": "elementValue",
+            "occurrenceInParent": 1
+          },
+          {
+            "type": "Repetition",
+            "definition": [
+              {
+                "type": "Terminal",
+                "name": "Comma",
+                "label": "','",
+                "occurrenceInParent": 1,
+                "pattern": ","
+              },
+              {
+                "type": "NonTerminal",
+                "name": "elementValue",
+                "occurrenceInParent": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Option",
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "Comma",
+            "label": "','",
+            "occurrenceInParent": 2,
+            "pattern": ","
+          }
+        ]
+      },
+      {
+        "type": "Terminal",
+        "name": "RCurly",
+        "label": "'}'",
+        "occurrenceInParent": 1,
+        "pattern": "}"
       }
     ]
   },
