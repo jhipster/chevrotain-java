@@ -7,6 +7,7 @@ describe("import", () => {
       Parser.parse("import imp;", parser => parser.importDeclaration())
     ).toEqual({
       type: "IMPORT_DECLARATION",
+      static: false,
       name: {
         type: "QUALIFIED_NAME",
         name: ["imp"]
@@ -19,6 +20,7 @@ describe("import", () => {
       Parser.parse("import imp.name;", parser => parser.importDeclaration())
     ).toEqual({
       type: "IMPORT_DECLARATION",
+      static: false,
       name: {
         type: "QUALIFIED_NAME",
         name: ["imp", "name"]
@@ -31,9 +33,23 @@ describe("import", () => {
       Parser.parse("import java.util.*;", parser => parser.importDeclaration())
     ).toEqual({
       type: "IMPORT_DECLARATION",
+      static: false,
       name: {
         type: "QUALIFIED_NAME",
         name: ["java", "util", "*"]
+      }
+    });
+  });
+
+  it("static", () => {
+    expect(
+      Parser.parse("import static imp;", parser => parser.importDeclaration())
+    ).toEqual({
+      type: "IMPORT_DECLARATION",
+      static: true,
+      name: {
+        type: "QUALIFIED_NAME",
+        name: ["imp"]
       }
     });
   });

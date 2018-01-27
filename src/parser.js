@@ -27,8 +27,11 @@ class SelectParser extends chevrotain.Parser {
 
     $.RULE("importDeclaration", () => {
       $.CONSUME(tokens.Import);
-      $.SUBRULE($.qualifiedName);
       $.OPTION(() => {
+        $.CONSUME(tokens.Static);
+      });
+      $.SUBRULE($.qualifiedName);
+      $.OPTION2(() => {
         $.CONSUME(tokens.Dot);
         $.CONSUME(tokens.Star);
       });

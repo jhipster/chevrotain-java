@@ -34,6 +34,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   importDeclaration(ctx) {
+    const isStatic = ctx.Static.length > 0;
     const name = this.visit(ctx.qualifiedName);
     const star = ctx.Star.map(starToken => starToken.image);
     // If import has a star at the end,
@@ -44,6 +45,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
     return {
       type: "IMPORT_DECLARATION",
+      static: isStatic,
       name: name
     };
   }

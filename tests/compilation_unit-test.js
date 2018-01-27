@@ -37,6 +37,7 @@ describe("compilationUnit", () => {
       imports: [
         {
           type: "IMPORT_DECLARATION",
+          static: false,
           name: {
             type: "QUALIFIED_NAME",
             name: ["pkg", "name"]
@@ -49,7 +50,7 @@ describe("compilationUnit", () => {
 
   it("multiple import", () => {
     expect(
-      Parser.parse("import pkg.name;\nimport some.other;", parser =>
+      Parser.parse("import pkg.name;\nimport static some.other;", parser =>
         parser.compilationUnit()
       )
     ).toEqual({
@@ -58,6 +59,7 @@ describe("compilationUnit", () => {
       imports: [
         {
           type: "IMPORT_DECLARATION",
+          static: false,
           name: {
             type: "QUALIFIED_NAME",
             name: ["pkg", "name"]
@@ -65,6 +67,7 @@ describe("compilationUnit", () => {
         },
         {
           type: "IMPORT_DECLARATION",
+          static: true,
           name: {
             type: "QUALIFIED_NAME",
             name: ["some", "other"]

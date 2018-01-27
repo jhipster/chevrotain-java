@@ -22,6 +22,12 @@ const Import = createKeywordToken({
   label: "'import'"
 });
 
+const Static = createKeywordToken({
+  name: "Static",
+  pattern: /static/,
+  label: "'static'"
+});
+
 const Dot = createToken({
   name: "Dot",
   pattern: /\./,
@@ -51,6 +57,7 @@ const WhiteSpace = createToken({
 const allTokens = [
   WhiteSpace,
   // "keywords" appear before the Identifier
+  Static,
   Import,
   Package,
   // The Identifier must appear after the keywords because all keywords are valid identifiers.
@@ -64,6 +71,7 @@ module.exports = {
   allTokens,
   tokens: {
     WhiteSpace,
+    Static,
     Import,
     Package,
     Identifier,
