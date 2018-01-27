@@ -34,6 +34,12 @@ const Class = createKeywordToken({
   label: "'class'"
 });
 
+const Enum = createKeywordToken({
+  name: "Enum",
+  pattern: /enum/,
+  label: "'enum'"
+});
+
 const LCurly = createToken({
   name: "LCurly",
   pattern: /{/,
@@ -77,6 +83,7 @@ const allTokens = [
   // "keywords" appear before the Identifier
   Static,
   Class,
+  Enum,
   Import,
   Package,
   // The Identifier must appear after the keywords because all keywords are valid identifiers.
@@ -94,6 +101,7 @@ module.exports = {
     WhiteSpace,
     Static,
     Class,
+    Enum,
     Import,
     Package,
     Identifier,

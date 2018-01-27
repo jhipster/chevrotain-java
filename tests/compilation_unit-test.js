@@ -131,4 +131,49 @@ describe("compilationUnit", () => {
       ]
     });
   });
+
+  it("single enum", () => {
+    expect(
+      Parser.parse("enum A{}", parser => parser.compilationUnit())
+    ).toEqual({
+      type: "COMPILATION_UNIT",
+      package: undefined,
+      imports: [],
+      types: [
+        {
+          type: "TYPE_DECLARATION",
+          declaration: {
+            type: "ENUM_DECLARATION",
+            name: "A"
+          }
+        }
+      ]
+    });
+  });
+
+  it("multiple enums", () => {
+    expect(
+      Parser.parse("enum A{}\nenum B{}", parser => parser.compilationUnit())
+    ).toEqual({
+      type: "COMPILATION_UNIT",
+      package: undefined,
+      imports: [],
+      types: [
+        {
+          type: "TYPE_DECLARATION",
+          declaration: {
+            type: "ENUM_DECLARATION",
+            name: "A"
+          }
+        },
+        {
+          type: "TYPE_DECLARATION",
+          declaration: {
+            type: "ENUM_DECLARATION",
+            name: "B"
+          }
+        }
+      ]
+    });
+  });
 });

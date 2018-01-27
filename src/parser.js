@@ -51,28 +51,29 @@ class SelectParser extends chevrotain.Parser {
       // $.MANY(() => {
       //   $.SUBRULE($.classOrInterfaceModifier);
       // });
-      // $.OR([
-      //   {
-      //     ALT: () => {
-      $.SUBRULE($.classDeclaration);
-      //     }
-      //   },
-      //   {
-      //     ALT: () => {
-      //       $.SUBRULE($.enumDeclaration);
-      //     }
-      //   },
-      //   {
-      //     ALT: () => {
-      //       $.SUBRULE($.interfaceDeclaration);
-      //     }
-      //   },
-      //   {
-      //     ALT: () => {
-      //       $.SUBRULE($.annotationTypeDeclaration);
-      //     }
-      //   }
-      // ]);
+      $.OR([
+        {
+          ALT: () => {
+            $.SUBRULE($.classDeclaration);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.enumDeclaration);
+          }
+        }
+        // ,
+        //   {
+        //     ALT: () => {
+        //       $.SUBRULE($.interfaceDeclaration);
+        //     }
+        //   },
+        //   {
+        //     ALT: () => {
+        //       $.SUBRULE($.annotationTypeDeclaration);
+        //     }
+        //   }
+      ]);
     });
 
     // classDeclaration
@@ -105,6 +106,29 @@ class SelectParser extends chevrotain.Parser {
       $.CONSUME(tokens.LCurly);
       // $.MANY(() => {
       //   $.SUBRULE($.classBodyDeclaration);
+      // });
+      $.CONSUME(tokens.RCurly);
+    });
+
+    // enumDeclaration
+    // : ENUM IDENTIFIER (IMPLEMENTS typeList)? '{' enumConstants? ','? enumBodyDeclarations? '}'
+    // ;
+    $.RULE("enumDeclaration", () => {
+      $.CONSUME(tokens.Enum);
+      $.CONSUME(tokens.Identifier);
+      // $.OPTION(() => {
+      //   $.CONSUME(tokens.Implements);
+      //   $.SUBRULE($.typeList);
+      // });
+      $.CONSUME(tokens.LCurly);
+      // $.OPTION2(() => {
+      //   $.SUBRULE($.enumConstants);
+      // });
+      // $.OPTION3(() => {
+      //   $.CONSUME(tokens.Comma);
+      // });
+      // $.OPTION4(() => {
+      //   $.SUBRULE($.enumBodyDeclarations);
       // });
       $.CONSUME(tokens.RCurly);
     });

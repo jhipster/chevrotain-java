@@ -54,7 +54,10 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   typeDeclaration(ctx) {
-    const declaration = this.visit(ctx.classDeclaration);
+    let declaration = this.visit(ctx.classDeclaration);
+    if (!declaration) {
+      declaration = this.visit(ctx.enumDeclaration);
+    }
 
     return {
       type: "TYPE_DECLARATION",
@@ -76,6 +79,15 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   classBody(/*ctx*/) {
     return {
       type: "CLASS_BODY"
+    };
+  }
+
+  enumDeclaration(ctx) {
+    const name = ctx.Identifier[0].image;
+
+    return {
+      type: "ENUM_DECLARATION",
+      name: name
     };
   }
 
