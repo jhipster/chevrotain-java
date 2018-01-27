@@ -46,7 +46,6 @@ class SelectParser extends chevrotain.Parser {
     //   (classDeclaration | enumDeclaration | interfaceDeclaration | annotationTypeDeclaration)
     // | ';'
     // ;
-
     $.RULE("typeDeclaration", () => {
       // $.MANY(() => {
       //   $.SUBRULE($.classOrInterfaceModifier);
@@ -66,13 +65,12 @@ class SelectParser extends chevrotain.Parser {
           ALT: () => {
             $.SUBRULE($.interfaceDeclaration);
           }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.annotationTypeDeclaration);
+          }
         }
-        // ,
-        //   {
-        //     ALT: () => {
-        //       $.SUBRULE($.annotationTypeDeclaration);
-        //     }
-        //   }
       ]);
     });
 
@@ -156,6 +154,27 @@ class SelectParser extends chevrotain.Parser {
       $.CONSUME(tokens.LCurly);
       // $.MANY(() => {
       //   $.SUBRULE($.interfaceBodyDeclaration);
+      // });
+      $.CONSUME(tokens.RCurly);
+    });
+
+    // annotationTypeDeclaration
+    // : '@' INTERFACE IDENTIFIER annotationTypeBody
+    // ;
+    $.RULE("annotationTypeDeclaration", () => {
+      $.CONSUME(tokens.At);
+      $.CONSUME(tokens.Interface);
+      $.CONSUME(tokens.Identifier);
+      $.SUBRULE($.annotationTypeBody);
+    });
+
+    // annotationTypeBody
+    // : '{' (annotationTypeElementDeclaration)* '}'
+    // ;
+    $.RULE("annotationTypeBody", () => {
+      $.CONSUME(tokens.LCurly);
+      // $.MANY(() => {
+      //   $.SUBRULE($.annotationTypeElementDeclaration);
       // });
       $.CONSUME(tokens.RCurly);
     });

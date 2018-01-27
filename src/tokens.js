@@ -70,6 +70,12 @@ const SemiColon = createToken({
   label: "';'"
 });
 
+const At = createToken({
+  name: "At",
+  pattern: /@/,
+  label: "'@'"
+});
+
 const Star = createToken({
   name: "Star",
   pattern: /\*/,
@@ -99,6 +105,7 @@ const allTokens = [
   SemiColon,
   LCurly,
   RCurly,
+  At,
   Star
 ];
 
@@ -117,6 +124,7 @@ module.exports = {
     SemiColon,
     LCurly,
     RCurly,
+    At,
     Star
   }
 };

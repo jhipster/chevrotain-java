@@ -61,6 +61,9 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     if (!declaration) {
       declaration = this.visit(ctx.interfaceDeclaration);
     }
+    if (!declaration) {
+      declaration = this.visit(ctx.annotationTypeDeclaration);
+    }
 
     return {
       type: "TYPE_DECLARATION",
@@ -108,6 +111,23 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   interfaceBody(/*ctx*/) {
     return {
       type: "INTERFACE_BODY"
+    };
+  }
+
+  annotationTypeDeclaration(ctx) {
+    const name = ctx.Identifier[0].image;
+    const body = this.visit(ctx.annotationTypeBody);
+
+    return {
+      type: "ANNOTATION_TYPE_DECLARATION",
+      name: name,
+      body: body
+    };
+  }
+
+  annotationTypeBody(/*ctx*/) {
+    return {
+      type: "ANNOTATION_TYPE_BODY"
     };
   }
 
