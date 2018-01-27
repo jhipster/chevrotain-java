@@ -12,11 +12,14 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
   compilationUnit(ctx) {
     const pkg = this.visit(ctx.packageDeclaration);
+    const imports = ctx.importDeclaration.map(importDeclaration =>
+      this.visit(importDeclaration)
+    );
 
     return {
       type: "COMPILATION_UNIT",
       package: pkg,
-      imports: undefined,
+      imports: imports,
       types: undefined
     };
   }
@@ -26,6 +29,21 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
     return {
       type: "PACKAGE_DECLARATION",
+      name: name
+    };
+  }
+
+  importDeclaration(ctx) {
+    const name = this.visit(ctx.qualifiedName);
+    const star = ctx.Star.map(starToken => starToken.image);
+    // If import has a star at the end,
+    // Add it to the name list
+    if (star.length > 0) {
+      name.name.push("*");
+    }
+
+    return {
+      type: "IMPORT_DECLARATION",
       name: name
     };
   }

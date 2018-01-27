@@ -33,6 +33,16 @@
             "occurrenceInParent": 1
           }
         ]
+      },
+      {
+        "type": "Repetition",
+        "definition": [
+          {
+            "type": "NonTerminal",
+            "name": "importDeclaration",
+            "occurrenceInParent": 1
+          }
+        ]
       }
     ]
   },
@@ -63,23 +73,74 @@
   },
   {
     "type": "Rule",
+    "name": "importDeclaration",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "Import",
+        "label": "'import'",
+        "occurrenceInParent": 1,
+        "pattern": "import"
+      },
+      {
+        "type": "NonTerminal",
+        "name": "qualifiedName",
+        "occurrenceInParent": 1
+      },
+      {
+        "type": "Option",
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "Dot",
+            "label": "'.'",
+            "occurrenceInParent": 1,
+            "pattern": "\\."
+          },
+          {
+            "type": "Terminal",
+            "name": "Star",
+            "label": "'*'",
+            "occurrenceInParent": 1,
+            "pattern": "\\*"
+          }
+        ]
+      },
+      {
+        "type": "Terminal",
+        "name": "SemiColon",
+        "label": "';'",
+        "occurrenceInParent": 1,
+        "pattern": ";"
+      }
+    ]
+  },
+  {
+    "type": "Rule",
     "name": "qualifiedName",
     "definition": [
       {
-        "type": "RepetitionMandatoryWithSeparator",
-        "separator": {
-          "type": "Terminal",
-          "name": "Dot",
-          "label": "'.'",
-          "occurrenceInParent": 1,
-          "pattern": "\\."
-        },
+        "type": "Terminal",
+        "name": "Identifier",
+        "label": "Identifier",
+        "occurrenceInParent": 1,
+        "pattern": "[a-zA-Z]\\w*"
+      },
+      {
+        "type": "Repetition",
         "definition": [
+          {
+            "type": "Terminal",
+            "name": "Dot",
+            "label": "'.'",
+            "occurrenceInParent": 1,
+            "pattern": "\\."
+          },
           {
             "type": "Terminal",
             "name": "Identifier",
             "label": "Identifier",
-            "occurrenceInParent": 1,
+            "occurrenceInParent": 2,
             "pattern": "[a-zA-Z]\\w*"
           }
         ]

@@ -14,6 +14,9 @@ class SelectParser extends chevrotain.Parser {
       $.OPTION(() => {
         $.SUBRULE($.packageDeclaration);
       });
+      $.MANY(() => {
+        $.SUBRULE($.importDeclaration);
+      });
     });
 
     $.RULE("packageDeclaration", () => {
@@ -22,11 +25,27 @@ class SelectParser extends chevrotain.Parser {
       $.CONSUME(tokens.SemiColon);
     });
 
+    $.RULE("importDeclaration", () => {
+      $.CONSUME(tokens.Import);
+      $.SUBRULE($.qualifiedName);
+      $.OPTION(() => {
+        $.CONSUME(tokens.Dot);
+        $.CONSUME(tokens.Star);
+      });
+      $.CONSUME(tokens.SemiColon);
+    });
+
     $.RULE("qualifiedName", () => {
-      $.AT_LEAST_ONE_SEP({
-        SEP: tokens.Dot,
-        DEF: () => {
-          $.CONSUME(tokens.Identifier);
+      $.CONSUME(tokens.Identifier);
+      $.MANY({
+        // The gate condition is in addition to basic grammar lookahead, so this.LA(1) === dot
+        // is always checked
+        GATE: function() {
+          return this.LA(2).tokenType === tokens.Identifier;
+        },
+        DEF: function() {
+          $.CONSUME(tokens.Dot);
+          $.CONSUME2(tokens.Identifier);
         }
       });
     });

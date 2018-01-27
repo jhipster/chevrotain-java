@@ -16,6 +16,12 @@ const Package = createKeywordToken({
   label: "'package'"
 });
 
+const Import = createKeywordToken({
+  name: "Import",
+  pattern: /import/,
+  label: "'import'"
+});
+
 const Dot = createToken({
   name: "Dot",
   pattern: /\./,
@@ -26,6 +32,12 @@ const SemiColon = createToken({
   name: "SemiColon",
   pattern: /;/,
   label: "';'"
+});
+
+const Star = createToken({
+  name: "Star",
+  pattern: /\*/,
+  label: "'*'"
 });
 
 const WhiteSpace = createToken({
@@ -39,20 +51,24 @@ const WhiteSpace = createToken({
 const allTokens = [
   WhiteSpace,
   // "keywords" appear before the Identifier
+  Import,
   Package,
   // The Identifier must appear after the keywords because all keywords are valid identifiers.
   Identifier,
   Dot,
-  SemiColon
+  SemiColon,
+  Star
 ];
 
 module.exports = {
   allTokens,
   tokens: {
     WhiteSpace,
+    Import,
     Package,
     Identifier,
     Dot,
-    SemiColon
+    SemiColon,
+    Star
   }
 };

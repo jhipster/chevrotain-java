@@ -4,35 +4,25 @@ const Parser = require("../src/index");
 describe("package", () => {
   it("single qualifiers", () => {
     expect(
-      Parser.parse("package pkg;", parser => parser.compilationUnit())
+      Parser.parse("package pkg;", parser => parser.packageDeclaration())
     ).toEqual({
-      type: "COMPILATION_UNIT",
-      package: {
-        type: "PACKAGE_DECLARATION",
-        name: {
-          type: "QUALIFIED_NAME",
-          name: ["pkg"]
-        }
-      },
-      imports: undefined,
-      types: undefined
+      type: "PACKAGE_DECLARATION",
+      name: {
+        type: "QUALIFIED_NAME",
+        name: ["pkg"]
+      }
     });
   });
 
   it("multiple qualifiers", () => {
     expect(
-      Parser.parse("package pkg.name;", parser => parser.compilationUnit())
+      Parser.parse("package pkg.name;", parser => parser.packageDeclaration())
     ).toEqual({
-      type: "COMPILATION_UNIT",
-      package: {
-        type: "PACKAGE_DECLARATION",
-        name: {
-          type: "QUALIFIED_NAME",
-          name: ["pkg", "name"]
-        }
-      },
-      imports: undefined,
-      types: undefined
+      type: "PACKAGE_DECLARATION",
+      name: {
+        type: "QUALIFIED_NAME",
+        name: ["pkg", "name"]
+      }
     });
   });
 });
