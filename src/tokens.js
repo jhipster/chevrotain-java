@@ -28,6 +28,24 @@ const Static = createKeywordToken({
   label: "'static'"
 });
 
+const Class = createKeywordToken({
+  name: "Class",
+  pattern: /class/,
+  label: "'class'"
+});
+
+const LCurly = createToken({
+  name: "LCurly",
+  pattern: /{/,
+  label: "'{'"
+});
+
+const RCurly = createToken({
+  name: "RCurly",
+  pattern: /}/,
+  label: "'}'"
+});
+
 const Dot = createToken({
   name: "Dot",
   pattern: /\./,
@@ -58,12 +76,15 @@ const allTokens = [
   WhiteSpace,
   // "keywords" appear before the Identifier
   Static,
+  Class,
   Import,
   Package,
   // The Identifier must appear after the keywords because all keywords are valid identifiers.
   Identifier,
   Dot,
   SemiColon,
+  LCurly,
+  RCurly,
   Star
 ];
 
@@ -72,11 +93,14 @@ module.exports = {
   tokens: {
     WhiteSpace,
     Static,
+    Class,
     Import,
     Package,
     Identifier,
     Dot,
     SemiColon,
+    LCurly,
+    RCurly,
     Star
   }
 };

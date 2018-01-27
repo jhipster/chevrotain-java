@@ -15,12 +15,15 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     const imports = ctx.importDeclaration.map(importDeclaration =>
       this.visit(importDeclaration)
     );
+    const types = ctx.typeDeclaration.map(typeDeclaration =>
+      this.visit(typeDeclaration)
+    );
 
     return {
       type: "COMPILATION_UNIT",
       package: pkg,
       imports: imports,
-      types: undefined
+      types: types
     };
   }
 
@@ -47,6 +50,32 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       type: "IMPORT_DECLARATION",
       static: isStatic,
       name: name
+    };
+  }
+
+  typeDeclaration(ctx) {
+    const declaration = this.visit(ctx.classDeclaration);
+
+    return {
+      type: "TYPE_DECLARATION",
+      declaration: declaration
+    };
+  }
+
+  classDeclaration(ctx) {
+    const name = ctx.Identifier[0].image;
+    const body = this.visit(ctx.classBody);
+
+    return {
+      type: "CLASS_DECLARATION",
+      name: name,
+      body: body
+    };
+  }
+
+  classBody(/*ctx*/) {
+    return {
+      type: "CLASS_BODY"
     };
   }
 

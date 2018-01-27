@@ -17,6 +17,9 @@ class SelectParser extends chevrotain.Parser {
       $.MANY(() => {
         $.SUBRULE($.importDeclaration);
       });
+      $.MANY2(() => {
+        $.SUBRULE($.typeDeclaration);
+      });
     });
 
     $.RULE("packageDeclaration", () => {
@@ -36,6 +39,74 @@ class SelectParser extends chevrotain.Parser {
         $.CONSUME(tokens.Star);
       });
       $.CONSUME(tokens.SemiColon);
+    });
+
+    // typeDeclaration
+    // : classOrInterfaceModifier*
+    //   (classDeclaration | enumDeclaration | interfaceDeclaration | annotationTypeDeclaration)
+    // | ';'
+    // ;
+
+    $.RULE("typeDeclaration", () => {
+      // $.MANY(() => {
+      //   $.SUBRULE($.classOrInterfaceModifier);
+      // });
+      // $.OR([
+      //   {
+      //     ALT: () => {
+      $.SUBRULE($.classDeclaration);
+      //     }
+      //   },
+      //   {
+      //     ALT: () => {
+      //       $.SUBRULE($.enumDeclaration);
+      //     }
+      //   },
+      //   {
+      //     ALT: () => {
+      //       $.SUBRULE($.interfaceDeclaration);
+      //     }
+      //   },
+      //   {
+      //     ALT: () => {
+      //       $.SUBRULE($.annotationTypeDeclaration);
+      //     }
+      //   }
+      // ]);
+    });
+
+    // classDeclaration
+    // : CLASS IDENTIFIER typeParameters?
+    //   (EXTENDS typeType)?
+    //   (IMPLEMENTS typeList)?
+    //   classBody
+    // ;
+    $.RULE("classDeclaration", () => {
+      $.CONSUME(tokens.Class);
+      $.CONSUME(tokens.Identifier);
+      // $.OPTION(() => {
+      //   $.SUBRULE($.typeParameters);
+      // });
+      // $.OPTION2(() => {
+      //   $.CONSUME(tokens.Extends);
+      //   $.SUBRULE($.typeType);
+      // });
+      // $.OPTION3(() => {
+      //   $.CONSUME(tokens.Implements);
+      //   $.SUBRULE($.typeList);
+      // });
+      $.SUBRULE($.classBody);
+    });
+
+    // classBody
+    // : '{' classBodyDeclaration* '}'
+    // ;
+    $.RULE("classBody", () => {
+      $.CONSUME(tokens.LCurly);
+      // $.MANY(() => {
+      //   $.SUBRULE($.classBodyDeclaration);
+      // });
+      $.CONSUME(tokens.RCurly);
     });
 
     $.RULE("qualifiedName", () => {

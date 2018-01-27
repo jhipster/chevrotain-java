@@ -43,6 +43,16 @@
             "occurrenceInParent": 1
           }
         ]
+      },
+      {
+        "type": "Repetition",
+        "definition": [
+          {
+            "type": "NonTerminal",
+            "name": "typeDeclaration",
+            "occurrenceInParent": 1
+          }
+        ]
       }
     ]
   },
@@ -124,6 +134,62 @@
         "label": "';'",
         "occurrenceInParent": 1,
         "pattern": ";"
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "typeDeclaration",
+    "definition": [
+      {
+        "type": "NonTerminal",
+        "name": "classDeclaration",
+        "occurrenceInParent": 1
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "classDeclaration",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "Class",
+        "label": "'class'",
+        "occurrenceInParent": 1,
+        "pattern": "class"
+      },
+      {
+        "type": "Terminal",
+        "name": "Identifier",
+        "label": "Identifier",
+        "occurrenceInParent": 1,
+        "pattern": "[a-zA-Z]\\w*"
+      },
+      {
+        "type": "NonTerminal",
+        "name": "classBody",
+        "occurrenceInParent": 1
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "classBody",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "LCurly",
+        "label": "'{'",
+        "occurrenceInParent": 1,
+        "pattern": "{"
+      },
+      {
+        "type": "Terminal",
+        "name": "RCurly",
+        "label": "'}'",
+        "occurrenceInParent": 1,
+        "pattern": "}"
       }
     ]
   },

@@ -7,7 +7,7 @@ describe("compilationUnit", () => {
       type: "COMPILATION_UNIT",
       package: undefined,
       imports: [],
-      types: undefined
+      types: []
     });
   });
 
@@ -24,7 +24,7 @@ describe("compilationUnit", () => {
         }
       },
       imports: [],
-      types: undefined
+      types: []
     });
   });
 
@@ -44,11 +44,11 @@ describe("compilationUnit", () => {
           }
         }
       ],
-      types: undefined
+      types: []
     });
   });
 
-  it("multiple import", () => {
+  it("multiple imports", () => {
     expect(
       Parser.parse("import pkg.name;\nimport static some.other;", parser =>
         parser.compilationUnit()
@@ -74,7 +74,61 @@ describe("compilationUnit", () => {
           }
         }
       ],
-      types: undefined
+      types: []
+    });
+  });
+
+  it("single class", () => {
+    expect(
+      Parser.parse("class A{}", parser => parser.compilationUnit())
+    ).toEqual({
+      type: "COMPILATION_UNIT",
+      package: undefined,
+      imports: [],
+      types: [
+        {
+          type: "TYPE_DECLARATION",
+          declaration: {
+            type: "CLASS_DECLARATION",
+            name: "A",
+            body: {
+              type: "CLASS_BODY"
+            }
+          }
+        }
+      ]
+    });
+  });
+
+  it("multiple classes", () => {
+    expect(
+      Parser.parse("class A{}\nclass B{}", parser => parser.compilationUnit())
+    ).toEqual({
+      type: "COMPILATION_UNIT",
+      package: undefined,
+      imports: [],
+      types: [
+        {
+          type: "TYPE_DECLARATION",
+          declaration: {
+            type: "CLASS_DECLARATION",
+            name: "A",
+            body: {
+              type: "CLASS_BODY"
+            }
+          }
+        },
+        {
+          type: "TYPE_DECLARATION",
+          declaration: {
+            type: "CLASS_DECLARATION",
+            name: "B",
+            body: {
+              type: "CLASS_BODY"
+            }
+          }
+        }
+      ]
     });
   });
 });
