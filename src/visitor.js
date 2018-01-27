@@ -58,6 +58,9 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     if (!declaration) {
       declaration = this.visit(ctx.enumDeclaration);
     }
+    if (!declaration) {
+      declaration = this.visit(ctx.interfaceDeclaration);
+    }
 
     return {
       type: "TYPE_DECLARATION",
@@ -88,6 +91,23 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     return {
       type: "ENUM_DECLARATION",
       name: name
+    };
+  }
+
+  interfaceDeclaration(ctx) {
+    const name = ctx.Identifier[0].image;
+    const body = this.visit(ctx.interfaceBody);
+
+    return {
+      type: "INTERFACE_DECLARATION",
+      name: name,
+      body: body
+    };
+  }
+
+  interfaceBody(/*ctx*/) {
+    return {
+      type: "INTERFACE_BODY"
     };
   }
 

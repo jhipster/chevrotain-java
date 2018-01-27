@@ -40,6 +40,12 @@ const Enum = createKeywordToken({
   label: "'enum'"
 });
 
+const Interface = createKeywordToken({
+  name: "Interface",
+  pattern: /interface/,
+  label: "'interface'"
+});
+
 const LCurly = createToken({
   name: "LCurly",
   pattern: /{/,
@@ -84,6 +90,7 @@ const allTokens = [
   Static,
   Class,
   Enum,
+  Interface,
   Import,
   Package,
   // The Identifier must appear after the keywords because all keywords are valid identifiers.
@@ -102,6 +109,7 @@ module.exports = {
     Static,
     Class,
     Enum,
+    Interface,
     Import,
     Package,
     Identifier,

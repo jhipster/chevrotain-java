@@ -176,4 +176,60 @@ describe("compilationUnit", () => {
       ]
     });
   });
+
+  it("single interface", () => {
+    expect(
+      Parser.parse("interface A{}", parser => parser.compilationUnit())
+    ).toEqual({
+      type: "COMPILATION_UNIT",
+      package: undefined,
+      imports: [],
+      types: [
+        {
+          type: "TYPE_DECLARATION",
+          declaration: {
+            type: "INTERFACE_DECLARATION",
+            name: "A",
+            body: {
+              type: "INTERFACE_BODY"
+            }
+          }
+        }
+      ]
+    });
+  });
+
+  it("multiple interfaces", () => {
+    expect(
+      Parser.parse("interface A{}\ninterface B{}", parser =>
+        parser.compilationUnit()
+      )
+    ).toEqual({
+      type: "COMPILATION_UNIT",
+      package: undefined,
+      imports: [],
+      types: [
+        {
+          type: "TYPE_DECLARATION",
+          declaration: {
+            type: "INTERFACE_DECLARATION",
+            name: "A",
+            body: {
+              type: "INTERFACE_BODY"
+            }
+          }
+        },
+        {
+          type: "TYPE_DECLARATION",
+          declaration: {
+            type: "INTERFACE_DECLARATION",
+            name: "B",
+            body: {
+              type: "INTERFACE_BODY"
+            }
+          }
+        }
+      ]
+    });
+  });
 });

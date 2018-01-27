@@ -163,6 +163,16 @@
                 "occurrenceInParent": 1
               }
             ]
+          },
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "NonTerminal",
+                "name": "interfaceDeclaration",
+                "occurrenceInParent": 1
+              }
+            ]
           }
         ]
       }
@@ -231,6 +241,51 @@
         "occurrenceInParent": 1,
         "pattern": "[a-zA-Z]\\w*"
       },
+      {
+        "type": "Terminal",
+        "name": "LCurly",
+        "label": "'{'",
+        "occurrenceInParent": 1,
+        "pattern": "{"
+      },
+      {
+        "type": "Terminal",
+        "name": "RCurly",
+        "label": "'}'",
+        "occurrenceInParent": 1,
+        "pattern": "}"
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "interfaceDeclaration",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "Interface",
+        "label": "'interface'",
+        "occurrenceInParent": 1,
+        "pattern": "interface"
+      },
+      {
+        "type": "Terminal",
+        "name": "Identifier",
+        "label": "Identifier",
+        "occurrenceInParent": 1,
+        "pattern": "[a-zA-Z]\\w*"
+      },
+      {
+        "type": "NonTerminal",
+        "name": "interfaceBody",
+        "occurrenceInParent": 1
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "interfaceBody",
+    "definition": [
       {
         "type": "Terminal",
         "name": "LCurly",

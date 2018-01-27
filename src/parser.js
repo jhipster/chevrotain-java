@@ -61,13 +61,13 @@ class SelectParser extends chevrotain.Parser {
           ALT: () => {
             $.SUBRULE($.enumDeclaration);
           }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.interfaceDeclaration);
+          }
         }
         // ,
-        //   {
-        //     ALT: () => {
-        //       $.SUBRULE($.interfaceDeclaration);
-        //     }
-        //   },
         //   {
         //     ALT: () => {
         //       $.SUBRULE($.annotationTypeDeclaration);
@@ -129,6 +129,33 @@ class SelectParser extends chevrotain.Parser {
       // });
       // $.OPTION4(() => {
       //   $.SUBRULE($.enumBodyDeclarations);
+      // });
+      $.CONSUME(tokens.RCurly);
+    });
+
+    // interfaceDeclaration
+    // : INTERFACE IDENTIFIER typeParameters? (EXTENDS typeList)? interfaceBody
+    // ;
+    $.RULE("interfaceDeclaration", () => {
+      $.CONSUME(tokens.Interface);
+      $.CONSUME(tokens.Identifier);
+      // $.OPTION(() => {
+      //   $.SUBRULE($.typeParameters);
+      // });
+      // $.OPTION2(() => {
+      //   $.CONSUME(tokens.Extends);
+      //   $.SUBRULE($.typeList);
+      // });
+      $.SUBRULE($.interfaceBody);
+    });
+
+    // interfaceBody
+    // : '{' interfaceBodyDeclaration* '}'
+    // ;
+    $.RULE("interfaceBody", () => {
+      $.CONSUME(tokens.LCurly);
+      // $.MANY(() => {
+      //   $.SUBRULE($.interfaceBodyDeclaration);
       // });
       $.CONSUME(tokens.RCurly);
     });
