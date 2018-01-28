@@ -50,7 +50,6 @@ class SelectParser extends chevrotain.Parser {
     // typeDeclaration
     // : classOrInterfaceModifier*
     //   (classDeclaration | enumDeclaration | interfaceDeclaration | annotationTypeDeclaration)
-    // | ';'
     $.RULE("typeDeclaration", () => {
       $.MANY(() => {
         $.SUBRULE($.classOrInterfaceModifier);
@@ -74,6 +73,42 @@ class SelectParser extends chevrotain.Parser {
         {
           ALT: () => {
             $.SUBRULE($.annotationTypeDeclaration);
+          }
+        }
+      ]);
+    });
+
+    // modifier
+    // : classOrInterfaceModifier
+    // | NATIVE
+    // | SYNCHRONIZED
+    // | TRANSIENT
+    // | VOLATILE
+    $.RULE("modifier", () => {
+      $.OR([
+        {
+          ALT: () => {
+            $.SUBRULE($.classOrInterfaceModifier);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Native);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Synchronized);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Transient);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Volatile);
           }
         }
       ]);
@@ -310,10 +345,255 @@ class SelectParser extends chevrotain.Parser {
     // : '{' (annotationTypeElementDeclaration)* '}'
     $.RULE("annotationTypeBody", () => {
       $.CONSUME(tokens.LCurly);
-      // $.MANY(() => {
-      //   $.SUBRULE($.annotationTypeElementDeclaration);
-      // });
+      $.MANY(() => {
+        $.SUBRULE($.annotationTypeElementDeclaration);
+      });
       $.CONSUME(tokens.RCurly);
+    });
+
+    // annotationTypeElementDeclaration
+    // : modifier* annotationTypeElementRest
+    $.RULE("annotationTypeElementDeclaration", () => {
+      $.MANY(() => {
+        $.SUBRULE($.modifier);
+      });
+      $.SUBRULE($.annotationTypeElementRest);
+    });
+
+    // annotationTypeElementRest
+    // : typeType annotationMethodRestOrConstantRest ';'
+    // | classDeclaration ';'?
+    // | interfaceDeclaration ';'?
+    // | enumDeclaration ';'?
+    // | annotationTypeDeclaration ';'?
+    $.RULE("annotationTypeElementRest", () => {
+      $.OR([
+        {
+          ALT: () => {
+            $.SUBRULE($.typeType);
+            $.SUBRULE($.annotationMethodRestOrConstantRest);
+            $.CONSUME(tokens.SemiColon);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.classDeclaration);
+            $.OPTION(() => {
+              $.CONSUME2(tokens.SemiColon);
+            });
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.interfaceDeclaration);
+            $.OPTION2(() => {
+              $.CONSUME3(tokens.SemiColon);
+            });
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.enumDeclaration);
+            $.OPTION3(() => {
+              $.CONSUME4(tokens.SemiColon);
+            });
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.annotationTypeDeclaration);
+            $.OPTION4(() => {
+              $.CONSUME5(tokens.SemiColon);
+            });
+          }
+        }
+      ]);
+    });
+
+    // annotationMethodRestOrConstantRest
+    // : annotationMethodRest
+    // | annotationConstantRest
+    $.RULE("annotationMethodRestOrConstantRest", () => {
+      // $.OR([
+      //   {
+      //     ALT: () => {
+      $.SUBRULE($.annotationMethodRest);
+      //     }
+      //   },
+      //   {
+      //     ALT: () => {
+      //       $.SUBRULE($.annotationConstantRest);
+      //     }
+      //   }
+      // ]);
+    });
+
+    // annotationMethodRest
+    // : IDENTIFIER '(' ')' defaultValue?
+    $.RULE("annotationMethodRest", () => {
+      $.CONSUME(tokens.Identifier);
+      $.CONSUME(tokens.LBrace);
+      $.CONSUME(tokens.RBrace);
+      $.OPTION(() => {
+        $.SUBRULE($.defaultValue);
+      });
+    });
+
+    // annotationConstantRest
+    // : variableDeclarators
+
+    // defaultValue
+    // : DEFAULT elementValue
+    $.RULE("defaultValue", () => {
+      $.CONSUME(tokens.Default);
+      $.SUBRULE($.elementValue);
+    });
+
+    // typeType
+    // : annotation? (classOrInterfaceType | primitiveType) ('[' ']')*
+    $.RULE("typeType", () => {
+      $.OPTION(() => {
+        $.SUBRULE($.annotation);
+      });
+      $.OR([
+        {
+          ALT: () => {
+            $.SUBRULE($.classOrInterfaceType);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.primitiveType);
+          }
+        }
+      ]);
+      $.MANY({
+        DEF: function() {
+          $.CONSUME(tokens.LSquare);
+          $.CONSUME(tokens.RSquare);
+        }
+      });
+    });
+
+    // classOrInterfaceType
+    // : classOrInterfaceTypeElement ('.' classOrInterfaceTypeElement)*
+    $.RULE("classOrInterfaceType", () => {
+      $.AT_LEAST_ONE_SEP({
+        SEP: tokens.Dot,
+        DEF: () => {
+          $.SUBRULE($.classOrInterfaceTypeElement);
+        }
+      });
+    });
+
+    // classOrInterfaceTypeElement
+    // : IDENTIFIER typeArguments?
+    $.RULE("classOrInterfaceTypeElement", () => {
+      $.CONSUME(tokens.Identifier);
+      $.OPTION(() => {
+        $.SUBRULE($.typeArguments);
+      });
+    });
+
+    // typeArguments
+    // : '<' typeArgument (',' typeArgument)* '>'
+    // ;
+    $.RULE("typeArguments", () => {
+      $.CONSUME(tokens.Less);
+      $.AT_LEAST_ONE_SEP({
+        SEP: tokens.Comma,
+        DEF: () => {
+          $.SUBRULE($.typeArgument);
+        }
+      });
+      $.CONSUME(tokens.Greater);
+    });
+
+    // typeArgument
+    // : typeType | '?'
+    //   ((EXTENDS | SUPER) typeType)?
+    $.RULE("typeArgument", () => {
+      $.OR([
+        {
+          ALT: () => {
+            $.SUBRULE($.typeType);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Questionmark);
+          }
+        }
+      ]);
+      $.OPTION(() => {
+        $.OR2([
+          {
+            ALT: () => {
+              $.CONSUME(tokens.Extends);
+            }
+          },
+          {
+            ALT: () => {
+              $.CONSUME(tokens.Super);
+            }
+          }
+        ]);
+        $.SUBRULE2($.typeType);
+      });
+    });
+
+    // primitiveType
+    // : BOOLEAN
+    // | CHAR
+    // | BYTE
+    // | SHORT
+    // | INT
+    // | LONG
+    // | FLOAT
+    // | DOUBLE
+    $.RULE("primitiveType", () => {
+      $.OR([
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Boolean);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Char);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Byte);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Short);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Int);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Long);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Float);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Double);
+          }
+        }
+      ]);
     });
 
     // qualifiedName

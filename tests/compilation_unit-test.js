@@ -257,7 +257,8 @@ describe("compilationUnit", () => {
             type: "ANNOTATION_TYPE_DECLARATION",
             name: "A",
             body: {
-              type: "ANNOTATION_TYPE_BODY"
+              type: "ANNOTATION_TYPE_BODY",
+              declarations: []
             }
           }
         }
@@ -282,7 +283,8 @@ describe("compilationUnit", () => {
             type: "ANNOTATION_TYPE_DECLARATION",
             name: "A",
             body: {
-              type: "ANNOTATION_TYPE_BODY"
+              type: "ANNOTATION_TYPE_BODY",
+              declarations: []
             }
           }
         },
@@ -293,7 +295,8 @@ describe("compilationUnit", () => {
             type: "ANNOTATION_TYPE_DECLARATION",
             name: "B",
             body: {
-              type: "ANNOTATION_TYPE_BODY"
+              type: "ANNOTATION_TYPE_BODY",
+              declarations: []
             }
           }
         }

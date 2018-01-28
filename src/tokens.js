@@ -16,10 +16,64 @@ const Package = createKeywordToken({
   label: "'package'"
 });
 
+const Default = createKeywordToken({
+  name: "Default",
+  pattern: /default/,
+  label: "'default'"
+});
+
 const Import = createKeywordToken({
   name: "Import",
   pattern: /import/,
   label: "'import'"
+});
+
+const Boolean = createKeywordToken({
+  name: "Boolean",
+  pattern: /boolean/,
+  label: "'boolean'"
+});
+
+const Char = createKeywordToken({
+  name: "Char",
+  pattern: /char/,
+  label: "'char'"
+});
+
+const Byte = createKeywordToken({
+  name: "Byte",
+  pattern: /byte/,
+  label: "'byte'"
+});
+
+const Short = createKeywordToken({
+  name: "Short",
+  pattern: /short/,
+  label: "'short'"
+});
+
+const Int = createKeywordToken({
+  name: "Int",
+  pattern: /int/,
+  label: "'int'"
+});
+
+const Long = createKeywordToken({
+  name: "Long",
+  pattern: /long/,
+  label: "'long'"
+});
+
+const Float = createKeywordToken({
+  name: "Float",
+  pattern: /float/,
+  label: "'float'"
+});
+
+const Double = createKeywordToken({
+  name: "Double",
+  pattern: /double/,
+  label: "'double'"
 });
 
 const Public = createKeywordToken({
@@ -56,6 +110,42 @@ const Final = createKeywordToken({
   name: "Final",
   pattern: /final/,
   label: "'final'"
+});
+
+const Native = createKeywordToken({
+  name: "Native",
+  pattern: /native/,
+  label: "'native'"
+});
+
+const Synchronized = createKeywordToken({
+  name: "Synchronized",
+  pattern: /synchronized/,
+  label: "'synchronized'"
+});
+
+const Transient = createKeywordToken({
+  name: "Transient",
+  pattern: /transient/,
+  label: "'transient'"
+});
+
+const Extends = createKeywordToken({
+  name: "Extends",
+  pattern: /extends/,
+  label: "'extends'"
+});
+
+const Super = createKeywordToken({
+  name: "Super",
+  pattern: /super/,
+  label: "'super'"
+});
+
+const Volatile = createKeywordToken({
+  name: "Volatile",
+  pattern: /volatile/,
+  label: "'volatile'"
 });
 
 const Strictfp = createKeywordToken({
@@ -106,6 +196,30 @@ const RCurly = createToken({
   label: "'}'"
 });
 
+const LSquare = createToken({
+  name: "LSquare",
+  pattern: /\[/,
+  label: "'['"
+});
+
+const RSquare = createToken({
+  name: "RSquare",
+  pattern: /]/,
+  label: "']'"
+});
+
+const Less = createToken({
+  name: "Less",
+  pattern: /</,
+  label: "'<'"
+});
+
+const Greater = createToken({
+  name: "Greater",
+  pattern: />/,
+  label: "'>'"
+});
+
 const Dot = createToken({
   name: "Dot",
   pattern: /\./,
@@ -136,6 +250,12 @@ const At = createToken({
   label: "'@'"
 });
 
+const Questionmark = createToken({
+  name: "Questionmark",
+  pattern: /\?/,
+  label: "'?'"
+});
+
 const Star = createToken({
   name: "Star",
   pattern: /\*/,
@@ -161,18 +281,33 @@ const WhiteSpace = createToken({
 const allTokens = [
   WhiteSpace,
   // "keywords" appear before the Identifier
+  Boolean,
+  Char,
+  Byte,
+  Short,
+  Interface,
+  Int,
+  Long,
+  Float,
+  Double,
   Public,
   Protected,
   Private,
   Static,
   Abstract,
   Final,
+  Native,
+  Synchronized,
+  Transient,
+  Extends,
+  Super,
+  Volatile,
   Strictfp,
   Class,
   Enum,
-  Interface,
   Import,
   Package,
+  Default,
   // The Identifier must appear after the keywords because all keywords are valid identifiers.
   Identifier,
   Dot,
@@ -183,26 +318,46 @@ const allTokens = [
   RBrace,
   LCurly,
   RCurly,
+  LSquare,
+  RSquare,
+  Less,
+  Greater,
   At,
-  Star
+  Star,
+  Questionmark
 ];
 
 module.exports = {
   allTokens,
   tokens: {
     WhiteSpace,
+    Boolean,
+    Char,
+    Byte,
+    Short,
+    Interface,
+    Int,
+    Long,
+    Float,
+    Double,
     Public,
     Protected,
     Private,
     Static,
     Abstract,
     Final,
+    Native,
+    Synchronized,
+    Transient,
+    Extends,
+    Super,
+    Volatile,
     Strictfp,
     Class,
     Enum,
-    Interface,
     Import,
     Package,
+    Default,
     Identifier,
     Dot,
     Comma,
@@ -212,7 +367,12 @@ module.exports = {
     RBrace,
     LCurly,
     RCurly,
+    LSquare,
+    RSquare,
+    Less,
+    Greater,
     At,
-    Star
+    Star,
+    Questionmark
   }
 };

@@ -1,7 +1,7 @@
 "use strict";
 const Parser = require("../src/index");
 
-describe("annotationTypeInterface", () => {
+describe("annotationTypeDeclaration", () => {
   it("empty", () => {
     expect(
       Parser.parse("@interface A{}", parser =>
@@ -11,7 +11,8 @@ describe("annotationTypeInterface", () => {
       type: "ANNOTATION_TYPE_DECLARATION",
       name: "A",
       body: {
-        type: "ANNOTATION_TYPE_BODY"
+        type: "ANNOTATION_TYPE_BODY",
+        declarations: []
       }
     });
   });
