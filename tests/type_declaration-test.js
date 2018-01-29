@@ -12,7 +12,8 @@ describe("typeDeclaration", () => {
         type: "CLASS_DECLARATION",
         name: "A",
         body: {
-          type: "CLASS_BODY"
+          type: "CLASS_BODY",
+          declarations: []
         }
       }
     });
@@ -33,7 +34,8 @@ describe("typeDeclaration", () => {
         type: "CLASS_DECLARATION",
         name: "A",
         body: {
-          type: "CLASS_BODY"
+          type: "CLASS_BODY",
+          declarations: []
         }
       }
     });
@@ -54,7 +56,8 @@ describe("typeDeclaration", () => {
         type: "CLASS_DECLARATION",
         name: "A",
         body: {
-          type: "CLASS_BODY"
+          type: "CLASS_BODY",
+          declarations: []
         }
       }
     });
@@ -75,7 +78,8 @@ describe("typeDeclaration", () => {
         type: "CLASS_DECLARATION",
         name: "A",
         body: {
-          type: "CLASS_BODY"
+          type: "CLASS_BODY",
+          declarations: []
         }
       }
     });
@@ -96,7 +100,8 @@ describe("typeDeclaration", () => {
         type: "CLASS_DECLARATION",
         name: "A",
         body: {
-          type: "CLASS_BODY"
+          type: "CLASS_BODY",
+          declarations: []
         }
       }
     });
@@ -117,7 +122,8 @@ describe("typeDeclaration", () => {
         type: "CLASS_DECLARATION",
         name: "A",
         body: {
-          type: "CLASS_BODY"
+          type: "CLASS_BODY",
+          declarations: []
         }
       }
     });
@@ -138,7 +144,8 @@ describe("typeDeclaration", () => {
         type: "CLASS_DECLARATION",
         name: "A",
         body: {
-          type: "CLASS_BODY"
+          type: "CLASS_BODY",
+          declarations: []
         }
       }
     });
@@ -159,7 +166,8 @@ describe("typeDeclaration", () => {
         type: "CLASS_DECLARATION",
         name: "A",
         body: {
-          type: "CLASS_BODY"
+          type: "CLASS_BODY",
+          declarations: []
         }
       }
     });
@@ -186,7 +194,8 @@ describe("typeDeclaration", () => {
         type: "CLASS_DECLARATION",
         name: "A",
         body: {
-          type: "CLASS_BODY"
+          type: "CLASS_BODY",
+          declarations: []
         }
       }
     });

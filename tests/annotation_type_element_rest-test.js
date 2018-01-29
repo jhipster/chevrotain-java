@@ -33,7 +33,8 @@ describe("annotationTypeElementRest", () => {
       type: "CLASS_DECLARATION",
       name: "A",
       body: {
-        type: "CLASS_BODY"
+        type: "CLASS_BODY",
+        declarations: []
       }
     });
   });
@@ -56,7 +57,8 @@ describe("annotationTypeElementRest", () => {
       type: "INTERFACE_DECLARATION",
       name: "A",
       body: {
-        type: "INTERFACE_BODY"
+        type: "INTERFACE_BODY",
+        declarations: []
       }
     });
   });

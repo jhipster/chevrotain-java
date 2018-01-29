@@ -93,7 +93,8 @@ describe("compilationUnit", () => {
             type: "CLASS_DECLARATION",
             name: "A",
             body: {
-              type: "CLASS_BODY"
+              type: "CLASS_BODY",
+              declarations: []
             }
           }
         }
@@ -116,7 +117,8 @@ describe("compilationUnit", () => {
             type: "CLASS_DECLARATION",
             name: "A",
             body: {
-              type: "CLASS_BODY"
+              type: "CLASS_BODY",
+              declarations: []
             }
           }
         },
@@ -127,7 +129,8 @@ describe("compilationUnit", () => {
             type: "CLASS_DECLARATION",
             name: "B",
             body: {
-              type: "CLASS_BODY"
+              type: "CLASS_BODY",
+              declarations: []
             }
           }
         }
@@ -198,7 +201,8 @@ describe("compilationUnit", () => {
             type: "INTERFACE_DECLARATION",
             name: "A",
             body: {
-              type: "INTERFACE_BODY"
+              type: "INTERFACE_BODY",
+              declarations: []
             }
           }
         }
@@ -223,7 +227,8 @@ describe("compilationUnit", () => {
             type: "INTERFACE_DECLARATION",
             name: "A",
             body: {
-              type: "INTERFACE_BODY"
+              type: "INTERFACE_BODY",
+              declarations: []
             }
           }
         },
@@ -234,7 +239,8 @@ describe("compilationUnit", () => {
             type: "INTERFACE_DECLARATION",
             name: "B",
             body: {
-              type: "INTERFACE_BODY"
+              type: "INTERFACE_BODY",
+              declarations: []
             }
           }
         }

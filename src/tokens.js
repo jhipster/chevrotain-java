@@ -76,6 +76,12 @@ const Double = createKeywordToken({
   label: "'double'"
 });
 
+const Void = createKeywordToken({
+  name: "Void",
+  pattern: /void/,
+  label: "'void'"
+});
+
 const Public = createKeywordToken({
   name: "Public",
   pattern: /public/,
@@ -136,10 +142,22 @@ const Extends = createKeywordToken({
   label: "'extends'"
 });
 
+const Implements = createKeywordToken({
+  name: "Implements",
+  pattern: /implements/,
+  label: "'implements'"
+});
+
 const Super = createKeywordToken({
   name: "Super",
   pattern: /super/,
   label: "'super'"
+});
+
+const Throws = createKeywordToken({
+  name: "Throws",
+  pattern: /throws/,
+  label: "'throws'"
 });
 
 const Volatile = createKeywordToken({
@@ -220,6 +238,12 @@ const Greater = createToken({
   label: "'>'"
 });
 
+const DotDotDot = createToken({
+  name: "DotDotDot",
+  pattern: /\.\.\./,
+  label: "'...'"
+});
+
 const Dot = createToken({
   name: "Dot",
   pattern: /\./,
@@ -242,6 +266,12 @@ const Equal = createToken({
   name: "Equal",
   pattern: /=/,
   label: "'='"
+});
+
+const And = createToken({
+  name: "And",
+  pattern: /&/,
+  label: "'&'"
 });
 
 const At = createToken({
@@ -290,6 +320,7 @@ const allTokens = [
   Long,
   Float,
   Double,
+  Void,
   Public,
   Protected,
   Private,
@@ -300,7 +331,9 @@ const allTokens = [
   Synchronized,
   Transient,
   Extends,
+  Implements,
   Super,
+  Throws,
   Volatile,
   Strictfp,
   Class,
@@ -310,10 +343,12 @@ const allTokens = [
   Default,
   // The Identifier must appear after the keywords because all keywords are valid identifiers.
   Identifier,
+  DotDotDot,
   Dot,
   Comma,
   SemiColon,
   Equal,
+  And,
   LBrace,
   RBrace,
   LCurly,
@@ -340,6 +375,7 @@ module.exports = {
     Long,
     Float,
     Double,
+    Void,
     Public,
     Protected,
     Private,
@@ -350,7 +386,9 @@ module.exports = {
     Synchronized,
     Transient,
     Extends,
+    Implements,
     Super,
+    Throws,
     Volatile,
     Strictfp,
     Class,
@@ -359,10 +397,12 @@ module.exports = {
     Package,
     Default,
     Identifier,
+    DotDotDot,
     Dot,
     Comma,
     SemiColon,
     Equal,
+    And,
     LBrace,
     RBrace,
     LCurly,

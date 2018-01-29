@@ -168,6 +168,24 @@ class SelectParser extends chevrotain.Parser {
       ]);
     });
 
+    // variableModifier
+    // : FINAL
+    // | annotation
+    $.RULE("variableModifier", () => {
+      $.OR([
+        {
+          ALT: () => {
+            $.SUBRULE($.annotation);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Final);
+          }
+        }
+      ]);
+    });
+
     // annotation
     // : '@' qualifiedName ('(' ( elementValuePairs | elementValue )? ')')?
     $.RULE("annotation", () => {
@@ -275,14 +293,205 @@ class SelectParser extends chevrotain.Parser {
       $.SUBRULE($.classBody);
     });
 
+    // typeParameters
+    // : '<' typeParameter (',' typeParameter)* '>'
+    $.RULE("typeParameters", () => {
+      $.CONSUME(tokens.Less);
+      $.AT_LEAST_ONE_SEP({
+        SEP: tokens.Comma,
+        DEF: () => {
+          $.SUBRULE($.typeParameter);
+        }
+      });
+      $.CONSUME(tokens.Greater);
+    });
+
+    // typeParameter
+    // : annotation* IDENTIFIER (EXTENDS typeBound)?
+    $.RULE("typeParameter", () => {
+      $.MANY(() => {
+        $.SUBRULE($.annotation);
+      });
+      $.CONSUME(tokens.Identifier);
+      $.OPTION(() => {
+        $.CONSUME(tokens.Extends);
+        $.SUBRULE($.typeBound);
+      });
+    });
+
+    // typeBound
+    // : typeType ('&' typeType)*
+    $.RULE("typeBound", () => {
+      $.AT_LEAST_ONE_SEP({
+        SEP: tokens.And,
+        DEF: () => {
+          $.SUBRULE($.typeType);
+        }
+      });
+    });
+
     // classBody
     // : '{' classBodyDeclaration* '}'
     $.RULE("classBody", () => {
       $.CONSUME(tokens.LCurly);
-      // $.MANY(() => {
-      //   $.SUBRULE($.classBodyDeclaration);
-      // });
+      $.MANY(() => {
+        $.SUBRULE($.classBodyDeclaration);
+      });
       $.CONSUME(tokens.RCurly);
+    });
+
+    // classBodyDeclaration
+    // : STATIC? block
+    // | modifier* memberDeclaration
+    $.RULE("classBodyDeclaration", () => {
+      $.OR([
+        {
+          // classBodyBlock
+          ALT: () => {
+            $.OPTION(() => {
+              $.CONSUME(tokens.Static);
+            });
+            $.SUBRULE($.block);
+          }
+        },
+        {
+          // classBodyMemberDeclaration
+          ALT: () => {
+            $.MANY({
+              DEF: function() {
+                $.SUBRULE($.modifier);
+              }
+            });
+            $.SUBRULE($.memberDeclaration);
+          }
+        }
+      ]);
+    });
+
+    // memberDeclaration
+    // : methodDeclaration
+    // | genericMethodDeclaration
+    // | fieldDeclaration
+    // | constructorDeclaration
+    // | genericConstructorDeclaration
+    // | interfaceDeclaration
+    // | annotationTypeDeclaration
+    // | classDeclaration
+    // | enumDeclaration
+    $.RULE("memberDeclaration", () => {
+      $.OR([
+        {
+          ALT: () => {
+            $.SUBRULE($.methodDeclaration);
+          }
+        },
+        // {
+        //   ALT: () => {
+        //     $.SUBRULE($.genericMethodDeclaration);
+        //   }
+        // },
+        // {
+        //   ALT: () => {
+        //     $.SUBRULE($.fieldDeclaration);
+        //   }
+        // },
+        {
+          ALT: () => {
+            $.SUBRULE($.constructorDeclaration);
+          }
+        },
+        // {
+        //   ALT: () => {
+        //     $.SUBRULE($.genericConstructorDeclaration);
+        //   }
+        // },
+        {
+          ALT: () => {
+            $.SUBRULE($.interfaceDeclaration);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.annotationTypeDeclaration);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.classDeclaration);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.enumDeclaration);
+          }
+        }
+      ]);
+    });
+
+    /* We use rule this even for void methods which cannot have [] after parameters.
+      This simplifies grammar and we can consider void to be a type, which
+      renders the [] matching as a context-sensitive issue or a semantic check
+      for invalid return type after parsing.
+    */
+    // methodDeclaration
+    // : typeTypeOrVoid IDENTIFIER formalParameters ('[' ']')*
+    //   (THROWS qualifiedNameList)?
+    //   methodBody
+    $.RULE("methodDeclaration", () => {
+      $.SUBRULE($.typeTypeOrVoid);
+      $.CONSUME(tokens.Identifier);
+      $.SUBRULE($.formalParameters);
+      $.MANY({
+        DEF: function() {
+          $.CONSUME(tokens.LSquare);
+          $.CONSUME(tokens.RSquare);
+        }
+      });
+      $.OPTION(() => {
+        $.CONSUME(tokens.Throws);
+        $.SUBRULE($.qualifiedNameList);
+      });
+      $.SUBRULE($.methodBody);
+    });
+
+    // genericMethodDeclaration
+    // : typeParameters methodDeclaration
+    $.RULE("genericMethodDeclaration", () => {
+      $.SUBRULE($.typeParameters);
+      $.SUBRULE($.methodDeclaration);
+    });
+
+    // constructorDeclaration
+    // : IDENTIFIER formalParameters (THROWS qualifiedNameList)? block
+    $.RULE("constructorDeclaration", () => {
+      $.CONSUME(tokens.Identifier);
+      $.SUBRULE($.formalParameters);
+      $.OPTION(() => {
+        $.CONSUME(tokens.Throws);
+        $.SUBRULE($.qualifiedNameList);
+      });
+      $.SUBRULE($.methodBody);
+    });
+
+    // genericConstructorDeclaration
+    // : typeParameters constructorDeclaration
+    $.RULE("genericConstructorDeclaration", () => {
+      $.SUBRULE($.typeParameters);
+      $.SUBRULE($.constructorDeclaration);
+    });
+
+    // fieldDeclaration
+    // : typeType variableDeclarators ';'
+    $.RULE("fieldDeclaration", () => {
+      $.SUBRULE($.typeType);
+      $.SUBRULE($.variableDeclarators);
+      $.CONSUME(tokens.SemiColon);
+    });
+
+    // methodBody
+    // : block
+    $.RULE("methodBody", () => {
+      $.SUBRULE($.block);
     });
 
     // enumDeclaration
@@ -290,21 +499,70 @@ class SelectParser extends chevrotain.Parser {
     $.RULE("enumDeclaration", () => {
       $.CONSUME(tokens.Enum);
       $.CONSUME(tokens.Identifier);
-      // $.OPTION(() => {
-      //   $.CONSUME(tokens.Implements);
-      //   $.SUBRULE($.typeList);
-      // });
+      $.OPTION(() => {
+        $.CONSUME(tokens.Implements);
+        $.SUBRULE($.typeList);
+      });
       $.CONSUME(tokens.LCurly);
-      // $.OPTION2(() => {
-      //   $.SUBRULE($.enumConstants);
-      // });
-      // $.OPTION3(() => {
-      //   $.CONSUME(tokens.Comma);
-      // });
-      // $.OPTION4(() => {
-      //   $.SUBRULE($.enumBodyDeclarations);
-      // });
+      $.OPTION2(() => {
+        $.SUBRULE($.enumConstants);
+      });
+      $.OPTION3(() => {
+        $.CONSUME(tokens.Comma);
+      });
+      $.OPTION4(() => {
+        $.SUBRULE($.enumBodyDeclarations);
+      });
       $.CONSUME(tokens.RCurly);
+    });
+
+    // enumConstants
+    // : enumConstant (',' enumConstant)*
+    $.RULE("enumConstants", () => {
+      $.SUBRULE($.enumConstant);
+      $.MANY({
+        // It can have a single comma at the end
+        // What should follow is a right curly OR
+        // a semi colon for a start of a enumBodyDeclarations
+        GATE: function() {
+          return (
+            this.LA(2).tokenType !== tokens.RCurly &&
+            this.LA(2).tokenType !== tokens.SemiColon
+          );
+        },
+        DEF: function() {
+          $.CONSUME(tokens.Comma);
+          $.SUBRULE2($.enumConstant);
+        }
+      });
+    });
+
+    // enumConstant
+    // : annotation* IDENTIFIER arguments? classBody?
+    $.RULE("enumConstant", () => {
+      $.MANY({
+        DEF: function() {
+          $.SUBRULE($.annotation);
+        }
+      });
+      $.CONSUME(tokens.Identifier);
+      $.OPTION(() => {
+        $.SUBRULE($.arguments);
+      });
+      $.OPTION2(() => {
+        $.SUBRULE($.classBody);
+      });
+    });
+
+    // enumBodyDeclarations
+    // : ';' classBodyDeclaration*
+    $.RULE("enumBodyDeclarations", () => {
+      $.CONSUME(tokens.SemiColon);
+      $.MANY({
+        DEF: function() {
+          $.SUBRULE($.classBodyDeclaration);
+        }
+      });
     });
 
     // interfaceDeclaration
@@ -312,13 +570,13 @@ class SelectParser extends chevrotain.Parser {
     $.RULE("interfaceDeclaration", () => {
       $.CONSUME(tokens.Interface);
       $.CONSUME(tokens.Identifier);
-      // $.OPTION(() => {
-      //   $.SUBRULE($.typeParameters);
-      // });
-      // $.OPTION2(() => {
-      //   $.CONSUME(tokens.Extends);
-      //   $.SUBRULE($.typeList);
-      // });
+      $.OPTION(() => {
+        $.SUBRULE($.typeParameters);
+      });
+      $.OPTION2(() => {
+        $.CONSUME(tokens.Extends);
+        $.SUBRULE($.typeList);
+      });
       $.SUBRULE($.interfaceBody);
     });
 
@@ -326,10 +584,216 @@ class SelectParser extends chevrotain.Parser {
     // : '{' interfaceBodyDeclaration* '}'
     $.RULE("interfaceBody", () => {
       $.CONSUME(tokens.LCurly);
-      // $.MANY(() => {
-      //   $.SUBRULE($.interfaceBodyDeclaration);
-      // });
+      $.MANY(() => {
+        $.SUBRULE($.interfaceBodyDeclaration);
+      });
       $.CONSUME(tokens.RCurly);
+    });
+
+    // interfaceBodyDeclaration
+    // : modifier* interfaceMemberDeclaration
+    $.RULE("interfaceBodyDeclaration", () => {
+      $.MANY({
+        DEF: function() {
+          $.SUBRULE($.modifier);
+        }
+      });
+      $.SUBRULE($.interfaceMemberDeclaration);
+    });
+
+    // interfaceMemberDeclaration
+    // : constantDeclaration
+    // | interfaceMethodDeclaration
+    // | genericInterfaceMethodDeclaration
+    // | interfaceDeclaration
+    // | annotationTypeDeclaration
+    // | classDeclaration
+    // | enumDeclaration
+    $.RULE("interfaceMemberDeclaration", () => {
+      $.OR([
+        // {
+        //   ALT: () => {
+        //     $.SUBRULE($.constantDeclaration);
+        //   }
+        // },
+        {
+          ALT: () => {
+            $.SUBRULE($.interfaceMethodDeclaration);
+          }
+        },
+        // {
+        //   ALT: () => {
+        //     $.SUBRULE($.genericInterfaceMethodDeclaration);
+        //   }
+        // },
+        {
+          ALT: () => {
+            $.SUBRULE($.interfaceDeclaration);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.classDeclaration);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.enumDeclaration);
+          }
+        }
+      ]);
+    });
+
+    // constantDeclaration
+    // : typeType constantDeclarator (',' constantDeclarator)* ';'
+    $.RULE("constantDeclaration", () => {
+      $.SUBRULE($.typeType);
+      $.AT_LEAST_ONE_SEP({
+        SEP: tokens.Comma,
+        DEF: () => {
+          $.SUBRULE($.constantDeclarator);
+        }
+      });
+      $.CONSUME(tokens.SemiColon);
+    });
+
+    // constantDeclarator
+    // : IDENTIFIER ('[' ']')* '=' variableInitializer
+    $.RULE("constantDeclarator", () => {
+      $.CONSUME(tokens.Identifier);
+      $.MANY({
+        DEF: function() {
+          $.CONSUME(tokens.LSquare);
+          $.CONSUME(tokens.RSquare);
+        }
+      });
+      $.CONSUME(tokens.Equal);
+      // $.SUBRULE($.variableInitializer);
+    });
+
+    // see matching of [] comment in methodDeclaratorRest
+    // methodBody from Java8
+    // interfaceMethodDeclaration
+    // : interfaceMethodModifier*
+    //   (typeParameters annotation*)?
+    //   typeTypeOrVoid
+    //   IDENTIFIER formalParameters ('[' ']')*
+    //   (THROWS qualifiedNameList)?
+    //   methodBody
+    $.RULE("interfaceMethodDeclaration", () => {
+      $.MANY({
+        DEF: function() {
+          $.SUBRULE($.interfaceMethodModifier);
+        }
+      });
+      $.OPTION(() => {
+        $.SUBRULE($.typeParameters);
+      });
+      $.MANY2({
+        DEF: function() {
+          $.SUBRULE($.annotation);
+        }
+      });
+      $.SUBRULE($.typeTypeOrVoid);
+      $.CONSUME(tokens.Identifier);
+      $.SUBRULE($.formalParameters);
+      $.MANY3({
+        DEF: function() {
+          $.CONSUME(tokens.LSquare);
+          $.CONSUME(tokens.RSquare);
+        }
+      });
+      $.OPTION2(() => {
+        $.CONSUME(tokens.Throws);
+        $.SUBRULE($.qualifiedNameList);
+      });
+      $.SUBRULE($.methodBody);
+    });
+
+    // genericInterfaceMethodDeclaration
+    // : typeParameters interfaceMethodDeclaration
+    $.RULE("genericInterfaceMethodDeclaration", () => {
+      $.SUBRULE($.typeParameters);
+      $.SUBRULE($.interfaceMethodDeclaration);
+    });
+
+    // // Java8
+    // interfaceMethodModifier
+    // : annotation
+    // | PUBLIC
+    // | ABSTRACT
+    // | DEFAULT
+    // | STATIC
+    // | STRICTFP
+    $.RULE("interfaceMethodModifier", () => {
+      $.OR([
+        {
+          ALT: () => {
+            $.SUBRULE($.annotation);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Public);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Abstract);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Default);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Static);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Strictfp);
+          }
+        }
+      ]);
+    });
+
+    // genericInterfaceMethodDeclaration
+    // : typeParameters interfaceMethodDeclaration
+
+    // variableDeclarators
+    // : variableDeclarator (',' variableDeclarator)*
+    $.RULE("variableDeclarators", () => {
+      $.AT_LEAST_ONE_SEP({
+        SEP: tokens.Comma,
+        DEF: () => {
+          $.SUBRULE($.variableDeclarator);
+        }
+      });
+    });
+
+    // variableDeclarator
+    // : variableDeclaratorId ('=' variableInitializer)?
+    $.RULE("variableDeclarator", () => {
+      $.SUBRULE($.variableDeclaratorId);
+      // $.OPTION(() => {
+      //   $.CONSUME(tokens.Equal);
+      //   $.SUBRULE($.variableInitializer);
+      // });
+    });
+
+    // variableDeclaratorId
+    // : IDENTIFIER ('[' ']')*
+    $.RULE("variableDeclaratorId", () => {
+      $.CONSUME(tokens.Identifier);
+      $.MANY({
+        DEF: function() {
+          $.CONSUME(tokens.LSquare);
+          $.CONSUME(tokens.RSquare);
+        }
+      });
     });
 
     // annotationTypeDeclaration
@@ -449,6 +913,29 @@ class SelectParser extends chevrotain.Parser {
       $.SUBRULE($.elementValue);
     });
 
+    // block
+    // : '{' blockStatement* '}'
+    $.RULE("block", () => {
+      $.CONSUME(tokens.LCurly);
+      // $.MANY({
+      //   DEF: function() {
+      //     $.SUBRULE($.blockStatement);
+      //   }
+      // });
+      $.CONSUME(tokens.RCurly);
+    });
+
+    // typeList
+    // : typeType (',' typeType)*
+    $.RULE("typeList", () => {
+      $.AT_LEAST_ONE_SEP({
+        SEP: tokens.Comma,
+        DEF: () => {
+          $.SUBRULE($.typeType);
+        }
+      });
+    });
+
     // typeType
     // : annotation? (classOrInterfaceType | primitiveType) ('[' ']')*
     $.RULE("typeType", () => {
@@ -473,6 +960,23 @@ class SelectParser extends chevrotain.Parser {
           $.CONSUME(tokens.RSquare);
         }
       });
+    });
+
+    // typeTypeOrVoid
+    // : typeType | VOID
+    $.RULE("typeTypeOrVoid", () => {
+      $.OR([
+        {
+          ALT: () => {
+            $.SUBRULE($.typeType);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Void);
+          }
+        }
+      ]);
     });
 
     // classOrInterfaceType
@@ -540,6 +1044,51 @@ class SelectParser extends chevrotain.Parser {
         ]);
         $.SUBRULE2($.typeType);
       });
+    });
+
+    // qualifiedNameList
+    // : qualifiedName (',' qualifiedName)*
+    $.RULE("qualifiedNameList", () => {
+      $.AT_LEAST_ONE_SEP({
+        SEP: tokens.Comma,
+        DEF: () => {
+          $.SUBRULE($.qualifiedName);
+        }
+      });
+    });
+
+    // formalParameters
+    // : '(' formalParameterList? ')'
+    $.RULE("formalParameters", () => {
+      $.CONSUME(tokens.LBrace);
+      $.OPTION(() => {
+        $.SUBRULE($.formalParameterList);
+      });
+      $.CONSUME(tokens.RBrace);
+    });
+
+    // formalParameterList
+    // : formalParameter (',' formalParameter)*
+    $.RULE("formalParameterList", () => {
+      $.AT_LEAST_ONE_SEP({
+        SEP: tokens.Comma,
+        DEF: () => {
+          $.SUBRULE($.formalParameter);
+        }
+      });
+    });
+
+    // formalParameter
+    // : variableModifier* typeType DOTDOTDOT? variableDeclaratorId
+    $.RULE("formalParameter", () => {
+      $.MANY(() => {
+        $.SUBRULE($.variableModifier);
+      });
+      $.SUBRULE($.typeType);
+      $.OPTION(() => {
+        $.CONSUME(tokens.DotDotDot);
+      });
+      $.SUBRULE($.variableDeclaratorId);
     });
 
     // primitiveType
@@ -611,6 +1160,16 @@ class SelectParser extends chevrotain.Parser {
           $.CONSUME2(tokens.Identifier);
         }
       });
+    });
+
+    // arguments
+    // : '(' expressionList? ')'
+    $.RULE("arguments", () => {
+      $.CONSUME(tokens.LBrace);
+      // $.OPTION(() => {
+      //   $.SUBRULE($.expressionList);
+      // });
+      $.CONSUME(tokens.RBrace);
     });
 
     Parser.performSelfAnalysis(this);

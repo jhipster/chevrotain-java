@@ -20,7 +20,8 @@ describe("annotationTypeBody", () => {
           modifiers: [],
           declaration: {
             body: {
-              type: "CLASS_BODY"
+              type: "CLASS_BODY",
+              declarations: []
             },
             name: "A",
             type: "CLASS_DECLARATION"
@@ -43,7 +44,8 @@ describe("annotationTypeBody", () => {
           modifiers: [],
           declaration: {
             body: {
-              type: "CLASS_BODY"
+              type: "CLASS_BODY",
+              declarations: []
             },
             name: "A",
             type: "CLASS_DECLARATION"
@@ -54,7 +56,8 @@ describe("annotationTypeBody", () => {
           modifiers: [],
           declaration: {
             body: {
-              type: "CLASS_BODY"
+              type: "CLASS_BODY",
+              declarations: []
             },
             name: "B",
             type: "CLASS_DECLARATION"
