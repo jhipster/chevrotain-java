@@ -6,12 +6,28 @@ describe("annotationMethodRestOrConstantRest", () => {
     expect(
       Parser.parse("a()", parser => parser.annotationMethodRestOrConstantRest())
     ).toEqual({
-      type: "ANNOTATION_METHOD_REST_OR_CONSTANT_REST",
-      value: {
-        type: "ANNOTATION_METHOD_REST",
-        name: "a",
-        defaultValue: undefined
-      }
+      type: "ANNOTATION_METHOD_REST",
+      name: "a",
+      defaultValue: undefined
+    });
+  });
+
+  it("annotationConstantRest", () => {
+    expect(
+      Parser.parse("A", parser => parser.annotationMethodRestOrConstantRest())
+    ).toEqual({
+      type: "VARIABLE_DECLARATORS",
+      list: [
+        {
+          type: "VARIABLE_DECLARATOR",
+          id: {
+            type: "VARIABLE_DECLARATOR_ID",
+            id: "A",
+            cntSquares: 0
+          },
+          init: undefined
+        }
+      ]
     });
   });
 });

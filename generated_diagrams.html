@@ -629,6 +629,50 @@
         "pattern": "[a-zA-Z]\\w*"
       },
       {
+        "type": "Option",
+        "definition": [
+          {
+            "type": "NonTerminal",
+            "name": "typeParameters",
+            "occurrenceInParent": 1
+          }
+        ]
+      },
+      {
+        "type": "Option",
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "Extends",
+            "label": "'extends'",
+            "occurrenceInParent": 1,
+            "pattern": "extends"
+          },
+          {
+            "type": "NonTerminal",
+            "name": "typeType",
+            "occurrenceInParent": 1
+          }
+        ]
+      },
+      {
+        "type": "Option",
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "Implements",
+            "label": "'implements'",
+            "occurrenceInParent": 1,
+            "pattern": "implements"
+          },
+          {
+            "type": "NonTerminal",
+            "name": "typeList",
+            "occurrenceInParent": 1
+          }
+        ]
+      },
+      {
         "type": "NonTerminal",
         "name": "classBody",
         "occurrenceInParent": 1
@@ -1930,9 +1974,29 @@
     "name": "annotationMethodRestOrConstantRest",
     "definition": [
       {
-        "type": "NonTerminal",
-        "name": "annotationMethodRest",
-        "occurrenceInParent": 1
+        "type": "Alternation",
+        "definition": [
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "NonTerminal",
+                "name": "annotationMethodRest",
+                "occurrenceInParent": 1
+              }
+            ]
+          },
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "NonTerminal",
+                "name": "annotationConstantRest",
+                "occurrenceInParent": 1
+              }
+            ]
+          }
+        ]
       }
     ]
   },
@@ -1970,6 +2034,17 @@
             "occurrenceInParent": 1
           }
         ]
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "annotationConstantRest",
+    "definition": [
+      {
+        "type": "NonTerminal",
+        "name": "variableDeclarators",
+        "occurrenceInParent": 1
       }
     ]
   },

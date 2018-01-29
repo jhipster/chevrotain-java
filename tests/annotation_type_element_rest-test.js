@@ -17,12 +17,9 @@ describe("annotationTypeElementRest", () => {
         cntSquares: 0
       },
       name: {
-        type: "ANNOTATION_METHOD_REST_OR_CONSTANT_REST",
-        value: {
-          type: "ANNOTATION_METHOD_REST",
-          name: "a",
-          defaultValue: undefined
-        }
+        type: "ANNOTATION_METHOD_REST",
+        name: "a",
+        defaultValue: undefined
       }
     });
   });

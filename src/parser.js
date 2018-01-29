@@ -279,17 +279,17 @@ class SelectParser extends chevrotain.Parser {
     $.RULE("classDeclaration", () => {
       $.CONSUME(tokens.Class);
       $.CONSUME(tokens.Identifier);
-      // $.OPTION(() => {
-      //   $.SUBRULE($.typeParameters);
-      // });
-      // $.OPTION2(() => {
-      //   $.CONSUME(tokens.Extends);
-      //   $.SUBRULE($.typeType);
-      // });
-      // $.OPTION3(() => {
-      //   $.CONSUME(tokens.Implements);
-      //   $.SUBRULE($.typeList);
-      // });
+      $.OPTION(() => {
+        $.SUBRULE($.typeParameters);
+      });
+      $.OPTION2(() => {
+        $.CONSUME(tokens.Extends);
+        $.SUBRULE($.typeType);
+      });
+      $.OPTION3(() => {
+        $.CONSUME(tokens.Implements);
+        $.SUBRULE($.typeList);
+      });
       $.SUBRULE($.classBody);
     });
 
@@ -760,9 +760,6 @@ class SelectParser extends chevrotain.Parser {
       ]);
     });
 
-    // genericInterfaceMethodDeclaration
-    // : typeParameters interfaceMethodDeclaration
-
     // variableDeclarators
     // : variableDeclarator (',' variableDeclarator)*
     $.RULE("variableDeclarators", () => {
@@ -878,18 +875,18 @@ class SelectParser extends chevrotain.Parser {
     // : annotationMethodRest
     // | annotationConstantRest
     $.RULE("annotationMethodRestOrConstantRest", () => {
-      // $.OR([
-      //   {
-      //     ALT: () => {
-      $.SUBRULE($.annotationMethodRest);
-      //     }
-      //   },
-      //   {
-      //     ALT: () => {
-      //       $.SUBRULE($.annotationConstantRest);
-      //     }
-      //   }
-      // ]);
+      $.OR([
+        {
+          ALT: () => {
+            $.SUBRULE($.annotationMethodRest);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.annotationConstantRest);
+          }
+        }
+      ]);
     });
 
     // annotationMethodRest
@@ -905,6 +902,9 @@ class SelectParser extends chevrotain.Parser {
 
     // annotationConstantRest
     // : variableDeclarators
+    $.RULE("annotationConstantRest", () => {
+      $.SUBRULE($.variableDeclarators);
+    });
 
     // defaultValue
     // : DEFAULT elementValue

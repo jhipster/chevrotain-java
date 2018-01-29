@@ -207,10 +207,16 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   classDeclaration(ctx) {
     const name = ctx.Identifier[0].image;
     const body = this.visit(ctx.classBody);
+    const typeParameters = this.visit(ctx.typeParameters);
+    const ext = this.visit(ctx.typeType);
+    const impl = this.visit(ctx.typeList);
 
     return {
       type: "CLASS_DECLARATION",
       name: name,
+      typeParameters: typeParameters,
+      extends: ext,
+      implements: impl,
       body: body
     };
   }
@@ -644,12 +650,13 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   annotationMethodRestOrConstantRest(ctx) {
-    const value = this.visit(ctx.annotationMethodRest);
+    if (ctx.annotationMethodRest.length > 0) {
+      return this.visit(ctx.annotationMethodRest);
+    }
 
-    return {
-      type: "ANNOTATION_METHOD_REST_OR_CONSTANT_REST",
-      value: value
-    };
+    if (ctx.annotationConstantRest.length > 0) {
+      return this.visit(ctx.annotationConstantRest);
+    }
   }
 
   annotationMethodRest(ctx) {
@@ -661,6 +668,12 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       name: name,
       defaultValue: defaultValue
     };
+  }
+
+  annotationConstantRest(ctx) {
+    if (ctx.variableDeclarators.length > 0) {
+      return this.visit(ctx.variableDeclarators);
+    }
   }
 
   defaultValue(ctx) {
