@@ -1,7 +1,7 @@
 "use strict";
 const Parser = require("../src/index");
 
-describe("class", () => {
+describe("classDeclaration", () => {
   it("empty", () => {
     expect(
       Parser.parse("class A{}", parser => parser.classDeclaration())

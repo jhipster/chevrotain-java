@@ -236,11 +236,12 @@ class SelectParser extends chevrotain.Parser {
     // | elementValueArrayInitializer
     $.RULE("elementValue", () => {
       $.OR([
-        //     {
-        //       ALT: () => {
-        //         $.SUBRULE($.epxression);
-        //       }
-        //     },
+        // TODO: refactoring
+        // {
+        //   ALT: () => {
+        //     $.SUBRULE($.expression);
+        //   }
+        // },
         {
           ALT: () => {
             $.SUBRULE($.annotation);
@@ -385,6 +386,7 @@ class SelectParser extends chevrotain.Parser {
             $.SUBRULE($.methodDeclaration);
           }
         },
+        // TODO: refactoring
         // {
         //   ALT: () => {
         //     $.SUBRULE($.genericMethodDeclaration);
@@ -400,6 +402,7 @@ class SelectParser extends chevrotain.Parser {
             $.SUBRULE($.constructorDeclaration);
           }
         },
+        // TODO: refactoring
         // {
         //   ALT: () => {
         //     $.SUBRULE($.genericConstructorDeclaration);
@@ -611,6 +614,7 @@ class SelectParser extends chevrotain.Parser {
     // | enumDeclaration
     $.RULE("interfaceMemberDeclaration", () => {
       $.OR([
+        // TODO: refactoring
         // {
         //   ALT: () => {
         //     $.SUBRULE($.constantDeclaration);
@@ -621,6 +625,7 @@ class SelectParser extends chevrotain.Parser {
             $.SUBRULE($.interfaceMethodDeclaration);
           }
         },
+        // TODO: refactoring
         // {
         //   ALT: () => {
         //     $.SUBRULE($.genericInterfaceMethodDeclaration);
@@ -668,7 +673,7 @@ class SelectParser extends chevrotain.Parser {
         }
       });
       $.CONSUME(tokens.Equal);
-      // $.SUBRULE($.variableInitializer);
+      $.SUBRULE($.variableInitializer);
     });
 
     // see matching of [] comment in methodDeclaratorRest
@@ -775,10 +780,10 @@ class SelectParser extends chevrotain.Parser {
     // : variableDeclaratorId ('=' variableInitializer)?
     $.RULE("variableDeclarator", () => {
       $.SUBRULE($.variableDeclaratorId);
-      // $.OPTION(() => {
-      //   $.CONSUME(tokens.Equal);
-      //   $.SUBRULE($.variableInitializer);
-      // });
+      $.OPTION(() => {
+        $.CONSUME(tokens.Equal);
+        $.SUBRULE($.variableInitializer);
+      });
     });
 
     // variableDeclaratorId
@@ -791,6 +796,49 @@ class SelectParser extends chevrotain.Parser {
           $.CONSUME(tokens.RSquare);
         }
       });
+    });
+
+    // variableInitializer
+    // : arrayInitializer
+    // | expression
+    $.RULE("variableInitializer", () => {
+      $.OR([
+        {
+          ALT: () => {
+            $.SUBRULE($.arrayInitializer);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.expression);
+          }
+        }
+      ]);
+    });
+
+    // arrayInitializer
+    // : '{' (variableInitializer (',' variableInitializer)* (',')? )? '}'
+    $.RULE("arrayInitializer", () => {
+      $.CONSUME(tokens.LCurly);
+      $.OPTION(() => {
+        $.SUBRULE($.variableInitializer);
+        $.MANY({
+          GATE: function() {
+            return (
+              this.LA(2).tokenType !== tokens.Comma &&
+              this.LA(2).tokenType !== tokens.RCurly
+            );
+          },
+          DEF: function() {
+            $.CONSUME(tokens.Comma);
+            $.SUBRULE2($.variableInitializer);
+          }
+        });
+      });
+      $.OPTION2(() => {
+        $.CONSUME2(tokens.Comma);
+      });
+      $.CONSUME(tokens.RCurly);
     });
 
     // annotationTypeDeclaration
@@ -911,18 +959,6 @@ class SelectParser extends chevrotain.Parser {
     $.RULE("defaultValue", () => {
       $.CONSUME(tokens.Default);
       $.SUBRULE($.elementValue);
-    });
-
-    // block
-    // : '{' blockStatement* '}'
-    $.RULE("block", () => {
-      $.CONSUME(tokens.LCurly);
-      // $.MANY({
-      //   DEF: function() {
-      //     $.SUBRULE($.blockStatement);
-      //   }
-      // });
-      $.CONSUME(tokens.RCurly);
     });
 
     // typeList
@@ -1057,6 +1093,27 @@ class SelectParser extends chevrotain.Parser {
       });
     });
 
+    // identifiers
+    // : '(' identifierList? ')'
+    $.RULE("identifiers", () => {
+      $.CONSUME(tokens.LBrace);
+      $.OPTION(() => {
+        $.SUBRULE($.identifierList);
+      });
+      $.CONSUME(tokens.RBrace);
+    });
+
+    // identifierList
+    // : identifier (',' identifier)*
+    $.RULE("identifierList", () => {
+      $.AT_LEAST_ONE_SEP({
+        SEP: tokens.Comma,
+        DEF: () => {
+          $.CONSUME(tokens.Identifier);
+        }
+      });
+    });
+
     // formalParameters
     // : '(' formalParameterList? ')'
     $.RULE("formalParameters", () => {
@@ -1089,6 +1146,1203 @@ class SelectParser extends chevrotain.Parser {
         $.CONSUME(tokens.DotDotDot);
       });
       $.SUBRULE($.variableDeclaratorId);
+    });
+
+    // block
+    // : '{' blockStatement* '}'
+    $.RULE("block", () => {
+      $.CONSUME(tokens.LCurly);
+      // TODO: blockStatement needs refactoring
+      // $.MANY({
+      //   DEF: function() {
+      //     $.SUBRULE($.blockStatement);
+      //   }
+      // });
+      $.CONSUME(tokens.RCurly);
+    });
+
+    // blockStatement
+    // : localVariableDeclaration ';'
+    // | statement
+    // | localTypeDeclaration
+    // TODO: refactoring
+    // $.RULE("blockStatement", () => {
+    //   $.OR([
+    //     {
+    //       ALT: () => {
+    //         $.SUBRULE($.statement);
+    //       }
+    //     },
+    //     {
+    //       ALT: () => {
+    //         $.SUBRULE($.localVariableDeclaration);
+    //       }
+    //     },
+    //     {
+    //       ALT: () => {
+    //         $.SUBRULE($.localTypeDeclaration);
+    //       }
+    //     }
+    //   ]);
+    // });
+
+    // localVariableDeclaration
+    // : variableModifier* typeType variableDeclarators
+    $.RULE("localVariableDeclaration", () => {
+      $.MANY(() => {
+        $.SUBRULE($.variableModifier);
+      });
+      $.SUBRULE($.typeType);
+      $.SUBRULE($.variableDeclarators);
+    });
+
+    // localTypeDeclaration
+    // : classOrInterfaceModifier*
+    //   (classDeclaration | interfaceDeclaration)
+    $.RULE("localTypeDeclaration", () => {
+      $.MANY(() => {
+        $.SUBRULE($.classOrInterfaceModifier);
+      });
+      $.OR([
+        {
+          ALT: () => {
+            $.SUBRULE($.classDeclaration);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.interfaceDeclaration);
+          }
+        }
+      ]);
+    });
+
+    // statement
+    // : block
+    // | assertStatement
+    // | ifStatement
+    // | forStatement
+    // | whileStatement
+    // | doWhileStatement
+    // | tryStatement
+    // | switchStatement
+    // | synchronizedStatement
+    // | returnStatement
+    // | throwStatement
+    // | breakStatement
+    // | continueStatement
+    // | semiColonStatement
+    // | expressionStatement
+    // | identifierStatement
+    $.RULE("statement", () => {
+      $.OR([
+        {
+          ALT: () => {
+            $.SUBRULE($.block);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.assertStatement);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.ifStatement);
+          }
+        },
+        // TODO: forControl needs refactoring
+        // {
+        //   ALT: () => {
+        //     $.SUBRULE($.forStatement);
+        //   }
+        // },
+        {
+          ALT: () => {
+            $.SUBRULE($.whileStatement);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.doWhileStatement);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.tryStatement);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.switchStatement);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.synchronizedStatement);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.returnStatement);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.throwStatement);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.breakStatement);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.continueStatement);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.semiColonStatement);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.expressionStatement);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.identifierStatement);
+          }
+        }
+      ]);
+    });
+
+    // assertStatement
+    // : ASSERT expression (':' expression)? ';'
+    $.RULE("assertStatement", () => {
+      $.CONSUME(tokens.Assert);
+      $.SUBRULE($.expression);
+      $.OPTION(() => {
+        $.CONSUME(tokens.Colon);
+        $.SUBRULE2($.expression);
+      });
+      $.CONSUME(tokens.SemiColon);
+    });
+
+    // ifStatement
+    // : IF '(' expression ')' statement (ELSE statement)?
+    $.RULE("ifStatement", () => {
+      $.CONSUME(tokens.If);
+      $.CONSUME(tokens.LBrace);
+      $.SUBRULE($.expression);
+      $.CONSUME(tokens.RBrace);
+      $.SUBRULE($.statement);
+      $.OPTION(() => {
+        $.CONSUME(tokens.Else);
+        $.SUBRULE2($.statement);
+      });
+    });
+
+    // forStatement
+    // : FOR '(' forControl ')' statement
+    // TODO: forControl needs refactoring
+    // $.RULE("forStatement", () => {
+    //   $.CONSUME(tokens.For);
+    //   $.CONSUME(tokens.LBrace);
+    //   $.SUBRULE($.forControl);
+    //   $.CONSUME(tokens.RBrace);
+    //   $.SUBRULE($.statement);
+    // });
+
+    // whileStatement
+    // : WHILE '(' expression ')' statement
+    $.RULE("whileStatement", () => {
+      $.CONSUME(tokens.While);
+      $.CONSUME(tokens.LBrace);
+      $.SUBRULE($.expression);
+      $.CONSUME(tokens.RBrace);
+      $.SUBRULE($.statement);
+    });
+
+    // doWhileStatement
+    // : DO statement WHILE '(' expression ')' ';'
+    $.RULE("doWhileStatement", () => {
+      $.CONSUME(tokens.Do);
+      $.SUBRULE($.statement);
+      $.CONSUME(tokens.While);
+      $.CONSUME(tokens.LBrace);
+      $.SUBRULE($.expression);
+      $.CONSUME(tokens.RBrace);
+      $.CONSUME(tokens.SemiColon);
+    });
+
+    // tryStatement
+    // : TRY resourceSpecification? block (catchClause+ finallyBlock? | finallyBlock)
+    $.RULE("tryStatement", () => {
+      $.CONSUME(tokens.Try);
+      $.OPTION(() => {
+        $.SUBRULE($.resourceSpecification);
+      });
+      $.SUBRULE($.block);
+      $.OR([
+        {
+          ALT: () => {
+            $.SUBRULE($.catchClause);
+            $.MANY(() => {
+              $.SUBRULE2($.catchClause);
+            });
+            $.OPTION2(() => {
+              $.SUBRULE($.finallyBlock);
+            });
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE2($.finallyBlock);
+          }
+        }
+      ]);
+    });
+
+    // switchStatement
+    // : SWITCH '(' expression ')' '{' switchBlockStatementGroup* switchLabel* '}'
+    $.RULE("switchStatement", () => {
+      $.CONSUME(tokens.Switch);
+      $.CONSUME(tokens.LBrace);
+      $.SUBRULE($.expression);
+      $.CONSUME(tokens.RBrace);
+      $.CONSUME(tokens.LCurly);
+      // $.MANY(() => {
+      //   $.SUBRULE($.switchBlockStatementGroup);
+      // });
+      // $.MANY(() => {
+      //   $.SUBRULE($.switchLabel);
+      // });
+      $.CONSUME(tokens.RCurly);
+    });
+
+    // synchronizedStatement
+    // : SYNCHRONIZED '(' expression ')' block
+    $.RULE("synchronizedStatement", () => {
+      $.CONSUME(tokens.Synchronized);
+      $.CONSUME(tokens.LBrace);
+      $.SUBRULE($.expression);
+      $.CONSUME(tokens.RBrace);
+      $.SUBRULE($.block);
+    });
+
+    // returnStatement
+    // : RETURN expression? ';'
+    $.RULE("returnStatement", () => {
+      $.CONSUME(tokens.Return);
+      $.OPTION(() => {
+        $.SUBRULE($.expression);
+      });
+      $.CONSUME(tokens.SemiColon);
+    });
+
+    // throwStatement
+    // : THROW expression ';'
+    $.RULE("throwStatement", () => {
+      $.CONSUME(tokens.Throw);
+      $.SUBRULE($.expression);
+      $.CONSUME(tokens.SemiColon);
+    });
+
+    // breakStatement
+    // : BREAK IDENTIFIER? ';'
+    $.RULE("breakStatement", () => {
+      $.CONSUME(tokens.Break);
+      $.OPTION(() => {
+        $.CONSUME(tokens.Identifier);
+      });
+      $.CONSUME(tokens.SemiColon);
+    });
+
+    // continueStatement
+    // : CONTINUE IDENTIFIER? ';'
+    $.RULE("continueStatement", () => {
+      $.CONSUME(tokens.Continue);
+      $.OPTION(() => {
+        $.CONSUME(tokens.Identifier);
+      });
+      $.CONSUME(tokens.SemiColon);
+    });
+
+    // semiColonStatement
+    // : ';'
+    $.RULE("semiColonStatement", () => {
+      $.CONSUME(tokens.SemiColon);
+    });
+
+    // expressionStatement
+    // : expression ';'
+    $.RULE("expressionStatement", () => {
+      $.SUBRULE($.expression);
+      $.CONSUME(tokens.SemiColon);
+    });
+
+    // identifierStatement
+    // : IDENTIFIER ':' statement
+    $.RULE("identifierStatement", () => {
+      $.CONSUME(tokens.Identifier);
+      $.CONSUME(tokens.Colon);
+      $.SUBRULE($.statement);
+    });
+
+    // catchClause
+    // : CATCH '(' variableModifier* catchType IDENTIFIER ')' block
+    $.RULE("catchClause", () => {
+      $.CONSUME(tokens.Catch);
+      $.CONSUME(tokens.LBrace);
+      $.MANY(() => {
+        $.SUBRULE($.variableModifier);
+      });
+      $.SUBRULE($.catchType);
+      $.CONSUME(tokens.Identifier);
+      $.CONSUME(tokens.RBrace);
+      $.SUBRULE($.block);
+    });
+
+    // catchType
+    // : qualifiedName ('|' qualifiedName)*
+    $.RULE("catchType", () => {
+      $.AT_LEAST_ONE_SEP({
+        SEP: tokens.VerticalLine,
+        DEF: () => {
+          $.SUBRULE($.qualifiedName);
+        }
+      });
+    });
+
+    // finallyBlock
+    // : FINALLY block
+    $.RULE("finallyBlock", () => {
+      $.CONSUME(tokens.Finally);
+      $.SUBRULE($.block);
+    });
+
+    // resourceSpecification
+    // : '(' resources ';'? ')'
+    $.RULE("resourceSpecification", () => {
+      $.CONSUME(tokens.LBrace);
+      $.SUBRULE($.resources);
+      $.OPTION(() => {
+        $.CONSUME(tokens.SemiColon);
+      });
+      $.CONSUME(tokens.RBrace);
+    });
+
+    // resources
+    // : resource (';' resource)*
+    $.RULE("resources", () => {
+      $.SUBRULE($.resource);
+      $.MANY({
+        GATE: function() {
+          return this.LA(2).tokenType !== tokens.RBrace;
+        },
+        DEF: function() {
+          $.CONSUME(tokens.SemiColon);
+          $.SUBRULE2($.resource);
+        }
+      });
+    });
+
+    // resource
+    // : variableModifier* classOrInterfaceType variableDeclaratorId '=' expression
+    $.RULE("resource", () => {
+      $.MANY(() => {
+        $.SUBRULE($.variableModifier);
+      });
+      $.SUBRULE($.classOrInterfaceType);
+      $.SUBRULE($.variableDeclaratorId);
+      $.CONSUME(tokens.Equal);
+      $.SUBRULE($.expression);
+    });
+
+    // /** Matches cases then statements, both of which are mandatory.
+    //  *  To handle empty cases at the end, we add switchLabel* to statement.
+    //  */
+    // switchBlockStatementGroup
+    // : switchLabel+ blockStatement+
+    // $.RULE("switchBlockStatementGroup", () => {
+    //   $.AT_LEAST_ONE_SEP({
+    //     DEF: () => {
+    //       $.SUBRULE($.switchLabel);
+    //     }
+    //   });
+    //   $.AT_LEAST_ONE_SEP({
+    //     DEF: () => {
+    //       $.SUBRULE($.blockStatement);
+    //     }
+    //   });
+    // });
+
+    // switchLabel
+    // : switchLabelCase
+    // | switchLabelDefault
+    $.RULE("switchLabel", () => {
+      $.OR([
+        {
+          ALT: () => {
+            $.SUBRULE($.switchLabelCase);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.switchLabelDefault);
+          }
+        }
+      ]);
+    });
+
+    // switchLabelCase
+    // : CASE (expression | IDENTIFIER) ':'
+    $.RULE("switchLabelCase", () => {
+      $.CONSUME(tokens.Case);
+      // TODO: refactoring
+      // $.OR([
+      //   {
+      //     ALT: () => {
+      //       $.SUBRULE($.expression);
+      //     }
+      //   },
+      //   {
+      //     ALT: () => {
+      $.CONSUME(tokens.Identifier);
+      //     }
+      //   }
+      // ]);
+      $.CONSUME(tokens.Colon);
+    });
+
+    // switchLabelDefault
+    // : DEFAULT ':'
+    $.RULE("switchLabelDefault", () => {
+      $.CONSUME(tokens.Default);
+      $.CONSUME(tokens.Colon);
+    });
+
+    // forControl
+    // : enhancedForControl
+    // | expressionForControl
+    $.RULE("forControl", () => {
+      // $.OR([
+      //   {
+      //     ALT: () => {
+      $.SUBRULE($.enhancedForControl);
+      //     }
+      //   },
+      //   {
+      //     ALT: () => {
+      //       $.SUBRULE($.expressionForControl);
+      //     }
+      //   }
+      // ]);
+    });
+
+    // expressionForControl
+    // : forInit? ';' expression? ';' forUpdate=expressionList?
+    // $.RULE("forControl", () => {
+    //   $.OPTION(() => {
+    //     $.SUBRULE($.forInit);
+    //   });
+    //   $.CONSUME(tokens.SemiColon);
+    //   $.OPTION(() => {
+    //     $.SUBRULE($.expression);
+    //   });
+    //   $.CONSUME(tokens.SemiColon);
+    //   $.OPTION(() => {
+    //     $.SUBRULE($.expressionList);
+    //   });
+    // });
+
+    // forInit
+    // : localVariableDeclaration
+    // | expressionList
+    // TODO: refactoring
+    // $.RULE("forInit", () => {
+    //   $.OR([
+    //     {
+    //       ALT: () => {
+    //         $.SUBRULE($.expressionList);
+    //       }
+    //     },
+    //     {
+    //       ALT: () => {
+    //         $.SUBRULE($.localVariableDeclaration);
+    //       }
+    //     }
+    //   ]);
+    // });
+
+    // enhancedForControl
+    // : variableModifier* typeType variableDeclaratorId ':' expression
+    $.RULE("enhancedForControl", () => {
+      $.MANY(() => {
+        $.SUBRULE($.variableModifier);
+      });
+      $.SUBRULE($.typeType);
+      $.SUBRULE($.variableDeclaratorId);
+      $.CONSUME(tokens.Colon);
+      $.SUBRULE($.expression);
+    });
+
+    // explicitGenericInvocationSuffix
+    // : super
+    // | IDENTIFIER arguments
+    $.RULE("explicitGenericInvocationSuffix", () => {
+      $.OR([
+        {
+          ALT: () => {
+            $.SUBRULE($.super);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.identifierArguments);
+          }
+        }
+      ]);
+    });
+
+    // identifierArguments
+    // : IDENTIFIER arguments
+    $.RULE("identifierArguments", () => {
+      $.CONSUME(tokens.Identifier);
+      $.SUBRULE($.arguments);
+    });
+
+    // super
+    // : SUPER superSuffix
+    $.RULE("super", () => {
+      $.CONSUME(tokens.Super);
+      $.SUBRULE($.superSuffix);
+    });
+
+    // superSuffix
+    // : arguments
+    // | dotIdentifierArguments
+    $.RULE("superSuffix", () => {
+      $.OR([
+        {
+          ALT: () => {
+            $.SUBRULE($.arguments);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.dotIdentifierArguments);
+          }
+        }
+      ]);
+    });
+
+    // arguments
+    // : '(' expressionList? ')'
+    $.RULE("arguments", () => {
+      $.CONSUME(tokens.LBrace);
+      // $.OPTION(() => {
+      //   $.SUBRULE($.expressionList);
+      // });
+      $.CONSUME(tokens.RBrace);
+    });
+
+    // dotIdentifierArguments
+    // : '.' IDENTIFIER arguments?
+    $.RULE("dotIdentifierArguments", () => {
+      $.CONSUME(tokens.Dot);
+      $.CONSUME(tokens.Identifier);
+      $.OPTION(() => {
+        $.SUBRULE($.arguments);
+      });
+    });
+
+    // parExpression
+    // : '(' expression ')'
+    $.RULE("parExpression", () => {
+      $.CONSUME(tokens.LBrace);
+      $.SUBRULE($.expression);
+      $.CONSUME(tokens.RBrace);
+    });
+
+    // expressionList
+    // : expression (',' expression)*
+    $.RULE("expressionList", () => {
+      $.AT_LEAST_ONE_SEP({
+        SEP: tokens.Comma,
+        DEF: () => {
+          $.SUBRULE($.expression);
+        }
+      });
+    });
+
+    // methodCall
+    // : IDENTIFIER '(' expressionList? ')'
+    $.RULE("methodCall", () => {
+      $.CONSUME(tokens.Identifier);
+      $.CONSUME(tokens.LBrace);
+      $.OPTION(() => {
+        $.SUBRULE($.expressionList);
+      });
+      $.CONSUME(tokens.RBrace);
+    });
+
+    // expression
+    // : methodCall
+    // | primary
+    // | creator
+    //
+    // | expression bop='.'
+    //   (IDENTIFIER
+    //   | methodCall
+    //   | THIS
+    //   | NEW nonWildcardTypeArguments? innerCreator
+    //   | super
+    //   | explicitGenericInvocation
+    //   )
+    // | expression '[' expression ']'
+    // | '(' typeType ')' expression
+    // | expression postfix=('++' | '--')
+    // | prefix=('+'|'-'|'++'|'--') expression
+    // | prefix=('~'|'!') expression
+    // | expression bop=('*'|'/'|'%') expression
+    // | expression bop=('+'|'-') expression
+    // | expression ('<' '<' | '>' '>' '>' | '>' '>') expression
+    // | expression bop=('<=' | '>=' | '>' | '<') expression
+    // | expression bop=INSTANCEOF typeType
+    // | expression bop=('==' | '!=') expression
+    // | expression bop='&' expression
+    // | expression bop='^' expression
+    // | expression bop='|' expression
+    // | expression bop='&&' expression
+    // | expression bop='||' expression
+    // | expression bop='?' expression ':' expression
+    // | <assoc=right> expression
+    //   bop=('=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^=' | '>>=' | '>>>=' | '<<=' | '%=')
+    //   expression
+    // | lambdaExpression // Java8
+    // TODO: refactoring
+    $.RULE("expression", () => {
+      $.OR([
+        {
+          ALT: () => {
+            $.SUBRULE($.methodCall);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.primary);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.creator);
+          }
+        }
+      ]);
+    });
+
+    // // Java 8 methodReference
+    // : ( expression | typeType | classType ) '::' typeArguments? (IDENTIFIER | NEW)
+    // TODO: refactoring
+    // $.RULE("methodReference", () => {
+    //   $.OR([
+    //     {
+    //       ALT: () => {
+    //         $.SUBRULE($.typeType);
+    //       }
+    //     },
+    //     {
+    //       ALT: () => {
+    //         $.SUBRULE($.classType);
+    //       }
+    //     }
+    //     ,
+    //     {
+    //       ALT: () => {
+    //         $.SUBRULE($.expression);
+    //       }
+    //     }
+    //   ]);
+    //   $.CONSUME(tokens.ColonColon);
+    //   $.OPTION(() => {
+    //     $.SUBRULE($.typeArguments);
+    //   });
+    //   $.OR2([
+    //     {
+    //       ALT: () => {
+    //         $.CONSUME(tokens.Identifier);
+    //       }
+    //     },
+    //     {
+    //       ALT: () => {
+    //         $.CONSUME(tokens.New);
+    //       }
+    //     }
+    //   ]);
+    // });
+
+    // // Java8
+    // lambdaExpression
+    // : lambdaParameters '->' lambdaBody
+    $.RULE("lambdaExpression", () => {
+      $.SUBRULE($.lambdaParameters);
+      $.CONSUME(tokens.Pointer);
+      $.SUBRULE($.lambdaBody);
+    });
+
+    // // Java8
+    // lambdaParameters
+    // : IDENTIFIER
+    // | formalParameters
+    // | identifiers
+    $.RULE("lambdaParameters", () => {
+      $.OR([
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Identifier);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.LBrace);
+            $.CONSUME(tokens.RBrace);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME2(tokens.LBrace);
+            $.SUBRULE($.formalParameterList);
+            $.CONSUME2(tokens.RBrace);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME3(tokens.LBrace);
+            $.SUBRULE($.identifierList);
+            $.CONSUME3(tokens.RBrace);
+          }
+        }
+      ]);
+    });
+
+    // // Java8
+    // lambdaBody
+    // : expression
+    // | block
+    $.RULE("lambdaBody", () => {
+      $.OR([
+        {
+          ALT: () => {
+            $.SUBRULE($.expression);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.block);
+          }
+        }
+      ]);
+    });
+
+    // classType
+    // : annotation* classOrInterfaceType
+    $.RULE("classType", () => {
+      $.MANY(() => {
+        $.SUBRULE($.annotation);
+      });
+      $.SUBRULE($.classOrInterfaceType);
+    });
+
+    // creator
+    // : nonWildcardCreator
+    // | simpleCreator
+    $.RULE("creator", () => {
+      $.CONSUME(tokens.New);
+      $.OR([
+        {
+          ALT: () => {
+            $.SUBRULE($.nonWildcardCreator);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.simpleCreator);
+          }
+        }
+      ]);
+    });
+
+    // nonWildCardCreator
+    // : nonWildcardTypeArguments createdName classCreatorRest
+    $.RULE("nonWildcardCreator", () => {
+      $.SUBRULE($.nonWildcardTypeArguments);
+      $.SUBRULE($.createdName);
+      $.SUBRULE($.classCreatorRest);
+    });
+
+    // simpleCreator
+    // : createdName (arrayCreatorRest | classCreatorRest)
+    $.RULE("simpleCreator", () => {
+      $.SUBRULE($.createdName);
+      $.OR([
+        {
+          ALT: () => {
+            $.SUBRULE($.arrayCreatorRest);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.classCreatorRest);
+          }
+        }
+      ]);
+    });
+
+    // createdName
+    // : identifierName
+    // | primitiveType
+    $.RULE("createdName", () => {
+      $.OR([
+        {
+          ALT: () => {
+            $.SUBRULE($.identifierName);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.primitiveType);
+          }
+        }
+      ]);
+    });
+
+    // identifierName
+    // : identifierNameElement ('.' identifierNameElement)*
+    $.RULE("identifierName", () => {
+      $.AT_LEAST_ONE_SEP({
+        SEP: tokens.Dot,
+        DEF: () => {
+          $.SUBRULE($.identifierNameElement);
+        }
+      });
+    });
+
+    // identifierNameElement
+    // : IDENTIFIER typeArgumentsOrDiamond?
+    $.RULE("identifierNameElement", () => {
+      $.CONSUME(tokens.Identifier);
+      $.OPTION(() => {
+        $.SUBRULE($.nonWildcardTypeArgumentsOrDiamond);
+      });
+    });
+
+    // innerCreator
+    // : IDENTIFIER nonWildcardTypeArgumentsOrDiamond? classCreatorRest
+    $.RULE("innerCreator", () => {
+      $.CONSUME(tokens.Identifier);
+      $.OPTION(() => {
+        $.SUBRULE($.nonWildcardTypeArgumentsOrDiamond);
+      });
+      $.SUBRULE($.classCreatorRest);
+    });
+
+    // arrayCreatorRest
+    // : '[' (']' ('[' ']')* arrayInitializer | expression ']' ('[' expression ']')* ('[' ']')*)
+    $.RULE("arrayCreatorRest", () => {
+      $.CONSUME(tokens.LSquare);
+      $.OR([
+        {
+          ALT: () => {
+            $.CONSUME(tokens.RSquare);
+            $.MANY({
+              DEF: function() {
+                $.CONSUME2(tokens.LSquare);
+                $.CONSUME2(tokens.RSquare);
+              }
+            });
+            $.SUBRULE($.arrayInitializer);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.expression);
+            $.CONSUME3(tokens.RSquare);
+            $.MANY2({
+              DEF: function() {
+                $.CONSUME4(tokens.LSquare);
+                $.SUBRULE2($.expression);
+                $.CONSUME4(tokens.RSquare);
+              }
+            });
+            $.MANY3({
+              DEF: function() {
+                $.CONSUME5(tokens.LSquare);
+                $.CONSUME5(tokens.RSquare);
+              }
+            });
+          }
+        }
+      ]);
+    });
+
+    // classCreatorRest
+    // : arguments classBody?
+    $.RULE("classCreatorRest", () => {
+      $.SUBRULE($.arguments);
+      $.OPTION(() => {
+        $.SUBRULE($.classBody);
+      });
+    });
+
+    // explicitGenericInvocation
+    // : nonWildcardTypeArguments explicitGenericInvocationSuffix
+    $.RULE("explicitGenericInvocation", () => {
+      $.SUBRULE($.nonWildcardTypeArguments);
+      $.SUBRULE($.explicitGenericInvocationSuffix);
+    });
+
+    // typeArgumentsOrDiamond
+    // : emptyDiamond
+    // | typeArguments
+    $.RULE("typeArgumentsOrDiamond", () => {
+      $.OR([
+        {
+          ALT: () => {
+            $.SUBRULE($.emptyDiamond);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.typeArguments);
+          }
+        }
+      ]);
+    });
+
+    // nonWildcardTypeArgumentsOrDiamond
+    // : emptyDiamond
+    // | nonWildcardTypeArguments
+    $.RULE("nonWildcardTypeArgumentsOrDiamond", () => {
+      $.OR([
+        {
+          ALT: () => {
+            $.SUBRULE($.emptyDiamond);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.nonWildcardTypeArguments);
+          }
+        }
+      ]);
+    });
+
+    // emptyDiamond
+    // : '<' '>'
+    $.RULE("emptyDiamond", () => {
+      $.CONSUME(tokens.Less);
+      $.CONSUME(tokens.Greater);
+    });
+
+    // nonWildcardTypeArguments
+    // : '<' typeList '>'
+    $.RULE("nonWildcardTypeArguments", () => {
+      $.CONSUME(tokens.Less);
+      $.SUBRULE($.typeList);
+      $.CONSUME(tokens.Greater);
+    });
+
+    // qualifiedName
+    // : IDENTIFIER ('.' IDENTIFIER)*
+    $.RULE("qualifiedName", () => {
+      $.CONSUME(tokens.Identifier);
+      $.MANY({
+        // The gate condition is in addition to basic grammar lookahead, so this.LA(1) === dot
+        // is always checked
+        GATE: function() {
+          return this.LA(2).tokenType === tokens.Identifier;
+        },
+        DEF: function() {
+          $.CONSUME(tokens.Dot);
+          $.CONSUME2(tokens.Identifier);
+        }
+      });
+    });
+
+    // primary
+    // : parExpression
+    // | THIS
+    // | SUPER
+    // | literal
+    // | IDENTIFIER
+    // | typeTypeOrVoid '.' CLASS
+    // | nonWildcardTypeArguments (explicitGenericInvocationSuffix | THIS arguments)
+    $.RULE("primary", () => {
+      $.OR([
+        {
+          ALT: () => {
+            $.SUBRULE($.parExpression);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.This);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Super);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.literal);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.typeTypeOrVoid);
+            $.CONSUME(tokens.Dot);
+            $.CONSUME(tokens.Class);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Identifier);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.nonWildcardTypeArguments);
+            $.OR2([
+              {
+                ALT: () => {
+                  $.SUBRULE($.explicitGenericInvocationSuffix);
+                }
+              },
+              {
+                ALT: () => {
+                  $.CONSUME2(tokens.This);
+                  $.SUBRULE($.arguments);
+                }
+              }
+            ]);
+          }
+        }
+      ]);
+    });
+
+    // literal
+    // : integerLiteral
+    // | floatLiteral
+    // | CHAR_LITERAL
+    // | STRING_LITERAL
+    // | BOOL_LITERAL
+    // | NULL_LITERAL
+    $.RULE("literal", () => {
+      $.OR([
+        {
+          ALT: () => {
+            $.SUBRULE($.integerLiteral);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.floatLiteral);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.CharLiteral);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.StringLiteral);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.booleanLiteral);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Null);
+          }
+        }
+      ]);
+    });
+
+    // booleanLiteral
+    // : TRUE
+    // | FALSE
+    $.RULE("booleanLiteral", () => {
+      $.OR([
+        {
+          ALT: () => {
+            $.CONSUME(tokens.True);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.False);
+          }
+        }
+      ]);
+    });
+
+    // integerLiteral
+    // : DECIMAL_LITERAL
+    // | HEX_LITERAL
+    // | OCT_LITERAL
+    // | BINARY_LITERAL
+    $.RULE("integerLiteral", () => {
+      $.OR([
+        {
+          ALT: () => {
+            $.CONSUME(tokens.DecimalLiteral);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.HexLiteral);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.OctLiteral);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.BinaryLiteral);
+          }
+        }
+      ]);
+    });
+
+    // floatLiteral
+    // : FLOAT_LITERAL
+    // | HEX_FLOAT_LITERAL
+    $.RULE("floatLiteral", () => {
+      $.OR([
+        {
+          ALT: () => {
+            $.CONSUME(tokens.FloatLiteral);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.HexFloatLiteral);
+          }
+        }
+      ]);
     });
 
     // primitiveType
@@ -1143,33 +2397,6 @@ class SelectParser extends chevrotain.Parser {
           }
         }
       ]);
-    });
-
-    // qualifiedName
-    // : IDENTIFIER ('.' IDENTIFIER)*
-    $.RULE("qualifiedName", () => {
-      $.CONSUME(tokens.Identifier);
-      $.MANY({
-        // The gate condition is in addition to basic grammar lookahead, so this.LA(1) === dot
-        // is always checked
-        GATE: function() {
-          return this.LA(2).tokenType === tokens.Identifier;
-        },
-        DEF: function() {
-          $.CONSUME(tokens.Dot);
-          $.CONSUME2(tokens.Identifier);
-        }
-      });
-    });
-
-    // arguments
-    // : '(' expressionList? ')'
-    $.RULE("arguments", () => {
-      $.CONSUME(tokens.LBrace);
-      // $.OPTION(() => {
-      //   $.SUBRULE($.expressionList);
-      // });
-      $.CONSUME(tokens.RBrace);
     });
 
     Parser.performSelfAnalysis(this);

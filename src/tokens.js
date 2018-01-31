@@ -1,5 +1,23 @@
 "use strict";
 const chevrotain = require("chevrotain");
+const xregexp = require("xregexp");
+
+// A little mini DSL for easier lexer definition using xRegExp.
+const fragments = {};
+
+function FRAGMENT(name, def) {
+  fragments[name] = xregexp.build(def, fragments);
+}
+
+function MAKE_PATTERN(def, flags) {
+  return xregexp.build(def, fragments, flags);
+}
+
+// The order of fragments definitions is important
+FRAGMENT("Digits", "[0-9]([0-9_]*[0-9])?");
+FRAGMENT("ExponentPart", "[eE][+-]?{{Digits}}");
+FRAGMENT("HexDigit", "[0-9a-fA-F]");
+FRAGMENT("HexDigits", "{{HexDigit}}(({{HexDigit}}|'_')*{{HexDigit}})?");
 
 const createToken = chevrotain.createToken;
 
@@ -14,6 +32,24 @@ const Package = createKeywordToken({
   name: "Package",
   pattern: /package/,
   label: "'package'"
+});
+
+const Case = createKeywordToken({
+  name: "Case",
+  pattern: /case/,
+  label: "'case'"
+});
+
+const Catch = createKeywordToken({
+  name: "Catch",
+  pattern: /catch/,
+  label: "'catch'"
+});
+
+const Finally = createKeywordToken({
+  name: "Finally",
+  pattern: /finally/,
+  label: "'finally'"
 });
 
 const Default = createKeywordToken({
@@ -148,6 +184,18 @@ const Implements = createKeywordToken({
   label: "'implements'"
 });
 
+const New = createKeywordToken({
+  name: "New",
+  pattern: /new/,
+  label: "'new'"
+});
+
+const This = createKeywordToken({
+  name: "This",
+  pattern: /this/,
+  label: "'this'"
+});
+
 const Super = createKeywordToken({
   name: "Super",
   pattern: /super/,
@@ -158,6 +206,90 @@ const Throws = createKeywordToken({
   name: "Throws",
   pattern: /throws/,
   label: "'throws'"
+});
+
+const Throw = createKeywordToken({
+  name: "Throw",
+  pattern: /throw/,
+  label: "'throw'"
+});
+
+const Return = createKeywordToken({
+  name: "Return",
+  pattern: /return/,
+  label: "'return'"
+});
+
+const Break = createKeywordToken({
+  name: "Break",
+  pattern: /break/,
+  label: "'break'"
+});
+
+const Continue = createKeywordToken({
+  name: "Continue",
+  pattern: /continue/,
+  label: "'continue'"
+});
+
+const If = createKeywordToken({
+  name: "If",
+  pattern: /if/,
+  label: "'if'"
+});
+
+const Else = createKeywordToken({
+  name: "Else",
+  pattern: /else/,
+  label: "'else'"
+});
+
+const While = createKeywordToken({
+  name: "While",
+  pattern: /while/,
+  label: "'while'"
+});
+
+const Do = createKeywordToken({
+  name: "Do",
+  pattern: /do/,
+  label: "'do'"
+});
+
+const Try = createKeywordToken({
+  name: "Try",
+  pattern: /try/,
+  label: "'try'"
+});
+
+const Switch = createKeywordToken({
+  name: "Switch",
+  pattern: /switch/,
+  label: "'switch'"
+});
+
+const True = createKeywordToken({
+  name: "True",
+  pattern: /true/,
+  label: "'true'"
+});
+
+const False = createKeywordToken({
+  name: "False",
+  pattern: /false/,
+  label: "'false'"
+});
+
+const Null = createKeywordToken({
+  name: "Null",
+  pattern: /null/,
+  label: "'null'"
+});
+
+const Assert = createKeywordToken({
+  name: "Assert",
+  pattern: /assert/,
+  label: "'assert'"
 });
 
 const Volatile = createKeywordToken({
@@ -226,6 +358,12 @@ const RSquare = createToken({
   label: "']'"
 });
 
+const Pointer = createToken({
+  name: "Pointer",
+  pattern: /->/,
+  label: "'->'"
+});
+
 const Less = createToken({
   name: "Less",
   pattern: /</,
@@ -262,6 +400,18 @@ const SemiColon = createToken({
   label: "';'"
 });
 
+const ColonColon = createToken({
+  name: "ColonColon",
+  pattern: /::/,
+  label: "'::'"
+});
+
+const Colon = createToken({
+  name: "Colon",
+  pattern: /:/,
+  label: "':'"
+});
+
 const Equal = createToken({
   name: "Equal",
   pattern: /=/,
@@ -286,10 +436,74 @@ const Questionmark = createToken({
   label: "'?'"
 });
 
+const VerticalLine = createToken({
+  name: "VerticalLine",
+  pattern: /\|/,
+  label: "'|'"
+});
+
 const Star = createToken({
   name: "Star",
   pattern: /\*/,
   label: "'*'"
+});
+
+const BinaryLiteral = createToken({
+  name: "BinaryLiteral",
+  pattern: MAKE_PATTERN("0[bB][01]([01_]*[01])?[lL]?"),
+  label: "'BinaryLiteral'"
+});
+
+const OctLiteral = createToken({
+  name: "OctLiteral",
+  pattern: MAKE_PATTERN("0_*[0-7]([0-7_]*[0-7])?[lL]?"),
+  label: "'OctLiteral'"
+});
+
+const HexLiteral = createToken({
+  name: "HexLiteral",
+  pattern: MAKE_PATTERN("0[xX][0-9a-fA-F]([0-9a-fA-F_]*[0-9a-fA-F])?[lL]?"),
+  label: "'HexLiteral'"
+});
+
+const FloatLiteral = createToken({
+  name: "FloatLiteral",
+  pattern: MAKE_PATTERN(
+    "({{Digits}}\\.{{Digits}}?|\\.{{Digits}}){{ExponentPart}}?[fFdD]?|{{Digits}}({{ExponentPart}}[fFdD]?|[fFdD])"
+  ),
+  label: "'FloatLiteral'"
+});
+
+const HexFloatLiteral = createToken({
+  name: "HexFloatLiteral",
+  pattern: MAKE_PATTERN(
+    "0[xX]({{HexDigits}}\\.?|{{HexDigits}}?\\.{{HexDigits}})[pP][+-]?{{Digits}}[fFdD]?"
+  ),
+  label: "'HexFloatLiteral'"
+});
+
+const DecimalLiteral = createToken({
+  name: "DecimalLiteral",
+  pattern: MAKE_PATTERN("(0|[1-9]({{Digits}}?|_+{{Digits}}))[lL]?"),
+  label: "'DecimalLiteral'"
+});
+
+const CharLiteral = createToken({
+  name: "CharLiteral",
+  pattern: MAKE_PATTERN(
+    // TODO: fix with better implementation
+    "'[0-9a-zA-Z]'"
+  ),
+  label: "'CharLiteral'"
+});
+
+const StringLiteral = createToken({
+  name: "StringLiteral",
+  pattern: MAKE_PATTERN(
+    // TODO: fix with better implementation
+    '"[0-9a-zA-Z]*"'
+  ),
+  label: "'StringLiteral'"
 });
 
 const WhiteSpace = createToken({
@@ -326,14 +540,32 @@ const allTokens = [
   Private,
   Static,
   Abstract,
+  Catch,
+  Finally,
   Final,
   Native,
   Synchronized,
   Transient,
   Extends,
   Implements,
+  New,
+  This,
   Super,
   Throws,
+  Throw,
+  Return,
+  Break,
+  Continue,
+  If,
+  Else,
+  While,
+  Do,
+  Try,
+  Switch,
+  True,
+  False,
+  Null,
+  Assert,
   Volatile,
   Strictfp,
   Class,
@@ -341,12 +573,23 @@ const allTokens = [
   Import,
   Package,
   Default,
+  Case,
+  BinaryLiteral,
+  OctLiteral,
+  HexFloatLiteral,
+  HexLiteral,
+  FloatLiteral,
+  DecimalLiteral,
+  CharLiteral,
+  StringLiteral,
   // The Identifier must appear after the keywords because all keywords are valid identifiers.
   Identifier,
   DotDotDot,
   Dot,
   Comma,
   SemiColon,
+  ColonColon,
+  Colon,
   Equal,
   And,
   LBrace,
@@ -355,11 +598,13 @@ const allTokens = [
   RCurly,
   LSquare,
   RSquare,
+  Pointer,
   Less,
   Greater,
   At,
   Star,
-  Questionmark
+  Questionmark,
+  VerticalLine
 ];
 
 module.exports = {
@@ -381,14 +626,32 @@ module.exports = {
     Private,
     Static,
     Abstract,
+    Catch,
+    Finally,
     Final,
     Native,
     Synchronized,
     Transient,
     Extends,
     Implements,
+    New,
+    This,
     Super,
     Throws,
+    Throw,
+    Return,
+    Break,
+    Continue,
+    If,
+    Else,
+    While,
+    Do,
+    Try,
+    Switch,
+    True,
+    False,
+    Null,
+    Assert,
     Volatile,
     Strictfp,
     Class,
@@ -396,11 +659,22 @@ module.exports = {
     Import,
     Package,
     Default,
+    Case,
+    BinaryLiteral,
+    HexFloatLiteral,
+    HexLiteral,
+    OctLiteral,
+    FloatLiteral,
+    DecimalLiteral,
+    CharLiteral,
+    StringLiteral,
     Identifier,
     DotDotDot,
     Dot,
     Comma,
     SemiColon,
+    ColonColon,
+    Colon,
     Equal,
     And,
     LBrace,
@@ -409,10 +683,12 @@ module.exports = {
     RCurly,
     LSquare,
     RSquare,
+    Pointer,
     Less,
     Greater,
     At,
     Star,
-    Questionmark
+    Questionmark,
+    VerticalLine
   }
 };

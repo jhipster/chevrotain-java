@@ -4,7 +4,7 @@ const Parser = require("../src/index");
 describe("constantDeclaration", () => {
   it("single declaration", () => {
     expect(
-      Parser.parse("boolean A =;", parser => parser.constantDeclaration())
+      Parser.parse("boolean A = this;", parser => parser.constantDeclaration())
     ).toEqual({
       type: "CONSTANT_DECLARATION",
       typeType: {
@@ -18,7 +18,9 @@ describe("constantDeclaration", () => {
           type: "CONSTANT_DECLARATOR",
           name: "A",
           cntSquares: 0,
-          init: undefined
+          init: {
+            type: "THIS"
+          }
         }
       ]
     });
@@ -26,7 +28,9 @@ describe("constantDeclaration", () => {
 
   it("mutiple declarations", () => {
     expect(
-      Parser.parse("boolean A =, B =;", parser => parser.constantDeclaration())
+      Parser.parse("boolean A = this, B = super;", parser =>
+        parser.constantDeclaration()
+      )
     ).toEqual({
       type: "CONSTANT_DECLARATION",
       typeType: {
@@ -40,13 +44,17 @@ describe("constantDeclaration", () => {
           type: "CONSTANT_DECLARATOR",
           name: "A",
           cntSquares: 0,
-          init: undefined
+          init: {
+            type: "THIS"
+          }
         },
         {
           type: "CONSTANT_DECLARATOR",
           name: "B",
           cntSquares: 0,
-          init: undefined
+          init: {
+            type: "SUPER"
+          }
         }
       ]
     });

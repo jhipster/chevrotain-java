@@ -13,4 +13,20 @@ describe("variableDeclarator", () => {
       init: undefined
     });
   });
+
+  it("with init", () => {
+    expect(
+      Parser.parse("A = this", parser => parser.variableDeclarator())
+    ).toEqual({
+      type: "VARIABLE_DECLARATOR",
+      id: {
+        type: "VARIABLE_DECLARATOR_ID",
+        id: "A",
+        cntSquares: 0
+      },
+      init: {
+        type: "THIS"
+      }
+    });
+  });
 });

@@ -187,9 +187,15 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   elementValue(ctx) {
+    // if (ctx.expression.length > 0) {
+    //   return this.visit(ctx.expression);
+    // }
+
     if (ctx.annotation.length > 0) {
       return this.visit(ctx.annotation);
-    } else if (ctx.elementValueArrayInitializer.length > 0) {
+    }
+
+    if (ctx.elementValueArrayInitializer.length > 0) {
       return this.visit(ctx.elementValueArrayInitializer);
     }
   }
@@ -493,12 +499,13 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   constantDeclarator(ctx) {
     const name = ctx.Identifier[0].image;
     const cntSquares = ctx.LSquare.length;
+    const init = this.visit(ctx.variableInitializer);
 
     return {
       type: "CONSTANT_DECLARATOR",
       name: name,
       cntSquares: cntSquares,
-      init: undefined
+      init: init
     };
   }
 
@@ -577,10 +584,12 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
   variableDeclarator(ctx) {
     const id = this.visit(ctx.variableDeclaratorId);
+    const init = this.visit(ctx.variableInitializer);
+
     return {
       type: "VARIABLE_DECLARATOR",
       id: id,
-      init: undefined
+      init: init
     };
   }
 
@@ -591,6 +600,27 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       type: "VARIABLE_DECLARATOR_ID",
       id: id,
       cntSquares: cntSquares
+    };
+  }
+
+  variableInitializer(ctx) {
+    if (ctx.expression.length > 0) {
+      return this.visit(ctx.expression);
+    }
+
+    if (ctx.arrayInitializer.length > 0) {
+      return this.visit(ctx.arrayInitializer);
+    }
+  }
+
+  arrayInitializer(ctx) {
+    const variableInitializers = ctx.variableInitializer.map(
+      variableInitializer => this.visit(variableInitializer)
+    );
+
+    return {
+      type: "ARRAY_INITIALIZER",
+      variableInitializers: variableInitializers
     };
   }
 
@@ -682,13 +712,6 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     return {
       type: "DEFAULT_VALUE",
       value: value
-    };
-  }
-
-  block(/*ctx*/) {
-    return {
-      type: "BLOCK",
-      statements: []
     };
   }
 
@@ -804,6 +827,26 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     };
   }
 
+  identifiers(ctx) {
+    const identifiers = this.visit(ctx.identifierList);
+
+    return {
+      type: "IDENTIFIERS",
+      identifiers: identifiers
+    };
+  }
+
+  identifierList(ctx) {
+    const identifiers = ctx.Identifier.map(
+      identifierToken => identifierToken.image
+    );
+
+    return {
+      type: "IDENTIFIER_LIST",
+      identifiers: identifiers
+    };
+  }
+
   formalParameters(ctx) {
     const parameters = this.visit(ctx.formalParameterList);
 
@@ -848,16 +891,881 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     };
   }
 
-  lastFormalParameter(ctx) {
+  block(/*ctx*/) {
+    return {
+      type: "BLOCK",
+      statements: []
+    };
+  }
+
+  localVariableDeclaration(ctx) {
     const modifiers = ctx.variableModifier.map(modifier =>
       this.visit(modifier)
     );
-    const id = this.visit(ctx.variableDeclaratorId);
+    const typeType = this.visit(ctx.typeType);
+    const declarators = this.visit(ctx.variableDeclarators);
 
     return {
-      type: "LAST_FORMAL_PARAMETER",
+      type: "LOCAL_VARIABLE_DECLARATION",
       modifiers: modifiers,
-      id: id
+      typeType: typeType,
+      declarators: declarators
+    };
+  }
+
+  localTypeDeclaration(ctx) {
+    const modifiers = ctx.classOrInterfaceModifier.map(modifier =>
+      this.visit(modifier)
+    );
+    let declaration = undefined;
+    if (ctx.classDeclaration.length > 0) {
+      declaration = this.visit(ctx.classDeclaration);
+    }
+    if (ctx.interfaceDeclaration.length > 0) {
+      declaration = this.visit(ctx.interfaceDeclaration);
+    }
+
+    return {
+      type: "LOCAL_TYPE_DECLARATION",
+      modifiers: modifiers,
+      declaration: declaration
+    };
+  }
+
+  statement(ctx) {
+    if (ctx.block.length > 0) {
+      return this.visit(ctx.block);
+    }
+
+    if (ctx.assertStatement.length > 0) {
+      return this.visit(ctx.assertStatement);
+    }
+
+    if (ctx.ifStatement.length > 0) {
+      return this.visit(ctx.ifStatement);
+    }
+
+    if (ctx.whileStatement.length > 0) {
+      return this.visit(ctx.whileStatement);
+    }
+
+    if (ctx.doWhileStatement.length > 0) {
+      return this.visit(ctx.doWhileStatement);
+    }
+
+    if (ctx.tryStatement.length > 0) {
+      return this.visit(ctx.tryStatement);
+    }
+
+    if (ctx.switchStatement.length > 0) {
+      return this.visit(ctx.switchStatement);
+    }
+
+    if (ctx.synchronizedStatement.length > 0) {
+      return this.visit(ctx.synchronizedStatement);
+    }
+
+    if (ctx.returnStatement.length > 0) {
+      return this.visit(ctx.returnStatement);
+    }
+
+    if (ctx.throwStatement.length > 0) {
+      return this.visit(ctx.throwStatement);
+    }
+
+    if (ctx.breakStatement.length > 0) {
+      return this.visit(ctx.breakStatement);
+    }
+
+    if (ctx.continueStatement.length > 0) {
+      return this.visit(ctx.continueStatement);
+    }
+
+    if (ctx.semiColonStatement.length > 0) {
+      return this.visit(ctx.semiColonStatement);
+    }
+
+    if (ctx.expressionStatement.length > 0) {
+      return this.visit(ctx.expressionStatement);
+    }
+
+    if (ctx.identifierStatement.length > 0) {
+      return this.visit(ctx.identifierStatement);
+    }
+  }
+
+  assertStatement(ctx) {
+    const expressions = ctx.expression.map(expression =>
+      this.visit(expression)
+    );
+
+    return {
+      type: "ASSERT_STATEMENT",
+      expressions: expressions
+    };
+  }
+
+  ifStatement(ctx) {
+    const condition = this.visit(ctx.expression);
+    const body = this.visit(ctx.statement[0]);
+    let elseStatement = undefined;
+    if (ctx.statement.length > 1) {
+      elseStatement = this.visit(ctx.statement[1]);
+    }
+
+    return {
+      type: "IF_STATEMENT",
+      condition: condition,
+      body: body,
+      else: elseStatement
+    };
+  }
+
+  whileStatement(ctx) {
+    const condition = this.visit(ctx.expression);
+    const body = this.visit(ctx.statement);
+
+    return {
+      type: "WHILE_STATEMENT",
+      condition: condition,
+      body: body
+    };
+  }
+
+  doWhileStatement(ctx) {
+    const body = this.visit(ctx.statement);
+    const condition = this.visit(ctx.expression);
+
+    return {
+      type: "DO_WHILE_STATEMENT",
+      body: body,
+      condition: condition
+    };
+  }
+
+  tryStatement(ctx) {
+    const resourceSpecification = this.visit(ctx.resourceSpecification);
+    const body = this.visit(ctx.block);
+    const catchClauses = ctx.catchClause.map(catchClause =>
+      this.visit(catchClause)
+    );
+    const finallyBlock = this.visit(ctx.finallyBlock);
+
+    return {
+      type: "TRY_STATEMENT",
+      resourceSpecification: resourceSpecification,
+      body: body,
+      catchClauses: catchClauses,
+      finally: finallyBlock
+    };
+  }
+
+  switchStatement(ctx) {
+    const condition = this.visit(ctx.expression);
+
+    return {
+      type: "SWITCH_STATEMENT",
+      condition: condition
+    };
+  }
+
+  synchronizedStatement(ctx) {
+    const condition = this.visit(ctx.expression);
+    const body = this.visit(ctx.block);
+
+    return {
+      type: "SYNCHRONIZED_STATEMENT",
+      condition: condition,
+      body: body
+    };
+  }
+
+  returnStatement(ctx) {
+    const expression = this.visit(ctx.expression);
+
+    return {
+      type: "RETURN_STATEMENT",
+      expression: expression
+    };
+  }
+
+  throwStatement(ctx) {
+    const expression = this.visit(ctx.expression);
+
+    return {
+      type: "THROW_STATEMENT",
+      expression: expression
+    };
+  }
+
+  breakStatement(ctx) {
+    let identifier = undefined;
+    if (ctx.Identifier.length > 0) {
+      identifier = ctx.Identifier[0].image;
+    }
+
+    return {
+      type: "BREAK_STATEMENT",
+      identifier: identifier
+    };
+  }
+
+  continueStatement(ctx) {
+    let identifier = undefined;
+    if (ctx.Identifier.length > 0) {
+      identifier = ctx.Identifier[0].image;
+    }
+
+    return {
+      type: "CONTINUE_STATEMENT",
+      identifier: identifier
+    };
+  }
+
+  semiColonStatement() {
+    return {
+      type: "SEMI_COLON_STATEMENT"
+    };
+  }
+
+  expressionStatement(ctx) {
+    const expression = this.visit(ctx.expression);
+
+    return {
+      type: "EXPRESSION_STATEMENT",
+      expression: expression
+    };
+  }
+
+  identifierStatement(ctx) {
+    const identifier = ctx.Identifier[0].image;
+    const statement = this.visit(ctx.statement);
+
+    return {
+      type: "IDENTIFIER_STATEMENT",
+      identifier: identifier,
+      statement: statement
+    };
+  }
+
+  catchClause(ctx) {
+    const modifiers = ctx.variableModifier.map(modifier =>
+      this.visit(modifier)
+    );
+    const catchType = this.visit(ctx.catchType);
+    const id = ctx.Identifier[0].image;
+    const block = this.visit(ctx.block);
+
+    return {
+      type: "CATCH_CLAUSE",
+      modifiers: modifiers,
+      catchType: catchType,
+      id: id,
+      block: block
+    };
+  }
+
+  catchType(ctx) {
+    const types = ctx.qualifiedName.map(qualifiedName =>
+      this.visit(qualifiedName)
+    );
+
+    return {
+      type: "CATCH_TYPE",
+      types: types
+    };
+  }
+
+  finallyBlock(ctx) {
+    const block = this.visit(ctx.block);
+
+    return {
+      type: "FINALLY_BLOCK",
+      block: block
+    };
+  }
+
+  resourceSpecification(ctx) {
+    const resources = this.visit(ctx.resources);
+
+    return {
+      type: "RESOURCE_SPECIFICATION",
+      resources: resources
+    };
+  }
+
+  resources(ctx) {
+    const resources = ctx.resource.map(resource => this.visit(resource));
+
+    return {
+      type: "RESOURCES",
+      resources: resources
+    };
+  }
+
+  resource(ctx) {
+    const modifiers = ctx.variableModifier.map(modifier =>
+      this.visit(modifier)
+    );
+    const typeType = this.visit(ctx.classOrInterfaceType);
+    const id = this.visit(ctx.variableDeclaratorId);
+    const expression = this.visit(ctx.expression);
+
+    return {
+      type: "RESOURCE",
+      modifiers: modifiers,
+      typeType: typeType,
+      id: id,
+      expression: expression
+    };
+  }
+
+  switchLabel(ctx) {
+    if (ctx.switchLabelCase.length > 0) {
+      return this.visit(ctx.switchLabelCase);
+    }
+    if (ctx.switchLabelDefault.length > 0) {
+      return this.visit(ctx.switchLabelDefault);
+    }
+  }
+
+  switchLabelCase(ctx) {
+    const cs = ctx.Identifier[0].image;
+
+    return {
+      type: "SWITCH_LABEL_CASE",
+      case: cs
+    };
+  }
+
+  switchLabelDefault() {
+    return {
+      type: "SWITCH_LABEL_DEFAULT"
+    };
+  }
+
+  forControl(ctx) {
+    if (ctx.enhancedForControl.length > 0) {
+      return this.visit(ctx.enhancedForControl);
+    }
+  }
+
+  enhancedForControl(ctx) {
+    const modifiers = ctx.variableModifier.map(modifier =>
+      this.visit(modifier)
+    );
+    const typeType = this.visit(ctx.typeType);
+    const id = this.visit(ctx.variableDeclaratorId);
+    const iterator = this.visit(ctx.expression);
+
+    return {
+      type: "ENHANCED_FOR_CONTROL",
+      modifiers: modifiers,
+      typeType: typeType,
+      id: id,
+      iterator: iterator
+    };
+  }
+
+  explicitGenericInvocationSuffix(ctx) {
+    if (ctx.super.length > 0) {
+      return this.visit(ctx.super);
+    }
+    if (ctx.identifierArguments.length > 0) {
+      return this.visit(ctx.identifierArguments);
+    }
+  }
+
+  identifierArguments(ctx) {
+    const name = ctx.Identifier[0].image;
+    const args = this.visit(ctx.arguments);
+
+    return {
+      type: "IDENTIFIER_ARGUMENTS",
+      name: name,
+      arguments: args
+    };
+  }
+
+  super(ctx) {
+    const value = this.visit(ctx.superSuffix);
+
+    return {
+      type: "SUPER",
+      value: value
+    };
+  }
+
+  superSuffix(ctx) {
+    if (ctx.arguments.length > 0) {
+      return this.visit(ctx.arguments);
+    }
+    if (ctx.dotIdentifierArguments.length > 0) {
+      return this.visit(ctx.dotIdentifierArguments);
+    }
+  }
+
+  arguments(/*ctx*/) {
+    return {
+      type: "ARGUMENTS"
+    };
+  }
+
+  dotIdentifierArguments(ctx) {
+    const name = ctx.Identifier[0].image;
+    const args = this.visit(ctx.arguments);
+
+    return {
+      type: "DOT_IDENTIFIER_ARGUMENTS",
+      name: name,
+      arguments: args
+    };
+  }
+
+  parExpression(ctx) {
+    const expression = this.visit(ctx.expression);
+
+    return {
+      type: "PAR_EXPRESSION",
+      expression: expression
+    };
+  }
+
+  expressionList(ctx) {
+    const list = ctx.expression.map(expression => this.visit(expression));
+
+    return {
+      type: "EXPRESSION_LIST",
+      list: list
+    };
+  }
+
+  methodCall(ctx) {
+    const name = ctx.Identifier[0].image;
+    const expressionList = this.visit(ctx.expressionList);
+
+    return {
+      type: "METHOD_CALL",
+      name: name,
+      parameters: expressionList
+    };
+  }
+
+  expression(ctx) {
+    if (ctx.methodCall.length > 0) {
+      return this.visit(ctx.methodCall);
+    }
+
+    if (ctx.primary.length > 0) {
+      return this.visit(ctx.primary);
+    }
+
+    if (ctx.creator.length > 0) {
+      return this.visit(ctx.creator);
+    }
+  }
+
+  lambdaExpression(ctx) {
+    const parameters = this.visit(ctx.lambdaParameters);
+    const body = this.visit(ctx.lambdaBody);
+
+    return {
+      type: "LAMBDA_EXPRESSION",
+      parameters: parameters,
+      body: body
+    };
+  }
+
+  lambdaParameters(ctx) {
+    if (ctx.Identifier.length > 0) {
+      return ctx.Identifier[0].image;
+    }
+
+    if (ctx.formalParameterList.length > 0) {
+      const parameters = this.visit(ctx.formalParameterList);
+
+      return {
+        type: "FORMAL_PARAMETERS",
+        parameters: parameters
+      };
+    }
+
+    if (ctx.identifierList.length > 0) {
+      const identifiers = this.visit(ctx.identifierList);
+
+      return {
+        type: "IDENTIFIERS",
+        identifiers: identifiers
+      };
+    }
+
+    if (ctx.LBrace.length > 0) {
+      return {
+        type: "EMPTY_PARAMETERS"
+      };
+    }
+  }
+
+  lambdaBody(ctx) {
+    if (ctx.block.length > 0) {
+      return this.visit(ctx.block);
+    }
+
+    if (ctx.expression.length > 0) {
+      return this.visit(ctx.expression);
+    }
+  }
+
+  classType(ctx) {
+    const annotations = ctx.annotation.map(annotation =>
+      this.visit(annotation)
+    );
+    const classOrInterfaceType = this.visit(ctx.classOrInterfaceType);
+
+    return {
+      type: "CLASS_TYPE",
+      annotations: annotations,
+      classOrInterfaceType: classOrInterfaceType
+    };
+  }
+
+  creator(ctx) {
+    if (ctx.nonWildcardCreator.length > 0) {
+      return this.visit(ctx.nonWildcardCreator);
+    }
+
+    if (ctx.simpleCreator.length > 0) {
+      return this.visit(ctx.simpleCreator);
+    }
+  }
+
+  nonWildcardCreator(ctx) {
+    const typeArguments = this.visit(ctx.nonWildcardTypeArguments);
+    const name = this.visit(ctx.createdName);
+    const rest = this.visit(ctx.classCreatorRest);
+
+    return {
+      type: "NON_WILDCARD_CREATOR",
+      typeArguments: typeArguments,
+      name: name,
+      rest: rest
+    };
+  }
+
+  simpleCreator(ctx) {
+    const name = this.visit(ctx.createdName);
+    let rest = undefined;
+    if (ctx.arrayCreatorRest.length > 0) {
+      rest = this.visit(ctx.arrayCreatorRest);
+    }
+    if (ctx.classCreatorRest.length > 0) {
+      rest = this.visit(ctx.classCreatorRest);
+    }
+
+    return {
+      type: "SIMPLE_CREATOR",
+      name: name,
+      rest: rest
+    };
+  }
+
+  createdName(ctx) {
+    if (ctx.identifierName.length > 0) {
+      return this.visit(ctx.identifierName);
+    }
+
+    if (ctx.primitiveType.length > 0) {
+      return this.visit(ctx.primitiveType);
+    }
+  }
+
+  identifierName(ctx) {
+    const elements = ctx.identifierNameElement.map(identifierNameElement =>
+      this.visit(identifierNameElement)
+    );
+
+    return {
+      type: "IDENTIFIER_NAME",
+      elements: elements
+    };
+  }
+
+  identifierNameElement(ctx) {
+    const id = ctx.Identifier[0].image;
+    const typeArguments = this.visit(ctx.nonWildcardTypeArgumentsOrDiamond);
+
+    return {
+      type: "IDENTIFIER_NAME_ELEMENT",
+      id: id,
+      typeArguments: typeArguments
+    };
+  }
+
+  innerCreator(ctx) {
+    const id = ctx.Identifier[0].image;
+    const typeArguments = this.visit(ctx.nonWildcardTypeArgumentsOrDiamond);
+    const rest = this.visit(ctx.classCreatorRest);
+
+    return {
+      type: "INNER_CREATOR",
+      id: id,
+      typeArguments: typeArguments,
+      rest: rest
+    };
+  }
+
+  arrayCreatorRest(ctx) {
+    const expressions = ctx.expression.map(expression =>
+      this.visit(expression)
+    );
+    const cntSquares = ctx.LSquare.length - expressions.length;
+    const arrayInitializer = this.visit(ctx.arrayInitializer);
+
+    return {
+      type: "ARRAY_CREATOR_REST",
+      expressions: expressions,
+      cntSquares: cntSquares,
+      arrayInitializer: arrayInitializer
+    };
+  }
+
+  classCreatorRest(ctx) {
+    const args = this.visit(ctx.arguments);
+    const body = this.visit(ctx.classBody);
+
+    return {
+      type: "CLASS_CREATOR_REST",
+      arguments: args,
+      body: body
+    };
+  }
+
+  explicitGenericInvocation(ctx) {
+    const typeArguments = this.visit(ctx.nonWildcardTypeArguments);
+    const invocation = this.visit(ctx.explicitGenericInvocationSuffix);
+
+    return {
+      type: "EXPLICIT_GENERIC_INVOCATION",
+      typeArguments: typeArguments,
+      invocation: invocation
+    };
+  }
+
+  typeArgumentsOrDiamond(ctx) {
+    if (ctx.emptyDiamond.length > 0) {
+      return this.visit(ctx.emptyDiamond);
+    }
+
+    if (ctx.typeArguments.length > 0) {
+      return this.visit(ctx.typeArguments);
+    }
+  }
+
+  nonWildcardTypeArgumentsOrDiamond(ctx) {
+    if (ctx.emptyDiamond.length > 0) {
+      return this.visit(ctx.emptyDiamond);
+    }
+
+    if (ctx.nonWildcardTypeArguments.length > 0) {
+      return this.visit(ctx.nonWildcardTypeArguments);
+    }
+  }
+
+  emptyDiamond() {
+    return {
+      type: "EMPTY_DIAMOND"
+    };
+  }
+
+  nonWildcardTypeArguments(ctx) {
+    const typeList = this.visit(ctx.typeList);
+    return {
+      type: "NON_WILDCARD_TYPE_ARGUMENTS",
+      typeList: typeList
+    };
+  }
+
+  qualifiedName(ctx) {
+    const name = ctx.Identifier.map(identToken => identToken.image);
+    return {
+      type: "QUALIFIED_NAME",
+      name: name
+    };
+  }
+
+  primary(ctx) {
+    if (ctx.parExpression.length > 0) {
+      return this.visit(ctx.parExpression);
+    }
+
+    if (ctx.nonWildcardTypeArguments.length > 0) {
+      const typeArguments = this.visit(ctx.nonWildcardTypeArguments);
+      let args = undefined;
+      if (ctx.explicitGenericInvocationSuffix.length > 0) {
+        args = this.visit(ctx.explicitGenericInvocationSuffix);
+      }
+      if (ctx.arguments.length > 0) {
+        args = {
+          type: "THIS_ARGUMENTS",
+          arguments: this.visit(ctx.arguments)
+        };
+      }
+
+      return {
+        type: "GENERIC_INVOCATION",
+        typeArguments: typeArguments,
+        arguments: args
+      };
+    }
+
+    if (ctx.This.length > 0) {
+      return {
+        type: "THIS"
+      };
+    }
+
+    if (ctx.Super.length > 0) {
+      return {
+        type: "SUPER"
+      };
+    }
+
+    if (ctx.literal.length > 0) {
+      return this.visit(ctx.literal);
+    }
+
+    if (ctx.Identifier.length > 0) {
+      return ctx.Identifier[0].image;
+    }
+
+    if (ctx.typeTypeOrVoid.length > 0) {
+      const typeTypeOrVoid = this.visit(ctx.typeTypeOrVoid);
+
+      return {
+        type: "TYPE_TYPE_OR_VOID_DOT_CLASS",
+        typeTypeOrVoid: typeTypeOrVoid
+      };
+    }
+  }
+
+  literal(ctx) {
+    if (ctx.integerLiteral.length > 0) {
+      return this.visit(ctx.integerLiteral);
+    }
+
+    if (ctx.floatLiteral.length > 0) {
+      return this.visit(ctx.floatLiteral);
+    }
+
+    if (ctx.CharLiteral.length > 0) {
+      const value = ctx.CharLiteral[0].image;
+
+      return {
+        type: "CHAR_LITERAL",
+        value: value
+      };
+    }
+
+    if (ctx.StringLiteral.length > 0) {
+      const value = ctx.StringLiteral[0].image;
+
+      return {
+        type: "STRING_LITERAL",
+        value: value
+      };
+    }
+
+    if (ctx.booleanLiteral.length > 0) {
+      return this.visit(ctx.booleanLiteral);
+    }
+
+    if (ctx.Null.length > 0) {
+      return {
+        type: "NULL"
+      };
+    }
+  }
+
+  booleanLiteral(ctx) {
+    let value = undefined;
+    if (ctx.True.length > 0) {
+      value = "true";
+    }
+
+    if (ctx.False.length > 0) {
+      value = "false";
+    }
+
+    return {
+      type: "BOOLEAN_LITERAL",
+      value: value
+    };
+  }
+
+  integerLiteral(ctx) {
+    if (ctx.DecimalLiteral.length > 0) {
+      const value = ctx.DecimalLiteral[0].image;
+
+      return {
+        type: "DECIMAL_LITERAL",
+        value: value
+      };
+    }
+
+    if (ctx.HexLiteral.length > 0) {
+      const value = ctx.HexLiteral[0].image;
+
+      return {
+        type: "HEX_LITERAL",
+        value: value
+      };
+    }
+
+    if (ctx.OctLiteral.length > 0) {
+      const value = ctx.OctLiteral[0].image;
+
+      return {
+        type: "OCT_LITERAL",
+        value: value
+      };
+    }
+
+    if (ctx.BinaryLiteral.length > 0) {
+      const value = ctx.BinaryLiteral[0].image;
+
+      return {
+        type: "BINARY_LITERAL",
+        value: value
+      };
+    }
+  }
+
+  floatLiteral(ctx) {
+    if (ctx.FloatLiteral.length > 0) {
+      const value = ctx.FloatLiteral[0].image;
+
+      return {
+        type: "FLOAT_LITERAL",
+        value: value
+      };
+    }
+
+    if (ctx.HexFloatLiteral.length > 0) {
+      const value = ctx.HexFloatLiteral[0].image;
+
+      return {
+        type: "HEX_FLOAT_LITERAL",
+        value: value
+      };
+    }
+  }
+
+  hexFloatLiteral(ctx) {
+    const value = ctx.HexFloatLiteral[0].image;
+
+    return {
+      type: "HEX_FLOAT_LITERAL",
+      value: value
     };
   }
 
@@ -884,20 +1792,6 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     return {
       type: "PRIMITIVE_TYPE",
       value: value
-    };
-  }
-
-  qualifiedName(ctx) {
-    const name = ctx.Identifier.map(identToken => identToken.image);
-    return {
-      type: "QUALIFIED_NAME",
-      name: name
-    };
-  }
-
-  arguments(/*ctx*/) {
-    return {
-      type: "ARGUMENTS"
     };
   }
 }

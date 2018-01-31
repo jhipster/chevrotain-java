@@ -3,33 +3,41 @@ const Parser = require("../src/index");
 
 describe("constantDeclarator", () => {
   it("without init", () => {
-    expect(Parser.parse("A =", parser => parser.constantDeclarator())).toEqual({
+    expect(
+      Parser.parse("A = this", parser => parser.constantDeclarator())
+    ).toEqual({
       type: "CONSTANT_DECLARATOR",
       name: "A",
       cntSquares: 0,
-      init: undefined
+      init: {
+        type: "THIS"
+      }
     });
   });
 
   it("one square", () => {
     expect(
-      Parser.parse("A[] =", parser => parser.constantDeclarator())
+      Parser.parse("A[] = this", parser => parser.constantDeclarator())
     ).toEqual({
       type: "CONSTANT_DECLARATOR",
       name: "A",
       cntSquares: 1,
-      init: undefined
+      init: {
+        type: "THIS"
+      }
     });
   });
 
   it("multiple squares", () => {
     expect(
-      Parser.parse("A[][] =", parser => parser.constantDeclarator())
+      Parser.parse("A[][] = this", parser => parser.constantDeclarator())
     ).toEqual({
       type: "CONSTANT_DECLARATOR",
       name: "A",
       cntSquares: 2,
-      init: undefined
+      init: {
+        type: "THIS"
+      }
     });
   });
 });

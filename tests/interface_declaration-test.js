@@ -1,7 +1,7 @@
 "use strict";
 const Parser = require("../src/index");
 
-describe("interface", () => {
+describe("interfaceDeclaration", () => {
   it("empty", () => {
     expect(
       Parser.parse("interface A{}", parser => parser.interfaceDeclaration())

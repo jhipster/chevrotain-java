@@ -14,6 +14,12 @@ describe("elementValue", () => {
     });
   });
 
+  // it("elementValue is expression", () => {
+  //   expect(Parser.parse("this", parser => parser.elementValue())).toEqual({
+  //     type: "THIS"
+  //   });
+  // });
+
   it("elementValue is elementValueArrayInitializer", () => {
     expect(
       Parser.parse("{@Something}", parser => parser.elementValue())
