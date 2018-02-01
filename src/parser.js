@@ -55,26 +55,10 @@ class SelectParser extends chevrotain.Parser {
         $.SUBRULE($.classOrInterfaceModifier);
       });
       $.OR([
-        {
-          ALT: () => {
-            $.SUBRULE($.classDeclaration);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.enumDeclaration);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.interfaceDeclaration);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.annotationTypeDeclaration);
-          }
-        }
+        { ALT: () => $.SUBRULE($.classDeclaration) },
+        { ALT: () => $.SUBRULE($.enumDeclaration) },
+        { ALT: () => $.SUBRULE($.interfaceDeclaration) },
+        { ALT: () => $.SUBRULE($.annotationTypeDeclaration) }
       ]);
     });
 
@@ -86,31 +70,11 @@ class SelectParser extends chevrotain.Parser {
     // | VOLATILE
     $.RULE("modifier", () => {
       $.OR([
-        {
-          ALT: () => {
-            $.SUBRULE($.classOrInterfaceModifier);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Native);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Synchronized);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Transient);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Volatile);
-          }
-        }
+        { ALT: () => $.SUBRULE($.classOrInterfaceModifier) },
+        { ALT: () => $.CONSUME(tokens.Native) },
+        { ALT: () => $.CONSUME(tokens.Synchronized) },
+        { ALT: () => $.CONSUME(tokens.Transient) },
+        { ALT: () => $.CONSUME(tokens.Volatile) }
       ]);
     });
 
@@ -125,46 +89,14 @@ class SelectParser extends chevrotain.Parser {
     // | STRICTFP
     $.RULE("classOrInterfaceModifier", () => {
       $.OR([
-        {
-          ALT: () => {
-            $.SUBRULE($.annotation);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Public);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Protected);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Private);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Static);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Abstract);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Final);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Strictfp);
-          }
-        }
+        { ALT: () => $.SUBRULE($.annotation) },
+        { ALT: () => $.CONSUME(tokens.Public) },
+        { ALT: () => $.CONSUME(tokens.Protected) },
+        { ALT: () => $.CONSUME(tokens.Private) },
+        { ALT: () => $.CONSUME(tokens.Static) },
+        { ALT: () => $.CONSUME(tokens.Abstract) },
+        { ALT: () => $.CONSUME(tokens.Final) },
+        { ALT: () => $.CONSUME(tokens.Strictfp) }
       ]);
     });
 
@@ -173,16 +105,8 @@ class SelectParser extends chevrotain.Parser {
     // | annotation
     $.RULE("variableModifier", () => {
       $.OR([
-        {
-          ALT: () => {
-            $.SUBRULE($.annotation);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Final);
-          }
-        }
+        { ALT: () => $.SUBRULE($.annotation) },
+        { ALT: () => $.CONSUME(tokens.Final) }
       ]);
     });
 
@@ -195,16 +119,8 @@ class SelectParser extends chevrotain.Parser {
         $.CONSUME(tokens.LBrace);
         $.OPTION2(() => {
           $.OR([
-            {
-              ALT: () => {
-                $.SUBRULE($.elementValuePairs);
-              }
-            },
-            {
-              ALT: () => {
-                $.SUBRULE($.elementValue);
-              }
-            }
+            { ALT: () => $.SUBRULE($.elementValuePairs) },
+            { ALT: () => $.SUBRULE($.elementValue) }
           ]);
         });
         $.CONSUME(tokens.RBrace);
@@ -242,16 +158,8 @@ class SelectParser extends chevrotain.Parser {
         //     $.SUBRULE($.expression);
         //   }
         // },
-        {
-          ALT: () => {
-            $.SUBRULE($.annotation);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.elementValueArrayInitializer);
-          }
-        }
+        { ALT: () => $.SUBRULE($.annotation) },
+        { ALT: () => $.SUBRULE($.elementValueArrayInitializer) }
       ]);
     });
 
@@ -381,11 +289,7 @@ class SelectParser extends chevrotain.Parser {
     // | enumDeclaration
     $.RULE("memberDeclaration", () => {
       $.OR([
-        {
-          ALT: () => {
-            $.SUBRULE($.methodDeclaration);
-          }
-        },
+        { ALT: () => $.SUBRULE($.methodDeclaration) },
         // TODO: refactoring
         // {
         //   ALT: () => {
@@ -397,37 +301,17 @@ class SelectParser extends chevrotain.Parser {
         //     $.SUBRULE($.fieldDeclaration);
         //   }
         // },
-        {
-          ALT: () => {
-            $.SUBRULE($.constructorDeclaration);
-          }
-        },
+        { ALT: () => $.SUBRULE($.constructorDeclaration) },
         // TODO: refactoring
         // {
         //   ALT: () => {
         //     $.SUBRULE($.genericConstructorDeclaration);
         //   }
         // },
-        {
-          ALT: () => {
-            $.SUBRULE($.interfaceDeclaration);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.annotationTypeDeclaration);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.classDeclaration);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.enumDeclaration);
-          }
-        }
+        { ALT: () => $.SUBRULE($.interfaceDeclaration) },
+        { ALT: () => $.SUBRULE($.annotationTypeDeclaration) },
+        { ALT: () => $.SUBRULE($.classDeclaration) },
+        { ALT: () => $.SUBRULE($.enumDeclaration) }
       ]);
     });
 
@@ -620,32 +504,16 @@ class SelectParser extends chevrotain.Parser {
         //     $.SUBRULE($.constantDeclaration);
         //   }
         // },
-        {
-          ALT: () => {
-            $.SUBRULE($.interfaceMethodDeclaration);
-          }
-        },
+        { ALT: () => $.SUBRULE($.interfaceMethodDeclaration) },
         // TODO: refactoring
         // {
         //   ALT: () => {
         //     $.SUBRULE($.genericInterfaceMethodDeclaration);
         //   }
         // },
-        {
-          ALT: () => {
-            $.SUBRULE($.interfaceDeclaration);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.classDeclaration);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.enumDeclaration);
-          }
-        }
+        { ALT: () => $.SUBRULE($.interfaceDeclaration) },
+        { ALT: () => $.SUBRULE($.classDeclaration) },
+        { ALT: () => $.SUBRULE($.enumDeclaration) }
       ]);
     });
 
@@ -732,36 +600,12 @@ class SelectParser extends chevrotain.Parser {
     // | STRICTFP
     $.RULE("interfaceMethodModifier", () => {
       $.OR([
-        {
-          ALT: () => {
-            $.SUBRULE($.annotation);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Public);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Abstract);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Default);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Static);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Strictfp);
-          }
-        }
+        { ALT: () => $.SUBRULE($.annotation) },
+        { ALT: () => $.CONSUME(tokens.Public) },
+        { ALT: () => $.CONSUME(tokens.Abstract) },
+        { ALT: () => $.CONSUME(tokens.Default) },
+        { ALT: () => $.CONSUME(tokens.Static) },
+        { ALT: () => $.CONSUME(tokens.Strictfp) }
       ]);
     });
 
@@ -803,16 +647,8 @@ class SelectParser extends chevrotain.Parser {
     // | expression
     $.RULE("variableInitializer", () => {
       $.OR([
-        {
-          ALT: () => {
-            $.SUBRULE($.arrayInitializer);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.expression);
-          }
-        }
+        { ALT: () => $.SUBRULE($.arrayInitializer) },
+        { ALT: () => $.SUBRULE($.expression) }
       ]);
     });
 
@@ -924,16 +760,8 @@ class SelectParser extends chevrotain.Parser {
     // | annotationConstantRest
     $.RULE("annotationMethodRestOrConstantRest", () => {
       $.OR([
-        {
-          ALT: () => {
-            $.SUBRULE($.annotationMethodRest);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.annotationConstantRest);
-          }
-        }
+        { ALT: () => $.SUBRULE($.annotationMethodRest) },
+        { ALT: () => $.SUBRULE($.annotationConstantRest) }
       ]);
     });
 
@@ -979,16 +807,8 @@ class SelectParser extends chevrotain.Parser {
         $.SUBRULE($.annotation);
       });
       $.OR([
-        {
-          ALT: () => {
-            $.SUBRULE($.classOrInterfaceType);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.primitiveType);
-          }
-        }
+        { ALT: () => $.SUBRULE($.classOrInterfaceType) },
+        { ALT: () => $.SUBRULE($.primitiveType) }
       ]);
       $.MANY({
         DEF: function() {
@@ -1002,16 +822,8 @@ class SelectParser extends chevrotain.Parser {
     // : typeType | VOID
     $.RULE("typeTypeOrVoid", () => {
       $.OR([
-        {
-          ALT: () => {
-            $.SUBRULE($.typeType);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Void);
-          }
-        }
+        { ALT: () => $.SUBRULE($.typeType) },
+        { ALT: () => $.CONSUME(tokens.Void) }
       ]);
     });
 
@@ -1058,29 +870,13 @@ class SelectParser extends chevrotain.Parser {
     //   ((EXTENDS | SUPER) typeType)?
     $.RULE("typeArgument", () => {
       $.OR([
-        {
-          ALT: () => {
-            $.SUBRULE($.typeType);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Questionmark);
-          }
-        }
+        { ALT: () => $.SUBRULE($.typeType) },
+        { ALT: () => $.CONSUME(tokens.Questionmark) }
       ]);
       $.OPTION(() => {
         $.OR2([
-          {
-            ALT: () => {
-              $.CONSUME(tokens.Extends);
-            }
-          },
-          {
-            ALT: () => {
-              $.CONSUME(tokens.Super);
-            }
-          }
+          { ALT: () => $.CONSUME(tokens.Extends) },
+          { ALT: () => $.CONSUME(tokens.Super) }
         ]);
         $.SUBRULE2($.typeType);
       });
@@ -1208,16 +1004,8 @@ class SelectParser extends chevrotain.Parser {
         $.SUBRULE($.classOrInterfaceModifier);
       });
       $.OR([
-        {
-          ALT: () => {
-            $.SUBRULE($.classDeclaration);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.interfaceDeclaration);
-          }
-        }
+        { ALT: () => $.SUBRULE($.classDeclaration) },
+        { ALT: () => $.SUBRULE($.interfaceDeclaration) }
       ]);
     });
 
@@ -1240,87 +1028,27 @@ class SelectParser extends chevrotain.Parser {
     // | identifierStatement
     $.RULE("statement", () => {
       $.OR([
-        {
-          ALT: () => {
-            $.SUBRULE($.block);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.assertStatement);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.ifStatement);
-          }
-        },
+        { ALT: () => $.SUBRULE($.block) },
+        { ALT: () => $.SUBRULE($.assertStatement) },
+        { ALT: () => $.SUBRULE($.ifStatement) },
         // TODO: forControl needs refactoring
         // {
         //   ALT: () => {
         //     $.SUBRULE($.forStatement);
         //   }
         // },
-        {
-          ALT: () => {
-            $.SUBRULE($.whileStatement);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.doWhileStatement);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.tryStatement);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.switchStatement);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.synchronizedStatement);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.returnStatement);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.throwStatement);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.breakStatement);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.continueStatement);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.semiColonStatement);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.expressionStatement);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.identifierStatement);
-          }
-        }
+        { ALT: () => $.SUBRULE($.whileStatement) },
+        { ALT: () => $.SUBRULE($.doWhileStatement) },
+        { ALT: () => $.SUBRULE($.tryStatement) },
+        { ALT: () => $.SUBRULE($.switchStatement) },
+        { ALT: () => $.SUBRULE($.synchronizedStatement) },
+        { ALT: () => $.SUBRULE($.returnStatement) },
+        { ALT: () => $.SUBRULE($.throwStatement) },
+        { ALT: () => $.SUBRULE($.breakStatement) },
+        { ALT: () => $.SUBRULE($.continueStatement) },
+        { ALT: () => $.SUBRULE($.semiColonStatement) },
+        { ALT: () => $.SUBRULE($.expressionStatement) },
+        { ALT: () => $.SUBRULE($.identifierStatement) }
       ]);
     });
 
@@ -1403,11 +1131,7 @@ class SelectParser extends chevrotain.Parser {
             });
           }
         },
-        {
-          ALT: () => {
-            $.SUBRULE2($.finallyBlock);
-          }
-        }
+        { ALT: () => $.SUBRULE2($.finallyBlock) }
       ]);
     });
 
@@ -1590,16 +1314,8 @@ class SelectParser extends chevrotain.Parser {
     // | switchLabelDefault
     $.RULE("switchLabel", () => {
       $.OR([
-        {
-          ALT: () => {
-            $.SUBRULE($.switchLabelCase);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.switchLabelDefault);
-          }
-        }
+        { ALT: () => $.SUBRULE($.switchLabelCase) },
+        { ALT: () => $.SUBRULE($.switchLabelDefault) }
       ]);
     });
 
@@ -1700,16 +1416,8 @@ class SelectParser extends chevrotain.Parser {
     // | IDENTIFIER arguments
     $.RULE("explicitGenericInvocationSuffix", () => {
       $.OR([
-        {
-          ALT: () => {
-            $.SUBRULE($.super);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.identifierArguments);
-          }
-        }
+        { ALT: () => $.SUBRULE($.super) },
+        { ALT: () => $.SUBRULE($.identifierArguments) }
       ]);
     });
 
@@ -1732,16 +1440,8 @@ class SelectParser extends chevrotain.Parser {
     // | dotIdentifierArguments
     $.RULE("superSuffix", () => {
       $.OR([
-        {
-          ALT: () => {
-            $.SUBRULE($.arguments);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.dotIdentifierArguments);
-          }
-        }
+        { ALT: () => $.SUBRULE($.arguments) },
+        { ALT: () => $.SUBRULE($.dotIdentifierArguments) }
       ]);
     });
 
@@ -1876,21 +1576,9 @@ class SelectParser extends chevrotain.Parser {
     // | creator
     $.RULE("atomic", () => {
       $.OR([
-        {
-          ALT: () => {
-            $.SUBRULE($.methodCall);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.primary);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.creator);
-          }
-        }
+        { ALT: () => $.SUBRULE($.methodCall) },
+        { ALT: () => $.SUBRULE($.primary) },
+        { ALT: () => $.SUBRULE($.creator) }
       ]);
     });
 
@@ -2350,11 +2038,7 @@ class SelectParser extends chevrotain.Parser {
     // | identifiers
     $.RULE("lambdaParameters", () => {
       $.OR([
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Identifier);
-          }
-        },
+        { ALT: () => $.CONSUME(tokens.Identifier) },
         {
           ALT: () => {
             $.CONSUME(tokens.LBrace);
@@ -2384,16 +2068,8 @@ class SelectParser extends chevrotain.Parser {
     // | block
     $.RULE("lambdaBody", () => {
       $.OR([
-        {
-          ALT: () => {
-            $.SUBRULE($.expression);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.block);
-          }
-        }
+        { ALT: () => $.SUBRULE($.expression) },
+        { ALT: () => $.SUBRULE($.block) }
       ]);
     });
 
@@ -2412,16 +2088,8 @@ class SelectParser extends chevrotain.Parser {
     $.RULE("creator", () => {
       $.CONSUME(tokens.New);
       $.OR([
-        {
-          ALT: () => {
-            $.SUBRULE($.nonWildcardCreator);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.simpleCreator);
-          }
-        }
+        { ALT: () => $.SUBRULE($.nonWildcardCreator) },
+        { ALT: () => $.SUBRULE($.simpleCreator) }
       ]);
     });
 
@@ -2438,16 +2106,8 @@ class SelectParser extends chevrotain.Parser {
     $.RULE("simpleCreator", () => {
       $.SUBRULE($.createdName);
       $.OR([
-        {
-          ALT: () => {
-            $.SUBRULE($.arrayCreatorRest);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.classCreatorRest);
-          }
-        }
+        { ALT: () => $.SUBRULE($.arrayCreatorRest) },
+        { ALT: () => $.SUBRULE($.classCreatorRest) }
       ]);
     });
 
@@ -2456,16 +2116,8 @@ class SelectParser extends chevrotain.Parser {
     // | primitiveType
     $.RULE("createdName", () => {
       $.OR([
-        {
-          ALT: () => {
-            $.SUBRULE($.identifierName);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.primitiveType);
-          }
-        }
+        { ALT: () => $.SUBRULE($.identifierName) },
+        { ALT: () => $.SUBRULE($.primitiveType) }
       ]);
     });
 
@@ -2559,16 +2211,8 @@ class SelectParser extends chevrotain.Parser {
     // | typeArguments
     $.RULE("typeArgumentsOrDiamond", () => {
       $.OR([
-        {
-          ALT: () => {
-            $.SUBRULE($.emptyDiamond);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.typeArguments);
-          }
-        }
+        { ALT: () => $.SUBRULE($.emptyDiamond) },
+        { ALT: () => $.SUBRULE($.typeArguments) }
       ]);
     });
 
@@ -2577,16 +2221,8 @@ class SelectParser extends chevrotain.Parser {
     // | nonWildcardTypeArguments
     $.RULE("nonWildcardTypeArgumentsOrDiamond", () => {
       $.OR([
-        {
-          ALT: () => {
-            $.SUBRULE($.emptyDiamond);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.nonWildcardTypeArguments);
-          }
-        }
+        { ALT: () => $.SUBRULE($.emptyDiamond) },
+        { ALT: () => $.SUBRULE($.nonWildcardTypeArguments) }
       ]);
     });
 
@@ -2631,21 +2267,9 @@ class SelectParser extends chevrotain.Parser {
     // | nonWildcardTypeArguments (explicitGenericInvocationSuffix | THIS arguments)
     $.RULE("primary", () => {
       $.OR([
-        {
-          ALT: () => {
-            $.CONSUME(tokens.This);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Super);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.literal);
-          }
-        },
+        { ALT: () => $.CONSUME(tokens.This) },
+        { ALT: () => $.CONSUME(tokens.Super) },
+        { ALT: () => $.SUBRULE($.literal) },
         {
           ALT: () => {
             $.OR2([
@@ -2679,11 +2303,7 @@ class SelectParser extends chevrotain.Parser {
           ALT: () => {
             $.SUBRULE($.nonWildcardTypeArguments);
             $.OR3([
-              {
-                ALT: () => {
-                  $.SUBRULE($.explicitGenericInvocationSuffix);
-                }
-              },
+              { ALT: () => $.SUBRULE($.explicitGenericInvocationSuffix) },
               {
                 ALT: () => {
                   $.CONSUME2(tokens.This);
@@ -2705,36 +2325,12 @@ class SelectParser extends chevrotain.Parser {
     // | NULL_LITERAL
     $.RULE("literal", () => {
       $.OR([
-        {
-          ALT: () => {
-            $.SUBRULE($.integerLiteral);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.floatLiteral);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.CharLiteral);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.StringLiteral);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.booleanLiteral);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Null);
-          }
-        }
+        { ALT: () => $.SUBRULE($.integerLiteral) },
+        { ALT: () => $.SUBRULE($.floatLiteral) },
+        { ALT: () => $.CONSUME(tokens.CharLiteral) },
+        { ALT: () => $.CONSUME(tokens.StringLiteral) },
+        { ALT: () => $.SUBRULE($.booleanLiteral) },
+        { ALT: () => $.CONSUME(tokens.Null) }
       ]);
     });
 
@@ -2743,16 +2339,8 @@ class SelectParser extends chevrotain.Parser {
     // | FALSE
     $.RULE("booleanLiteral", () => {
       $.OR([
-        {
-          ALT: () => {
-            $.CONSUME(tokens.True);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.False);
-          }
-        }
+        { ALT: () => $.CONSUME(tokens.True) },
+        { ALT: () => $.CONSUME(tokens.False) }
       ]);
     });
 
@@ -2763,26 +2351,10 @@ class SelectParser extends chevrotain.Parser {
     // | BINARY_LITERAL
     $.RULE("integerLiteral", () => {
       $.OR([
-        {
-          ALT: () => {
-            $.CONSUME(tokens.DecimalLiteral);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.HexLiteral);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.OctLiteral);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.BinaryLiteral);
-          }
-        }
+        { ALT: () => $.CONSUME(tokens.DecimalLiteral) },
+        { ALT: () => $.CONSUME(tokens.HexLiteral) },
+        { ALT: () => $.CONSUME(tokens.OctLiteral) },
+        { ALT: () => $.CONSUME(tokens.BinaryLiteral) }
       ]);
     });
 
@@ -2791,16 +2363,8 @@ class SelectParser extends chevrotain.Parser {
     // | HEX_FLOAT_LITERAL
     $.RULE("floatLiteral", () => {
       $.OR([
-        {
-          ALT: () => {
-            $.CONSUME(tokens.FloatLiteral);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.HexFloatLiteral);
-          }
-        }
+        { ALT: () => $.CONSUME(tokens.FloatLiteral) },
+        { ALT: () => $.CONSUME(tokens.HexFloatLiteral) }
       ]);
     });
 
@@ -2815,46 +2379,14 @@ class SelectParser extends chevrotain.Parser {
     // | DOUBLE
     $.RULE("primitiveType", () => {
       $.OR([
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Boolean);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Char);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Byte);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Short);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Int);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Long);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Float);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Double);
-          }
-        }
+        { ALT: () => $.CONSUME(tokens.Boolean) },
+        { ALT: () => $.CONSUME(tokens.Char) },
+        { ALT: () => $.CONSUME(tokens.Byte) },
+        { ALT: () => $.CONSUME(tokens.Short) },
+        { ALT: () => $.CONSUME(tokens.Int) },
+        { ALT: () => $.CONSUME(tokens.Long) },
+        { ALT: () => $.CONSUME(tokens.Float) },
+        { ALT: () => $.CONSUME(tokens.Double) }
       ]);
     });
 

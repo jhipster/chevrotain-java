@@ -4463,9 +4463,70 @@
             "type": "Flat",
             "definition": [
               {
+                "type": "Option",
+                "definition": [
+                  {
+                    "type": "Terminal",
+                    "name": "Final",
+                    "label": "'final'",
+                    "occurrenceInParent": 1,
+                    "pattern": "final"
+                  }
+                ]
+              },
+              {
                 "type": "NonTerminal",
                 "name": "expression",
                 "occurrenceInParent": 1
+              },
+              {
+                "type": "Option",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "variableDeclaratorId",
+                    "occurrenceInParent": 1
+                  }
+                ]
+              },
+              {
+                "type": "NonTerminal",
+                "name": "variableDeclaratorId",
+                "occurrenceInParent": 2
+              },
+              {
+                "type": "Repetition",
+                "definition": [
+                  {
+                    "type": "Terminal",
+                    "name": "Comma",
+                    "label": "','",
+                    "occurrenceInParent": 1,
+                    "pattern": ","
+                  },
+                  {
+                    "type": "Option",
+                    "definition": [
+                      {
+                        "type": "Terminal",
+                        "name": "Final",
+                        "label": "'final'",
+                        "occurrenceInParent": 2,
+                        "pattern": "final"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "NonTerminal",
+                    "name": "expression",
+                    "occurrenceInParent": 2
+                  },
+                  {
+                    "type": "NonTerminal",
+                    "name": "variableDeclaratorId",
+                    "occurrenceInParent": 3
+                  }
+                ]
               },
               {
                 "type": "Terminal",
@@ -4475,12 +4536,39 @@
                 "pattern": "\\)"
               },
               {
-                "type": "Option",
+                "type": "Alternation",
                 "definition": [
                   {
-                    "type": "NonTerminal",
-                    "name": "expression",
-                    "occurrenceInParent": 2
+                    "type": "Flat",
+                    "definition": [
+                      {
+                        "type": "Terminal",
+                        "name": "Pointer",
+                        "label": "'->'",
+                        "occurrenceInParent": 2,
+                        "pattern": "->"
+                      },
+                      {
+                        "type": "NonTerminal",
+                        "name": "lambdaBody",
+                        "occurrenceInParent": 2
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Flat",
+                    "definition": [
+                      {
+                        "type": "Option",
+                        "definition": [
+                          {
+                            "type": "NonTerminal",
+                            "name": "expression",
+                            "occurrenceInParent": 3
+                          }
+                        ]
+                      }
+                    ]
                   }
                 ]
               }
