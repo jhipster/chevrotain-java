@@ -266,10 +266,8 @@ class SelectParser extends chevrotain.Parser {
         {
           // classBodyMemberDeclaration
           ALT: () => {
-            $.MANY({
-              DEF: function() {
-                $.SUBRULE($.modifier);
-              }
+            $.MANY(() => {
+              $.SUBRULE($.modifier);
             });
             $.SUBRULE($.memberDeclaration);
           }
@@ -328,11 +326,9 @@ class SelectParser extends chevrotain.Parser {
       $.SUBRULE($.typeTypeOrVoid);
       $.CONSUME(tokens.Identifier);
       $.SUBRULE($.formalParameters);
-      $.MANY({
-        DEF: function() {
-          $.CONSUME(tokens.LSquare);
-          $.CONSUME(tokens.RSquare);
-        }
+      $.MANY(() => {
+        $.CONSUME(tokens.LSquare);
+        $.CONSUME(tokens.RSquare);
       });
       $.OPTION(() => {
         $.CONSUME(tokens.Throws);
@@ -411,13 +407,10 @@ class SelectParser extends chevrotain.Parser {
         // It can have a single comma at the end
         // What should follow is a right curly OR
         // a semi colon for a start of a enumBodyDeclarations
-        GATE: function() {
-          return (
-            this.LA(2).tokenType !== tokens.RCurly &&
-            this.LA(2).tokenType !== tokens.SemiColon
-          );
-        },
-        DEF: function() {
+        GATE: () =>
+          this.LA(2).tokenType !== tokens.RCurly &&
+          this.LA(2).tokenType !== tokens.SemiColon,
+        DEF: () => {
           $.CONSUME(tokens.Comma);
           $.SUBRULE2($.enumConstant);
         }
@@ -427,10 +420,8 @@ class SelectParser extends chevrotain.Parser {
     // enumConstant
     // : annotation* IDENTIFIER arguments? classBody?
     $.RULE("enumConstant", () => {
-      $.MANY({
-        DEF: function() {
-          $.SUBRULE($.annotation);
-        }
+      $.MANY(() => {
+        $.SUBRULE($.annotation);
       });
       $.CONSUME(tokens.Identifier);
       $.OPTION(() => {
@@ -445,10 +436,8 @@ class SelectParser extends chevrotain.Parser {
     // : ';' classBodyDeclaration*
     $.RULE("enumBodyDeclarations", () => {
       $.CONSUME(tokens.SemiColon);
-      $.MANY({
-        DEF: function() {
-          $.SUBRULE($.classBodyDeclaration);
-        }
+      $.MANY(() => {
+        $.SUBRULE($.classBodyDeclaration);
       });
     });
 
@@ -480,10 +469,8 @@ class SelectParser extends chevrotain.Parser {
     // interfaceBodyDeclaration
     // : modifier* interfaceMemberDeclaration
     $.RULE("interfaceBodyDeclaration", () => {
-      $.MANY({
-        DEF: function() {
-          $.SUBRULE($.modifier);
-        }
+      $.MANY(() => {
+        $.SUBRULE($.modifier);
       });
       $.SUBRULE($.interfaceMemberDeclaration);
     });
@@ -534,11 +521,9 @@ class SelectParser extends chevrotain.Parser {
     // : IDENTIFIER ('[' ']')* '=' variableInitializer
     $.RULE("constantDeclarator", () => {
       $.CONSUME(tokens.Identifier);
-      $.MANY({
-        DEF: function() {
-          $.CONSUME(tokens.LSquare);
-          $.CONSUME(tokens.RSquare);
-        }
+      $.MANY(() => {
+        $.CONSUME(tokens.LSquare);
+        $.CONSUME(tokens.RSquare);
       });
       $.CONSUME(tokens.Equals);
       $.SUBRULE($.variableInitializer);
@@ -554,27 +539,21 @@ class SelectParser extends chevrotain.Parser {
     //   (THROWS qualifiedNameList)?
     //   methodBody
     $.RULE("interfaceMethodDeclaration", () => {
-      $.MANY({
-        DEF: function() {
-          $.SUBRULE($.interfaceMethodModifier);
-        }
+      $.MANY(() => {
+        $.SUBRULE($.interfaceMethodModifier);
       });
       $.OPTION(() => {
         $.SUBRULE($.typeParameters);
       });
-      $.MANY2({
-        DEF: function() {
-          $.SUBRULE($.annotation);
-        }
+      $.MANY2(() => {
+        $.SUBRULE($.annotation);
       });
       $.SUBRULE($.typeTypeOrVoid);
       $.CONSUME(tokens.Identifier);
       $.SUBRULE($.formalParameters);
-      $.MANY3({
-        DEF: function() {
-          $.CONSUME(tokens.LSquare);
-          $.CONSUME(tokens.RSquare);
-        }
+      $.MANY3(() => {
+        $.CONSUME(tokens.LSquare);
+        $.CONSUME(tokens.RSquare);
       });
       $.OPTION2(() => {
         $.CONSUME(tokens.Throws);
@@ -634,11 +613,9 @@ class SelectParser extends chevrotain.Parser {
     // : IDENTIFIER ('[' ']')*
     $.RULE("variableDeclaratorId", () => {
       $.CONSUME(tokens.Identifier);
-      $.MANY({
-        DEF: function() {
-          $.CONSUME(tokens.LSquare);
-          $.CONSUME(tokens.RSquare);
-        }
+      $.MANY(() => {
+        $.CONSUME(tokens.LSquare);
+        $.CONSUME(tokens.RSquare);
       });
     });
 
@@ -659,13 +636,10 @@ class SelectParser extends chevrotain.Parser {
       $.OPTION(() => {
         $.SUBRULE($.variableInitializer);
         $.MANY({
-          GATE: function() {
-            return (
-              this.LA(2).tokenType !== tokens.Comma &&
-              this.LA(2).tokenType !== tokens.RCurly
-            );
-          },
-          DEF: function() {
+          GATE: () =>
+            this.LA(2).tokenType !== tokens.Comma &&
+            this.LA(2).tokenType !== tokens.RCurly,
+          DEF: () => {
             $.CONSUME(tokens.Comma);
             $.SUBRULE2($.variableInitializer);
           }
@@ -810,11 +784,9 @@ class SelectParser extends chevrotain.Parser {
         { ALT: () => $.SUBRULE($.classOrInterfaceType) },
         { ALT: () => $.SUBRULE($.primitiveType) }
       ]);
-      $.MANY({
-        DEF: function() {
-          $.CONSUME(tokens.LSquare);
-          $.CONSUME(tokens.RSquare);
-        }
+      $.MANY(() => {
+        $.CONSUME(tokens.LSquare);
+        $.CONSUME(tokens.RSquare);
       });
     });
 
@@ -832,9 +804,7 @@ class SelectParser extends chevrotain.Parser {
     $.RULE("classOrInterfaceType", () => {
       $.SUBRULE($.classOrInterfaceTypeElement);
       $.MANY({
-        GATE: function() {
-          return this.LA(2).tokenType !== tokens.Class;
-        },
+        GATE: () => this.LA(2).tokenType !== tokens.Class,
         DEF: () => {
           $.CONSUME(tokens.Dot);
           $.SUBRULE2($.classOrInterfaceTypeElement);
@@ -953,10 +923,8 @@ class SelectParser extends chevrotain.Parser {
     $.RULE("block", () => {
       $.CONSUME(tokens.LCurly);
       // TODO: blockStatement needs refactoring
-      // $.MANY({
-      //   DEF: function() {
-      //     $.SUBRULE($.blockStatement);
-      //   }
+      // $.MANY(() => {
+      //     $.SUBRULE($.blockStatement)
       // });
       $.CONSUME(tokens.RCurly);
     });
@@ -1269,10 +1237,8 @@ class SelectParser extends chevrotain.Parser {
     $.RULE("resources", () => {
       $.SUBRULE($.resource);
       $.MANY({
-        GATE: function() {
-          return this.LA(2).tokenType !== tokens.RBrace;
-        },
-        DEF: function() {
+        GATE: () => this.LA(2).tokenType !== tokens.RBrace,
+        DEF: () => {
           $.CONSUME(tokens.SemiColon);
           $.SUBRULE2($.resource);
         }
@@ -2159,11 +2125,9 @@ class SelectParser extends chevrotain.Parser {
         {
           ALT: () => {
             $.CONSUME(tokens.RSquare);
-            $.MANY({
-              DEF: function() {
-                $.CONSUME2(tokens.LSquare);
-                $.CONSUME2(tokens.RSquare);
-              }
+            $.MANY(() => {
+              $.CONSUME2(tokens.LSquare);
+              $.CONSUME2(tokens.RSquare);
             });
             $.SUBRULE($.arrayInitializer);
           }
@@ -2172,18 +2136,14 @@ class SelectParser extends chevrotain.Parser {
           ALT: () => {
             $.SUBRULE($.expression);
             $.CONSUME3(tokens.RSquare);
-            $.MANY2({
-              DEF: function() {
-                $.CONSUME4(tokens.LSquare);
-                $.SUBRULE2($.expression);
-                $.CONSUME4(tokens.RSquare);
-              }
+            $.MANY2(() => {
+              $.CONSUME4(tokens.LSquare);
+              $.SUBRULE2($.expression);
+              $.CONSUME4(tokens.RSquare);
             });
-            $.MANY3({
-              DEF: function() {
-                $.CONSUME5(tokens.LSquare);
-                $.CONSUME5(tokens.RSquare);
-              }
+            $.MANY3(() => {
+              $.CONSUME5(tokens.LSquare);
+              $.CONSUME5(tokens.RSquare);
             });
           }
         }
@@ -2248,10 +2208,8 @@ class SelectParser extends chevrotain.Parser {
       $.MANY({
         // The gate condition is in addition to basic grammar lookahead, so this.LA(1) === dot
         // is always checked
-        GATE: function() {
-          return this.LA(2).tokenType === tokens.Identifier;
-        },
-        DEF: function() {
+        GATE: () => this.LA(2).tokenType === tokens.Identifier,
+        DEF: () => {
           $.CONSUME(tokens.Dot);
           $.CONSUME2(tokens.Identifier);
         }
@@ -2277,10 +2235,8 @@ class SelectParser extends chevrotain.Parser {
                 ALT: () => {
                   $.SUBRULE($.typeType);
                   $.MANY({
-                    GATE: function() {
-                      return this.LA(2).tokenType !== tokens.Class;
-                    },
-                    DEF: function() {
+                    GATE: () => this.LA(2).tokenType !== tokens.Class,
+                    DEF: () => {
                       $.CONSUME(tokens.Dot);
                       $.SUBRULE2($.classOrInterfaceType);
                     }
