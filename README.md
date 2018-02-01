@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/thorbenvh8/chevrotain-java.svg?branch=master)](https://travis-ci.org/thorbenvh8/chevrotain-java)
+
 # chevrotain java parser
 
 A javascript based java parser based on chevrotain. Mainly developed to be used in [prettier-java](https://github.com/thorbenvh8/prettier-java).
