@@ -1424,7 +1424,10 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       if (ctx.Pointer.length > 0) {
         let identifier = undefined;
         if (atomic.type !== "TYPE_TYPE") {
-          // throw error
+          throw new MismatchedTokenException(
+            "Found lambda expression but left side is not an identifier",
+            undefined
+          );
         }
 
         if (
@@ -1432,17 +1435,29 @@ class SQLToAstVisitor extends BaseSQLVisitor {
           atomic.cntSquares > 0 ||
           atomic.dotDotDot
         ) {
-          // throw error
+          throw new MismatchedTokenException(
+            "Found lambda expression but left side has annotations, squares or '...'",
+            undefined
+          );
         }
         if (atomic.value.type !== "CLASS_OR_INTERFACE_TYPE") {
-          // throw error
+          throw new MismatchedTokenException(
+            "Found lambda expression but left side is not an identifier",
+            undefined
+          );
         }
 
         if (atomic.value.elements.length > 1) {
-          // throw error
+          throw new MismatchedTokenException(
+            "Found lambda expression without parenthis but left side has more than one parameter",
+            undefined
+          );
         }
         if (atomic.value.elements[0].typeArguments !== undefined) {
-          // throw error
+          throw new MismatchedTokenException(
+            "Found lambda expression but left side has type arguments",
+            undefined
+          );
         }
 
         identifier = atomic.value.elements[0].name;
@@ -1459,6 +1474,17 @@ class SQLToAstVisitor extends BaseSQLVisitor {
             }
           },
           body: body
+        };
+      }
+
+      if (ctx.methodReferenceRest.length > 0) {
+        const rest = this.visit(ctx.methodReferenceRest);
+
+        return {
+          type: "METHOD_REFERENCE",
+          reference: atomic,
+          typeArguments: rest.typeArguments,
+          name: rest.name
         };
       }
 
@@ -1686,13 +1712,6 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     if (ctx.Pointer.length > 0) {
       const body = this.visit(ctx.lambdaBody);
 
-      // const parameters = {
-      //   type: "IDENTIFIERS",
-      //   identifiers: {
-      //     type: "IDENTIFIER_LIST",
-      //     identifiers: ["a"]
-      //   }
-      // };
       let parameters = undefined;
       if (ctx.variableDeclaratorId.length > 0) {
         parameters = {
@@ -1715,8 +1734,15 @@ class SQLToAstVisitor extends BaseSQLVisitor {
           for (let i = 0; i < ctx.expression.length; i++) {
             const typeType = this.visit(ctx.expression[i]);
 
-            if (typeType.cntSquares > 0 || typeType.dotDotDot) {
-              // throw error
+            if (
+              typeType.annotations.length > 0 ||
+              typeType.cntSquares > 0 ||
+              typeType.dotDotDot
+            ) {
+              throw new MismatchedTokenException(
+                "Found lambda expression but left side has annotations, squares or '...'",
+                undefined
+              );
             }
 
             const variableDeclaratorId = this.visit(
@@ -1748,25 +1774,40 @@ class SQLToAstVisitor extends BaseSQLVisitor {
             expression => {
               const typeType = this.visit(expression);
               if (typeType.type !== "TYPE_TYPE") {
-                // throw error
+                throw new MismatchedTokenException(
+                  "Found lambda expression but left side is not an identifier",
+                  undefined
+                );
               }
               if (
                 typeType.annotations.length > 0 ||
                 typeType.cntSquares > 0 ||
                 typeType.dotDotDot
               ) {
-                // throw error
+                throw new MismatchedTokenException(
+                  "Found lambda expression but left side has annotations, squares or '...'",
+                  undefined
+                );
               }
 
               if (typeType.value.type !== "CLASS_OR_INTERFACE_TYPE") {
-                // throw error
+                throw new MismatchedTokenException(
+                  "Found lambda expression but left side is not an identifier",
+                  undefined
+                );
               }
 
               if (typeType.value.elements.length > 1) {
-                // throw error
+                throw new MismatchedTokenException(
+                  "Found lambda expression without parenthis but left side has more than one parameter",
+                  undefined
+                );
               }
               if (typeType.value.elements[0].typeArguments !== undefined) {
-                // throw error
+                throw new MismatchedTokenException(
+                  "Found lambda expression but left side has type arguments",
+                  undefined
+                );
               }
 
               return typeType.value.elements[0].name;
@@ -1783,7 +1824,10 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     }
 
     if (ctx.Final.length > 0) {
-      // throw error
+      throw new MismatchedTokenException(
+        "Found cast expression or parenthis expression with final modifier",
+        undefined
+      );
     }
 
     if (ctx.expression.length >= 2) {
@@ -1889,6 +1933,25 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       type: "PREFIX_EXPRESSION",
       prefix: prefix,
       expression: expression
+    };
+  }
+
+  methodReferenceRest(ctx) {
+    let name = undefined;
+    if (ctx.Identifier.length > 0) {
+      name = ctx.Identifier[0].image;
+    } else if (ctx.New.length > 0) {
+      name = {
+        type: "NEW"
+      };
+    }
+
+    const typeArguments = this.visit(ctx.typeArguments);
+
+    return {
+      type: "METHOD_REFERENCE_REST",
+      typeArguments: typeArguments,
+      name: name
     };
   }
 

@@ -374,46 +374,11 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
   });
 
   it("lambdaExpression: one annotation", () => {
-    expect(
+    expect(() =>
       Parser.parse("(@Bean boolean a) -> {}", parser =>
         parser.parExpressionOrCastExpressionOrLambdaExpression()
       )
-    ).toEqual({
-      type: "LAMBDA_EXPRESSION",
-      parameters: {
-        type: "FORMAL_PARAMETERS",
-        parameters: {
-          type: "FORMAL_PARAMETER_LIST",
-          formalParameters: [
-            {
-              modifiers: [
-                {
-                  type: "ANNOTATION",
-                  name: { name: ["Bean"], type: "QUALIFIED_NAME" },
-                  hasBraces: false,
-                  value: undefined
-                }
-              ],
-              type: "FORMAL_PARAMETER",
-              typeType: {
-                type: "PRIMITIVE_TYPE",
-                value: "boolean"
-              },
-              id: {
-                type: "VARIABLE_DECLARATOR_ID",
-                id: "a",
-                cntSquares: 0
-              },
-              dotDotDot: false
-            }
-          ]
-        }
-      },
-      body: {
-        type: "BLOCK",
-        statements: []
-      }
-    });
+    ).toThrow(MismatchedTokenException);
   });
 
   it("lambdaExpression: final modifier", () => {

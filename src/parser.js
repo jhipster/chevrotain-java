@@ -1469,12 +1469,14 @@ class SelectParser extends chevrotain.Parser {
     //     | postfixExpressionRest
     //     | ifElseExpressionRest
     //     | qualifiedExpressionRest
+    //     | '->' lambdaBody // lambdaExpression
+    //     | methodReferenceRest
     //     | ( operatorExpressionRest )*
     //     )
     // | prefixExpression
     // | parExpressionOrCastExpressionOrLambdaExpression
     //
-    // | methodReference // Java8
+    // | methodReferenceRest // Java8
     // TODO: refactoring
     $.RULE("expression", () => {
       $.OR([
@@ -1508,9 +1510,15 @@ class SelectParser extends chevrotain.Parser {
                 }
               },
               {
+                // lambdaExpression
                 ALT: () => {
                   $.CONSUME(tokens.Pointer);
                   $.SUBRULE($.lambdaBody);
+                }
+              },
+              {
+                ALT: () => {
+                  $.SUBRULE($.methodReferenceRest);
                 }
               },
               {
@@ -1949,48 +1957,28 @@ class SelectParser extends chevrotain.Parser {
       $.SUBRULE4($.expression);
     });
 
-    // // Java 8 methodReference
-    // : ( expression | typeType | classType ) '::' typeArguments? (IDENTIFIER | NEW)
-    // TODO: refactoring
-    // $.RULE("methodReference", () => {
-    //   $.OR([
-    //     {
-    //       ALT: () => {
-    //         $.SUBRULE($.typeType);
-    //       }
-    //     },
-    //     {
-    //       ALT: () => {
-    //         $.SUBRULE($.classType);
-    //       }
-    //     }
-    //     ,
-    //     {
-    //       ALT: () => {
-    //         $.SUBRULE($.expression);
-    //       }
-    //     }
-    //   ]);
-    //   $.CONSUME(tokens.ColonColon);
-    //   $.OPTION(() => {
-    //     $.SUBRULE($.typeArguments);
-    //   });
-    //   $.OR2([
-    //     {
-    //       ALT: () => {
-    //         $.CONSUME(tokens.Identifier);
-    //       }
-    //     },
-    //     {
-    //       ALT: () => {
-    //         $.CONSUME(tokens.New);
-    //       }
-    //     }
-    //   ]);
-    // });
+    // methodReferenceRest // Java 8
+    // : '::' typeArguments? (IDENTIFIER | NEW)
+    $.RULE("methodReferenceRest", () => {
+      $.CONSUME(tokens.ColonColon);
+      $.OPTION(() => {
+        $.SUBRULE($.typeArguments);
+      });
+      $.OR([
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Identifier);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.New);
+          }
+        }
+      ]);
+    });
 
-    // // Java8
-    // lambdaExpression
+    // lambdaExpression // Java8
     // : lambdaParameters '->' lambdaBody
     $.RULE("lambdaExpression", () => {
       $.SUBRULE($.lambdaParameters);

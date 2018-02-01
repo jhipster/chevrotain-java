@@ -165,4 +165,32 @@ describe("expression", () => {
       }
     });
   });
+
+  it("methodReference: identifier", () => {
+    expect(Parser.parse("B.C::A", parser => parser.expression())).toEqual({
+      type: "METHOD_REFERENCE",
+      reference: {
+        type: "TYPE_TYPE",
+        annotations: [],
+        value: {
+          type: "CLASS_OR_INTERFACE_TYPE",
+          elements: [
+            {
+              type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
+              typeArguments: undefined,
+              name: "B"
+            },
+            {
+              type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
+              typeArguments: undefined,
+              name: "C"
+            }
+          ]
+        },
+        cntSquares: 0
+      },
+      typeArguments: undefined,
+      name: "A"
+    });
+  });
 });

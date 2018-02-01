@@ -4033,6 +4033,16 @@
                     "type": "Flat",
                     "definition": [
                       {
+                        "type": "NonTerminal",
+                        "name": "methodReferenceRest",
+                        "occurrenceInParent": 1
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Flat",
+                    "definition": [
+                      {
                         "type": "Repetition",
                         "definition": [
                           {
@@ -4963,6 +4973,58 @@
         "type": "NonTerminal",
         "name": "expression",
         "occurrenceInParent": 4
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "methodReferenceRest",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "ColonColon",
+        "label": "'::'",
+        "occurrenceInParent": 1,
+        "pattern": "::"
+      },
+      {
+        "type": "Option",
+        "definition": [
+          {
+            "type": "NonTerminal",
+            "name": "typeArguments",
+            "occurrenceInParent": 1
+          }
+        ]
+      },
+      {
+        "type": "Alternation",
+        "definition": [
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "Terminal",
+                "name": "Identifier",
+                "label": "Identifier",
+                "occurrenceInParent": 1,
+                "pattern": "[a-zA-Z]\\w*"
+              }
+            ]
+          },
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "Terminal",
+                "name": "New",
+                "label": "'new'",
+                "occurrenceInParent": 1,
+                "pattern": "new"
+              }
+            ]
+          }
+        ]
       }
     ]
   },
