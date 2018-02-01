@@ -226,7 +226,7 @@ class SelectParser extends chevrotain.Parser {
     // : IDENTIFIER '=' elementValue
     $.RULE("elementValuePair", () => {
       $.CONSUME(tokens.Identifier);
-      $.CONSUME(tokens.Equal);
+      $.CONSUME(tokens.Equals);
       $.SUBRULE($.elementValue);
     });
 
@@ -672,7 +672,7 @@ class SelectParser extends chevrotain.Parser {
           $.CONSUME(tokens.RSquare);
         }
       });
-      $.CONSUME(tokens.Equal);
+      $.CONSUME(tokens.Equals);
       $.SUBRULE($.variableInitializer);
     });
 
@@ -781,7 +781,7 @@ class SelectParser extends chevrotain.Parser {
     $.RULE("variableDeclarator", () => {
       $.SUBRULE($.variableDeclaratorId);
       $.OPTION(() => {
-        $.CONSUME(tokens.Equal);
+        $.CONSUME(tokens.Equals);
         $.SUBRULE($.variableInitializer);
       });
     });
@@ -1018,10 +1018,14 @@ class SelectParser extends chevrotain.Parser {
     // classOrInterfaceType
     // : classOrInterfaceTypeElement ('.' classOrInterfaceTypeElement)*
     $.RULE("classOrInterfaceType", () => {
-      $.AT_LEAST_ONE_SEP({
-        SEP: tokens.Dot,
+      $.SUBRULE($.classOrInterfaceTypeElement);
+      $.MANY({
+        GATE: function() {
+          return this.LA(2).tokenType !== tokens.Class;
+        },
         DEF: () => {
-          $.SUBRULE($.classOrInterfaceTypeElement);
+          $.CONSUME(tokens.Dot);
+          $.SUBRULE2($.classOrInterfaceTypeElement);
         }
       });
     });
@@ -1511,7 +1515,7 @@ class SelectParser extends chevrotain.Parser {
     // : qualifiedName ('|' qualifiedName)*
     $.RULE("catchType", () => {
       $.AT_LEAST_ONE_SEP({
-        SEP: tokens.VerticalLine,
+        SEP: tokens.Or,
         DEF: () => {
           $.SUBRULE($.qualifiedName);
         }
@@ -1559,7 +1563,7 @@ class SelectParser extends chevrotain.Parser {
       });
       $.SUBRULE($.classOrInterfaceType);
       $.SUBRULE($.variableDeclaratorId);
-      $.CONSUME(tokens.Equal);
+      $.CONSUME(tokens.Equals);
       $.SUBRULE($.expression);
     });
 
@@ -1792,41 +1796,85 @@ class SelectParser extends chevrotain.Parser {
     });
 
     // expression
+    // : atomic
+    //   (
+    //     instanceExpressionRest
+    //     | squareExpressionRest
+    //     | postfixExpressionRest
+    //     | ifElseExpressionRest
+    //     | qualifiedExpressionRest
+    //     | ( operatorExpressionRest )*
+    //     )
+    // | prefixExpression
+    // | parExpressionOrCastExpressionOrLambdaExpression
+    //
+    // | methodReference // Java8
+    // TODO: refactoring
+    $.RULE("expression", () => {
+      $.OR([
+        {
+          ALT: () => {
+            $.SUBRULE($.atomic);
+            $.OR2([
+              {
+                ALT: () => {
+                  $.SUBRULE($.instanceofExpressionRest);
+                }
+              },
+              {
+                ALT: () => {
+                  $.SUBRULE($.squareExpressionRest);
+                }
+              },
+              {
+                ALT: () => {
+                  $.SUBRULE($.postfixExpressionRest);
+                }
+              },
+              {
+                ALT: () => {
+                  $.SUBRULE($.ifElseExpressionRest);
+                }
+              },
+              {
+                ALT: () => {
+                  $.SUBRULE($.qualifiedExpressionRest);
+                }
+              },
+              {
+                ALT: () => {
+                  $.CONSUME(tokens.Pointer);
+                  $.SUBRULE($.lambdaBody);
+                }
+              },
+              {
+                ALT: () => {
+                  $.MANY(() => {
+                    $.SUBRULE($.operatorExpressionRest);
+                  });
+                }
+              }
+            ]);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.prefixExpression);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.parExpressionOrCastExpressionOrLambdaExpression);
+          }
+        }
+      ]);
+    });
+
+    // atomic
     // : methodCall
     // | primary
     // | creator
-    //
-    // | expression bop='.'
-    //   (IDENTIFIER
-    //   | methodCall
-    //   | THIS
-    //   | NEW nonWildcardTypeArguments? innerCreator
-    //   | super
-    //   | explicitGenericInvocation
-    //   )
-    // | expression '[' expression ']'
-    // | '(' typeType ')' expression
-    // | expression postfix=('++' | '--')
-    // | prefix=('+'|'-'|'++'|'--') expression
-    // | prefix=('~'|'!') expression
-    // | expression bop=('*'|'/'|'%') expression
-    // | expression bop=('+'|'-') expression
-    // | expression ('<' '<' | '>' '>' '>' | '>' '>') expression
-    // | expression bop=('<=' | '>=' | '>' | '<') expression
-    // | expression bop=INSTANCEOF typeType
-    // | expression bop=('==' | '!=') expression
-    // | expression bop='&' expression
-    // | expression bop='^' expression
-    // | expression bop='|' expression
-    // | expression bop='&&' expression
-    // | expression bop='||' expression
-    // | expression bop='?' expression ':' expression
-    // | <assoc=right> expression
-    //   bop=('=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^=' | '>>=' | '>>>=' | '<<=' | '%=')
-    //   expression
-    // | lambdaExpression // Java8
-    // TODO: refactoring
-    $.RULE("expression", () => {
+    $.RULE("atomic", () => {
       $.OR([
         {
           ALT: () => {
@@ -1844,6 +1892,407 @@ class SelectParser extends chevrotain.Parser {
           }
         }
       ]);
+    });
+
+    // instanceofExpressionRest
+    // : INSTANCEOF typeType
+    $.RULE("instanceofExpressionRest", () => {
+      $.CONSUME(tokens.Instanceof);
+      $.SUBRULE($.typeType);
+    });
+
+    // squareExpressionRest
+    // : '[' expression ']'
+    $.RULE("squareExpressionRest", () => {
+      $.CONSUME(tokens.LSquare);
+      $.SUBRULE($.expression);
+      $.CONSUME(tokens.RSquare);
+    });
+
+    // postfixExpressionRest
+    // : ('++' | '--')
+    $.RULE("postfixExpressionRest", () => {
+      $.OR([
+        {
+          ALT: () => {
+            $.CONSUME(tokens.PlusPlus);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.MinusMinus);
+          }
+        }
+      ]);
+    });
+
+    // ifElseExpressionRest
+    // : '?' expression ':' expression
+    $.RULE("ifElseExpressionRest", () => {
+      $.CONSUME(tokens.Questionmark);
+      $.SUBRULE($.expression);
+      $.CONSUME(tokens.Colon);
+      $.SUBRULE2($.expression);
+    });
+
+    // qualifiedExpressionRest
+    // : '.'
+    //   (
+    //     IDENTIFIER
+    //     | methodCall
+    //     | THIS
+    //     | SUPER
+    //     | creatorOptionalNonWildcardInnerCreator
+    //     | explicitGenericInvocation
+    //   )
+    $.RULE("qualifiedExpressionRest", () => {
+      $.CONSUME(tokens.Dot);
+      $.OR([
+        {
+          ALT: () => {
+            $.SUBRULE($.methodCall);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Identifier);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.This);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Super);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.creatorOptionalNonWildcardInnerCreator);
+          }
+        },
+        {
+          ALT: () => {
+            $.SUBRULE($.explicitGenericInvocation);
+          }
+        }
+      ]);
+    });
+
+    // creatorOptionalNonWildcardInnerCreator
+    // : NEW nonWildcardTypeArguments? innerCreator
+    $.RULE("creatorOptionalNonWildcardInnerCreator", () => {
+      $.CONSUME(tokens.New);
+      $.OPTION(() => {
+        $.SUBRULE($.nonWildcardTypeArguments);
+      });
+      $.SUBRULE($.innerCreator);
+    });
+
+    // prefixExpression
+    // : ('+'|'-'|'++'|'--'|'~'|'!') expression
+    $.RULE("prefixExpression", () => {
+      $.OR([
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Plus);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Minus);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.PlusPlus);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.MinusMinus);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Tilde);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Exclamationmark);
+          }
+        }
+      ]);
+      $.SUBRULE($.expression);
+    });
+
+    // parExpressionOrCastExpressionOrLambdaExpression
+    // : '(' expression ')'
+    // | '(' typeType ')' expression
+    // | lambdaExpression // Java8
+    $.RULE("parExpressionOrCastExpressionOrLambdaExpression", () => {
+      $.CONSUME(tokens.LBrace);
+      // if parExpression
+      // -> no
+      //       - annotations
+      //       - typeArguments
+      //       - LSquare/RSquare
+      // -> only one expression
+      $.OR([
+        {
+          // empty parameters lambda expression
+          ALT: () => {
+            $.CONSUME(tokens.RBrace);
+            $.CONSUME(tokens.Pointer);
+            $.SUBRULE($.lambdaBody);
+          }
+        },
+        {
+          ALT: () => {
+            let formalParameters = false;
+            let i = 0;
+            $.OPTION(() => {
+              const final = $.CONSUME(tokens.Final);
+              final.cnt = i;
+              formalParameters = true;
+            });
+            $.SUBRULE($.expression);
+            if (!formalParameters) {
+              $.OPTION2(() => {
+                $.SUBRULE($.variableDeclaratorId);
+                formalParameters = true;
+              });
+            } else {
+              $.SUBRULE2($.variableDeclaratorId);
+            }
+
+            // For potentielle formalParameterList or identifierList
+            $.MANY(() => {
+              i++;
+              $.CONSUME(tokens.Comma);
+              if (formalParameters) {
+                $.OPTION3(() => {
+                  const final = $.CONSUME2(tokens.Final);
+                  final.cnt = i;
+                });
+              }
+              $.SUBRULE2($.expression);
+              if (formalParameters) {
+                $.SUBRULE3($.variableDeclaratorId);
+              }
+            });
+
+            $.CONSUME2(tokens.RBrace);
+            $.OR2([
+              // ('*'|'/'|'%')
+              {
+                ALT: () => {
+                  $.CONSUME2(tokens.Pointer);
+                  $.SUBRULE2($.lambdaBody);
+                }
+              },
+              {
+                GATE: () => !formalParameters,
+                ALT: () => {
+                  // for potentielle cast expression
+                  // if the first expression is not an identifier, second expression should be empty
+                  $.OPTION4(() => {
+                    $.SUBRULE3($.expression);
+                  });
+                }
+              }
+            ]);
+          }
+        }
+      ]);
+    });
+
+    // operatorExpressionRest
+    // : ('*'|'/'|'%')
+    //   | ('+'|'-')
+    //   | ('<<' | '>>>' | '>>')
+    //   | ('<=' | '>=' | '>' | '<')
+    //   | ('==' | '!=')
+    //   | '&'
+    //   | '^'
+    //   | '|'
+    //   | '&&'
+    //   | '||'
+    //   | ('=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^=' | '>>=' | '>>>=' | '<<=' | '%=')
+    //   expression
+    $.RULE("operatorExpressionRest", () => {
+      $.OR([
+        // ('*'|'/'|'%')
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Star);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Dash);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Percentage);
+          }
+        },
+        // ('+'|'-')
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Plus);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Minus);
+          }
+        },
+        // ('<<' | '>>>' | '>>')
+        {
+          ALT: () => {
+            $.CONSUME(tokens.LessLess);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.GreaterGreaterGreater);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.GreaterGreater);
+          }
+        },
+        // ('<=' | '>=' | '>' | '<')
+        {
+          ALT: () => {
+            $.CONSUME(tokens.LessEquals);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.GreaterEquals);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Greater);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Less);
+          }
+        },
+        // ('==' | '!=')
+        {
+          ALT: () => {
+            $.CONSUME(tokens.EqualsEquals);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.ExclamationmarkEquals);
+          }
+        },
+        // '&'
+        {
+          ALT: () => {
+            $.CONSUME(tokens.And);
+          }
+        },
+        // | '^'
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Caret);
+          }
+        },
+        // | '|'
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Or);
+          }
+        },
+        // | '&&'
+        {
+          ALT: () => {
+            $.CONSUME(tokens.AndAnd);
+          }
+        },
+        // | '||'
+        {
+          ALT: () => {
+            $.CONSUME(tokens.OrOr);
+          }
+        },
+        // ('=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^=' | '>>=' | '>>>=' | '<<=' | '%=')
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Equals);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.PlusEquals);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.MinusEquals);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.StarEquals);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.DashEquals);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.AndEquals);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.OrEquals);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.CaretEquals);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.GreaterGreaterEquals);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.GreaterGreaterGreaterEquals);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.LessLessEquals);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.PercentageEquals);
+          }
+        }
+      ]);
+      $.SUBRULE4($.expression);
     });
 
     // // Java 8 methodReference
@@ -1895,8 +2344,7 @@ class SelectParser extends chevrotain.Parser {
       $.SUBRULE($.lambdaBody);
     });
 
-    // // Java8
-    // lambdaParameters
+    // lambdaParameters // Java8
     // : IDENTIFIER
     // | formalParameters
     // | identifiers
@@ -2175,8 +2623,7 @@ class SelectParser extends chevrotain.Parser {
     });
 
     // primary
-    // : parExpression
-    // | THIS
+    // : THIS
     // | SUPER
     // | literal
     // | IDENTIFIER
@@ -2184,11 +2631,6 @@ class SelectParser extends chevrotain.Parser {
     // | nonWildcardTypeArguments (explicitGenericInvocationSuffix | THIS arguments)
     $.RULE("primary", () => {
       $.OR([
-        {
-          ALT: () => {
-            $.SUBRULE($.parExpression);
-          }
-        },
         {
           ALT: () => {
             $.CONSUME(tokens.This);
@@ -2206,20 +2648,37 @@ class SelectParser extends chevrotain.Parser {
         },
         {
           ALT: () => {
-            $.SUBRULE($.typeTypeOrVoid);
-            $.CONSUME(tokens.Dot);
-            $.CONSUME(tokens.Class);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Identifier);
+            $.OR2([
+              {
+                ALT: () => {
+                  $.SUBRULE($.typeType);
+                  $.MANY({
+                    GATE: function() {
+                      return this.LA(2).tokenType !== tokens.Class;
+                    },
+                    DEF: function() {
+                      $.CONSUME(tokens.Dot);
+                      $.SUBRULE2($.classOrInterfaceType);
+                    }
+                  });
+                  $.OPTION(() => {
+                    $.CONSUME2(tokens.Dot);
+                    $.CONSUME(tokens.Class);
+                  });
+                }
+              },
+              {
+                ALT: () => {
+                  $.CONSUME(tokens.Void);
+                }
+              }
+            ]);
           }
         },
         {
           ALT: () => {
             $.SUBRULE($.nonWildcardTypeArguments);
-            $.OR2([
+            $.OR3([
               {
                 ALT: () => {
                   $.SUBRULE($.explicitGenericInvocationSuffix);

@@ -20,12 +20,21 @@ describe("formalParameters", () => {
           {
             type: "FORMAL_PARAMETER",
             modifiers: [],
-            dotDotDot: false,
+            typeType: {
+              type: "TYPE_TYPE",
+              annotations: [],
+              value: {
+                type: "PRIMITIVE_TYPE",
+                value: "boolean"
+              },
+              cntSquares: 0
+            },
             id: {
               type: "VARIABLE_DECLARATOR_ID",
               id: "a",
               cntSquares: 0
-            }
+            },
+            dotDotDot: false
           }
         ]
       }

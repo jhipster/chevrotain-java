@@ -8,7 +8,8 @@ describe("lambdaParameters", () => {
 
   it("empty parameters", () => {
     expect(Parser.parse("()", parser => parser.lambdaParameters())).toEqual({
-      type: "EMPTY_PARAMETERS"
+      type: "FORMAL_PARAMETERS",
+      parameters: undefined
     });
   });
 
@@ -24,6 +25,15 @@ describe("lambdaParameters", () => {
             type: "FORMAL_PARAMETER",
             modifiers: [],
             dotDotDot: false,
+            typeType: {
+              type: "TYPE_TYPE",
+              annotations: [],
+              value: {
+                type: "PRIMITIVE_TYPE",
+                value: "boolean"
+              },
+              cntSquares: 0
+            },
             id: {
               type: "VARIABLE_DECLARATOR_ID",
               id: "a",

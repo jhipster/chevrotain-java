@@ -8,34 +8,161 @@ describe("expression", () => {
     });
   });
 
-  it("creator", () => {
-    expect(Parser.parse("new a()", parser => parser.expression())).toEqual({
-      type: "SIMPLE_CREATOR",
-      name: {
-        type: "IDENTIFIER_NAME",
-        elements: [
-          {
-            type: "IDENTIFIER_NAME_ELEMENT",
-            id: "a",
-            typeArguments: undefined
-          }
-        ]
+  it("instanceofExpression", () => {
+    expect(
+      Parser.parse("this instanceof boolean", parser => parser.expression())
+    ).toEqual({
+      type: "INSTANCEOF_EXPRESSION",
+      expression: {
+        type: "THIS"
       },
-      rest: {
-        type: "CLASS_CREATOR_REST",
-        arguments: {
-          type: "ARGUMENTS"
-        },
-        body: undefined
+      instanceof: {
+        type: "TYPE_TYPE",
+        annotations: [],
+        value: { type: "PRIMITIVE_TYPE", value: "boolean" },
+        cntSquares: 0
       }
     });
   });
 
-  it("methodCall", () => {
-    expect(Parser.parse("a()", parser => parser.expression())).toEqual({
-      type: "METHOD_CALL",
-      name: "a",
-      parameters: undefined
+  it("squareExpression", () => {
+    expect(Parser.parse("this[super]", parser => parser.expression())).toEqual({
+      type: "SQUARE_EXPRESSION",
+      expression: {
+        type: "THIS"
+      },
+      squareExpression: {
+        type: "SUPER"
+      }
+    });
+  });
+
+  it("postfixExpression", () => {
+    expect(Parser.parse("this++", parser => parser.expression())).toEqual({
+      type: "POSTFIX_EXPRESSION",
+      postfix: "++",
+      expression: {
+        type: "THIS"
+      }
+    });
+  });
+
+  it("ifElseExpression", () => {
+    expect(
+      Parser.parse("this ? super : null", parser => parser.expression())
+    ).toEqual({
+      type: "IF_ELSE_EXPRESSION",
+      condition: {
+        type: "THIS"
+      },
+      if: {
+        type: "SUPER"
+      },
+      else: {
+        type: "NULL"
+      }
+    });
+  });
+
+  it("qualifiedExpression", () => {
+    expect(Parser.parse("this.a()", parser => parser.expression())).toEqual({
+      type: "QUALIFIED_EXPRESSION",
+      expression: {
+        type: "THIS"
+      },
+      rest: {
+        type: "METHOD_CALL",
+        name: "a",
+        parameters: undefined
+      }
+    });
+  });
+
+  it("operatorExpression Star", () => {
+    expect(Parser.parse("this*super", parser => parser.expression())).toEqual({
+      type: "OPERATOR_EXPRESSION",
+      left: {
+        type: "THIS"
+      },
+      operator: "*",
+      right: {
+        type: "SUPER"
+      }
+    });
+  });
+
+  it("multiple operatorExpressions", () => {
+    expect(
+      Parser.parse("this*super+null", parser => parser.expression())
+    ).toEqual({
+      type: "OPERATOR_EXPRESSION",
+      left: {
+        type: "THIS"
+      },
+      operator: "*",
+      right: {
+        type: "OPERATOR_EXPRESSION",
+        left: {
+          type: "SUPER"
+        },
+        operator: "+",
+        right: {
+          type: "NULL"
+        }
+      }
+    });
+  });
+
+  it("PrefixExpression", () => {
+    expect(Parser.parse("+this", parser => parser.expression())).toEqual({
+      type: "PREFIX_EXPRESSION",
+      prefix: "+",
+      expression: {
+        type: "THIS"
+      }
+    });
+  });
+
+  it("parExpression", () => {
+    expect(Parser.parse("(this)", parser => parser.expression())).toEqual({
+      type: "PAR_EXPRESSION",
+      expression: {
+        type: "THIS"
+      }
+    });
+  });
+
+  it("lambdaExpression: one identifier with parens", () => {
+    expect(Parser.parse("(a) -> {}", parser => parser.expression())).toEqual({
+      type: "LAMBDA_EXPRESSION",
+      parameters: {
+        type: "IDENTIFIERS",
+        identifiers: {
+          type: "IDENTIFIER_LIST",
+          identifiers: ["a"]
+        }
+      },
+      body: {
+        type: "BLOCK",
+        statements: []
+      }
+    });
+  });
+
+  it("lambdaExpression: one identifier without parens", () => {
+    expect(Parser.parse("a -> {}", parser => parser.expression())).toEqual({
+      type: "LAMBDA_EXPRESSION",
+      parameters: {
+        type: "IDENTIFIERS",
+        identifiers: {
+          type: "IDENTIFIER_LIST",
+          identifiers: ["a"]
+        }
+      },
+      body: {
+        type: "BLOCK",
+        statements: []
+      }
     });
   });
 });

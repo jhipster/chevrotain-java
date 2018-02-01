@@ -880,14 +880,16 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     const modifiers = ctx.variableModifier.map(modifier =>
       this.visit(modifier)
     );
-    const isDotDotDot = ctx.DotDotDot.length > 0;
+    const typeType = this.visit(ctx.typeType);
     const id = this.visit(ctx.variableDeclaratorId);
+    const isDotDotDot = ctx.DotDotDot.length > 0;
 
     return {
       type: "FORMAL_PARAMETER",
       modifiers: modifiers,
-      dotDotDot: isDotDotDot,
-      id: id
+      typeType: typeType,
+      id: id,
+      dotDotDot: isDotDotDot
     };
   }
 
@@ -1352,6 +1354,127 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   expression(ctx) {
+    if (ctx.atomic.length > 0) {
+      const atomic = this.visit(ctx.atomic);
+
+      if (ctx.instanceofExpressionRest.length > 0) {
+        const instanceofExpressionRest = this.visit(
+          ctx.instanceofExpressionRest
+        );
+
+        return {
+          type: "INSTANCEOF_EXPRESSION",
+          expression: atomic,
+          instanceof: instanceofExpressionRest.typeType
+        };
+      }
+
+      if (ctx.squareExpressionRest.length > 0) {
+        const squareExpressionRest = this.visit(ctx.squareExpressionRest);
+
+        return {
+          type: "SQUARE_EXPRESSION",
+          expression: atomic,
+          squareExpression: squareExpressionRest.expression
+        };
+      }
+
+      if (ctx.postfixExpressionRest.length > 0) {
+        const postfixExpressionRest = this.visit(ctx.postfixExpressionRest);
+
+        return {
+          type: "POSTFIX_EXPRESSION",
+          postfix: postfixExpressionRest.value,
+          expression: atomic
+        };
+      }
+
+      if (ctx.ifElseExpressionRest.length > 0) {
+        const ifElseExpressionRest = this.visit(ctx.ifElseExpressionRest);
+
+        return {
+          type: "IF_ELSE_EXPRESSION",
+          condition: atomic,
+          if: ifElseExpressionRest.if,
+          else: ifElseExpressionRest.else
+        };
+      }
+
+      if (ctx.qualifiedExpressionRest.length > 0) {
+        const rest = this.visit(ctx.qualifiedExpressionRest);
+
+        return {
+          type: "QUALIFIED_EXPRESSION",
+          expression: atomic,
+          rest: rest
+        };
+      }
+
+      if (ctx.operatorExpressionRest.length > 0) {
+        const operatorExpressionRest = this.visit(ctx.operatorExpressionRest);
+
+        return {
+          type: "OPERATOR_EXPRESSION",
+          left: atomic,
+          operator: operatorExpressionRest.operator,
+          right: operatorExpressionRest.expression
+        };
+      }
+
+      if (ctx.Pointer.length > 0) {
+        let identifier = undefined;
+        if (atomic.type !== "TYPE_TYPE") {
+          // throw error
+        }
+
+        if (
+          atomic.annotations.length > 0 ||
+          atomic.cntSquares > 0 ||
+          atomic.dotDotDot
+        ) {
+          // throw error
+        }
+        if (atomic.value.type !== "CLASS_OR_INTERFACE_TYPE") {
+          // throw error
+        }
+
+        if (atomic.value.elements.length > 1) {
+          // throw error
+        }
+        if (atomic.value.elements[0].typeArguments !== undefined) {
+          // throw error
+        }
+
+        identifier = atomic.value.elements[0].name;
+
+        const body = this.visit(ctx.lambdaBody);
+
+        return {
+          type: "LAMBDA_EXPRESSION",
+          parameters: {
+            type: "IDENTIFIERS",
+            identifiers: {
+              type: "IDENTIFIER_LIST",
+              identifiers: [identifier]
+            }
+          },
+          body: body
+        };
+      }
+
+      return atomic;
+    }
+
+    if (ctx.prefixExpression.length > 0) {
+      return this.visit(ctx.prefixExpression);
+    }
+
+    if (ctx.parExpressionOrCastExpressionOrLambdaExpression.length > 0) {
+      return this.visit(ctx.parExpressionOrCastExpressionOrLambdaExpression);
+    }
+  }
+
+  atomic(ctx) {
     if (ctx.methodCall.length > 0) {
       return this.visit(ctx.methodCall);
     }
@@ -1363,6 +1486,410 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     if (ctx.creator.length > 0) {
       return this.visit(ctx.creator);
     }
+  }
+
+  instanceofExpressionRest(ctx) {
+    const typeType = this.visit(ctx.typeType);
+
+    return {
+      type: "INSTANCEOF_EXPRESSION_REST",
+      typeType: typeType
+    };
+  }
+
+  squareExpressionRest(ctx) {
+    const expression = this.visit(ctx.expression);
+
+    return {
+      type: "SQUARE_EXPRESSION_REST",
+      expression: expression
+    };
+  }
+
+  postfixExpressionRest(ctx) {
+    let value = undefined;
+
+    if (ctx.PlusPlus.length > 0) {
+      value = "++";
+    }
+
+    if (ctx.MinusMinus.length > 0) {
+      value = "--";
+    }
+
+    return {
+      type: "POSTFIX_EXPRESSION_REST",
+      value: value
+    };
+  }
+
+  ifElseExpressionRest(ctx) {
+    const ifExpression = this.visit(ctx.expression[0]);
+    const elseExpression = this.visit(ctx.expression[1]);
+
+    return {
+      type: "IF_ELSE_EXPRESSION_REST",
+      if: ifExpression,
+      else: elseExpression
+    };
+  }
+
+  operatorExpressionRest(ctx) {
+    let operator = undefined;
+    // ('*'|'/'|'%')
+    if (ctx.Star.length > 0) {
+      operator = "*";
+    }
+    if (ctx.Dash.length > 0) {
+      operator = "/";
+    }
+    if (ctx.Percentage.length > 0) {
+      operator = "%";
+    }
+    // ('+'|'-')
+    if (ctx.Plus.length > 0) {
+      operator = "+";
+    }
+    if (ctx.Minus.length > 0) {
+      operator = "-";
+    }
+    // ('<<' | '>>>' | '>>')
+    if (ctx.LessLess.length > 0) {
+      operator = "<<";
+    }
+    if (ctx.GreaterGreater.length > 0) {
+      operator = ">>";
+    }
+    if (ctx.GreaterGreaterGreater.length > 0) {
+      operator = ">>>";
+    }
+    // ('<=' | '>=' | '>' | '<')
+    if (ctx.LessEquals.length > 0) {
+      operator = "<=";
+    }
+    if (ctx.GreaterEquals.length > 0) {
+      operator = ">=";
+    }
+    if (ctx.Greater.length > 0) {
+      operator = ">";
+    }
+    if (ctx.Less.length > 0) {
+      operator = "<";
+    }
+    // ('==' | '!=')
+    if (ctx.EqualsEquals.length > 0) {
+      operator = "==";
+    }
+    if (ctx.ExclamationmarkEquals.length > 0) {
+      operator = "!=";
+    }
+    // '&'
+    if (ctx.And.length > 0) {
+      operator = "&";
+    }
+    // '^'
+    if (ctx.Caret.length > 0) {
+      operator = "^";
+    }
+    // '|'
+    if (ctx.Or.length > 0) {
+      operator = "|";
+    }
+    // '&&'
+    if (ctx.AndAnd.length > 0) {
+      operator = "&&";
+    }
+    // '||'
+    if (ctx.OrOr.length > 0) {
+      operator = "||";
+    }
+    // ('=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^=' | '>>=' | '>>>=' | '<<=' | '%=')
+    if (ctx.Equals.length > 0) {
+      operator = "=";
+    }
+    if (ctx.PlusEquals.length > 0) {
+      operator = "+=";
+    }
+    if (ctx.MinusEquals.length > 0) {
+      operator = "-=";
+    }
+    if (ctx.StarEquals.length > 0) {
+      operator = "*=";
+    }
+    if (ctx.DashEquals.length > 0) {
+      operator = "/=";
+    }
+    if (ctx.AndEquals.length > 0) {
+      operator = "&=";
+    }
+    if (ctx.OrEquals.length > 0) {
+      operator = "|=";
+    }
+    if (ctx.CaretEquals.length > 0) {
+      operator = "^=";
+    }
+    if (ctx.GreaterGreaterEquals.length > 0) {
+      operator = ">>=";
+    }
+    if (ctx.GreaterGreaterGreaterEquals.length > 0) {
+      operator = ">>>=";
+    }
+    if (ctx.LessLessEquals.length > 0) {
+      operator = "<<=";
+    }
+    if (ctx.PercentageEquals.length > 0) {
+      operator = "%=";
+    }
+
+    const right = this.visit(ctx.expression);
+
+    if (operator) {
+      return {
+        type: "OPERATOR_EXPRESSION_REST",
+        operator: operator,
+        expression: right
+      };
+    }
+  }
+
+  qualifiedExpressionRest(ctx) {
+    if (ctx.Identifier.length > 0) {
+      return ctx.Identifier[0].image;
+    }
+
+    if (ctx.methodCall.length > 0) {
+      return this.visit(ctx.methodCall);
+    }
+
+    if (ctx.This.length > 0) {
+      return {
+        type: "THIS"
+      };
+    }
+
+    if (ctx.Super.length > 0) {
+      return {
+        type: "SUPER"
+      };
+    }
+
+    if (ctx.creatorOptionalNonWildcardInnerCreator.length > 0) {
+      return this.visit(ctx.creatorOptionalNonWildcardInnerCreator);
+    }
+
+    if (ctx.explicitGenericInvocation.length > 0) {
+      return this.visit(ctx.explicitGenericInvocation);
+    }
+  }
+
+  parExpressionOrCastExpressionOrLambdaExpression(ctx) {
+    if (ctx.Pointer.length > 0) {
+      const body = this.visit(ctx.lambdaBody);
+
+      // const parameters = {
+      //   type: "IDENTIFIERS",
+      //   identifiers: {
+      //     type: "IDENTIFIER_LIST",
+      //     identifiers: ["a"]
+      //   }
+      // };
+      let parameters = undefined;
+      if (ctx.variableDeclaratorId.length > 0) {
+        parameters = {
+          type: "FORMAL_PARAMETERS",
+          parameters: undefined
+        };
+      } else {
+        parameters = {
+          type: "IDENTIFIERS",
+          identifiers: undefined
+        };
+      }
+      if (ctx.expression.length > 0) {
+        if (ctx.variableDeclaratorId.length > 0) {
+          parameters.parameters = {
+            type: "FORMAL_PARAMETER_LIST",
+            formalParameters: []
+          };
+
+          for (let i = 0; i < ctx.expression.length; i++) {
+            const typeType = this.visit(ctx.expression[i]);
+
+            if (typeType.cntSquares > 0 || typeType.dotDotDot) {
+              // throw error
+            }
+
+            const variableDeclaratorId = this.visit(
+              ctx.variableDeclaratorId[i]
+            );
+
+            if (ctx.Final.find(final => final.cnt === i) !== undefined) {
+              typeType.annotations.push({
+                type: "MODIFIER",
+                value: "final"
+              });
+            }
+
+            parameters.parameters.formalParameters.push({
+              type: "FORMAL_PARAMETER",
+              modifiers: typeType.annotations,
+              typeType: typeType.value,
+              id: variableDeclaratorId,
+              dotDotDot: false
+            });
+          }
+        } else {
+          parameters.identifiers = {
+            type: "IDENTIFIER_LIST",
+            identifiers: []
+          };
+
+          parameters.identifiers.identifiers = ctx.expression.map(
+            expression => {
+              const typeType = this.visit(expression);
+              if (typeType.type !== "TYPE_TYPE") {
+                // throw error
+              }
+              if (
+                typeType.annotations.length > 0 ||
+                typeType.cntSquares > 0 ||
+                typeType.dotDotDot
+              ) {
+                // throw error
+              }
+
+              if (typeType.value.type !== "CLASS_OR_INTERFACE_TYPE") {
+                // throw error
+              }
+
+              if (typeType.value.elements.length > 1) {
+                // throw error
+              }
+              if (typeType.value.elements[0].typeArguments !== undefined) {
+                // throw error
+              }
+
+              return typeType.value.elements[0].name;
+            }
+          );
+        }
+      }
+
+      return {
+        type: "LAMBDA_EXPRESSION",
+        parameters: parameters,
+        body: body
+      };
+    }
+
+    if (ctx.Final.length > 0) {
+      // throw error
+    }
+
+    if (ctx.expression.length >= 2) {
+      // We have a cast expression
+
+      const value = this.visit(ctx.expression[0]);
+      const expression = this.visit(ctx.expression[1]);
+
+      // if identifier is not an identifier throw error
+      if (
+        value.type !== "TYPE_TYPE" ||
+        (value.value.type !== "CLASS_OR_INTERFACE_TYPE" &&
+          value.value.type !== "PRIMITIVE_TYPE")
+      ) {
+        throw new MismatchedTokenException(
+          "Found cast expression but cast expression is not an Identifier",
+          undefined
+        );
+      }
+
+      // const annotations = ctx.annotation.map(annotation =>
+      //   this.visit(annotation)
+      // );
+      // const cntSquares = ctx.LSquare.length;
+
+      return {
+        type: "CAST_EXPRESSION",
+        castType: value,
+        expression: expression
+      };
+    }
+
+    // parExpression
+
+    // if parExpression
+    // -> no
+    //       - annotations
+    //       - typeArguments
+    //       - LSquare/RSquare
+    // -> only one expression
+
+    if (
+      // ctx.annotation.length > 0 ||
+      // ctx.typeArguments.length > 0 ||
+      // ctx.LSquare.length > 0 ||
+      ctx.expression.length !== 1
+    ) {
+      throw new MismatchedTokenException(
+        "Found parenthesis expression with annotations, typeArguments or Squares",
+        undefined
+      );
+    }
+
+    const expression = this.visit(ctx.expression);
+
+    return {
+      type: "PAR_EXPRESSION",
+      expression: expression
+    };
+  }
+
+  creatorOptionalNonWildcardInnerCreator(ctx) {
+    const typeArguments = this.visit(ctx.nonWildcardTypeArguments);
+    const innerCreator = this.visit(ctx.innerCreator);
+
+    return {
+      type: "CREATOR_OPTIONAL_NON_WILDCARD_INNER_CREATOR",
+      typeArguments: typeArguments,
+      innerCreator: innerCreator
+    };
+  }
+
+  prefixExpression(ctx) {
+    let prefix = undefined;
+
+    if (ctx.Plus.length > 0) {
+      prefix = "+";
+    }
+
+    if (ctx.Minus.length > 0) {
+      prefix = "-";
+    }
+
+    if (ctx.PlusPlus.length > 0) {
+      prefix = "++";
+    }
+
+    if (ctx.MinusMinus.length > 0) {
+      prefix = "--";
+    }
+
+    if (ctx.Tilde.length > 0) {
+      prefix = "~";
+    }
+
+    if (ctx.Exclamationmark.length > 0) {
+      prefix = "!";
+    }
+
+    const expression = this.visit(ctx.expression);
+
+    return {
+      type: "PREFIX_EXPRESSION",
+      prefix: prefix,
+      expression: expression
+    };
   }
 
   lambdaExpression(ctx) {
@@ -1401,7 +1928,8 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
     if (ctx.LBrace.length > 0) {
       return {
-        type: "EMPTY_PARAMETERS"
+        type: "FORMAL_PARAMETERS",
+        parameters: undefined
       };
     }
   }
@@ -1594,10 +2122,6 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   primary(ctx) {
-    if (ctx.parExpression.length > 0) {
-      return this.visit(ctx.parExpression);
-    }
-
     if (ctx.nonWildcardTypeArguments.length > 0) {
       const typeArguments = this.visit(ctx.nonWildcardTypeArguments);
       let args = undefined;
@@ -1634,17 +2158,28 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       return this.visit(ctx.literal);
     }
 
-    if (ctx.Identifier.length > 0) {
-      return ctx.Identifier[0].image;
+    if (ctx.Void.length > 0) {
+      return {
+        type: "VOID"
+      };
     }
 
-    if (ctx.typeTypeOrVoid.length > 0) {
-      const typeTypeOrVoid = this.visit(ctx.typeTypeOrVoid);
+    if (ctx.typeType.length > 0) {
+      const typeType = this.visit(ctx.typeType);
+      if (ctx.classOrInterfaceType.length > 0) {
+        const classOrInterfaceTypes = this.visit(ctx.classOrInterfaceType);
+        for (let i = 0; i < classOrInterfaceTypes.length; i++) {
+          typeType.elements.push(classOrInterfaceTypes[i]);
+        }
+      }
 
-      return {
-        type: "TYPE_TYPE_OR_VOID_DOT_CLASS",
-        typeTypeOrVoid: typeTypeOrVoid
-      };
+      if (ctx.Class.length > 0) {
+        typeType.value.elements.push({
+          type: "CLASS"
+        });
+      }
+
+      return typeType;
     }
   }
 

@@ -21,16 +21,111 @@ describe("primary", () => {
     });
   });
 
-  it("identifier", () => {
-    expect(Parser.parse("A", parser => parser.primary())).toEqual("A");
+  it("void", () => {
+    expect(Parser.parse("void", parser => parser.primary())).toEqual({
+      type: "VOID"
+    });
   });
 
-  it("typeTypeOrVoidDotClass", () => {
-    expect(Parser.parse("void.class", parser => parser.primary())).toEqual({
-      type: "TYPE_TYPE_OR_VOID_DOT_CLASS",
-      typeTypeOrVoid: {
-        type: "VOID"
-      }
+  it("identifier", () => {
+    expect(Parser.parse("A", parser => parser.primary())).toEqual({
+      type: "TYPE_TYPE",
+      annotations: [],
+      value: {
+        elements: [
+          {
+            type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
+            name: "A",
+            typeArguments: undefined
+          }
+        ],
+        type: "CLASS_OR_INTERFACE_TYPE"
+      },
+      cntSquares: 0
+    });
+  });
+
+  it("identifier.identifier", () => {
+    expect(Parser.parse("A.B", parser => parser.primary())).toEqual({
+      type: "TYPE_TYPE",
+      annotations: [],
+      value: {
+        elements: [
+          {
+            type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
+            name: "A",
+            typeArguments: undefined
+          },
+          {
+            type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
+            name: "B",
+            typeArguments: undefined
+          }
+        ],
+        type: "CLASS_OR_INTERFACE_TYPE"
+      },
+      cntSquares: 0
+    });
+  });
+
+  it("identifier.class", () => {
+    expect(Parser.parse("A.class", parser => parser.primary())).toEqual({
+      type: "TYPE_TYPE",
+      annotations: [],
+      value: {
+        elements: [
+          {
+            type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
+            name: "A",
+            typeArguments: undefined
+          },
+          { type: "CLASS" }
+        ],
+        type: "CLASS_OR_INTERFACE_TYPE"
+      },
+      cntSquares: 0
+    });
+  });
+
+  it("identifier with typeArguments", () => {
+    expect(Parser.parse("A<B>", parser => parser.primary())).toEqual({
+      type: "TYPE_TYPE",
+      annotations: [],
+      value: {
+        type: "CLASS_OR_INTERFACE_TYPE",
+        elements: [
+          {
+            type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
+            name: "A",
+            typeArguments: {
+              type: "TYPE_ARGUMENTS",
+              arguments: [
+                {
+                  type: "TYPE_ARGUMENT",
+                  argument: {
+                    type: "TYPE_TYPE",
+                    annotations: [],
+                    value: {
+                      elements: [
+                        {
+                          type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
+                          name: "B",
+                          typeArguments: undefined
+                        }
+                      ],
+                      type: "CLASS_OR_INTERFACE_TYPE"
+                    },
+                    cntSquares: 0
+                  },
+                  extends: undefined,
+                  super: undefined
+                }
+              ]
+            }
+          }
+        ]
+      },
+      cntSquares: 0
     });
   });
 
@@ -61,15 +156,6 @@ describe("primary", () => {
         arguments: {
           type: "ARGUMENTS"
         }
-      }
-    });
-  });
-
-  it("parExpression", () => {
-    expect(Parser.parse("(this)", parser => parser.primary())).toEqual({
-      type: "PAR_EXPRESSION",
-      expression: {
-        type: "THIS"
       }
     });
   });

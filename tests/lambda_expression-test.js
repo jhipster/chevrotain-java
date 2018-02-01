@@ -8,7 +8,8 @@ describe("lambdaExpression", () => {
     ).toEqual({
       type: "LAMBDA_EXPRESSION",
       parameters: {
-        type: "EMPTY_PARAMETERS"
+        type: "FORMAL_PARAMETERS",
+        parameters: undefined
       },
       body: {
         type: "BLOCK",

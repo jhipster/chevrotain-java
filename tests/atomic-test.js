@@ -1,0 +1,41 @@
+"use strict";
+const Parser = require("../src/index");
+
+describe("atomic", () => {
+  it("primary", () => {
+    expect(Parser.parse("this", parser => parser.atomic())).toEqual({
+      type: "THIS"
+    });
+  });
+
+  it("creator", () => {
+    expect(Parser.parse("new a()", parser => parser.atomic())).toEqual({
+      type: "SIMPLE_CREATOR",
+      name: {
+        type: "IDENTIFIER_NAME",
+        elements: [
+          {
+            type: "IDENTIFIER_NAME_ELEMENT",
+            id: "a",
+            typeArguments: undefined
+          }
+        ]
+      },
+      rest: {
+        type: "CLASS_CREATOR_REST",
+        arguments: {
+          type: "ARGUMENTS"
+        },
+        body: undefined
+      }
+    });
+  });
+
+  it("methodCall", () => {
+    expect(Parser.parse("a()", parser => parser.atomic())).toEqual({
+      type: "METHOD_CALL",
+      name: "a",
+      parameters: undefined
+    });
+  });
+});

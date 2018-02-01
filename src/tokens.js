@@ -292,6 +292,12 @@ const Assert = createKeywordToken({
   label: "'assert'"
 });
 
+const Instanceof = createKeywordToken({
+  name: "Instanceof",
+  pattern: /instanceof/,
+  label: "'instanceof'"
+});
+
 const Volatile = createKeywordToken({
   name: "Volatile",
   pattern: /volatile/,
@@ -370,10 +376,58 @@ const Less = createToken({
   label: "'<'"
 });
 
+const LessEquals = createToken({
+  name: "LessEquals",
+  pattern: /<=/,
+  label: "'<='"
+});
+
+const LessLess = createToken({
+  name: "LessLess",
+  pattern: /<</,
+  label: "'<<'"
+});
+
+const LessLessEquals = createToken({
+  name: "LessLessEquals",
+  pattern: /<<=/,
+  label: "'<<='"
+});
+
 const Greater = createToken({
   name: "Greater",
   pattern: />/,
   label: "'>'"
+});
+
+const GreaterEquals = createToken({
+  name: "GreaterEquals",
+  pattern: />=/,
+  label: "'>='"
+});
+
+const GreaterGreater = createToken({
+  name: "GreaterGreater",
+  pattern: />>/,
+  label: "'>>'"
+});
+
+const GreaterGreaterEquals = createToken({
+  name: "GreaterGreaterEquals",
+  pattern: />>=/,
+  label: "'>>='"
+});
+
+const GreaterGreaterGreater = createToken({
+  name: "GreaterGreaterGreater",
+  pattern: />>>/,
+  label: "'>>>'"
+});
+
+const GreaterGreaterGreaterEquals = createToken({
+  name: "GreaterGreaterGreaterEquals",
+  pattern: />>>=/,
+  label: "'>>>='"
 });
 
 const DotDotDot = createToken({
@@ -412,10 +466,52 @@ const Colon = createToken({
   label: "':'"
 });
 
-const Equal = createToken({
-  name: "Equal",
+const Equals = createToken({
+  name: "Equals",
   pattern: /=/,
   label: "'='"
+});
+
+const EqualsEquals = createToken({
+  name: "EqualsEquals",
+  pattern: /==/,
+  label: "'=='"
+});
+
+const Minus = createToken({
+  name: "Minus",
+  pattern: /-/,
+  label: "'-'"
+});
+
+const MinusEquals = createToken({
+  name: "MinusEquals",
+  pattern: /-=/,
+  label: "'-='"
+});
+
+const MinusMinus = createToken({
+  name: "MinusMinus",
+  pattern: /--/,
+  label: "'--'"
+});
+
+const Plus = createToken({
+  name: "Plus",
+  pattern: /\+/,
+  label: "'+'"
+});
+
+const PlusEquals = createToken({
+  name: "PlusEquals",
+  pattern: /\+=/,
+  label: "'+='"
+});
+
+const PlusPlus = createToken({
+  name: "PlusPlus",
+  pattern: /\+\+/,
+  label: "'++'"
 });
 
 const And = createToken({
@@ -424,10 +520,34 @@ const And = createToken({
   label: "'&'"
 });
 
+const AndAnd = createToken({
+  name: "AndAnd",
+  pattern: /&&/,
+  label: "'&&'"
+});
+
+const AndEquals = createToken({
+  name: "AndEquals",
+  pattern: /&=/,
+  label: "'&='"
+});
+
 const At = createToken({
   name: "At",
   pattern: /@/,
   label: "'@'"
+});
+
+const Caret = createToken({
+  name: "Caret",
+  pattern: /\^/,
+  label: "'^'"
+});
+
+const CaretEquals = createToken({
+  name: "CaretEquals",
+  pattern: /\^=/,
+  label: "'^='"
 });
 
 const Questionmark = createToken({
@@ -436,16 +556,76 @@ const Questionmark = createToken({
   label: "'?'"
 });
 
-const VerticalLine = createToken({
-  name: "VerticalLine",
+const Exclamationmark = createToken({
+  name: "Exclamationmark",
+  pattern: /!/,
+  label: "'!'"
+});
+
+const ExclamationmarkEquals = createToken({
+  name: "ExclamationmarkEquals",
+  pattern: /!=/,
+  label: "'!='"
+});
+
+const Tilde = createToken({
+  name: "Tilde",
+  pattern: /~/,
+  label: "'~'"
+});
+
+const Or = createToken({
+  name: "Or",
   pattern: /\|/,
   label: "'|'"
+});
+
+const OrEquals = createToken({
+  name: "OrEquals",
+  pattern: /\|=/,
+  label: "'|='"
+});
+
+const OrOr = createToken({
+  name: "OrOr",
+  pattern: /\|\|/,
+  label: "'||'"
 });
 
 const Star = createToken({
   name: "Star",
   pattern: /\*/,
   label: "'*'"
+});
+
+const StarEquals = createToken({
+  name: "StarEquals",
+  pattern: /\*=/,
+  label: "'*='"
+});
+
+const Dash = createToken({
+  name: "Dash",
+  pattern: /\//,
+  label: "'/'"
+});
+
+const DashEquals = createToken({
+  name: "DashEquals",
+  pattern: /\/=/,
+  label: "'/='"
+});
+
+const Percentage = createToken({
+  name: "Percentage",
+  pattern: /%/,
+  label: "'%'"
+});
+
+const PercentageEquals = createToken({
+  name: "PercentageEquals",
+  pattern: /%=/,
+  label: "'%='"
 });
 
 const BinaryLiteral = createToken({
@@ -566,6 +746,7 @@ const allTokens = [
   False,
   Null,
   Assert,
+  Instanceof,
   Volatile,
   Strictfp,
   Class,
@@ -590,21 +771,50 @@ const allTokens = [
   SemiColon,
   ColonColon,
   Colon,
-  Equal,
+  EqualsEquals,
+  ExclamationmarkEquals,
+  Equals,
+  PlusPlus,
+  PlusEquals,
+  Plus,
+  Pointer,
+  MinusMinus,
+  MinusEquals,
+  Minus,
+  AndAnd,
+  AndEquals,
   And,
+  OrOr,
+  OrEquals,
+  Or,
   LBrace,
   RBrace,
   LCurly,
   RCurly,
   LSquare,
   RSquare,
-  Pointer,
+  LessLessEquals,
+  LessLess,
+  LessEquals,
   Less,
+  GreaterGreaterEquals,
+  GreaterGreaterGreaterEquals,
+  GreaterGreaterGreater,
+  GreaterGreater,
+  GreaterEquals,
   Greater,
   At,
+  CaretEquals,
+  Caret,
+  StarEquals,
   Star,
+  DashEquals,
+  Dash,
+  PercentageEquals,
+  Percentage,
   Questionmark,
-  VerticalLine
+  Exclamationmark,
+  Tilde
 ];
 
 module.exports = {
@@ -652,6 +862,7 @@ module.exports = {
     False,
     Null,
     Assert,
+    Instanceof,
     Volatile,
     Strictfp,
     Class,
@@ -675,20 +886,49 @@ module.exports = {
     SemiColon,
     ColonColon,
     Colon,
-    Equal,
+    EqualsEquals,
+    ExclamationmarkEquals,
+    Equals,
+    PlusPlus,
+    PlusEquals,
+    Plus,
+    Pointer,
+    MinusMinus,
+    MinusEquals,
+    Minus,
+    AndAnd,
+    AndEquals,
     And,
+    OrOr,
+    OrEquals,
+    Or,
     LBrace,
     RBrace,
     LCurly,
     RCurly,
     LSquare,
     RSquare,
-    Pointer,
+    LessLessEquals,
+    LessLess,
+    LessEquals,
     Less,
+    GreaterGreaterEquals,
+    GreaterGreaterGreaterEquals,
+    GreaterGreaterGreater,
+    GreaterGreater,
+    GreaterEquals,
     Greater,
     At,
+    CaretEquals,
+    Caret,
+    StarEquals,
     Star,
+    DashEquals,
+    Dash,
+    PercentageEquals,
+    Percentage,
     Questionmark,
-    VerticalLine
+    Exclamationmark,
+    Tilde
   }
 };
