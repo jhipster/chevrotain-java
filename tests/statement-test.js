@@ -34,6 +34,22 @@ describe("statement", () => {
     });
   });
 
+  it("forStatement", () => {
+    expect(Parser.parse("for (;;) {}", parser => parser.statement())).toEqual({
+      type: "FOR_STATEMENT",
+      forControl: {
+        type: "BASIC_FOR_STATEMENT",
+        forInit: undefined,
+        expression: undefined,
+        expressionList: undefined
+      },
+      statement: {
+        type: "BLOCK",
+        statements: []
+      }
+    });
+  });
+
   it("whileStatement", () => {
     expect(
       Parser.parse("while (this) {}", parser => parser.statement())

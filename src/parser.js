@@ -999,12 +999,7 @@ class SelectParser extends chevrotain.Parser {
         { ALT: () => $.SUBRULE($.block) },
         { ALT: () => $.SUBRULE($.assertStatement) },
         { ALT: () => $.SUBRULE($.ifStatement) },
-        // TODO: forControl needs refactoring
-        // {
-        //   ALT: () => {
-        //     $.SUBRULE($.forStatement);
-        //   }
-        // },
+        { ALT: () => $.SUBRULE($.forStatement) },
         { ALT: () => $.SUBRULE($.whileStatement) },
         { ALT: () => $.SUBRULE($.doWhileStatement) },
         { ALT: () => $.SUBRULE($.tryStatement) },
@@ -1045,17 +1040,6 @@ class SelectParser extends chevrotain.Parser {
         $.SUBRULE2($.statement);
       });
     });
-
-    // forStatement
-    // : FOR '(' forControl ')' statement
-    // TODO: forControl needs refactoring
-    // $.RULE("forStatement", () => {
-    //   $.CONSUME(tokens.For);
-    //   $.CONSUME(tokens.LBrace);
-    //   $.SUBRULE($.forControl);
-    //   $.CONSUME(tokens.RBrace);
-    //   $.SUBRULE($.statement);
-    // });
 
     // whileStatement
     // : WHILE '(' expression ')' statement
@@ -1312,58 +1296,94 @@ class SelectParser extends chevrotain.Parser {
       $.CONSUME(tokens.Colon);
     });
 
-    // forControl
-    // : enhancedForControl
-    // | expressionForControl
-    $.RULE("forControl", () => {
-      // $.OR([
-      //   {
-      //     ALT: () => {
-      $.SUBRULE($.enhancedForControl);
-      //     }
-      //   },
-      //   {
-      //     ALT: () => {
-      //       $.SUBRULE($.expressionForControl);
-      //     }
-      //   }
-      // ]);
+    // forStatement
+    // : FOR '(' forControl ')' statement
+    $.RULE("forStatement", () => {
+      $.CONSUME(tokens.For);
+      $.CONSUME(tokens.LBrace);
+      $.SUBRULE($.forControl);
+      $.CONSUME(tokens.RBrace);
+      $.SUBRULE($.statement);
     });
 
-    // expressionForControl
-    // : forInit? ';' expression? ';' forUpdate=expressionList?
-    // $.RULE("forControl", () => {
-    //   $.OPTION(() => {
-    //     $.SUBRULE($.forInit);
-    //   });
-    //   $.CONSUME(tokens.SemiColon);
-    //   $.OPTION(() => {
-    //     $.SUBRULE($.expression);
-    //   });
-    //   $.CONSUME(tokens.SemiColon);
-    //   $.OPTION(() => {
-    //     $.SUBRULE($.expressionList);
-    //   });
-    // });
+    // forControl
+    // : (localVariableDeclaration | expressionList)? ';' expression? ';' forUpdate=expressionList? // basicForStatement
+    // | variableModifier* typeType variableDeclaratorId ':' expression // enhancedForControl
+    $.RULE("forControl", () => {
+      let enhancedForStatement = false;
+      $.OPTION(() => {
+        let localVariableDeclaration = false;
+        $.MANY(() => {
+          $.SUBRULE($.variableModifier);
+          localVariableDeclaration = true;
+        });
+        $.SUBRULE($.expression);
+        $.OR([
+          {
+            ALT: () => {
+              $.SUBRULE($.variableDeclaratorId);
 
-    // forInit
-    // : localVariableDeclaration
-    // | expressionList
-    // TODO: refactoring
-    // $.RULE("forInit", () => {
-    //   $.OR([
-    //     {
-    //       ALT: () => {
-    //         $.SUBRULE($.expressionList);
-    //       }
-    //     },
-    //     {
-    //       ALT: () => {
-    //         $.SUBRULE($.localVariableDeclaration);
-    //       }
-    //     }
-    //   ]);
-    // });
+              $.OR2([
+                {
+                  // enhancedForStatement
+                  ALT: () => {
+                    $.CONSUME(tokens.Colon);
+                    $.SUBRULE2($.expression);
+                    enhancedForStatement = true;
+                  }
+                },
+                {
+                  ALT: () => {
+                    $.OPTION2(() => {
+                      $.CONSUME(tokens.Equals);
+                      $.SUBRULE($.variableInitializer);
+                    });
+                  }
+                }
+              ]);
+
+              $.MANY2({
+                GATE: () => !enhancedForStatement,
+                DEF: () => {
+                  $.CONSUME(tokens.Comma);
+                  $.SUBRULE($.variableDeclarator);
+                }
+              });
+            }
+          },
+          {
+            GATE: !localVariableDeclaration,
+            ALT: () => {
+              $.MANY3(() => {
+                $.CONSUME2(tokens.Comma);
+                $.SUBRULE3($.expression);
+              });
+            }
+          }
+        ]);
+      });
+      $.OR3([
+        {
+          GATE: () => !enhancedForStatement,
+          ALT: () => {
+            $.CONSUME(tokens.SemiColon);
+            $.OPTION3(() => {
+              const optionalExpression = $.SUBRULE4($.expression);
+              optionalExpression.optionalExpression = true;
+            });
+            $.CONSUME2(tokens.SemiColon);
+            $.OPTION4(() => {
+              $.SUBRULE($.expressionList);
+            });
+          }
+        },
+        {
+          ALT: () => {
+            // Just here for enhancedForStatement
+          }
+        }
+      ]);
+    });
 
     // enhancedForControl
     // : variableModifier* typeType variableDeclaratorId ':' expression
@@ -1475,9 +1495,6 @@ class SelectParser extends chevrotain.Parser {
     //     )
     // | prefixExpression
     // | parExpressionOrCastExpressionOrLambdaExpression
-    //
-    // | methodReferenceRest // Java8
-    // TODO: refactoring
     $.RULE("expression", () => {
       $.OR([
         {

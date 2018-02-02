@@ -268,6 +268,12 @@ const Switch = createKeywordToken({
   label: "'switch'"
 });
 
+const For = createKeywordToken({
+  name: "For",
+  pattern: /for/,
+  label: "'for'"
+});
+
 const True = createKeywordToken({
   name: "True",
   pattern: /true/,
@@ -742,6 +748,7 @@ const allTokens = [
   Do,
   Try,
   Switch,
+  For,
   True,
   False,
   Null,
@@ -858,6 +865,7 @@ module.exports = {
     Do,
     Try,
     Switch,
+    For,
     True,
     False,
     Null,

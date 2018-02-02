@@ -951,6 +951,10 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       return this.visit(ctx.whileStatement);
     }
 
+    if (ctx.forStatement.length > 0) {
+      return this.visit(ctx.forStatement);
+    }
+
     if (ctx.doWhileStatement.length > 0) {
       return this.visit(ctx.doWhileStatement);
     }
@@ -1246,9 +1250,128 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     };
   }
 
+  forStatement(ctx) {
+    const forControl = this.visit(ctx.forControl);
+    const statement = this.visit(ctx.statement);
+
+    return {
+      type: "FOR_STATEMENT",
+      forControl: forControl,
+      statement: statement
+    };
+  }
+
   forControl(ctx) {
-    if (ctx.enhancedForControl.length > 0) {
-      return this.visit(ctx.enhancedForControl);
+    if (ctx.Colon.length > 0) {
+      const enhancedForStatement = {
+        type: "ENHANCED_FOR_STATEMENT",
+        declaration: undefined,
+        expression: undefined
+      };
+
+      const modifiers = ctx.variableModifier.map(modifier =>
+        this.visit(modifier)
+      );
+
+      const typeType = this.visit(ctx.expression[0]);
+
+      const variableDeclaratorId = this.visit(ctx.variableDeclaratorId);
+      const variableInitializer = this.visit(ctx.variableInitializer);
+      const declarator = {
+        type: "VARIABLE_DECLARATOR",
+        id: variableDeclaratorId,
+        init: variableInitializer
+      };
+      const declarators = {
+        type: "VARIABLE_DECLARATORS",
+        list: [declarator]
+      };
+
+      ctx.variableDeclarator.map(declarator =>
+        declarators.list.push(this.visit(declarator))
+      );
+
+      enhancedForStatement.declaration = {
+        type: "LOCAL_VARIABLE_DECLARATION",
+        modifiers: modifiers,
+        typeType: typeType,
+        declarators: declarators
+      };
+
+      enhancedForStatement.expression = this.visit(ctx.expression[1]);
+
+      return enhancedForStatement;
+    }
+
+    if (ctx.SemiColon.length == 2) {
+      const basicForStatement = {
+        type: "BASIC_FOR_STATEMENT",
+        forInit: undefined,
+        expression: undefined,
+        expressionList: undefined
+      };
+
+      // Find if last expression was the optional one
+      if (
+        ctx.expression.length > 0 &&
+        ctx.expression[ctx.expression.length - 1].optionalExpression
+      ) {
+        basicForStatement.expression = this.visit(
+          ctx.expression[ctx.expression.length - 1]
+        );
+      }
+
+      basicForStatement.expressionList = this.visit(ctx.expressionList);
+
+      if (ctx.variableDeclaratorId.length > 0) {
+        const modifiers = ctx.variableModifier.map(modifier =>
+          this.visit(modifier)
+        );
+        const typeType = this.visit(ctx.expression);
+
+        const variableDeclaratorId = this.visit(ctx.variableDeclaratorId);
+        const variableInitializer = this.visit(ctx.variableInitializer);
+        const declarator = {
+          type: "VARIABLE_DECLARATOR",
+          id: variableDeclaratorId,
+          init: variableInitializer
+        };
+        const declarators = {
+          type: "VARIABLE_DECLARATORS",
+          list: [declarator]
+        };
+
+        ctx.variableDeclarator.map(declarator =>
+          declarators.list.push(this.visit(declarator))
+        );
+
+        basicForStatement.forInit = {
+          type: "LOCAL_VARIABLE_DECLARATION",
+          modifiers: modifiers,
+          typeType: typeType,
+          declarators: declarators
+        };
+
+        return basicForStatement;
+      }
+
+      if (ctx.expression.length > 0) {
+        const list = [];
+        for (let i = 0; i < ctx.expression.length; i++) {
+          if (!ctx.expression[i].optionalExpression) {
+            list.push(this.visit(ctx.expression[i]));
+          }
+        }
+
+        if (list.length > 0) {
+          basicForStatement.forInit = {
+            type: "EXPRESSION_LIST",
+            list: list
+          };
+        }
+      }
+
+      return basicForStatement;
     }
   }
 
