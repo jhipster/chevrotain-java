@@ -9,13 +9,8 @@ describe("enhancedForControl", () => {
       type: "ENHANCED_FOR_CONTROL",
       modifiers: [],
       typeType: {
-        type: "TYPE_TYPE",
-        annotations: [],
-        value: {
-          type: "PRIMITIVE_TYPE",
-          value: "boolean"
-        },
-        cntSquares: 0
+        type: "PRIMITIVE_TYPE",
+        value: "boolean"
       },
       id: {
         type: "VARIABLE_DECLARATOR_ID",
@@ -46,13 +41,8 @@ describe("enhancedForControl", () => {
         }
       ],
       typeType: {
-        type: "TYPE_TYPE",
-        annotations: [],
-        value: {
-          type: "PRIMITIVE_TYPE",
-          value: "boolean"
-        },
-        cntSquares: 0
+        type: "PRIMITIVE_TYPE",
+        value: "boolean"
       },
       id: {
         type: "VARIABLE_DECLARATOR_ID",
@@ -87,13 +77,8 @@ describe("enhancedForControl", () => {
         }
       ],
       typeType: {
-        type: "TYPE_TYPE",
-        annotations: [],
-        value: {
-          type: "PRIMITIVE_TYPE",
-          value: "boolean"
-        },
-        cntSquares: 0
+        type: "PRIMITIVE_TYPE",
+        value: "boolean"
       },
       id: {
         type: "VARIABLE_DECLARATOR_ID",

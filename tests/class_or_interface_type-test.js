@@ -9,14 +9,12 @@ describe("classOrInterfaceType", () => {
       type: "CLASS_OR_INTERFACE_TYPE",
       elements: [
         {
-          type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
-          name: "A",
-          typeArguments: undefined
+          type: "IDENTIFIER",
+          value: "A"
         },
         {
-          type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
-          name: "B",
-          typeArguments: undefined
+          type: "IDENTIFIER",
+          value: "B"
         }
       ]
     });
@@ -32,20 +30,18 @@ describe("classOrInterfaceType", () => {
       elements: [
         {
           type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
-          name: "A",
+          name: {
+            type: "IDENTIFIER",
+            value: "A"
+          },
           typeArguments: {
             type: "TYPE_ARGUMENTS",
             arguments: [
               {
                 type: "TYPE_ARGUMENT",
                 argument: {
-                  type: "TYPE_TYPE",
-                  annotations: [],
-                  value: {
-                    type: "PRIMITIVE_TYPE",
-                    value: "boolean"
-                  },
-                  cntSquares: 0
+                  type: "PRIMITIVE_TYPE",
+                  value: "boolean"
                 },
                 super: undefined,
                 extends: undefined
@@ -55,20 +51,18 @@ describe("classOrInterfaceType", () => {
         },
         {
           type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
-          name: "B",
+          name: {
+            type: "IDENTIFIER",
+            value: "B"
+          },
           typeArguments: {
             type: "TYPE_ARGUMENTS",
             arguments: [
               {
                 type: "TYPE_ARGUMENT",
                 argument: {
-                  type: "TYPE_TYPE",
-                  annotations: [],
-                  value: {
-                    type: "PRIMITIVE_TYPE",
-                    value: "char"
-                  },
-                  cntSquares: 0
+                  type: "PRIMITIVE_TYPE",
+                  value: "char"
                 },
                 super: undefined,
                 extends: undefined

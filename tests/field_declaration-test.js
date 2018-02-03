@@ -8,19 +8,8 @@ describe("fieldDeclaration", () => {
     ).toEqual({
       type: "FIELD_DECLARATION",
       typeType: {
-        type: "TYPE_TYPE",
-        annotations: [],
-        value: {
-          type: "CLASS_OR_INTERFACE_TYPE",
-          elements: [
-            {
-              type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
-              name: "Abc",
-              typeArguments: undefined
-            }
-          ]
-        },
-        cntSquares: 0
+        type: "IDENTIFIER",
+        value: "Abc"
       },
       variableDeclarators: {
         type: "VARIABLE_DECLARATORS",

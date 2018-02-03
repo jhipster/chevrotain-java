@@ -7,13 +7,8 @@ describe("typeBound", () => {
       type: "TYPE_BOUND",
       bounds: [
         {
-          type: "TYPE_TYPE",
-          annotations: [],
-          value: {
-            type: "PRIMITIVE_TYPE",
-            value: "boolean"
-          },
-          cntSquares: 0
+          type: "PRIMITIVE_TYPE",
+          value: "boolean"
         }
       ]
     });
@@ -26,22 +21,12 @@ describe("typeBound", () => {
       type: "TYPE_BOUND",
       bounds: [
         {
-          type: "TYPE_TYPE",
-          annotations: [],
-          value: {
-            type: "PRIMITIVE_TYPE",
-            value: "boolean"
-          },
-          cntSquares: 0
+          type: "PRIMITIVE_TYPE",
+          value: "boolean"
         },
         {
-          type: "TYPE_TYPE",
-          annotations: [],
-          value: {
-            type: "PRIMITIVE_TYPE",
-            value: "char"
-          },
-          cntSquares: 0
+          type: "PRIMITIVE_TYPE",
+          value: "char"
         }
       ]
     });

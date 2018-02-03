@@ -35,19 +35,8 @@ describe("methodReferenceRest", () => {
           {
             type: "TYPE_ARGUMENT",
             argument: {
-              type: "TYPE_TYPE",
-              annotations: [],
-              value: {
-                type: "CLASS_OR_INTERFACE_TYPE",
-                elements: [
-                  {
-                    type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
-                    typeArguments: undefined,
-                    name: "B"
-                  }
-                ]
-              },
-              cntSquares: 0
+              type: "IDENTIFIER",
+              value: "B"
             },
             extends: undefined,
             super: undefined

@@ -41,13 +41,8 @@ describe("typeParameter", () => {
         type: "TYPE_BOUND",
         bounds: [
           {
-            type: "TYPE_TYPE",
-            annotations: [],
-            value: {
-              type: "PRIMITIVE_TYPE",
-              value: "boolean"
-            },
-            cntSquares: 0
+            type: "PRIMITIVE_TYPE",
+            value: "boolean"
           }
         ]
       }

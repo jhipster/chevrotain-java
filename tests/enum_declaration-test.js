@@ -26,19 +26,8 @@ describe("enum", () => {
         type: "TYPE_LIST",
         list: [
           {
-            type: "TYPE_TYPE",
-            annotations: [],
-            value: {
-              elements: [
-                {
-                  name: "Something",
-                  type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
-                  typeArguments: undefined
-                }
-              ],
-              type: "CLASS_OR_INTERFACE_TYPE"
-            },
-            cntSquares: 0
+            type: "IDENTIFIER",
+            value: "Something"
           }
         ]
       },

@@ -6,9 +6,8 @@ describe("classOrInterfaceTypeElement", () => {
     expect(
       Parser.parse("A", parser => parser.classOrInterfaceTypeElement())
     ).toEqual({
-      type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
-      name: "A",
-      typeArguments: undefined
+      type: "IDENTIFIER",
+      value: "A"
     });
   });
 
@@ -17,20 +16,18 @@ describe("classOrInterfaceTypeElement", () => {
       Parser.parse("A<boolean>", parser => parser.classOrInterfaceTypeElement())
     ).toEqual({
       type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       typeArguments: {
         type: "TYPE_ARGUMENTS",
         arguments: [
           {
             type: "TYPE_ARGUMENT",
             argument: {
-              type: "TYPE_TYPE",
-              annotations: [],
-              value: {
-                type: "PRIMITIVE_TYPE",
-                value: "boolean"
-              },
-              cntSquares: 0
+              type: "PRIMITIVE_TYPE",
+              value: "boolean"
             },
             super: undefined,
             extends: undefined

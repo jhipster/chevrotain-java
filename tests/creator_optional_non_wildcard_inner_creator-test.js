@@ -38,13 +38,8 @@ describe("creatorOptionalNonWildcardInnerCreator", () => {
           type: "TYPE_LIST",
           list: [
             {
-              type: "TYPE_TYPE",
-              annotations: [],
-              value: {
-                type: "PRIMITIVE_TYPE",
-                value: "boolean"
-              },
-              cntSquares: 0
+              type: "PRIMITIVE_TYPE",
+              value: "boolean"
             }
           ]
         }

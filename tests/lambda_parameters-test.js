@@ -26,13 +26,8 @@ describe("lambdaParameters", () => {
             modifiers: [],
             dotDotDot: false,
             typeType: {
-              type: "TYPE_TYPE",
-              annotations: [],
-              value: {
-                type: "PRIMITIVE_TYPE",
-                value: "boolean"
-              },
-              cntSquares: 0
+              type: "PRIMITIVE_TYPE",
+              value: "boolean"
             },
             id: {
               type: "VARIABLE_DECLARATOR_ID",

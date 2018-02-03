@@ -922,62 +922,153 @@ class SelectParser extends chevrotain.Parser {
     // : '{' blockStatement* '}'
     $.RULE("block", () => {
       $.CONSUME(tokens.LCurly);
-      // TODO: blockStatement needs refactoring
-      // $.MANY(() => {
-      //     $.SUBRULE($.blockStatement)
-      // });
+      $.MANY(() => {
+        $.SUBRULE($.blockStatement);
+      });
       $.CONSUME(tokens.RCurly);
     });
 
     // blockStatement
-    // : localVariableDeclaration ';'
-    // | statement
-    // | localTypeDeclaration
-    // TODO: refactoring
-    // $.RULE("blockStatement", () => {
-    //   $.OR([
-    //     {
-    //       ALT: () => {
-    //         $.SUBRULE($.statement);
-    //       }
-    //     },
-    //     {
-    //       ALT: () => {
-    //         $.SUBRULE($.localVariableDeclaration);
-    //       }
-    //     },
-    //     {
-    //       ALT: () => {
-    //         $.SUBRULE($.localTypeDeclaration);
-    //       }
-    //     }
-    //   ]);
-    // });
-
-    // localVariableDeclaration
-    // : variableModifier* typeType variableDeclarators
-    $.RULE("localVariableDeclaration", () => {
-      $.MANY(() => {
-        $.SUBRULE($.variableModifier);
-      });
-      $.SUBRULE($.typeType);
-      $.SUBRULE($.variableDeclarators);
-    });
-
-    // localTypeDeclaration
-    // : classOrInterfaceModifier*
-    //   (classDeclaration | interfaceDeclaration)
-    $.RULE("localTypeDeclaration", () => {
+    // : variableModifier* typeType variableDeclarators ';' // localVariableDeclaration
+    // | classOrInterfaceModifier* (classDeclaration | interfaceDeclaration) // localTypeDeclaration
+    // | identifierStatement
+    // | expressionStatement
+    $.RULE("blockStatement", () => {
+      // localVariableDeclaration | localTypeDeclaration | localTypeDeclaration
+      // let localDeclaration = false;
+      let identifierStatement = false;
       $.MANY(() => {
         $.SUBRULE($.classOrInterfaceModifier);
       });
       $.OR([
+        {
+          // localeVariableDeclaration
+          ALT: () => {
+            $.OR2([
+              {
+                ALT: () => {
+                  const expression = $.SUBRULE($.expression);
+                  // if expression is only a primitiveType exit out
+                  const isPrimitiveType =
+                    expression.children.atomic[0].children.primary.length ===
+                      1 &&
+                    expression.children.atomic[0].children.primary[0].children
+                      .typeType.length === 1 &&
+                    expression.children.atomic[0].children.primary[0].children
+                      .typeType[0].children.annotation.length === 0 &&
+                    expression.children.atomic[0].children.primary[0].children
+                      .typeType[0].children.classOrInterfaceType.length === 0 &&
+                    expression.children.atomic[0].children.primary[0].children
+                      .typeType[0].children.LSquare.length === 0 &&
+                    expression.children.atomic[0].children.primary[0].children
+                      .typeType[0].children.primitiveType.length === 1;
+
+                  if (isPrimitiveType) {
+                    return;
+                  }
+
+                  const isIdentifier =
+                    expression.children.atomic[0].children.primary.length ===
+                      1 &&
+                    expression.children.atomic[0].children.primary[0].children
+                      .typeType.length === 1 &&
+                    expression.children.atomic[0].children.primary[0].children
+                      .typeType[0].children.annotation.length === 0 &&
+                    expression.children.atomic[0].children.primary[0].children
+                      .typeType[0].children.classOrInterfaceType.length === 1 &&
+                    expression.children.atomic[0].children.primary[0].children
+                      .typeType[0].children.LSquare.length === 0 &&
+                    expression.children.atomic[0].children.primary[0].children
+                      .typeType[0].children.primitiveType.length === 0 &&
+                    expression.children.atomic[0].children.primary[0].children
+                      .typeType[0].children.classOrInterfaceType[0].children.Dot
+                      .length === 0 &&
+                    expression.children.atomic[0].children.primary[0].children
+                      .typeType[0].children.classOrInterfaceType[0].children
+                      .classOrInterfaceTypeElement.length === 1 &&
+                    expression.children.atomic[0].children.primary[0].children
+                      .typeType[0].children.classOrInterfaceType[0].children
+                      .classOrInterfaceTypeElement[0].children.typeArguments
+                      .length === 0;
+
+                  $.OR3([
+                    {
+                      // identifierStatement
+                      GATE: () => isIdentifier,
+                      ALT: () => {
+                        $.CONSUME(tokens.Colon);
+                        $.SUBRULE($.statement);
+                        identifierStatement = true;
+                      }
+                    },
+                    {
+                      // expressionStatement
+                      ALT: () => {
+                        $.CONSUME(tokens.SemiColon);
+                      }
+                    },
+                    {
+                      GATE: () => isIdentifier,
+                      ALT: () => {
+                        $.OPTION(() => {
+                          $.SUBRULE($.typeArguments);
+                        });
+                        $.MANY2({
+                          GATE: () => this.LA(2).tokenType !== tokens.Class,
+                          DEF: () => {
+                            $.CONSUME(tokens.Dot);
+                            $.SUBRULE2($.classOrInterfaceTypeElement);
+                          }
+                        });
+                      }
+                    }
+                  ]);
+                }
+              }
+              // { ALT: () => $.SUBRULE($.primitiveType) }
+            ]);
+            $.OR4([
+              {
+                GATE: () => !identifierStatement,
+                ALT: () => {
+                  $.MANY3(() => {
+                    $.CONSUME(tokens.LSquare);
+                    $.CONSUME(tokens.RSquare);
+                  });
+                  $.SUBRULE($.variableDeclarators);
+                  $.CONSUME2(tokens.SemiColon);
+                }
+              },
+              {
+                ALT: () => {
+                  // identifierStatement
+                }
+              }
+            ]);
+          }
+        },
+        // localTypeDeclaration
         { ALT: () => $.SUBRULE($.classDeclaration) },
-        { ALT: () => $.SUBRULE($.interfaceDeclaration) }
+        // localTypeDeclaration
+        { ALT: () => $.SUBRULE($.interfaceDeclaration) },
+        {
+          ALT: () => $.SUBRULE($.statementWithStartingToken)
+        }
       ]);
     });
 
     // statement
+    // : statementWithStartingToken
+    // | identifierStatement
+    $.RULE("statement", () => {
+      $.OR([
+        { ALT: () => $.SUBRULE($.statementWithStartingToken) },
+        { ALT: () => $.SUBRULE($.expressionStatement) },
+        { ALT: () => $.SUBRULE($.identifierStatement) }
+      ]);
+    });
+
+    // statementWithStartingToken
     // : block
     // | assertStatement
     // | ifStatement
@@ -993,8 +1084,7 @@ class SelectParser extends chevrotain.Parser {
     // | continueStatement
     // | semiColonStatement
     // | expressionStatement
-    // | identifierStatement
-    $.RULE("statement", () => {
+    $.RULE("statementWithStartingToken", () => {
       $.OR([
         { ALT: () => $.SUBRULE($.block) },
         { ALT: () => $.SUBRULE($.assertStatement) },
@@ -1009,9 +1099,7 @@ class SelectParser extends chevrotain.Parser {
         { ALT: () => $.SUBRULE($.throwStatement) },
         { ALT: () => $.SUBRULE($.breakStatement) },
         { ALT: () => $.SUBRULE($.continueStatement) },
-        { ALT: () => $.SUBRULE($.semiColonStatement) },
-        { ALT: () => $.SUBRULE($.expressionStatement) },
-        { ALT: () => $.SUBRULE($.identifierStatement) }
+        { ALT: () => $.SUBRULE($.semiColonStatement) }
       ]);
     });
 

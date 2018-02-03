@@ -30,10 +30,8 @@ describe("methodDeclaration", () => {
     ).toEqual({
       type: "METHOD_DECLARATION",
       typeType: {
-        type: "TYPE_TYPE",
-        annotations: [],
-        value: { type: "PRIMITIVE_TYPE", value: "boolean" },
-        cntSquares: 0
+        type: "PRIMITIVE_TYPE",
+        value: "boolean"
       },
       name: "a",
       parameters: {

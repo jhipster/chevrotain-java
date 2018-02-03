@@ -8,6 +8,13 @@ describe("expression", () => {
     });
   });
 
+  it("identifier", () => {
+    expect(Parser.parse("abc", parser => parser.expression())).toEqual({
+      type: "IDENTIFIER",
+      value: "abc"
+    });
+  });
+
   it("instanceofExpression", () => {
     expect(
       Parser.parse("this instanceof boolean", parser => parser.expression())
@@ -17,10 +24,8 @@ describe("expression", () => {
         type: "THIS"
       },
       instanceof: {
-        type: "TYPE_TYPE",
-        annotations: [],
-        value: { type: "PRIMITIVE_TYPE", value: "boolean" },
-        cntSquares: 0
+        type: "PRIMITIVE_TYPE",
+        value: "boolean"
       }
     });
   });
@@ -139,7 +144,12 @@ describe("expression", () => {
         type: "IDENTIFIERS",
         identifiers: {
           type: "IDENTIFIER_LIST",
-          identifiers: ["a"]
+          identifiers: [
+            {
+              type: "IDENTIFIER",
+              value: "a"
+            }
+          ]
         }
       },
       body: {
@@ -156,7 +166,12 @@ describe("expression", () => {
         type: "IDENTIFIERS",
         identifiers: {
           type: "IDENTIFIER_LIST",
-          identifiers: ["a"]
+          identifiers: [
+            {
+              type: "IDENTIFIER",
+              value: "a"
+            }
+          ]
         }
       },
       body: {
@@ -170,24 +185,17 @@ describe("expression", () => {
     expect(Parser.parse("B.C::A", parser => parser.expression())).toEqual({
       type: "METHOD_REFERENCE",
       reference: {
-        type: "TYPE_TYPE",
-        annotations: [],
-        value: {
-          type: "CLASS_OR_INTERFACE_TYPE",
-          elements: [
-            {
-              type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
-              typeArguments: undefined,
-              name: "B"
-            },
-            {
-              type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
-              typeArguments: undefined,
-              name: "C"
-            }
-          ]
-        },
-        cntSquares: 0
+        type: "CLASS_OR_INTERFACE_TYPE",
+        elements: [
+          {
+            type: "IDENTIFIER",
+            value: "B"
+          },
+          {
+            type: "IDENTIFIER",
+            value: "C"
+          }
+        ]
       },
       typeArguments: undefined,
       name: "A"

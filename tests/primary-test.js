@@ -29,103 +29,93 @@ describe("primary", () => {
 
   it("identifier", () => {
     expect(Parser.parse("A", parser => parser.primary())).toEqual({
-      type: "TYPE_TYPE",
-      annotations: [],
-      value: {
-        elements: [
-          {
-            type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
-            name: "A",
-            typeArguments: undefined
-          }
-        ],
-        type: "CLASS_OR_INTERFACE_TYPE"
-      },
-      cntSquares: 0
+      type: "IDENTIFIER",
+      value: "A"
     });
   });
 
   it("identifier.identifier", () => {
     expect(Parser.parse("A.B", parser => parser.primary())).toEqual({
-      type: "TYPE_TYPE",
-      annotations: [],
-      value: {
-        elements: [
-          {
-            type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
-            name: "A",
-            typeArguments: undefined
-          },
-          {
-            type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
-            name: "B",
-            typeArguments: undefined
-          }
-        ],
-        type: "CLASS_OR_INTERFACE_TYPE"
-      },
-      cntSquares: 0
+      type: "CLASS_OR_INTERFACE_TYPE",
+      elements: [
+        {
+          type: "IDENTIFIER",
+          value: "A"
+        },
+        {
+          type: "IDENTIFIER",
+          value: "B"
+        }
+      ]
     });
   });
 
   it("identifier.class", () => {
     expect(Parser.parse("A.class", parser => parser.primary())).toEqual({
+      type: "IDENTIFIER",
+      value: "A.class"
+    });
+  });
+
+  it("identifier.class with annotation", () => {
+    expect(Parser.parse("@Bean A.class", parser => parser.primary())).toEqual({
       type: "TYPE_TYPE",
-      annotations: [],
-      value: {
-        elements: [
-          {
-            type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
-            name: "A",
-            typeArguments: undefined
+      annotations: [
+        {
+          type: "ANNOTATION",
+          name: {
+            type: "QUALIFIED_NAME",
+            name: ["Bean"]
           },
-          { type: "CLASS" }
-        ],
-        type: "CLASS_OR_INTERFACE_TYPE"
+          hasBraces: false,
+          value: undefined
+        }
+      ],
+      value: {
+        type: "IDENTIFIER",
+        value: "A.class"
       },
       cntSquares: 0
     });
   });
 
+  it("identifier.identifier.class", () => {
+    expect(Parser.parse("A.B.class", parser => parser.primary())).toEqual({
+      type: "CLASS_OR_INTERFACE_TYPE",
+      elements: [
+        {
+          type: "IDENTIFIER",
+          value: "A"
+        },
+        {
+          type: "IDENTIFIER",
+          value: "B.class"
+        }
+      ]
+    });
+  });
+
   it("identifier with typeArguments", () => {
     expect(Parser.parse("A<B>", parser => parser.primary())).toEqual({
-      type: "TYPE_TYPE",
-      annotations: [],
-      value: {
-        type: "CLASS_OR_INTERFACE_TYPE",
-        elements: [
+      type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
+      typeArguments: {
+        type: "TYPE_ARGUMENTS",
+        arguments: [
           {
-            type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
-            name: "A",
-            typeArguments: {
-              type: "TYPE_ARGUMENTS",
-              arguments: [
-                {
-                  type: "TYPE_ARGUMENT",
-                  argument: {
-                    type: "TYPE_TYPE",
-                    annotations: [],
-                    value: {
-                      elements: [
-                        {
-                          type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
-                          name: "B",
-                          typeArguments: undefined
-                        }
-                      ],
-                      type: "CLASS_OR_INTERFACE_TYPE"
-                    },
-                    cntSquares: 0
-                  },
-                  extends: undefined,
-                  super: undefined
-                }
-              ]
-            }
+            type: "TYPE_ARGUMENT",
+            argument: {
+              type: "IDENTIFIER",
+              value: "B"
+            },
+            extends: undefined,
+            super: undefined
           }
         ]
-      },
-      cntSquares: 0
+      }
     });
   });
 
@@ -140,13 +130,8 @@ describe("primary", () => {
           type: "TYPE_LIST",
           list: [
             {
-              type: "TYPE_TYPE",
-              annotations: [],
-              value: {
-                type: "PRIMITIVE_TYPE",
-                value: "boolean"
-              },
-              cntSquares: 0
+              type: "PRIMITIVE_TYPE",
+              value: "boolean"
             }
           ]
         }

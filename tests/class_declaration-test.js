@@ -54,13 +54,8 @@ describe("classDeclaration", () => {
       name: "A",
       typeParameters: undefined,
       extends: {
-        type: "TYPE_TYPE",
-        annotations: [],
-        value: {
-          type: "PRIMITIVE_TYPE",
-          value: "boolean"
-        },
-        cntSquares: 0
+        type: "PRIMITIVE_TYPE",
+        value: "boolean"
       },
       implements: undefined,
       body: {
@@ -84,13 +79,8 @@ describe("classDeclaration", () => {
         type: "TYPE_LIST",
         list: [
           {
-            type: "TYPE_TYPE",
-            annotations: [],
-            value: {
-              type: "PRIMITIVE_TYPE",
-              value: "boolean"
-            },
-            cntSquares: 0
+            type: "PRIMITIVE_TYPE",
+            value: "boolean"
           }
         ]
       },

@@ -8,13 +8,8 @@ describe("annotationTypeElementRest", () => {
     ).toEqual({
       type: "ANNOTATION_TYPE_ELEMENT_REST",
       typeType: {
-        type: "TYPE_TYPE",
-        annotations: [],
-        value: {
-          type: "PRIMITIVE_TYPE",
-          value: "boolean"
-        },
-        cntSquares: 0
+        type: "PRIMITIVE_TYPE",
+        value: "boolean"
       },
       name: {
         type: "ANNOTATION_METHOD_REST",

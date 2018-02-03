@@ -109,14 +109,12 @@ describe("tryStatement", () => {
                 type: "CLASS_OR_INTERFACE_TYPE",
                 elements: [
                   {
-                    type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
-                    name: "A",
-                    typeArguments: undefined
+                    type: "IDENTIFIER",
+                    value: "A"
                   },
                   {
-                    type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
-                    name: "B",
-                    typeArguments: undefined
+                    type: "IDENTIFIER",
+                    value: "B"
                   }
                 ]
               },

@@ -50,13 +50,8 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
     ).toEqual({
       type: "CAST_EXPRESSION",
       castType: {
-        type: "TYPE_TYPE",
-        annotations: [],
-        value: {
-          type: "PRIMITIVE_TYPE",
-          value: "boolean"
-        },
-        cntSquares: 0
+        type: "PRIMITIVE_TYPE",
+        value: "boolean"
       },
       expression: {
         type: "THIS"
@@ -72,19 +67,8 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
     ).toEqual({
       type: "CAST_EXPRESSION",
       castType: {
-        type: "TYPE_TYPE",
-        annotations: [],
-        cntSquares: 0,
-        value: {
-          type: "CLASS_OR_INTERFACE_TYPE",
-          elements: [
-            {
-              name: "A",
-              type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
-              typeArguments: undefined
-            }
-          ]
-        }
+        type: "IDENTIFIER",
+        value: "A"
       },
       expression: { type: "THIS" }
     });
@@ -98,40 +82,22 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
     ).toEqual({
       type: "CAST_EXPRESSION",
       castType: {
-        type: "TYPE_TYPE",
-        annotations: [],
-        cntSquares: 0,
-        value: {
-          type: "CLASS_OR_INTERFACE_TYPE",
-          elements: [
+        type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
+        name: {
+          type: "IDENTIFIER",
+          value: "A"
+        },
+        typeArguments: {
+          type: "TYPE_ARGUMENTS",
+          arguments: [
             {
-              name: "A",
-              type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
-              typeArguments: {
-                type: "TYPE_ARGUMENTS",
-                arguments: [
-                  {
-                    type: "TYPE_ARGUMENT",
-                    argument: {
-                      type: "TYPE_TYPE",
-                      annotations: [],
-                      value: {
-                        type: "CLASS_OR_INTERFACE_TYPE",
-                        elements: [
-                          {
-                            type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
-                            name: "B",
-                            typeArguments: undefined
-                          }
-                        ]
-                      },
-                      cntSquares: 0
-                    },
-                    extends: undefined,
-                    super: undefined
-                  }
-                ]
-              }
+              type: "TYPE_ARGUMENT",
+              argument: {
+                type: "IDENTIFIER",
+                value: "B"
+              },
+              extends: undefined,
+              super: undefined
             }
           ]
         }
@@ -156,19 +122,14 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
               type: "QUALIFIED_NAME",
               name: ["Bean"]
             },
-            hasBraces: false
+            hasBraces: false,
+            value: undefined
           }
         ],
         cntSquares: 0,
         value: {
-          type: "CLASS_OR_INTERFACE_TYPE",
-          elements: [
-            {
-              name: "A",
-              type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
-              typeArguments: undefined
-            }
-          ]
+          type: "IDENTIFIER",
+          value: "A"
         }
       },
       expression: { type: "THIS" }
@@ -256,7 +217,12 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
         type: "IDENTIFIERS",
         identifiers: {
           type: "IDENTIFIER_LIST",
-          identifiers: ["a"]
+          identifiers: [
+            {
+              type: "IDENTIFIER",
+              value: "a"
+            }
+          ]
         }
       },
       body: {
@@ -277,7 +243,16 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
         type: "IDENTIFIERS",
         identifiers: {
           type: "IDENTIFIER_LIST",
-          identifiers: ["a", "b"]
+          identifiers: [
+            {
+              type: "IDENTIFIER",
+              value: "a"
+            },
+            {
+              type: "IDENTIFIER",
+              value: "b"
+            }
+          ]
         }
       },
       body: {

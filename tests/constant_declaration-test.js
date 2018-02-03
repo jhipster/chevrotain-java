@@ -8,10 +8,8 @@ describe("constantDeclaration", () => {
     ).toEqual({
       type: "CONSTANT_DECLARATION",
       typeType: {
-        type: "TYPE_TYPE",
-        annotations: [],
-        value: { type: "PRIMITIVE_TYPE", value: "boolean" },
-        cntSquares: 0
+        type: "PRIMITIVE_TYPE",
+        value: "boolean"
       },
       declarators: [
         {
@@ -34,10 +32,8 @@ describe("constantDeclaration", () => {
     ).toEqual({
       type: "CONSTANT_DECLARATION",
       typeType: {
-        type: "TYPE_TYPE",
-        annotations: [],
-        value: { type: "PRIMITIVE_TYPE", value: "boolean" },
-        cntSquares: 0
+        type: "PRIMITIVE_TYPE",
+        value: "boolean"
       },
       declarators: [
         {

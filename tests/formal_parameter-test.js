@@ -9,13 +9,8 @@ describe("formalParameter", () => {
       type: "FORMAL_PARAMETER",
       modifiers: [],
       typeType: {
-        type: "TYPE_TYPE",
-        annotations: [],
-        value: {
-          type: "PRIMITIVE_TYPE",
-          value: "boolean"
-        },
-        cntSquares: 0
+        type: "PRIMITIVE_TYPE",
+        value: "boolean"
       },
       dotDotDot: false,
       id: {
@@ -33,13 +28,8 @@ describe("formalParameter", () => {
       type: "FORMAL_PARAMETER",
       modifiers: [{ type: "MODIFIER", value: "final" }],
       typeType: {
-        type: "TYPE_TYPE",
-        annotations: [],
-        value: {
-          type: "PRIMITIVE_TYPE",
-          value: "boolean"
-        },
-        cntSquares: 0
+        type: "PRIMITIVE_TYPE",
+        value: "boolean"
       },
       dotDotDot: false,
       id: {
@@ -65,13 +55,8 @@ describe("formalParameter", () => {
         { type: "MODIFIER", value: "final" }
       ],
       typeType: {
-        type: "TYPE_TYPE",
-        annotations: [],
-        value: {
-          type: "PRIMITIVE_TYPE",
-          value: "boolean"
-        },
-        cntSquares: 0
+        type: "PRIMITIVE_TYPE",
+        value: "boolean"
       },
       dotDotDot: false,
       id: {
@@ -89,13 +74,8 @@ describe("formalParameter", () => {
       type: "FORMAL_PARAMETER",
       modifiers: [],
       typeType: {
-        type: "TYPE_TYPE",
-        annotations: [],
-        value: {
-          type: "PRIMITIVE_TYPE",
-          value: "boolean"
-        },
-        cntSquares: 0
+        type: "PRIMITIVE_TYPE",
+        value: "boolean"
       },
       dotDotDot: true,
       id: {

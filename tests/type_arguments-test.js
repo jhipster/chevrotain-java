@@ -10,13 +10,8 @@ describe("typeArguments", () => {
           {
             type: "TYPE_ARGUMENT",
             argument: {
-              type: "TYPE_TYPE",
-              annotations: [],
-              value: {
-                type: "PRIMITIVE_TYPE",
-                value: "boolean"
-              },
-              cntSquares: 0
+              type: "PRIMITIVE_TYPE",
+              value: "boolean"
             },
             super: undefined,
             extends: undefined
@@ -35,13 +30,8 @@ describe("typeArguments", () => {
         {
           type: "TYPE_ARGUMENT",
           argument: {
-            type: "TYPE_TYPE",
-            annotations: [],
-            value: {
-              type: "PRIMITIVE_TYPE",
-              value: "boolean"
-            },
-            cntSquares: 0
+            type: "PRIMITIVE_TYPE",
+            value: "boolean"
           },
           super: undefined,
           extends: undefined
@@ -49,13 +39,8 @@ describe("typeArguments", () => {
         {
           type: "TYPE_ARGUMENT",
           argument: {
-            type: "TYPE_TYPE",
-            annotations: [],
-            value: {
-              type: "PRIMITIVE_TYPE",
-              value: "char"
-            },
-            cntSquares: 0
+            type: "PRIMITIVE_TYPE",
+            value: "char"
           },
           super: undefined,
           extends: undefined

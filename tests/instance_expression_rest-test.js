@@ -10,10 +10,8 @@ describe("instanceofExpressionRest", () => {
     ).toEqual({
       type: "INSTANCEOF_EXPRESSION_REST",
       typeType: {
-        type: "TYPE_TYPE",
-        annotations: [],
-        value: { type: "PRIMITIVE_TYPE", value: "boolean" },
-        cntSquares: 0
+        type: "PRIMITIVE_TYPE",
+        value: "boolean"
       }
     });
   });

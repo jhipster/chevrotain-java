@@ -728,13 +728,23 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     const annotations = ctx.annotation.map(annotation =>
       this.visit(annotation)
     );
+    const cntSquares = ctx.LSquare.length;
+
     let value = undefined;
     if (ctx.primitiveType.length > 0) {
       value = this.visit(ctx.primitiveType);
+      // if empty typeType return child
+      if (annotations.length === 0 && cntSquares === 0) {
+        return value;
+      }
     } else if (ctx.classOrInterfaceType.length > 0) {
       value = this.visit(ctx.classOrInterfaceType);
+      // if empty typeType return child
+      if (annotations.length === 0 && cntSquares === 0) {
+        return value;
+      }
     }
-    const cntSquares = ctx.LSquare.length;
+
     return {
       type: "TYPE_TYPE",
       annotations: annotations,
@@ -756,6 +766,10 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       classOrInterfaceTypeElement => this.visit(classOrInterfaceTypeElement)
     );
 
+    if (elements.length === 1) {
+      return elements[0];
+    }
+
     return {
       type: "CLASS_OR_INTERFACE_TYPE",
       elements: elements
@@ -763,8 +777,12 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   classOrInterfaceTypeElement(ctx) {
-    const name = ctx.Identifier[0].image;
+    const name = this.identifier(ctx.Identifier);
     const typeArguments = this.visit(ctx.typeArguments);
+
+    if (!typeArguments) {
+      return name;
+    }
 
     return {
       type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
@@ -893,48 +911,118 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     };
   }
 
-  block(/*ctx*/) {
+  block(ctx) {
+    const blockStatements = ctx.blockStatement.map(blockStatement =>
+      this.visit(blockStatement)
+    );
+
     return {
       type: "BLOCK",
-      statements: []
+      statements: blockStatements
     };
   }
 
-  localVariableDeclaration(ctx) {
-    const modifiers = ctx.variableModifier.map(modifier =>
-      this.visit(modifier)
-    );
-    const typeType = this.visit(ctx.typeType);
-    const declarators = this.visit(ctx.variableDeclarators);
+  blockStatement(ctx) {
+    if (ctx.Colon.length > 0) {
+      if (ctx.classOrInterfaceModifier.length > 0) {
+        throw new MismatchedTokenException(
+          "Identifier statement is not allowed to have annotations or modifiers.",
+          undefined
+        );
+      }
+      const identifier = this.visit(ctx.expression);
+      const statement = this.visit(ctx.statement);
 
-    return {
-      type: "LOCAL_VARIABLE_DECLARATION",
-      modifiers: modifiers,
-      typeType: typeType,
-      declarators: declarators
-    };
-  }
-
-  localTypeDeclaration(ctx) {
-    const modifiers = ctx.classOrInterfaceModifier.map(modifier =>
-      this.visit(modifier)
-    );
-    let declaration = undefined;
-    if (ctx.classDeclaration.length > 0) {
-      declaration = this.visit(ctx.classDeclaration);
-    }
-    if (ctx.interfaceDeclaration.length > 0) {
-      declaration = this.visit(ctx.interfaceDeclaration);
+      return {
+        type: "IDENTIFIER_STATEMENT",
+        identifier: identifier,
+        statement: statement
+      };
     }
 
-    return {
-      type: "LOCAL_TYPE_DECLARATION",
-      modifiers: modifiers,
-      declaration: declaration
-    };
+    if (
+      ctx.classDeclaration.length > 0 ||
+      ctx.interfaceDeclaration.length > 0
+    ) {
+      // localTypeDeclaration
+      const modifiers = ctx.classOrInterfaceModifier.map(modifier =>
+        this.visit(modifier)
+      );
+      let declaration = undefined;
+      if (ctx.classDeclaration.length > 0) {
+        declaration = this.visit(ctx.classDeclaration);
+      }
+      if (ctx.interfaceDeclaration.length > 0) {
+        declaration = this.visit(ctx.interfaceDeclaration);
+      }
+
+      return {
+        type: "LOCAL_TYPE_DECLARATION",
+        modifiers: modifiers,
+        declaration: declaration
+      };
+    }
+
+    if (ctx.expression.length > 0) {
+      const expression = this.visit(ctx.expression);
+
+      if (
+        expression.type === "IDENTIFIER" ||
+        expression.type === "PRIMITIVE_TYPE"
+      ) {
+        // localVariableDeclaration
+        const modifiers = ctx.classOrInterfaceModifier.map(modifierRule => {
+          const modifier = this.visit(modifierRule);
+          if (
+            modifier.type === "MODIFIER" &&
+            (modifier.value === "public" ||
+              modifier.value === "protected" ||
+              modifier.value === "private" ||
+              modifier.value === "static" ||
+              modifier.value === "abstract" ||
+              modifier.value === "strictfp")
+          ) {
+            throw new MismatchedTokenException(
+              "Locale variable declaration can't have a public, protected, private, static, abstract or strictfp modifier.",
+              undefined
+            );
+          }
+          return modifier;
+        });
+
+        const declarators = this.visit(ctx.variableDeclarators);
+
+        return {
+          type: "LOCAL_VARIABLE_DECLARATION",
+          modifiers: modifiers,
+          typeType: expression,
+          declarators: declarators
+        };
+      }
+
+      // expressionStatement
+      return {
+        type: "EXPRESSION_STATEMENT",
+        expression: expression
+      };
+    }
   }
 
   statement(ctx) {
+    if (ctx.statementWithStartingToken.length > 0) {
+      return this.visit(ctx.statementWithStartingToken);
+    }
+
+    if (ctx.identifierStatement.length > 0) {
+      return this.visit(ctx.identifierStatement);
+    }
+
+    if (ctx.expressionStatement.length > 0) {
+      return this.visit(ctx.expressionStatement);
+    }
+  }
+
+  statementWithStartingToken(ctx) {
     if (ctx.block.length > 0) {
       return this.visit(ctx.block);
     }
@@ -989,14 +1077,6 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
     if (ctx.semiColonStatement.length > 0) {
       return this.visit(ctx.semiColonStatement);
-    }
-
-    if (ctx.expressionStatement.length > 0) {
-      return this.visit(ctx.expressionStatement);
-    }
-
-    if (ctx.identifierStatement.length > 0) {
-      return this.visit(ctx.identifierStatement);
     }
   }
 
@@ -1545,45 +1625,12 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       }
 
       if (ctx.Pointer.length > 0) {
-        let identifier = undefined;
-        if (atomic.type !== "TYPE_TYPE") {
+        if (atomic.type !== "IDENTIFIER") {
           throw new MismatchedTokenException(
             "Found lambda expression but left side is not an identifier",
             undefined
           );
         }
-
-        if (
-          atomic.annotations.length > 0 ||
-          atomic.cntSquares > 0 ||
-          atomic.dotDotDot
-        ) {
-          throw new MismatchedTokenException(
-            "Found lambda expression but left side has annotations, squares or '...'",
-            undefined
-          );
-        }
-        if (atomic.value.type !== "CLASS_OR_INTERFACE_TYPE") {
-          throw new MismatchedTokenException(
-            "Found lambda expression but left side is not an identifier",
-            undefined
-          );
-        }
-
-        if (atomic.value.elements.length > 1) {
-          throw new MismatchedTokenException(
-            "Found lambda expression without parenthis but left side has more than one parameter",
-            undefined
-          );
-        }
-        if (atomic.value.elements[0].typeArguments !== undefined) {
-          throw new MismatchedTokenException(
-            "Found lambda expression but left side has type arguments",
-            undefined
-          );
-        }
-
-        identifier = atomic.value.elements[0].name;
 
         const body = this.visit(ctx.lambdaBody);
 
@@ -1593,7 +1640,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
             type: "IDENTIFIERS",
             identifiers: {
               type: "IDENTIFIER_LIST",
-              identifiers: [identifier]
+              identifiers: [atomic]
             }
           },
           body: body
@@ -1857,23 +1904,20 @@ class SQLToAstVisitor extends BaseSQLVisitor {
           for (let i = 0; i < ctx.expression.length; i++) {
             const typeType = this.visit(ctx.expression[i]);
 
-            if (
-              typeType.annotations.length > 0 ||
-              typeType.cntSquares > 0 ||
-              typeType.dotDotDot
-            ) {
-              throw new MismatchedTokenException(
-                "Found lambda expression but left side has annotations, squares or '...'",
-                undefined
-              );
-            }
-
             const variableDeclaratorId = this.visit(
               ctx.variableDeclaratorId[i]
             );
 
+            if (typeType.type !== "PRIMITIVE_TYPE") {
+              throw new MismatchedTokenException(
+                "Found lambda expression but left side is not a primitive type",
+                undefined
+              );
+            }
+
+            const modifiers = [];
             if (ctx.Final.find(final => final.cnt === i) !== undefined) {
-              typeType.annotations.push({
+              modifiers.push({
                 type: "MODIFIER",
                 value: "final"
               });
@@ -1881,8 +1925,8 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
             parameters.parameters.formalParameters.push({
               type: "FORMAL_PARAMETER",
-              modifiers: typeType.annotations,
-              typeType: typeType.value,
+              modifiers: modifiers,
+              typeType: typeType,
               id: variableDeclaratorId,
               dotDotDot: false
             });
@@ -1895,45 +1939,15 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
           parameters.identifiers.identifiers = ctx.expression.map(
             expression => {
-              const typeType = this.visit(expression);
-              if (typeType.type !== "TYPE_TYPE") {
-                throw new MismatchedTokenException(
-                  "Found lambda expression but left side is not an identifier",
-                  undefined
-                );
-              }
-              if (
-                typeType.annotations.length > 0 ||
-                typeType.cntSquares > 0 ||
-                typeType.dotDotDot
-              ) {
-                throw new MismatchedTokenException(
-                  "Found lambda expression but left side has annotations, squares or '...'",
-                  undefined
-                );
-              }
-
-              if (typeType.value.type !== "CLASS_OR_INTERFACE_TYPE") {
+              const identifier = this.visit(expression);
+              if (identifier.type !== "IDENTIFIER") {
                 throw new MismatchedTokenException(
                   "Found lambda expression but left side is not an identifier",
                   undefined
                 );
               }
 
-              if (typeType.value.elements.length > 1) {
-                throw new MismatchedTokenException(
-                  "Found lambda expression without parenthis but left side has more than one parameter",
-                  undefined
-                );
-              }
-              if (typeType.value.elements[0].typeArguments !== undefined) {
-                throw new MismatchedTokenException(
-                  "Found lambda expression but left side has type arguments",
-                  undefined
-                );
-              }
-
-              return typeType.value.elements[0].name;
+              return identifier;
             }
           );
         }
@@ -1961,20 +1975,16 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
       // if identifier is not an identifier throw error
       if (
-        value.type !== "TYPE_TYPE" ||
-        (value.value.type !== "CLASS_OR_INTERFACE_TYPE" &&
-          value.value.type !== "PRIMITIVE_TYPE")
+        value.type !== "IDENTIFIER" &&
+        value.type !== "CLASS_OR_INTERFACE_TYPE_ELEMENT" &&
+        value.type !== "TYPE_TYPE" &&
+        value.type !== "PRIMITIVE_TYPE"
       ) {
         throw new MismatchedTokenException(
           "Found cast expression but cast expression is not an Identifier",
           undefined
         );
       }
-
-      // const annotations = ctx.annotation.map(annotation =>
-      //   this.visit(annotation)
-      // );
-      // const cntSquares = ctx.LSquare.length;
 
       return {
         type: "CAST_EXPRESSION",
@@ -2360,9 +2370,16 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       }
 
       if (ctx.Class.length > 0) {
-        typeType.value.elements.push({
-          type: "CLASS"
-        });
+        if (typeType.type === "IDENTIFIER") {
+          typeType.value += ".class";
+        } else if (
+          typeType.type === "TYPE_TYPE" &&
+          typeType.value.type === "IDENTIFIER"
+        ) {
+          typeType.value.value += ".class";
+        } else if (typeType.type === "CLASS_OR_INTERFACE_TYPE") {
+          typeType.elements[typeType.elements.length - 1].value += ".class";
+        }
       }
 
       return typeType;
@@ -2513,6 +2530,13 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     return {
       type: "PRIMITIVE_TYPE",
       value: value
+    };
+  }
+
+  identifier(value) {
+    return {
+      type: "IDENTIFIER",
+      value: value[0].image
     };
   }
 }

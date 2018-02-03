@@ -55,13 +55,8 @@ describe("forControl", () => {
         type: "LOCAL_VARIABLE_DECLARATION",
         modifiers: [],
         typeType: {
-          type: "TYPE_TYPE",
-          annotations: [],
-          value: {
-            type: "PRIMITIVE_TYPE",
-            value: "int"
-          },
-          cntSquares: 0
+          type: "PRIMITIVE_TYPE",
+          value: "int"
         },
         declarators: {
           type: "VARIABLE_DECLARATORS",
@@ -95,13 +90,8 @@ describe("forControl", () => {
         type: "LOCAL_VARIABLE_DECLARATION",
         modifiers: [],
         typeType: {
-          type: "TYPE_TYPE",
-          annotations: [],
-          value: {
-            type: "PRIMITIVE_TYPE",
-            value: "int"
-          },
-          cntSquares: 0
+          type: "PRIMITIVE_TYPE",
+          value: "int"
         },
         declarators: {
           type: "VARIABLE_DECLARATORS",
@@ -161,13 +151,8 @@ describe("forControl", () => {
           }
         ],
         typeType: {
-          type: "TYPE_TYPE",
-          annotations: [],
-          value: {
-            type: "PRIMITIVE_TYPE",
-            value: "int"
-          },
-          cntSquares: 0
+          type: "PRIMITIVE_TYPE",
+          value: "int"
         },
         declarators: {
           type: "VARIABLE_DECLARATORS",
@@ -228,19 +213,8 @@ describe("forControl", () => {
         type: "LOCAL_VARIABLE_DECLARATION",
         modifiers: [],
         typeType: {
-          type: "TYPE_TYPE",
-          annotations: [],
-          value: {
-            type: "CLASS_OR_INTERFACE_TYPE",
-            elements: [
-              {
-                type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
-                typeArguments: undefined,
-                name: "Bean"
-              }
-            ]
-          },
-          cntSquares: 0
+          type: "IDENTIFIER",
+          value: "Bean"
         },
         declarators: {
           type: "VARIABLE_DECLARATORS",
@@ -258,19 +232,8 @@ describe("forControl", () => {
         }
       },
       expression: {
-        type: "TYPE_TYPE",
-        annotations: [],
-        value: {
-          type: "CLASS_OR_INTERFACE_TYPE",
-          elements: [
-            {
-              type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
-              typeArguments: undefined,
-              name: "Beans"
-            }
-          ]
-        },
-        cntSquares: 0
+        type: "IDENTIFIER",
+        value: "Beans"
       }
     });
   });
@@ -300,19 +263,8 @@ describe("forControl", () => {
           }
         ],
         typeType: {
-          type: "TYPE_TYPE",
-          annotations: [],
-          value: {
-            type: "CLASS_OR_INTERFACE_TYPE",
-            elements: [
-              {
-                type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
-                typeArguments: undefined,
-                name: "Bean"
-              }
-            ]
-          },
-          cntSquares: 0
+          type: "IDENTIFIER",
+          value: "Bean"
         },
         declarators: {
           type: "VARIABLE_DECLARATORS",
@@ -330,19 +282,8 @@ describe("forControl", () => {
         }
       },
       expression: {
-        type: "TYPE_TYPE",
-        annotations: [],
-        value: {
-          type: "CLASS_OR_INTERFACE_TYPE",
-          elements: [
-            {
-              type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
-              typeArguments: undefined,
-              name: "Beans"
-            }
-          ]
-        },
-        cntSquares: 0
+        type: "IDENTIFIER",
+        value: "Beans"
       }
     });
   });

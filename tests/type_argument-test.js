@@ -6,13 +6,8 @@ describe("typeArgument", () => {
     expect(Parser.parse("boolean", parser => parser.typeArgument())).toEqual({
       type: "TYPE_ARGUMENT",
       argument: {
-        type: "TYPE_TYPE",
-        annotations: [],
-        value: {
-          type: "PRIMITIVE_TYPE",
-          value: "boolean"
-        },
-        cntSquares: 0
+        type: "PRIMITIVE_TYPE",
+        value: "boolean"
       },
       super: undefined,
       extends: undefined
@@ -36,23 +31,13 @@ describe("typeArgument", () => {
     ).toEqual({
       type: "TYPE_ARGUMENT",
       argument: {
-        type: "TYPE_TYPE",
-        annotations: [],
-        value: {
-          type: "PRIMITIVE_TYPE",
-          value: "boolean"
-        },
-        cntSquares: 0
+        type: "PRIMITIVE_TYPE",
+        value: "boolean"
       },
       super: undefined,
       extends: {
-        type: "TYPE_TYPE",
-        annotations: [],
-        value: {
-          type: "PRIMITIVE_TYPE",
-          value: "char"
-        },
-        cntSquares: 0
+        type: "PRIMITIVE_TYPE",
+        value: "char"
       }
     });
   });
@@ -63,22 +48,12 @@ describe("typeArgument", () => {
     ).toEqual({
       type: "TYPE_ARGUMENT",
       argument: {
-        type: "TYPE_TYPE",
-        annotations: [],
-        value: {
-          type: "PRIMITIVE_TYPE",
-          value: "boolean"
-        },
-        cntSquares: 0
+        type: "PRIMITIVE_TYPE",
+        value: "boolean"
       },
       super: {
-        type: "TYPE_TYPE",
-        annotations: [],
-        value: {
-          type: "PRIMITIVE_TYPE",
-          value: "char"
-        },
-        cntSquares: 0
+        type: "PRIMITIVE_TYPE",
+        value: "char"
       },
       extends: undefined
     });
@@ -94,13 +69,8 @@ describe("typeArgument", () => {
       },
       super: undefined,
       extends: {
-        type: "TYPE_TYPE",
-        annotations: [],
-        value: {
-          type: "PRIMITIVE_TYPE",
-          value: "char"
-        },
-        cntSquares: 0
+        type: "PRIMITIVE_TYPE",
+        value: "char"
       }
     });
   });
@@ -114,13 +84,8 @@ describe("typeArgument", () => {
         type: "QUESTIONMARK"
       },
       super: {
-        type: "TYPE_TYPE",
-        annotations: [],
-        value: {
-          type: "PRIMITIVE_TYPE",
-          value: "char"
-        },
-        cntSquares: 0
+        type: "PRIMITIVE_TYPE",
+        value: "char"
       },
       extends: undefined
     });
