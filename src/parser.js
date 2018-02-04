@@ -285,10 +285,51 @@ class SelectParser extends chevrotain.Parser {
     // | classDeclaration
     // | enumDeclaration
     $.RULE("memberDeclaration", () => {
+      // fieldDeclaration
+      // $.CONSUME(tokens.Identifier);
+      // $.MANY(() => {
+      //   $.CONSUME(tokens.LSquare);
+      //   $.CONSUME(tokens.RSquare);
+      // });
+      // $.OPTION(() => {
+      //   $.CONSUME(tokens.Equals);
+      //   $.SUBRULE($.variableInitializer);
+      // });
+      // $.MANY(() => {
+      //   $.CONSUME(tokens.Comma);
+      //   $.CONSUME(tokens.Identifier);
+      //     $.MANY(() => {
+      //       $.CONSUME(tokens.LSquare);
+      //       $.CONSUME(tokens.RSquare);
+      //     });
+      //     $.OPTION(() => {
+      //       $.CONSUME(tokens.Equals);
+      //       $.SUBRULE($.variableInitializer);
+      //     });
+      //   }
+      // });
+      // $.CONSUME(tokens.SemiColon);
+
+      // methodDeclaration
+      // $.CONSUME(tokens.Identifier);
+      // $.SUBRULE($.formalParameters);
+      // $.MANY(() => {
+      //   $.CONSUME(tokens.LSquare);
+      //   $.CONSUME(tokens.RSquare);
+      // });
+      // $.OPTION(() => {
+      //   $.CONSUME(tokens.Throws);
+      //   $.SUBRULE($.qualifiedNameList);
+      // });
+      // $.SUBRULE($.methodBody);
+
       $.OR([
-        // { ALT: () => $.SUBRULE($.fieldDeclaration) },
-        { ALT: () => $.SUBRULE($.methodDeclaration) },
-        { ALT: () => $.SUBRULE($.constructorDeclaration) },
+        {
+          ALT: () =>
+            $.SUBRULE(
+              $.fieldDeclarationOrMethodDeclarationOrConstructorDeclaration
+            )
+        },
         {
           ALT: () =>
             $.SUBRULE($.genericMethodDeclarationOrGenericConstructorDeclaration)
@@ -300,11 +341,138 @@ class SelectParser extends chevrotain.Parser {
       ]);
     });
 
-    /* We use rule this even for void methods which cannot have [] after parameters.
-      This simplifies grammar and we can consider void to be a type, which
-      renders the [] matching as a context-sensitive issue or a semantic check
-      for invalid return type after parsing.
-    */
+    $.RULE(
+      "fieldDeclarationOrMethodDeclarationOrConstructorDeclaration",
+      () => {
+        let isFieldDeclaration = true;
+        let isMethodDeclaration = true;
+        let isConstructorDeclaration = true;
+        let firstIdentifier = undefined;
+        // typeTypeOrVoid
+        $.OR([
+          {
+            // typeType
+            ALT: () => {
+              $.OPTION(() => {
+                $.SUBRULE($.annotation);
+                isConstructorDeclaration = false;
+              });
+              $.OR2([
+                {
+                  ALT: () => {
+                    firstIdentifier = $.CONSUME(tokens.Identifier);
+
+                    $.OR3([
+                      {
+                        // constructorDeclaration
+                        GATE: () => isConstructorDeclaration,
+                        ALT: () => {
+                          $.SUBRULE($.formalParameters);
+                          $.OPTION2(() => {
+                            $.CONSUME(tokens.Throws);
+                            $.SUBRULE($.qualifiedNameList);
+                          });
+                          $.SUBRULE($.methodBody);
+                          isFieldDeclaration = false;
+                          isMethodDeclaration = false;
+                          firstIdentifier.isConstructorDeclaration = true;
+                        }
+                      },
+                      {
+                        ALT: () => {
+                          $.OPTION3(() => {
+                            $.SUBRULE($.typeArguments);
+                          });
+                          $.MANY({
+                            GATE: () => this.LA(2).tokenType !== tokens.Class,
+                            DEF: () => {
+                              $.CONSUME(tokens.Dot);
+                              $.SUBRULE2($.classOrInterfaceTypeElement);
+                            }
+                          });
+                          isConstructorDeclaration = false;
+                        }
+                      }
+                    ]);
+                  }
+                },
+                { ALT: () => $.SUBRULE($.primitiveType) }
+              ]);
+              $.MANY2({
+                GATE: () => !isConstructorDeclaration,
+                DEF: () => {
+                  const lSquare = $.CONSUME(tokens.LSquare);
+                  lSquare.isTypeType = true;
+                  $.CONSUME(tokens.RSquare);
+                }
+              });
+            }
+          },
+          {
+            // Void
+            ALT: () => {
+              $.CONSUME(tokens.Void);
+              isConstructorDeclaration = false;
+              isFieldDeclaration = false;
+            }
+          }
+        ]);
+        $.OR4([
+          {
+            GATE: () => isMethodDeclaration || isFieldDeclaration,
+            ALT: () => {
+              $.CONSUME2(tokens.Identifier);
+
+              $.OR5([
+                {
+                  // fieldDeclaration
+                  ALT: () => {
+                    $.MANY3(() => {
+                      $.CONSUME2(tokens.LSquare);
+                      $.CONSUME2(tokens.RSquare);
+                    });
+                    $.OPTION4(() => {
+                      $.CONSUME(tokens.Equals);
+                      $.SUBRULE($.variableInitializer);
+                    });
+                    $.MANY4(() => {
+                      $.CONSUME(tokens.Comma);
+                      $.SUBRULE($.variableDeclarator);
+                    });
+                    $.CONSUME(tokens.SemiColon);
+                    firstIdentifier.isFieldDeclaration = true;
+                  }
+                },
+                {
+                  // methodDeclaration
+                  ALT: () => {
+                    $.SUBRULE2($.formalParameters);
+                    $.MANY5(() => {
+                      $.CONSUME3(tokens.LSquare);
+                      $.CONSUME3(tokens.RSquare);
+                    });
+                    $.OPTION5(() => {
+                      $.CONSUME2(tokens.Throws);
+                      $.SUBRULE2($.qualifiedNameList);
+                    });
+                    $.SUBRULE2($.methodBody);
+                    if (firstIdentifier) {
+                      firstIdentifier.isMethodDeclaration = true;
+                    }
+                  }
+                }
+              ]);
+            }
+          },
+          {
+            ALT: () => {
+              // empty
+            }
+          }
+        ]);
+      }
+    );
+
     // methodDeclaration
     // : typeTypeOrVoid IDENTIFIER formalParameters ('[' ']')*
     //   (THROWS qualifiedNameList)?

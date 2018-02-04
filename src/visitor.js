@@ -301,12 +301,6 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   memberDeclaration(ctx) {
-    if (ctx.methodDeclaration.length > 0) {
-      return this.visit(ctx.methodDeclaration);
-    }
-    if (ctx.constructorDeclaration.length > 0) {
-      return this.visit(ctx.constructorDeclaration);
-    }
     if (ctx.interfaceDeclaration.length > 0) {
       return this.visit(ctx.interfaceDeclaration);
     }
@@ -325,6 +319,162 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       return this.visit(
         ctx.genericMethodDeclarationOrGenericConstructorDeclaration
       );
+    }
+    if (
+      ctx.fieldDeclarationOrMethodDeclarationOrConstructorDeclaration.length > 0
+    ) {
+      return this.visit(
+        ctx.fieldDeclarationOrMethodDeclarationOrConstructorDeclaration
+      );
+    }
+  }
+
+  fieldDeclarationOrMethodDeclarationOrConstructorDeclaration(ctx) {
+    if (ctx.Identifier.length > 0) {
+      if (ctx.Identifier[0].isConstructorDeclaration) {
+        // constructorDeclaration
+        const name = this.identifier(ctx.Identifier[0]);
+        const parameters = this.visit(ctx.formalParameters);
+        const throws = this.visit(ctx.qualifiedNameList);
+        const body = this.visit(ctx.methodBody);
+
+        return {
+          type: "CONSTRUCTOR_DECLARATION",
+          name: name,
+          parameters: parameters,
+          throws: throws,
+          body: body
+        };
+      }
+
+      // methodDeclaration
+      // fieldDeclaration
+
+      // typeType
+      let typeType = undefined;
+      if (ctx.Void.length > 0) {
+        typeType = {
+          type: "VOID"
+        };
+      } else {
+        const annotations = ctx.annotation.map(annotation =>
+          this.visit(annotation)
+        );
+        let cntSquares = 0;
+        ctx.LSquare.map(lSquare => {
+          if (lSquare.isTypeType) {
+            cntSquares++;
+          }
+        });
+
+        let value = undefined;
+        if (ctx.primitiveType.length > 0) {
+          value = this.visit(ctx.primitiveType);
+          // if empty typeType return child
+          if (annotations.length === 0 && cntSquares === 0) {
+            typeType = value;
+          }
+        } else if (ctx.Identifier.length > 0) {
+          const name = this.identifier(ctx.Identifier[0]);
+          const typeArguments = this.visit(ctx.typeArguments);
+
+          if (!typeArguments && ctx.classOrInterfaceTypeElement.length === 0) {
+            typeType = name;
+          } else {
+            typeType = {
+              type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
+              name: name,
+              typeArguments: typeArguments
+            };
+          }
+          const elements = [typeType];
+
+          ctx.classOrInterfaceTypeElement.map(classOrInterfaceTypeElement =>
+            elements.push(this.visit(classOrInterfaceTypeElement))
+          );
+
+          if (elements.length === 1) {
+            typeType = elements[0];
+          } else {
+            typeType = {
+              type: "CLASS_OR_INTERFACE_TYPE",
+              elements: elements
+            };
+          }
+
+          if (annotations.length !== 0 || cntSquares !== 0) {
+            typeType = {
+              type: "TYPE_TYPE",
+              annotations: annotations,
+              value: typeType,
+              cntSquares: cntSquares
+            };
+          }
+        }
+      }
+
+      if (
+        ctx.primitiveType.length > 0 ||
+        ctx.Void.length > 0 ||
+        ctx.Identifier[0].isMethodDeclaration
+      ) {
+        // methodDeclaration
+        const name = this.identifier(
+          ctx.Identifier[ctx.Identifier[0].isMethodDeclaration ? 1 : 0]
+        );
+        const parameters = this.visit(ctx.formalParameters);
+        let cntSquares = 0;
+        ctx.LSquare.map(lSquare => {
+          if (!lSquare.isTypeType) {
+            cntSquares++;
+          }
+        });
+        const throws = this.visit(ctx.qualifiedNameList);
+        const body = this.visit(ctx.methodBody);
+
+        return {
+          type: "METHOD_DECLARATION",
+          typeType: typeType,
+          name: name,
+          parameters: parameters,
+          cntSquares: cntSquares,
+          throws: throws,
+          body: body
+        };
+      }
+
+      if (ctx.Identifier[0].isFieldDeclaration) {
+        const id = this.identifier(ctx.Identifier[1]);
+        const cntSquares = ctx.LSquare.length;
+        const variableDeclaratorId = {
+          type: "VARIABLE_DECLARATOR_ID",
+          id: id,
+          cntSquares: cntSquares
+        };
+
+        const init = this.visit(ctx.variableInitializer);
+        const variableDeclarator = {
+          type: "VARIABLE_DECLARATOR",
+          id: variableDeclaratorId,
+          init: init
+        };
+
+        const declarators = [variableDeclarator];
+        ctx.variableDeclarator.map(variableDeclarator =>
+          declarators.push(this.visit(variableDeclarator))
+        );
+
+        const variableDeclarators = {
+          type: "VARIABLE_DECLARATORS",
+          list: declarators
+        };
+
+        return {
+          type: "FIELD_DECLARATION",
+          typeType: typeType,
+          variableDeclarators: variableDeclarators
+        };
+      }
     }
   }
 
