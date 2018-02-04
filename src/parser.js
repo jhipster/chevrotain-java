@@ -118,10 +118,11 @@ class SelectParser extends chevrotain.Parser {
       $.OPTION(() => {
         $.CONSUME(tokens.LBrace);
         $.OPTION2(() => {
-          $.OR([
-            { ALT: () => $.SUBRULE($.elementValuePairs) },
-            { ALT: () => $.SUBRULE($.elementValue) }
-          ]);
+          $.SUBRULE($.elementValue);
+          $.MANY(() => {
+            $.CONSUME(tokens.Comma);
+            $.SUBRULE2($.elementValue);
+          });
         });
         $.CONSUME(tokens.RBrace);
       });
@@ -152,13 +153,7 @@ class SelectParser extends chevrotain.Parser {
     // | elementValueArrayInitializer
     $.RULE("elementValue", () => {
       $.OR([
-        // TODO: refactoring
-        // {
-        //   ALT: () => {
-        //     $.SUBRULE($.expression);
-        //   }
-        // },
-        { ALT: () => $.SUBRULE($.annotation) },
+        { ALT: () => $.SUBRULE($.expression) },
         { ALT: () => $.SUBRULE($.elementValueArrayInitializer) }
       ]);
     });
@@ -961,17 +956,48 @@ class SelectParser extends chevrotain.Parser {
     // typeType
     // : annotation? (classOrInterfaceType | primitiveType) ('[' ']')*
     $.RULE("typeType", () => {
-      $.OPTION(() => {
-        $.SUBRULE($.annotation);
-      });
       $.OR([
-        { ALT: () => $.SUBRULE($.classOrInterfaceType) },
-        { ALT: () => $.SUBRULE($.primitiveType) }
+        {
+          ALT: () => {
+            $.SUBRULE($.annotation);
+            $.OPTION(() => {
+              $.OR2([
+                { ALT: () => $.SUBRULE($.classOrInterfaceType) },
+                { ALT: () => $.SUBRULE($.primitiveType) }
+              ]);
+              $.MANY(() => {
+                $.CONSUME(tokens.LSquare);
+                $.CONSUME(tokens.RSquare);
+              });
+            });
+          }
+        },
+        {
+          ALT: () => {
+            $.OR3([
+              { ALT: () => $.SUBRULE2($.classOrInterfaceType) },
+              { ALT: () => $.SUBRULE2($.primitiveType) }
+            ]);
+            $.MANY2(() => {
+              $.CONSUME2(tokens.LSquare);
+              $.CONSUME2(tokens.RSquare);
+            });
+          }
+        }
       ]);
-      $.MANY(() => {
-        $.CONSUME(tokens.LSquare);
-        $.CONSUME(tokens.RSquare);
-      });
+      // $.OPTION(() => {
+      //   $.SUBRULE($.annotation);
+      // });
+      // $.OPTION(() => {
+      //   $.OR([
+      //     { ALT: () => $.SUBRULE($.classOrInterfaceType) },
+      //     { ALT: () => $.SUBRULE($.primitiveType) }
+      //   ]);
+      //   $.MANY(() => {
+      //     $.CONSUME(tokens.LSquare);
+      //     $.CONSUME(tokens.RSquare);
+      //   });
+      // });
     });
 
     // typeTypeOrVoid

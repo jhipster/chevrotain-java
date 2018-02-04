@@ -153,9 +153,10 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     let value = undefined;
     if (hasBraces) {
       if (ctx.elementValue.length > 0) {
-        value = this.visit(ctx.elementValue);
-      } else if (ctx.elementValuePairs.length > 0) {
-        value = this.visit(ctx.elementValuePairs);
+        value = ctx.elementValue.map(elementValue => this.visit(elementValue));
+        if (value.length === 1) {
+          value = value[0];
+        }
       }
     }
 
@@ -190,12 +191,8 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   elementValue(ctx) {
-    // if (ctx.expression.length > 0) {
-    //   return this.visit(ctx.expression);
-    // }
-
-    if (ctx.annotation.length > 0) {
-      return this.visit(ctx.annotation);
+    if (ctx.expression.length > 0) {
+      return this.visit(ctx.expression);
     }
 
     if (ctx.elementValueArrayInitializer.length > 0) {
@@ -946,6 +943,10 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       if (annotations.length === 0 && cntSquares === 0) {
         return value;
       }
+    }
+
+    if (!value) {
+      return annotations[0];
     }
 
     return {

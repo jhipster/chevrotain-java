@@ -435,27 +435,24 @@
             "type": "Option",
             "definition": [
               {
-                "type": "Alternation",
+                "type": "NonTerminal",
+                "name": "elementValue",
+                "occurrenceInParent": 1
+              },
+              {
+                "type": "Repetition",
                 "definition": [
                   {
-                    "type": "Flat",
-                    "definition": [
-                      {
-                        "type": "NonTerminal",
-                        "name": "elementValuePairs",
-                        "occurrenceInParent": 1
-                      }
-                    ]
+                    "type": "Terminal",
+                    "name": "Comma",
+                    "label": "','",
+                    "occurrenceInParent": 1,
+                    "pattern": ","
                   },
                   {
-                    "type": "Flat",
-                    "definition": [
-                      {
-                        "type": "NonTerminal",
-                        "name": "elementValue",
-                        "occurrenceInParent": 1
-                      }
-                    ]
+                    "type": "NonTerminal",
+                    "name": "elementValue",
+                    "occurrenceInParent": 2
                   }
                 ]
               }
@@ -532,7 +529,7 @@
             "definition": [
               {
                 "type": "NonTerminal",
-                "name": "annotation",
+                "name": "expression",
                 "occurrenceInParent": 1
               }
             ]
@@ -2658,16 +2655,6 @@
     "name": "typeType",
     "definition": [
       {
-        "type": "Option",
-        "definition": [
-          {
-            "type": "NonTerminal",
-            "name": "annotation",
-            "occurrenceInParent": 1
-          }
-        ]
-      },
-      {
         "type": "Alternation",
         "definition": [
           {
@@ -2675,8 +2662,57 @@
             "definition": [
               {
                 "type": "NonTerminal",
-                "name": "classOrInterfaceType",
+                "name": "annotation",
                 "occurrenceInParent": 1
+              },
+              {
+                "type": "Option",
+                "definition": [
+                  {
+                    "type": "Alternation",
+                    "definition": [
+                      {
+                        "type": "Flat",
+                        "definition": [
+                          {
+                            "type": "NonTerminal",
+                            "name": "classOrInterfaceType",
+                            "occurrenceInParent": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "Flat",
+                        "definition": [
+                          {
+                            "type": "NonTerminal",
+                            "name": "primitiveType",
+                            "occurrenceInParent": 1
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Repetition",
+                    "definition": [
+                      {
+                        "type": "Terminal",
+                        "name": "LSquare",
+                        "label": "'['",
+                        "occurrenceInParent": 1,
+                        "pattern": "\\["
+                      },
+                      {
+                        "type": "Terminal",
+                        "name": "RSquare",
+                        "label": "']'",
+                        "occurrenceInParent": 1,
+                        "pattern": "]"
+                      }
+                    ]
+                  }
+                ]
               }
             ]
           },
@@ -2684,30 +2720,50 @@
             "type": "Flat",
             "definition": [
               {
-                "type": "NonTerminal",
-                "name": "primitiveType",
-                "occurrenceInParent": 1
+                "type": "Alternation",
+                "definition": [
+                  {
+                    "type": "Flat",
+                    "definition": [
+                      {
+                        "type": "NonTerminal",
+                        "name": "classOrInterfaceType",
+                        "occurrenceInParent": 2
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Flat",
+                    "definition": [
+                      {
+                        "type": "NonTerminal",
+                        "name": "primitiveType",
+                        "occurrenceInParent": 2
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "Repetition",
+                "definition": [
+                  {
+                    "type": "Terminal",
+                    "name": "LSquare",
+                    "label": "'['",
+                    "occurrenceInParent": 2,
+                    "pattern": "\\["
+                  },
+                  {
+                    "type": "Terminal",
+                    "name": "RSquare",
+                    "label": "']'",
+                    "occurrenceInParent": 2,
+                    "pattern": "]"
+                  }
+                ]
               }
             ]
-          }
-        ]
-      },
-      {
-        "type": "Repetition",
-        "definition": [
-          {
-            "type": "Terminal",
-            "name": "LSquare",
-            "label": "'['",
-            "occurrenceInParent": 1,
-            "pattern": "\\["
-          },
-          {
-            "type": "Terminal",
-            "name": "RSquare",
-            "label": "']'",
-            "occurrenceInParent": 1,
-            "pattern": "]"
           }
         ]
       }

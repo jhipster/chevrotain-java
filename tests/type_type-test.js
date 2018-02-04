@@ -16,7 +16,7 @@ describe("typeType", () => {
     });
   });
 
-  it("annotation", () => {
+  it("identifier with annotation", () => {
     expect(Parser.parse("@Bean boolean", parser => parser.typeType())).toEqual({
       type: "TYPE_TYPE",
       annotations: [
@@ -63,6 +63,22 @@ describe("typeType", () => {
         value: "boolean"
       },
       cntSquares: 2
+    });
+  });
+
+  it("annotation", () => {
+    expect(Parser.parse("@Bean", parser => parser.typeType())).toEqual({
+      type: "ANNOTATION",
+      name: {
+        type: "QUALIFIED_NAME",
+        name: [
+          {
+            type: "IDENTIFIER",
+            value: "Bean"
+          }
+        ]
+      },
+      hasBraces: false
     });
   });
 });

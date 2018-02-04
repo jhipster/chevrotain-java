@@ -120,30 +120,26 @@ describe("annotation", () => {
       },
       hasBraces: true,
       value: {
-        type: "ELEMENT_VALUE_PAIRS",
-        pairs: [
-          {
-            type: "ELEMENT_VALUE_PAIR",
-            key: {
-              type: "IDENTIFIER",
-              value: "key"
-            },
-            value: {
-              type: "ANNOTATION",
-              name: {
-                type: "QUALIFIED_NAME",
-                name: [
-                  {
-                    type: "IDENTIFIER",
-                    value: "Value"
-                  }
-                ]
-              },
-              hasBraces: false,
-              value: undefined
-            }
-          }
-        ]
+        type: "OPERATOR_EXPRESSION",
+        left: {
+          type: "IDENTIFIER",
+          value: "key"
+        },
+        operator: "=",
+        right: {
+          type: "ANNOTATION",
+          name: {
+            type: "QUALIFIED_NAME",
+            name: [
+              {
+                type: "IDENTIFIER",
+                value: "Value"
+              }
+            ]
+          },
+          hasBraces: false,
+          value: undefined
+        }
       }
     });
   });
