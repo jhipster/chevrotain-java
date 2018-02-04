@@ -276,36 +276,23 @@ class SelectParser extends chevrotain.Parser {
     });
 
     // memberDeclaration
-    // : methodDeclaration
-    // | genericMethodDeclaration
-    // | fieldDeclaration
+    // : fieldDeclaration
+    // | methodDeclaration
     // | constructorDeclaration
-    // | genericConstructorDeclaration
+    // | genericMethodDeclarationOrGenericConstructorDeclaration
     // | interfaceDeclaration
     // | annotationTypeDeclaration
     // | classDeclaration
     // | enumDeclaration
     $.RULE("memberDeclaration", () => {
       $.OR([
+        // { ALT: () => $.SUBRULE($.fieldDeclaration) },
         { ALT: () => $.SUBRULE($.methodDeclaration) },
-        // TODO: refactoring
-        // {
-        //   ALT: () => {
-        //     $.SUBRULE($.genericMethodDeclaration);
-        //   }
-        // },
-        // {
-        //   ALT: () => {
-        //     $.SUBRULE($.fieldDeclaration);
-        //   }
-        // },
         { ALT: () => $.SUBRULE($.constructorDeclaration) },
-        // TODO: refactoring
-        // {
-        //   ALT: () => {
-        //     $.SUBRULE($.genericConstructorDeclaration);
-        //   }
-        // },
+        {
+          ALT: () =>
+            $.SUBRULE($.genericMethodDeclarationOrGenericConstructorDeclaration)
+        },
         { ALT: () => $.SUBRULE($.interfaceDeclaration) },
         { ALT: () => $.SUBRULE($.annotationTypeDeclaration) },
         { ALT: () => $.SUBRULE($.classDeclaration) },
@@ -337,13 +324,6 @@ class SelectParser extends chevrotain.Parser {
       $.SUBRULE($.methodBody);
     });
 
-    // genericMethodDeclaration
-    // : typeParameters methodDeclaration
-    $.RULE("genericMethodDeclaration", () => {
-      $.SUBRULE($.typeParameters);
-      $.SUBRULE($.methodDeclaration);
-    });
-
     // constructorDeclaration
     // : IDENTIFIER formalParameters (THROWS qualifiedNameList)? block
     $.RULE("constructorDeclaration", () => {
@@ -356,11 +336,14 @@ class SelectParser extends chevrotain.Parser {
       $.SUBRULE($.methodBody);
     });
 
-    // genericConstructorDeclaration
-    // : typeParameters constructorDeclaration
-    $.RULE("genericConstructorDeclaration", () => {
+    // genericMethodDeclarationOrGenericConstructorDeclaration
+    // : typeParameters methodDeclaration
+    $.RULE("genericMethodDeclarationOrGenericConstructorDeclaration", () => {
       $.SUBRULE($.typeParameters);
-      $.SUBRULE($.constructorDeclaration);
+      $.OR([
+        { ALT: () => $.SUBRULE($.methodDeclaration) },
+        { ALT: () => $.SUBRULE($.constructorDeclaration) }
+      ]);
     });
 
     // fieldDeclaration

@@ -303,16 +303,28 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   memberDeclaration(ctx) {
     if (ctx.methodDeclaration.length > 0) {
       return this.visit(ctx.methodDeclaration);
-    } else if (ctx.constructorDeclaration.length > 0) {
+    }
+    if (ctx.constructorDeclaration.length > 0) {
       return this.visit(ctx.constructorDeclaration);
-    } else if (ctx.interfaceDeclaration.length > 0) {
+    }
+    if (ctx.interfaceDeclaration.length > 0) {
       return this.visit(ctx.interfaceDeclaration);
-    } else if (ctx.annotationTypeDeclaration.length > 0) {
+    }
+    if (ctx.annotationTypeDeclaration.length > 0) {
       return this.visit(ctx.annotationTypeDeclaration);
-    } else if (ctx.classDeclaration.length > 0) {
+    }
+    if (ctx.classDeclaration.length > 0) {
       return this.visit(ctx.classDeclaration);
-    } else if (ctx.enumDeclaration.length > 0) {
+    }
+    if (ctx.enumDeclaration.length > 0) {
       return this.visit(ctx.enumDeclaration);
+    }
+    if (
+      ctx.genericMethodDeclarationOrGenericConstructorDeclaration.length > 0
+    ) {
+      return this.visit(
+        ctx.genericMethodDeclarationOrGenericConstructorDeclaration
+      );
     }
   }
 
@@ -335,17 +347,6 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     };
   }
 
-  genericMethodDeclaration(ctx) {
-    const typeParameters = this.visit(ctx.typeParameters);
-    const methodDeclaration = this.visit(ctx.methodDeclaration);
-
-    return {
-      type: "GENERIC_METHOD_DECLARATION",
-      typeParameters: typeParameters,
-      methodDeclaration: methodDeclaration
-    };
-  }
-
   constructorDeclaration(ctx) {
     const name = this.identifier(ctx.Identifier[0]);
     const parameters = this.visit(ctx.formalParameters);
@@ -361,15 +362,28 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     };
   }
 
-  genericConstructorDeclaration(ctx) {
+  genericMethodDeclarationOrGenericConstructorDeclaration(ctx) {
     const typeParameters = this.visit(ctx.typeParameters);
-    const constructorDeclaration = this.visit(ctx.constructorDeclaration);
 
-    return {
-      type: "GENERIC_CONSTRUCTOR_DECLARATION",
-      typeParameters: typeParameters,
-      constructorDeclaration: constructorDeclaration
-    };
+    if (ctx.methodDeclaration.length > 0) {
+      const methodDeclaration = this.visit(ctx.methodDeclaration);
+
+      return {
+        type: "GENERIC_METHOD_DECLARATION",
+        typeParameters: typeParameters,
+        methodDeclaration: methodDeclaration
+      };
+    }
+
+    if (ctx.constructorDeclaration.length > 0) {
+      const constructorDeclaration = this.visit(ctx.constructorDeclaration);
+
+      return {
+        type: "GENERIC_CONSTRUCTOR_DECLARATION",
+        typeParameters: typeParameters,
+        constructorDeclaration: constructorDeclaration
+      };
+    }
   }
 
   fieldDeclaration(ctx) {

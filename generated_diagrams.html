@@ -894,6 +894,16 @@
             "definition": [
               {
                 "type": "NonTerminal",
+                "name": "genericMethodDeclarationOrGenericConstructorDeclaration",
+                "occurrenceInParent": 1
+              }
+            ]
+          },
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "NonTerminal",
                 "name": "interfaceDeclaration",
                 "occurrenceInParent": 1
               }
@@ -999,22 +1009,6 @@
   },
   {
     "type": "Rule",
-    "name": "genericMethodDeclaration",
-    "definition": [
-      {
-        "type": "NonTerminal",
-        "name": "typeParameters",
-        "occurrenceInParent": 1
-      },
-      {
-        "type": "NonTerminal",
-        "name": "methodDeclaration",
-        "occurrenceInParent": 1
-      }
-    ]
-  },
-  {
-    "type": "Rule",
     "name": "constructorDeclaration",
     "definition": [
       {
@@ -1055,7 +1049,7 @@
   },
   {
     "type": "Rule",
-    "name": "genericConstructorDeclaration",
+    "name": "genericMethodDeclarationOrGenericConstructorDeclaration",
     "definition": [
       {
         "type": "NonTerminal",
@@ -1063,9 +1057,29 @@
         "occurrenceInParent": 1
       },
       {
-        "type": "NonTerminal",
-        "name": "constructorDeclaration",
-        "occurrenceInParent": 1
+        "type": "Alternation",
+        "definition": [
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "NonTerminal",
+                "name": "methodDeclaration",
+                "occurrenceInParent": 1
+              }
+            ]
+          },
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "NonTerminal",
+                "name": "constructorDeclaration",
+                "occurrenceInParent": 1
+              }
+            ]
+          }
+        ]
       }
     ]
   },
