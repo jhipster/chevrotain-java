@@ -65,7 +65,10 @@ describe("forControl", () => {
               type: "VARIABLE_DECLARATOR",
               id: {
                 type: "VARIABLE_DECLARATOR_ID",
-                id: "i",
+                id: {
+                  type: "IDENTIFIER",
+                  value: "i"
+                },
                 cntSquares: 0
               },
               init: {
@@ -100,7 +103,10 @@ describe("forControl", () => {
               type: "VARIABLE_DECLARATOR",
               id: {
                 type: "VARIABLE_DECLARATOR_ID",
-                id: "i",
+                id: {
+                  type: "IDENTIFIER",
+                  value: "i"
+                },
                 cntSquares: 0
               },
               init: {
@@ -112,7 +118,10 @@ describe("forControl", () => {
               type: "VARIABLE_DECLARATOR",
               id: {
                 type: "VARIABLE_DECLARATOR_ID",
-                id: "j",
+                id: {
+                  type: "IDENTIFIER",
+                  value: "j"
+                },
                 cntSquares: 0
               },
               init: {
@@ -140,7 +149,12 @@ describe("forControl", () => {
             type: "ANNOTATION",
             name: {
               type: "QUALIFIED_NAME",
-              name: ["Bean"]
+              name: [
+                {
+                  type: "IDENTIFIER",
+                  value: "Bean"
+                }
+              ]
             },
             hasBraces: false,
             value: undefined
@@ -161,7 +175,10 @@ describe("forControl", () => {
               type: "VARIABLE_DECLARATOR",
               id: {
                 type: "VARIABLE_DECLARATOR_ID",
-                id: "i",
+                id: {
+                  type: "IDENTIFIER",
+                  value: "i"
+                },
                 cntSquares: 0
               },
               init: {
@@ -223,7 +240,10 @@ describe("forControl", () => {
               type: "VARIABLE_DECLARATOR",
               id: {
                 type: "VARIABLE_DECLARATOR_ID",
-                id: "bean",
+                id: {
+                  type: "IDENTIFIER",
+                  value: "bean"
+                },
                 cntSquares: 0
               },
               init: undefined
@@ -252,7 +272,12 @@ describe("forControl", () => {
             type: "ANNOTATION",
             name: {
               type: "QUALIFIED_NAME",
-              name: ["Bean"]
+              name: [
+                {
+                  type: "IDENTIFIER",
+                  value: "Bean"
+                }
+              ]
             },
             hasBraces: false,
             value: undefined
@@ -273,7 +298,10 @@ describe("forControl", () => {
               type: "VARIABLE_DECLARATOR",
               id: {
                 type: "VARIABLE_DECLARATOR_ID",
-                id: "bean",
+                id: {
+                  type: "IDENTIFIER",
+                  value: "bean"
+                },
                 cntSquares: 0
               },
               init: undefined

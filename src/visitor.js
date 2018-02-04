@@ -46,7 +46,10 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     // If import has a star at the end,
     // Add it to the name list
     if (star.length > 0) {
-      name.name.push("*");
+      name.name.push({
+        type: "IDENTIFIER",
+        value: "*"
+      });
     }
 
     return {
@@ -176,7 +179,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   elementValuePair(ctx) {
-    const key = ctx.Identifier[0].image;
+    const key = this.identifier(ctx.Identifier[0]);
     const value = this.visit(ctx.elementValue);
 
     return {
@@ -211,7 +214,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   classDeclaration(ctx) {
-    const name = ctx.Identifier[0].image;
+    const name = this.identifier(ctx.Identifier[0]);
     const body = this.visit(ctx.classBody);
     const typeParameters = this.visit(ctx.typeParameters);
     const ext = this.visit(ctx.typeType);
@@ -242,7 +245,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     const annotations = ctx.annotation.map(annotation =>
       this.visit(annotation)
     );
-    const name = ctx.Identifier[0].image;
+    const name = this.identifier(ctx.Identifier[0]);
     const typeBound = this.visit(ctx.typeBound);
 
     return {
@@ -315,7 +318,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
   methodDeclaration(ctx) {
     const typeType = this.visit(ctx.typeTypeOrVoid);
-    const name = ctx.Identifier[0].image;
+    const name = this.identifier(ctx.Identifier[0]);
     const parameters = this.visit(ctx.formalParameters);
     const cntSquares = ctx.LSquare.length;
     const throws = this.visit(ctx.qualifiedNameList);
@@ -344,7 +347,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   constructorDeclaration(ctx) {
-    const name = ctx.Identifier[0].image;
+    const name = this.identifier(ctx.Identifier[0]);
     const parameters = this.visit(ctx.formalParameters);
     const throws = this.visit(ctx.qualifiedNameList);
     const body = this.visit(ctx.methodBody);
@@ -385,7 +388,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   enumDeclaration(ctx) {
-    const name = ctx.Identifier[0].image;
+    const name = this.identifier(ctx.Identifier[0]);
     const impl = this.visit(ctx.typeList);
     const enumConstants = this.visit(ctx.enumConstants);
     const body = this.visit(ctx.enumBodyDeclarations);
@@ -410,7 +413,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
   enumConstant(ctx) {
     const modifiers = ctx.annotation.map(annotation => this.visit(annotation));
-    const name = ctx.Identifier[0].image;
+    const name = this.identifier(ctx.Identifier[0]);
     const args = this.visit(ctx.arguments);
     const body = this.visit(ctx.classBody);
 
@@ -435,7 +438,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   interfaceDeclaration(ctx) {
-    const name = ctx.Identifier[0].image;
+    const name = this.identifier(ctx.Identifier[0]);
     const typeParameters = this.visit(ctx.typeParameters);
     const typeList = this.visit(ctx.typeList);
     const body = this.visit(ctx.interfaceBody);
@@ -497,7 +500,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   constantDeclarator(ctx) {
-    const name = ctx.Identifier[0].image;
+    const name = this.identifier(ctx.Identifier[0]);
     const cntSquares = ctx.LSquare.length;
     const init = this.visit(ctx.variableInitializer);
 
@@ -515,7 +518,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     );
     const typeParameters = this.visit(ctx.typeParameters);
     const typeType = this.visit(ctx.typeTypeOrVoid);
-    const name = ctx.Identifier[0].image;
+    const name = this.identifier(ctx.Identifier[0]);
     const parameters = this.visit(ctx.formalParameters);
     const cntSquares = ctx.LSquare.length;
     const throws = this.visit(ctx.qualifiedNameList);
@@ -594,7 +597,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   variableDeclaratorId(ctx) {
-    const id = ctx.Identifier[0].image;
+    const id = this.identifier(ctx.Identifier[0]);
     const cntSquares = ctx.LSquare.length;
     return {
       type: "VARIABLE_DECLARATOR_ID",
@@ -625,7 +628,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   annotationTypeDeclaration(ctx) {
-    const name = ctx.Identifier[0].image;
+    const name = this.identifier(ctx.Identifier[0]);
     const body = this.visit(ctx.annotationTypeBody);
 
     return {
@@ -690,7 +693,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   annotationMethodRest(ctx) {
-    const name = ctx.Identifier[0].image;
+    const name = this.identifier(ctx.Identifier[0]);
     const defaultValue = this.visit(ctx.defaultValue);
 
     return {
@@ -777,7 +780,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   classOrInterfaceTypeElement(ctx) {
-    const name = this.identifier(ctx.Identifier);
+    const name = this.identifier(ctx.Identifier[0]);
     const typeArguments = this.visit(ctx.typeArguments);
 
     if (!typeArguments) {
@@ -1187,7 +1190,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   breakStatement(ctx) {
     let identifier = undefined;
     if (ctx.Identifier.length > 0) {
-      identifier = ctx.Identifier[0].image;
+      identifier = this.identifier(ctx.Identifier[0]);
     }
 
     return {
@@ -1199,7 +1202,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   continueStatement(ctx) {
     let identifier = undefined;
     if (ctx.Identifier.length > 0) {
-      identifier = ctx.Identifier[0].image;
+      identifier = this.identifier(ctx.Identifier[0]);
     }
 
     return {
@@ -1224,7 +1227,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   identifierStatement(ctx) {
-    const identifier = ctx.Identifier[0].image;
+    const identifier = this.identifier(ctx.Identifier[0]);
     const statement = this.visit(ctx.statement);
 
     return {
@@ -1239,7 +1242,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       this.visit(modifier)
     );
     const catchType = this.visit(ctx.catchType);
-    const id = ctx.Identifier[0].image;
+    const id = this.identifier(ctx.Identifier[0]);
     const block = this.visit(ctx.block);
 
     return {
@@ -1316,7 +1319,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   switchLabelCase(ctx) {
-    const cs = ctx.Identifier[0].image;
+    const cs = this.identifier(ctx.Identifier[0]);
 
     return {
       type: "SWITCH_LABEL_CASE",
@@ -1482,7 +1485,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   identifierArguments(ctx) {
-    const name = ctx.Identifier[0].image;
+    const name = this.identifier(ctx.Identifier[0]);
     const args = this.visit(ctx.arguments);
 
     return {
@@ -1517,7 +1520,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   dotIdentifierArguments(ctx) {
-    const name = ctx.Identifier[0].image;
+    const name = this.identifier(ctx.Identifier[0]);
     const args = this.visit(ctx.arguments);
 
     return {
@@ -1546,7 +1549,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   methodCall(ctx) {
-    const name = ctx.Identifier[0].image;
+    const name = this.identifier(ctx.Identifier[0]);
     const expressionList = this.visit(ctx.expressionList);
 
     return {
@@ -1850,7 +1853,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
   qualifiedExpressionRest(ctx) {
     if (ctx.Identifier.length > 0) {
-      return ctx.Identifier[0].image;
+      return this.identifier(ctx.Identifier[0]);
     }
 
     if (ctx.methodCall.length > 0) {
@@ -2072,7 +2075,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   methodReferenceRest(ctx) {
     let name = undefined;
     if (ctx.Identifier.length > 0) {
-      name = ctx.Identifier[0].image;
+      name = this.identifier(ctx.Identifier[0]);
     } else if (ctx.New.length > 0) {
       name = {
         type: "NEW"
@@ -2101,7 +2104,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
   lambdaParameters(ctx) {
     if (ctx.Identifier.length > 0) {
-      return ctx.Identifier[0].image;
+      return this.identifier(ctx.Identifier[0]);
     }
 
     if (ctx.formalParameterList.length > 0) {
@@ -2215,7 +2218,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   identifierNameElement(ctx) {
-    const id = ctx.Identifier[0].image;
+    const id = this.identifier(ctx.Identifier[0]);
     const typeArguments = this.visit(ctx.nonWildcardTypeArgumentsOrDiamond);
 
     return {
@@ -2226,7 +2229,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   innerCreator(ctx) {
-    const id = ctx.Identifier[0].image;
+    const id = this.identifier(ctx.Identifier[0]);
     const typeArguments = this.visit(ctx.nonWildcardTypeArgumentsOrDiamond);
     const rest = this.visit(ctx.classCreatorRest);
 
@@ -2310,7 +2313,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   qualifiedName(ctx) {
-    const name = ctx.Identifier.map(identToken => identToken.image);
+    const name = ctx.Identifier.map(identToken => this.identifier(identToken));
     return {
       type: "QUALIFIED_NAME",
       name: name
@@ -2536,7 +2539,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   identifier(value) {
     return {
       type: "IDENTIFIER",
-      value: value[0].image
+      value: value.image
     };
   }
 }

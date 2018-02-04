@@ -5,7 +5,10 @@ describe("innerCreator", () => {
   it("without typeArguments", () => {
     expect(Parser.parse("a()", parser => parser.innerCreator())).toEqual({
       type: "INNER_CREATOR",
-      id: "a",
+      id: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
       typeArguments: undefined,
       rest: {
         type: "CLASS_CREATOR_REST",
@@ -20,7 +23,10 @@ describe("innerCreator", () => {
   it("with typeArguments", () => {
     expect(Parser.parse("a<>()", parser => parser.innerCreator())).toEqual({
       type: "INNER_CREATOR",
-      id: "a",
+      id: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
       typeArguments: {
         type: "EMPTY_DIAMOND"
       },

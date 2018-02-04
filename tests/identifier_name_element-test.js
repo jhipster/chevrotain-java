@@ -6,7 +6,10 @@ describe("identifierNameElement", () => {
     expect(Parser.parse("a", parser => parser.identifierNameElement())).toEqual(
       {
         type: "IDENTIFIER_NAME_ELEMENT",
-        id: "a",
+        id: {
+          type: "IDENTIFIER",
+          value: "a"
+        },
         typeArguments: undefined
       }
     );
@@ -17,7 +20,10 @@ describe("identifierNameElement", () => {
       Parser.parse("a<>", parser => parser.identifierNameElement())
     ).toEqual({
       type: "IDENTIFIER_NAME_ELEMENT",
-      id: "a",
+      id: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
       typeArguments: {
         type: "EMPTY_DIAMOND"
       }

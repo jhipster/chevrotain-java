@@ -13,11 +13,19 @@ describe("catchClause", () => {
         types: [
           {
             type: "QUALIFIED_NAME",
-            name: ["A"]
+            name: [
+              {
+                type: "IDENTIFIER",
+                value: "A"
+              }
+            ]
           }
         ]
       },
-      id: "e",
+      id: {
+        type: "IDENTIFIER",
+        value: "e"
+      },
       block: {
         type: "BLOCK",
         statements: []
@@ -35,7 +43,12 @@ describe("catchClause", () => {
           type: "ANNOTATION",
           name: {
             type: "QUALIFIED_NAME",
-            name: ["Bean"]
+            name: [
+              {
+                type: "IDENTIFIER",
+                value: "Bean"
+              }
+            ]
           },
           hasBraces: false
         }
@@ -45,11 +58,19 @@ describe("catchClause", () => {
         types: [
           {
             type: "QUALIFIED_NAME",
-            name: ["A"]
+            name: [
+              {
+                type: "IDENTIFIER",
+                value: "A"
+              }
+            ]
           }
         ]
       },
-      id: "e",
+      id: {
+        type: "IDENTIFIER",
+        value: "e"
+      },
       block: {
         type: "BLOCK",
         statements: []
@@ -67,7 +88,12 @@ describe("catchClause", () => {
           type: "ANNOTATION",
           name: {
             type: "QUALIFIED_NAME",
-            name: ["Bean"]
+            name: [
+              {
+                type: "IDENTIFIER",
+                value: "Bean"
+              }
+            ]
           },
           hasBraces: false
         },
@@ -81,11 +107,19 @@ describe("catchClause", () => {
         types: [
           {
             type: "QUALIFIED_NAME",
-            name: ["A"]
+            name: [
+              {
+                type: "IDENTIFIER",
+                value: "A"
+              }
+            ]
           }
         ]
       },
-      id: "e",
+      id: {
+        type: "IDENTIFIER",
+        value: "e"
+      },
       block: {
         type: "BLOCK",
         statements: []

@@ -21,7 +21,10 @@ describe("formalParameterList", () => {
           dotDotDot: false,
           id: {
             type: "VARIABLE_DECLARATOR_ID",
-            id: "a",
+            id: {
+              type: "IDENTIFIER",
+              value: "a"
+            },
             cntSquares: 0
           }
         }
@@ -47,7 +50,10 @@ describe("formalParameterList", () => {
           dotDotDot: false,
           id: {
             type: "VARIABLE_DECLARATOR_ID",
-            id: "a",
+            id: {
+              type: "IDENTIFIER",
+              value: "a"
+            },
             cntSquares: 0
           }
         },
@@ -61,7 +67,10 @@ describe("formalParameterList", () => {
           dotDotDot: false,
           id: {
             type: "VARIABLE_DECLARATOR_ID",
-            id: "b",
+            id: {
+              type: "IDENTIFIER",
+              value: "b"
+            },
             cntSquares: 0
           }
         }
@@ -87,7 +96,10 @@ describe("formalParameterList", () => {
           dotDotDot: false,
           id: {
             type: "VARIABLE_DECLARATOR_ID",
-            id: "a",
+            id: {
+              type: "IDENTIFIER",
+              value: "a"
+            },
             cntSquares: 0
           }
         },
@@ -101,7 +113,10 @@ describe("formalParameterList", () => {
           dotDotDot: true,
           id: {
             type: "VARIABLE_DECLARATOR_ID",
-            id: "b",
+            id: {
+              type: "IDENTIFIER",
+              value: "b"
+            },
             cntSquares: 0
           }
         }

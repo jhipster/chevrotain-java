@@ -7,7 +7,10 @@ describe("constructorDeclaration", () => {
       Parser.parse("a() {}", parser => parser.constructorDeclaration())
     ).toEqual({
       type: "CONSTRUCTOR_DECLARATION",
-      name: "a",
+      name: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
       parameters: {
         type: "FORMAL_PARAMETERS",
         parameters: undefined
@@ -27,7 +30,10 @@ describe("constructorDeclaration", () => {
       )
     ).toEqual({
       type: "CONSTRUCTOR_DECLARATION",
-      name: "a",
+      name: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
       parameters: {
         type: "FORMAL_PARAMETERS",
         parameters: undefined
@@ -37,7 +43,12 @@ describe("constructorDeclaration", () => {
         list: [
           {
             type: "QUALIFIED_NAME",
-            name: ["Something"]
+            name: [
+              {
+                type: "IDENTIFIER",
+                value: "Something"
+              }
+            ]
           }
         ]
       },

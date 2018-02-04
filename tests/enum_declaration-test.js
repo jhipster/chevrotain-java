@@ -7,7 +7,10 @@ describe("enum", () => {
       Parser.parse("enum A{}", parser => parser.enumDeclaration())
     ).toEqual({
       type: "ENUM_DECLARATION",
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       implements: undefined,
       enumConstants: undefined,
       body: undefined
@@ -21,7 +24,10 @@ describe("enum", () => {
       )
     ).toEqual({
       type: "ENUM_DECLARATION",
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       implements: {
         type: "TYPE_LIST",
         list: [
@@ -41,7 +47,10 @@ describe("enum", () => {
       Parser.parse("enum A{B}", parser => parser.enumDeclaration())
     ).toEqual({
       type: "ENUM_DECLARATION",
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       implements: undefined,
       enumConstants: {
         type: "ENUM_CONSTANTS",
@@ -49,7 +58,10 @@ describe("enum", () => {
           {
             type: "ENUM_CONSTANT",
             modifiers: [],
-            name: "B",
+            name: {
+              type: "IDENTIFIER",
+              value: "B"
+            },
             arguments: undefined,
             body: undefined
           }
@@ -64,7 +76,10 @@ describe("enum", () => {
       Parser.parse("enum A{B,}", parser => parser.enumDeclaration())
     ).toEqual({
       type: "ENUM_DECLARATION",
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       implements: undefined,
       enumConstants: {
         type: "ENUM_CONSTANTS",
@@ -72,7 +87,10 @@ describe("enum", () => {
           {
             type: "ENUM_CONSTANT",
             modifiers: [],
-            name: "B",
+            name: {
+              type: "IDENTIFIER",
+              value: "B"
+            },
             arguments: undefined,
             body: undefined
           }
@@ -87,7 +105,10 @@ describe("enum", () => {
       Parser.parse("enum A{; void a() {}}", parser => parser.enumDeclaration())
     ).toEqual({
       type: "ENUM_DECLARATION",
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       implements: undefined,
       enumConstants: undefined,
       body: {
@@ -101,7 +122,10 @@ describe("enum", () => {
               typeType: {
                 type: "VOID"
               },
-              name: "a",
+              name: {
+                type: "IDENTIFIER",
+                value: "a"
+              },
               parameters: {
                 type: "FORMAL_PARAMETERS",
                 parameters: undefined
@@ -126,7 +150,10 @@ describe("enum", () => {
       )
     ).toEqual({
       type: "ENUM_DECLARATION",
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       implements: undefined,
       enumConstants: {
         type: "ENUM_CONSTANTS",
@@ -134,7 +161,10 @@ describe("enum", () => {
           {
             type: "ENUM_CONSTANT",
             modifiers: [],
-            name: "B",
+            name: {
+              type: "IDENTIFIER",
+              value: "B"
+            },
             arguments: undefined,
             body: undefined
           }
@@ -151,7 +181,10 @@ describe("enum", () => {
               typeType: {
                 type: "VOID"
               },
-              name: "a",
+              name: {
+                type: "IDENTIFIER",
+                value: "a"
+              },
               parameters: {
                 type: "FORMAL_PARAMETERS",
                 parameters: undefined

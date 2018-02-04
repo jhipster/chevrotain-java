@@ -6,7 +6,10 @@ describe("typeParameter", () => {
     expect(Parser.parse("A", parser => parser.typeParameter())).toEqual({
       type: "TYPE_PARAMETER",
       annotations: [],
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       typeBound: undefined
     });
   });
@@ -19,13 +22,21 @@ describe("typeParameter", () => {
           type: "ANNOTATION",
           name: {
             type: "QUALIFIED_NAME",
-            name: ["Bean"]
+            name: [
+              {
+                type: "IDENTIFIER",
+                value: "Bean"
+              }
+            ]
           },
           hasBraces: false,
           value: undefined
         }
       ],
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       typeBound: undefined
     });
   });
@@ -36,7 +47,10 @@ describe("typeParameter", () => {
     ).toEqual({
       type: "TYPE_PARAMETER",
       annotations: [],
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       typeBound: {
         type: "TYPE_BOUND",
         bounds: [

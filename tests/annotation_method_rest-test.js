@@ -7,7 +7,10 @@ describe("annotationMethodRest", () => {
       Parser.parse("a()", parser => parser.annotationMethodRest())
     ).toEqual({
       type: "ANNOTATION_METHOD_REST",
-      name: "a",
+      name: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
       defaultValue: undefined
     });
   });
@@ -17,14 +20,22 @@ describe("annotationMethodRest", () => {
       Parser.parse("a() default @Bean", parser => parser.annotationMethodRest())
     ).toEqual({
       type: "ANNOTATION_METHOD_REST",
-      name: "a",
+      name: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
       defaultValue: {
         type: "DEFAULT_VALUE",
         value: {
           type: "ANNOTATION",
           name: {
             type: "QUALIFIED_NAME",
-            name: ["Bean"]
+            name: [
+              {
+                type: "IDENTIFIER",
+                value: "Bean"
+              }
+            ]
           },
           hasBraces: false
         }

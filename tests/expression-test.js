@@ -77,7 +77,10 @@ describe("expression", () => {
       },
       rest: {
         type: "METHOD_CALL",
-        name: "a",
+        name: {
+          type: "IDENTIFIER",
+          value: "a"
+        },
         parameters: undefined
       }
     });
@@ -198,7 +201,10 @@ describe("expression", () => {
         ]
       },
       typeArguments: undefined,
-      name: "A"
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      }
     });
   });
 });

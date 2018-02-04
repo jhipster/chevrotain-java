@@ -13,7 +13,10 @@ describe("annotationTypeElementRest", () => {
       },
       name: {
         type: "ANNOTATION_METHOD_REST",
-        name: "a",
+        name: {
+          type: "IDENTIFIER",
+          value: "a"
+        },
         defaultValue: undefined
       }
     });
@@ -23,7 +26,10 @@ describe("annotationTypeElementRest", () => {
       Parser.parse("class A{}", parser => parser.annotationTypeElementRest())
     ).toEqual({
       type: "CLASS_DECLARATION",
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       body: {
         type: "CLASS_BODY",
         declarations: []
@@ -36,7 +42,10 @@ describe("annotationTypeElementRest", () => {
       Parser.parse("enum A{}", parser => parser.annotationTypeElementRest())
     ).toEqual({
       type: "ENUM_DECLARATION",
-      name: "A"
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      }
     });
   });
 
@@ -47,7 +56,10 @@ describe("annotationTypeElementRest", () => {
       )
     ).toEqual({
       type: "INTERFACE_DECLARATION",
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       body: {
         type: "INTERFACE_BODY",
         declarations: []
@@ -62,7 +74,10 @@ describe("annotationTypeElementRest", () => {
       )
     ).toEqual({
       type: "ANNOTATION_TYPE_DECLARATION",
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       body: {
         type: "ANNOTATION_TYPE_BODY",
         declarations: []

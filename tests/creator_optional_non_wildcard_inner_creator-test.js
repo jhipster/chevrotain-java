@@ -12,7 +12,10 @@ describe("creatorOptionalNonWildcardInnerCreator", () => {
       typeArguments: undefined,
       innerCreator: {
         type: "INNER_CREATOR",
-        id: "a",
+        id: {
+          type: "IDENTIFIER",
+          value: "a"
+        },
         typeArguments: undefined,
         rest: {
           type: "CLASS_CREATOR_REST",
@@ -46,7 +49,10 @@ describe("creatorOptionalNonWildcardInnerCreator", () => {
       },
       innerCreator: {
         type: "INNER_CREATOR",
-        id: "a",
+        id: {
+          type: "IDENTIFIER",
+          value: "a"
+        },
         typeArguments: undefined,
         rest: {
           type: "CLASS_CREATOR_REST",

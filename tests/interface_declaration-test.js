@@ -7,7 +7,10 @@ describe("interfaceDeclaration", () => {
       Parser.parse("interface A{}", parser => parser.interfaceDeclaration())
     ).toEqual({
       type: "INTERFACE_DECLARATION",
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       typeParameters: undefined,
       typeList: undefined,
       body: {
@@ -22,14 +25,20 @@ describe("interfaceDeclaration", () => {
       Parser.parse("interface A<B>{}", parser => parser.interfaceDeclaration())
     ).toEqual({
       type: "INTERFACE_DECLARATION",
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       typeParameters: {
         type: "TYPE_PARAMETERS",
         parameters: [
           {
             type: "TYPE_PARAMETER",
             annotations: [],
-            name: "B",
+            name: {
+              type: "IDENTIFIER",
+              value: "B"
+            },
             typeBound: undefined
           }
         ]
@@ -49,7 +58,10 @@ describe("interfaceDeclaration", () => {
       )
     ).toEqual({
       type: "INTERFACE_DECLARATION",
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       typeParameters: undefined,
       typeList: {
         type: "TYPE_LIST",

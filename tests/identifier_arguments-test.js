@@ -6,7 +6,10 @@ describe("identifierArguments", () => {
     expect(Parser.parse("a()", parser => parser.identifierArguments())).toEqual(
       {
         type: "IDENTIFIER_ARGUMENTS",
-        name: "a",
+        name: {
+          type: "IDENTIFIER",
+          value: "a"
+        },
         arguments: {
           type: "ARGUMENTS"
         }

@@ -10,7 +10,10 @@ describe("simpleCreator", () => {
         elements: [
           {
             type: "IDENTIFIER_NAME_ELEMENT",
-            id: "a",
+            id: {
+              type: "IDENTIFIER",
+              value: "a"
+            },
             typeArguments: undefined
           }
         ]
@@ -33,7 +36,10 @@ describe("simpleCreator", () => {
         elements: [
           {
             type: "IDENTIFIER_NAME_ELEMENT",
-            id: "a",
+            id: {
+              type: "IDENTIFIER",
+              value: "a"
+            },
             typeArguments: undefined
           }
         ]

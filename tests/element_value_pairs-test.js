@@ -10,12 +10,20 @@ describe("elementValuePairs", () => {
       pairs: [
         {
           type: "ELEMENT_VALUE_PAIR",
-          key: "key",
+          key: {
+            type: "IDENTIFIER",
+            value: "key"
+          },
           value: {
             type: "ANNOTATION",
             name: {
               type: "QUALIFIED_NAME",
-              name: ["Value"]
+              name: [
+                {
+                  type: "IDENTIFIER",
+                  value: "Value"
+                }
+              ]
             },
             hasBraces: false,
             value: undefined
@@ -35,12 +43,20 @@ describe("elementValuePairs", () => {
       pairs: [
         {
           type: "ELEMENT_VALUE_PAIR",
-          key: "key1",
+          key: {
+            type: "IDENTIFIER",
+            value: "key1"
+          },
           value: {
             type: "ANNOTATION",
             name: {
               type: "QUALIFIED_NAME",
-              name: ["Value1"]
+              name: [
+                {
+                  type: "IDENTIFIER",
+                  value: "Value1"
+                }
+              ]
             },
             hasBraces: false,
             value: undefined
@@ -48,12 +64,20 @@ describe("elementValuePairs", () => {
         },
         {
           type: "ELEMENT_VALUE_PAIR",
-          key: "key2",
+          key: {
+            type: "IDENTIFIER",
+            value: "key2"
+          },
           value: {
             type: "ANNOTATION",
             name: {
               type: "QUALIFIED_NAME",
-              name: ["Value2"]
+              name: [
+                {
+                  type: "IDENTIFIER",
+                  value: "Value2"
+                }
+              ]
             },
             hasBraces: false,
             value: undefined

@@ -10,7 +10,10 @@ describe("methodDeclaration", () => {
       typeType: {
         type: "VOID"
       },
-      name: "a",
+      name: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
       parameters: {
         type: "FORMAL_PARAMETERS",
         parameters: undefined
@@ -33,7 +36,10 @@ describe("methodDeclaration", () => {
         type: "PRIMITIVE_TYPE",
         value: "boolean"
       },
-      name: "a",
+      name: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
       parameters: {
         type: "FORMAL_PARAMETERS",
         parameters: undefined
@@ -55,7 +61,10 @@ describe("methodDeclaration", () => {
       typeType: {
         type: "VOID"
       },
-      name: "a",
+      name: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
       parameters: {
         type: "FORMAL_PARAMETERS",
         parameters: undefined
@@ -77,7 +86,10 @@ describe("methodDeclaration", () => {
       typeType: {
         type: "VOID"
       },
-      name: "a",
+      name: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
       parameters: {
         type: "FORMAL_PARAMETERS",
         parameters: undefined
@@ -101,7 +113,10 @@ describe("methodDeclaration", () => {
       typeType: {
         type: "VOID"
       },
-      name: "a",
+      name: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
       parameters: {
         type: "FORMAL_PARAMETERS",
         parameters: undefined
@@ -112,7 +127,12 @@ describe("methodDeclaration", () => {
         list: [
           {
             type: "QUALIFIED_NAME",
-            name: ["Something"]
+            name: [
+              {
+                type: "IDENTIFIER",
+                value: "Something"
+              }
+            ]
           }
         ]
       },

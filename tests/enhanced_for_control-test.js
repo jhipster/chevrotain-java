@@ -14,7 +14,10 @@ describe("enhancedForControl", () => {
       },
       id: {
         type: "VARIABLE_DECLARATOR_ID",
-        id: "a",
+        id: {
+          type: "IDENTIFIER",
+          value: "a"
+        },
         cntSquares: 0
       },
       iterator: {
@@ -35,7 +38,12 @@ describe("enhancedForControl", () => {
           type: "ANNOTATION",
           name: {
             type: "QUALIFIED_NAME",
-            name: ["Bean"]
+            name: [
+              {
+                type: "IDENTIFIER",
+                value: "Bean"
+              }
+            ]
           },
           hasBraces: false
         }
@@ -46,7 +54,10 @@ describe("enhancedForControl", () => {
       },
       id: {
         type: "VARIABLE_DECLARATOR_ID",
-        id: "a",
+        id: {
+          type: "IDENTIFIER",
+          value: "a"
+        },
         cntSquares: 0
       },
       iterator: {
@@ -67,7 +78,12 @@ describe("enhancedForControl", () => {
           type: "ANNOTATION",
           name: {
             type: "QUALIFIED_NAME",
-            name: ["Bean"]
+            name: [
+              {
+                type: "IDENTIFIER",
+                value: "Bean"
+              }
+            ]
           },
           hasBraces: false
         },
@@ -82,7 +98,10 @@ describe("enhancedForControl", () => {
       },
       id: {
         type: "VARIABLE_DECLARATOR_ID",
-        id: "a",
+        id: {
+          type: "IDENTIFIER",
+          value: "a"
+        },
         cntSquares: 0
       },
       iterator: {

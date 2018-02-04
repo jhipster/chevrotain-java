@@ -15,7 +15,10 @@ describe("genericInterfaceMethodDeclaration", () => {
           {
             type: "TYPE_PARAMETER",
             annotations: [],
-            name: "A",
+            name: {
+              type: "IDENTIFIER",
+              value: "A"
+            },
             typeBound: undefined
           }
         ]
@@ -27,7 +30,10 @@ describe("genericInterfaceMethodDeclaration", () => {
         typeType: {
           type: "VOID"
         },
-        name: "a",
+        name: {
+          type: "IDENTIFIER",
+          value: "a"
+        },
         parameters: {
           type: "FORMAL_PARAMETERS",
           parameters: undefined

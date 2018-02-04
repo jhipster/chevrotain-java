@@ -7,7 +7,10 @@ describe("dotIdentifierArguments", () => {
       Parser.parse(".a", parser => parser.dotIdentifierArguments())
     ).toEqual({
       type: "DOT_IDENTIFIER_ARGUMENTS",
-      name: "a",
+      name: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
       arguments: undefined
     });
   });
@@ -17,7 +20,10 @@ describe("dotIdentifierArguments", () => {
       Parser.parse(".a()", parser => parser.dotIdentifierArguments())
     ).toEqual({
       type: "DOT_IDENTIFIER_ARGUMENTS",
-      name: "a",
+      name: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
       arguments: {
         type: "ARGUMENTS"
       }

@@ -10,7 +10,12 @@ describe("import", () => {
       static: false,
       name: {
         type: "QUALIFIED_NAME",
-        name: ["imp"]
+        name: [
+          {
+            type: "IDENTIFIER",
+            value: "imp"
+          }
+        ]
       }
     });
   });
@@ -23,7 +28,16 @@ describe("import", () => {
       static: false,
       name: {
         type: "QUALIFIED_NAME",
-        name: ["imp", "name"]
+        name: [
+          {
+            type: "IDENTIFIER",
+            value: "imp"
+          },
+          {
+            type: "IDENTIFIER",
+            value: "name"
+          }
+        ]
       }
     });
   });
@@ -36,7 +50,20 @@ describe("import", () => {
       static: false,
       name: {
         type: "QUALIFIED_NAME",
-        name: ["java", "util", "*"]
+        name: [
+          {
+            type: "IDENTIFIER",
+            value: "java"
+          },
+          {
+            type: "IDENTIFIER",
+            value: "util"
+          },
+          {
+            type: "IDENTIFIER",
+            value: "*"
+          }
+        ]
       }
     });
   });
@@ -49,7 +76,12 @@ describe("import", () => {
       static: true,
       name: {
         type: "QUALIFIED_NAME",
-        name: ["imp"]
+        name: [
+          {
+            type: "IDENTIFIER",
+            value: "imp"
+          }
+        ]
       }
     });
   });

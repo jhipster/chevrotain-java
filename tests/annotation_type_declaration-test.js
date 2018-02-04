@@ -9,7 +9,10 @@ describe("annotationTypeDeclaration", () => {
       )
     ).toEqual({
       type: "ANNOTATION_TYPE_DECLARATION",
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       body: {
         type: "ANNOTATION_TYPE_BODY",
         declarations: []

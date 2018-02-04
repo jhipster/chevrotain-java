@@ -118,11 +118,19 @@ describe("statementWithStartingToken", () => {
             types: [
               {
                 type: "QUALIFIED_NAME",
-                name: ["A"]
+                name: [
+                  {
+                    type: "IDENTIFIER",
+                    value: "A"
+                  }
+                ]
               }
             ]
           },
-          id: "e",
+          id: {
+            type: "IDENTIFIER",
+            value: "e"
+          },
           block: {
             type: "BLOCK",
             statements: []
@@ -192,7 +200,10 @@ describe("statementWithStartingToken", () => {
       Parser.parse("break a;", parser => parser.statementWithStartingToken())
     ).toEqual({
       type: "BREAK_STATEMENT",
-      identifier: "a"
+      identifier: {
+        type: "IDENTIFIER",
+        value: "a"
+      }
     });
   });
 
@@ -201,7 +212,10 @@ describe("statementWithStartingToken", () => {
       Parser.parse("continue a;", parser => parser.statementWithStartingToken())
     ).toEqual({
       type: "CONTINUE_STATEMENT",
-      identifier: "a"
+      identifier: {
+        type: "IDENTIFIER",
+        value: "a"
+      }
     });
   });
 

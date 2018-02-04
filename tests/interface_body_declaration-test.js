@@ -15,7 +15,10 @@ describe("interfaceBodyDeclaration", () => {
         typeType: {
           type: "VOID"
         },
-        name: "a",
+        name: {
+          type: "IDENTIFIER",
+          value: "a"
+        },
         parameters: {
           type: "FORMAL_PARAMETERS",
           parameters: undefined
@@ -42,7 +45,12 @@ describe("interfaceBodyDeclaration", () => {
           type: "ANNOTATION",
           name: {
             type: "QUALIFIED_NAME",
-            name: ["Bean"]
+            name: [
+              {
+                type: "IDENTIFIER",
+                value: "Bean"
+              }
+            ]
           },
           hasBraces: false,
           value: undefined
@@ -55,7 +63,10 @@ describe("interfaceBodyDeclaration", () => {
         typeType: {
           type: "VOID"
         },
-        name: "a",
+        name: {
+          type: "IDENTIFIER",
+          value: "a"
+        },
         parameters: {
           type: "FORMAL_PARAMETERS",
           parameters: undefined
@@ -82,7 +93,12 @@ describe("interfaceBodyDeclaration", () => {
           type: "ANNOTATION",
           name: {
             type: "QUALIFIED_NAME",
-            name: ["Bean"]
+            name: [
+              {
+                type: "IDENTIFIER",
+                value: "Bean"
+              }
+            ]
           },
           hasBraces: false,
           value: undefined
@@ -99,7 +115,10 @@ describe("interfaceBodyDeclaration", () => {
         typeType: {
           type: "VOID"
         },
-        name: "a",
+        name: {
+          type: "IDENTIFIER",
+          value: "a"
+        },
         parameters: {
           type: "FORMAL_PARAMETERS",
           parameters: undefined

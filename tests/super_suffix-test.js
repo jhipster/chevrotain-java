@@ -11,7 +11,10 @@ describe("superSuffix", () => {
   it("with arguments", () => {
     expect(Parser.parse(".a", parser => parser.superSuffix())).toEqual({
       type: "DOT_IDENTIFIER_ARGUMENTS",
-      name: "a",
+      name: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
       arguments: undefined
     });
   });

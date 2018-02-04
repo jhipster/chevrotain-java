@@ -15,7 +15,10 @@ describe("formalParameter", () => {
       dotDotDot: false,
       id: {
         type: "VARIABLE_DECLARATOR_ID",
-        id: "a",
+        id: {
+          type: "IDENTIFIER",
+          value: "a"
+        },
         cntSquares: 0
       }
     });
@@ -34,7 +37,10 @@ describe("formalParameter", () => {
       dotDotDot: false,
       id: {
         type: "VARIABLE_DECLARATOR_ID",
-        id: "a",
+        id: {
+          type: "IDENTIFIER",
+          value: "a"
+        },
         cntSquares: 0
       }
     });
@@ -48,7 +54,15 @@ describe("formalParameter", () => {
       modifiers: [
         {
           type: "ANNOTATION",
-          name: { type: "QUALIFIED_NAME", name: ["Bean"] },
+          name: {
+            type: "QUALIFIED_NAME",
+            name: [
+              {
+                type: "IDENTIFIER",
+                value: "Bean"
+              }
+            ]
+          },
           hasBraces: false,
           value: undefined
         },
@@ -61,7 +75,10 @@ describe("formalParameter", () => {
       dotDotDot: false,
       id: {
         type: "VARIABLE_DECLARATOR_ID",
-        id: "a",
+        id: {
+          type: "IDENTIFIER",
+          value: "a"
+        },
         cntSquares: 0
       }
     });
@@ -80,7 +97,10 @@ describe("formalParameter", () => {
       dotDotDot: true,
       id: {
         type: "VARIABLE_DECLARATOR_ID",
-        id: "a",
+        id: {
+          type: "IDENTIFIER",
+          value: "a"
+        },
         cntSquares: 0
       }
     });

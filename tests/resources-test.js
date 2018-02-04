@@ -24,7 +24,10 @@ describe("resources", () => {
           },
           id: {
             type: "VARIABLE_DECLARATOR_ID",
-            id: "a",
+            id: {
+              type: "IDENTIFIER",
+              value: "a"
+            },
             cntSquares: 0
           },
           expression: {
@@ -59,7 +62,10 @@ describe("resources", () => {
           },
           id: {
             type: "VARIABLE_DECLARATOR_ID",
-            id: "a",
+            id: {
+              type: "IDENTIFIER",
+              value: "a"
+            },
             cntSquares: 0
           },
           expression: {
@@ -84,7 +90,10 @@ describe("resources", () => {
           },
           id: {
             type: "VARIABLE_DECLARATOR_ID",
-            id: "b",
+            id: {
+              type: "IDENTIFIER",
+              value: "b"
+            },
             cntSquares: 0
           },
           expression: {

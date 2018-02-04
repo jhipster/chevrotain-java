@@ -10,7 +10,10 @@ describe("typeDeclaration", () => {
       modifiers: [],
       declaration: {
         type: "CLASS_DECLARATION",
-        name: "A",
+        name: {
+          type: "IDENTIFIER",
+          value: "A"
+        },
         body: {
           type: "CLASS_BODY",
           declarations: []
@@ -32,7 +35,10 @@ describe("typeDeclaration", () => {
       ],
       declaration: {
         type: "CLASS_DECLARATION",
-        name: "A",
+        name: {
+          type: "IDENTIFIER",
+          value: "A"
+        },
         body: {
           type: "CLASS_BODY",
           declarations: []
@@ -54,7 +60,10 @@ describe("typeDeclaration", () => {
       ],
       declaration: {
         type: "CLASS_DECLARATION",
-        name: "A",
+        name: {
+          type: "IDENTIFIER",
+          value: "A"
+        },
         body: {
           type: "CLASS_BODY",
           declarations: []
@@ -76,7 +85,10 @@ describe("typeDeclaration", () => {
       ],
       declaration: {
         type: "CLASS_DECLARATION",
-        name: "A",
+        name: {
+          type: "IDENTIFIER",
+          value: "A"
+        },
         body: {
           type: "CLASS_BODY",
           declarations: []
@@ -98,7 +110,10 @@ describe("typeDeclaration", () => {
       ],
       declaration: {
         type: "CLASS_DECLARATION",
-        name: "A",
+        name: {
+          type: "IDENTIFIER",
+          value: "A"
+        },
         body: {
           type: "CLASS_BODY",
           declarations: []
@@ -120,7 +135,10 @@ describe("typeDeclaration", () => {
       ],
       declaration: {
         type: "CLASS_DECLARATION",
-        name: "A",
+        name: {
+          type: "IDENTIFIER",
+          value: "A"
+        },
         body: {
           type: "CLASS_BODY",
           declarations: []
@@ -142,7 +160,10 @@ describe("typeDeclaration", () => {
       ],
       declaration: {
         type: "CLASS_DECLARATION",
-        name: "A",
+        name: {
+          type: "IDENTIFIER",
+          value: "A"
+        },
         body: {
           type: "CLASS_BODY",
           declarations: []
@@ -164,7 +185,10 @@ describe("typeDeclaration", () => {
       ],
       declaration: {
         type: "CLASS_DECLARATION",
-        name: "A",
+        name: {
+          type: "IDENTIFIER",
+          value: "A"
+        },
         body: {
           type: "CLASS_BODY",
           declarations: []
@@ -192,7 +216,10 @@ describe("typeDeclaration", () => {
       ],
       declaration: {
         type: "CLASS_DECLARATION",
-        name: "A",
+        name: {
+          type: "IDENTIFIER",
+          value: "A"
+        },
         body: {
           type: "CLASS_BODY",
           declarations: []

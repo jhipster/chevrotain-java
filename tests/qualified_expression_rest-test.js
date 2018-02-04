@@ -7,7 +7,10 @@ describe("qualifiedExpressionRest", () => {
       Parser.parse(".a()", parser => parser.qualifiedExpressionRest())
     ).toEqual({
       type: "METHOD_CALL",
-      name: "a",
+      name: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
       parameters: undefined
     });
   });
@@ -15,7 +18,10 @@ describe("qualifiedExpressionRest", () => {
   it("identifier", () => {
     expect(
       Parser.parse(".a", parser => parser.qualifiedExpressionRest())
-    ).toEqual("a");
+    ).toEqual({
+      type: "IDENTIFIER",
+      value: "a"
+    });
   });
 
   it("this", () => {
@@ -42,7 +48,10 @@ describe("qualifiedExpressionRest", () => {
       typeArguments: undefined,
       innerCreator: {
         type: "INNER_CREATOR",
-        id: "a",
+        id: {
+          type: "IDENTIFIER",
+          value: "a"
+        },
         typeArguments: undefined,
         rest: {
           type: "CLASS_CREATOR_REST",

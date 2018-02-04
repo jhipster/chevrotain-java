@@ -9,7 +9,10 @@ describe("typeParameters", () => {
         {
           type: "TYPE_PARAMETER",
           annotations: [],
-          name: "A",
+          name: {
+            type: "IDENTIFIER",
+            value: "A"
+          },
           typeBound: undefined
         }
       ]
@@ -23,13 +26,19 @@ describe("typeParameters", () => {
         {
           type: "TYPE_PARAMETER",
           annotations: [],
-          name: "A",
+          name: {
+            type: "IDENTIFIER",
+            value: "A"
+          },
           typeBound: undefined
         },
         {
           type: "TYPE_PARAMETER",
           annotations: [],
-          name: "B",
+          name: {
+            type: "IDENTIFIER",
+            value: "B"
+          },
           typeBound: undefined
         }
       ]

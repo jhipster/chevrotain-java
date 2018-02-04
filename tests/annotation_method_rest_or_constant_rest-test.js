@@ -7,7 +7,10 @@ describe("annotationMethodRestOrConstantRest", () => {
       Parser.parse("a()", parser => parser.annotationMethodRestOrConstantRest())
     ).toEqual({
       type: "ANNOTATION_METHOD_REST",
-      name: "a",
+      name: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
       defaultValue: undefined
     });
   });
@@ -22,7 +25,10 @@ describe("annotationMethodRestOrConstantRest", () => {
           type: "VARIABLE_DECLARATOR",
           id: {
             type: "VARIABLE_DECLARATOR_ID",
-            id: "A",
+            id: {
+              type: "IDENTIFIER",
+              value: "A"
+            },
             cntSquares: 0
           },
           init: undefined

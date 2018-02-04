@@ -26,7 +26,10 @@ describe("formalParameters", () => {
             },
             id: {
               type: "VARIABLE_DECLARATOR_ID",
-              id: "a",
+              id: {
+                type: "IDENTIFIER",
+                value: "a"
+              },
               cntSquares: 0
             },
             dotDotDot: false

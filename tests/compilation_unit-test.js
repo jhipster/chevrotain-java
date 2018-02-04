@@ -20,7 +20,16 @@ describe("compilationUnit", () => {
         type: "PACKAGE_DECLARATION",
         name: {
           type: "QUALIFIED_NAME",
-          name: ["pkg", "name"]
+          name: [
+            {
+              type: "IDENTIFIER",
+              value: "pkg"
+            },
+            {
+              type: "IDENTIFIER",
+              value: "name"
+            }
+          ]
         }
       },
       imports: [],
@@ -40,7 +49,16 @@ describe("compilationUnit", () => {
           static: false,
           name: {
             type: "QUALIFIED_NAME",
-            name: ["pkg", "name"]
+            name: [
+              {
+                type: "IDENTIFIER",
+                value: "pkg"
+              },
+              {
+                type: "IDENTIFIER",
+                value: "name"
+              }
+            ]
           }
         }
       ],
@@ -62,7 +80,16 @@ describe("compilationUnit", () => {
           static: false,
           name: {
             type: "QUALIFIED_NAME",
-            name: ["pkg", "name"]
+            name: [
+              {
+                type: "IDENTIFIER",
+                value: "pkg"
+              },
+              {
+                type: "IDENTIFIER",
+                value: "name"
+              }
+            ]
           }
         },
         {
@@ -70,7 +97,16 @@ describe("compilationUnit", () => {
           static: true,
           name: {
             type: "QUALIFIED_NAME",
-            name: ["some", "other"]
+            name: [
+              {
+                type: "IDENTIFIER",
+                value: "some"
+              },
+              {
+                type: "IDENTIFIER",
+                value: "other"
+              }
+            ]
           }
         }
       ],
@@ -91,7 +127,10 @@ describe("compilationUnit", () => {
           modifiers: [],
           declaration: {
             type: "CLASS_DECLARATION",
-            name: "A",
+            name: {
+              type: "IDENTIFIER",
+              value: "A"
+            },
             body: {
               type: "CLASS_BODY",
               declarations: []
@@ -115,7 +154,10 @@ describe("compilationUnit", () => {
           modifiers: [],
           declaration: {
             type: "CLASS_DECLARATION",
-            name: "A",
+            name: {
+              type: "IDENTIFIER",
+              value: "A"
+            },
             body: {
               type: "CLASS_BODY",
               declarations: []
@@ -127,7 +169,10 @@ describe("compilationUnit", () => {
           modifiers: [],
           declaration: {
             type: "CLASS_DECLARATION",
-            name: "B",
+            name: {
+              type: "IDENTIFIER",
+              value: "B"
+            },
             body: {
               type: "CLASS_BODY",
               declarations: []
@@ -151,7 +196,10 @@ describe("compilationUnit", () => {
           modifiers: [],
           declaration: {
             type: "ENUM_DECLARATION",
-            name: "A"
+            name: {
+              type: "IDENTIFIER",
+              value: "A"
+            }
           }
         }
       ]
@@ -171,7 +219,10 @@ describe("compilationUnit", () => {
           modifiers: [],
           declaration: {
             type: "ENUM_DECLARATION",
-            name: "A"
+            name: {
+              type: "IDENTIFIER",
+              value: "A"
+            }
           }
         },
         {
@@ -179,7 +230,10 @@ describe("compilationUnit", () => {
           modifiers: [],
           declaration: {
             type: "ENUM_DECLARATION",
-            name: "B"
+            name: {
+              type: "IDENTIFIER",
+              value: "B"
+            }
           }
         }
       ]
@@ -199,7 +253,10 @@ describe("compilationUnit", () => {
           modifiers: [],
           declaration: {
             type: "INTERFACE_DECLARATION",
-            name: "A",
+            name: {
+              type: "IDENTIFIER",
+              value: "A"
+            },
             body: {
               type: "INTERFACE_BODY",
               declarations: []
@@ -225,7 +282,10 @@ describe("compilationUnit", () => {
           modifiers: [],
           declaration: {
             type: "INTERFACE_DECLARATION",
-            name: "A",
+            name: {
+              type: "IDENTIFIER",
+              value: "A"
+            },
             body: {
               type: "INTERFACE_BODY",
               declarations: []
@@ -237,7 +297,10 @@ describe("compilationUnit", () => {
           modifiers: [],
           declaration: {
             type: "INTERFACE_DECLARATION",
-            name: "B",
+            name: {
+              type: "IDENTIFIER",
+              value: "B"
+            },
             body: {
               type: "INTERFACE_BODY",
               declarations: []
@@ -261,7 +324,10 @@ describe("compilationUnit", () => {
           modifiers: [],
           declaration: {
             type: "ANNOTATION_TYPE_DECLARATION",
-            name: "A",
+            name: {
+              type: "IDENTIFIER",
+              value: "A"
+            },
             body: {
               type: "ANNOTATION_TYPE_BODY",
               declarations: []
@@ -287,7 +353,10 @@ describe("compilationUnit", () => {
           modifiers: [],
           declaration: {
             type: "ANNOTATION_TYPE_DECLARATION",
-            name: "A",
+            name: {
+              type: "IDENTIFIER",
+              value: "A"
+            },
             body: {
               type: "ANNOTATION_TYPE_BODY",
               declarations: []
@@ -299,7 +368,10 @@ describe("compilationUnit", () => {
           modifiers: [],
           declaration: {
             type: "ANNOTATION_TYPE_DECLARATION",
-            name: "B",
+            name: {
+              type: "IDENTIFIER",
+              value: "B"
+            },
             body: {
               type: "ANNOTATION_TYPE_BODY",
               declarations: []

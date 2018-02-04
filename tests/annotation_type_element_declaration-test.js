@@ -12,7 +12,10 @@ describe("annotationTypeElementDeclaration", () => {
       modifiers: [],
       declaration: {
         type: "CLASS_DECLARATION",
-        name: "A",
+        name: {
+          type: "IDENTIFIER",
+          value: "A"
+        },
         body: {
           type: "CLASS_BODY",
           declarations: []
@@ -34,7 +37,10 @@ describe("annotationTypeElementDeclaration", () => {
       ],
       declaration: {
         type: "CLASS_DECLARATION",
-        name: "A",
+        name: {
+          type: "IDENTIFIER",
+          value: "A"
+        },
         body: {
           type: "CLASS_BODY",
           declarations: []

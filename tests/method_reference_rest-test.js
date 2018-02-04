@@ -7,7 +7,10 @@ describe("methodReferenceRest", () => {
       {
         type: "METHOD_REFERENCE_REST",
         typeArguments: undefined,
-        name: "A"
+        name: {
+          type: "IDENTIFIER",
+          value: "A"
+        }
       }
     );
   });
@@ -43,7 +46,10 @@ describe("methodReferenceRest", () => {
           }
         ]
       },
-      name: "A"
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      }
     });
   });
 });

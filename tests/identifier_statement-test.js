@@ -7,7 +7,10 @@ describe("identifierStatement", () => {
       Parser.parse("a:this;", parser => parser.identifierStatement())
     ).toEqual({
       type: "IDENTIFIER_STATEMENT",
-      identifier: "a",
+      identifier: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
       statement: {
         type: "EXPRESSION_STATEMENT",
         expression: {

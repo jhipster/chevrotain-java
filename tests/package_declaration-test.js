@@ -9,7 +9,12 @@ describe("package", () => {
       type: "PACKAGE_DECLARATION",
       name: {
         type: "QUALIFIED_NAME",
-        name: ["pkg"]
+        name: [
+          {
+            type: "IDENTIFIER",
+            value: "pkg"
+          }
+        ]
       }
     });
   });
@@ -21,7 +26,16 @@ describe("package", () => {
       type: "PACKAGE_DECLARATION",
       name: {
         type: "QUALIFIED_NAME",
-        name: ["pkg", "name"]
+        name: [
+          {
+            type: "IDENTIFIER",
+            value: "pkg"
+          },
+          {
+            type: "IDENTIFIER",
+            value: "name"
+          }
+        ]
       }
     });
   });

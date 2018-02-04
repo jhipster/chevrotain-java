@@ -20,7 +20,10 @@ describe("explicitGenericInvocationSuffix", () => {
       Parser.parse("a()", parser => parser.explicitGenericInvocationSuffix())
     ).toEqual({
       type: "IDENTIFIER_ARGUMENTS",
-      name: "a",
+      name: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
       arguments: {
         type: "ARGUMENTS"
       }

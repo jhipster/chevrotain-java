@@ -5,7 +5,10 @@ describe("variableDeclaratorId", () => {
   it("primitiveType", () => {
     expect(Parser.parse("A", parser => parser.variableDeclaratorId())).toEqual({
       type: "VARIABLE_DECLARATOR_ID",
-      id: "A",
+      id: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       cntSquares: 0
     });
   });
@@ -15,7 +18,10 @@ describe("variableDeclaratorId", () => {
       Parser.parse("A[]", parser => parser.variableDeclaratorId())
     ).toEqual({
       type: "VARIABLE_DECLARATOR_ID",
-      id: "A",
+      id: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       cntSquares: 1
     });
   });
@@ -25,7 +31,10 @@ describe("variableDeclaratorId", () => {
       Parser.parse("A[][]", parser => parser.variableDeclaratorId())
     ).toEqual({
       type: "VARIABLE_DECLARATOR_ID",
-      id: "A",
+      id: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       cntSquares: 2
     });
   });

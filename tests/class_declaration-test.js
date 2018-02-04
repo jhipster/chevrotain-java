@@ -7,7 +7,10 @@ describe("classDeclaration", () => {
       Parser.parse("class A{}", parser => parser.classDeclaration())
     ).toEqual({
       type: "CLASS_DECLARATION",
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       typeParameters: undefined,
       extends: undefined,
       implements: undefined,
@@ -23,14 +26,20 @@ describe("classDeclaration", () => {
       Parser.parse("class A<B>{}", parser => parser.classDeclaration())
     ).toEqual({
       type: "CLASS_DECLARATION",
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       typeParameters: {
         type: "TYPE_PARAMETERS",
         parameters: [
           {
             type: "TYPE_PARAMETER",
             annotations: [],
-            name: "B",
+            name: {
+              type: "IDENTIFIER",
+              value: "B"
+            },
             typeBound: undefined
           }
         ]
@@ -51,7 +60,10 @@ describe("classDeclaration", () => {
       )
     ).toEqual({
       type: "CLASS_DECLARATION",
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       typeParameters: undefined,
       extends: {
         type: "PRIMITIVE_TYPE",
@@ -72,7 +84,10 @@ describe("classDeclaration", () => {
       )
     ).toEqual({
       type: "CLASS_DECLARATION",
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       typeParameters: undefined,
       extends: undefined,
       implements: {

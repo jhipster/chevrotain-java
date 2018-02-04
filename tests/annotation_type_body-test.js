@@ -23,7 +23,10 @@ describe("annotationTypeBody", () => {
               type: "CLASS_BODY",
               declarations: []
             },
-            name: "A",
+            name: {
+              type: "IDENTIFIER",
+              value: "A"
+            },
             type: "CLASS_DECLARATION"
           }
         }
@@ -47,7 +50,10 @@ describe("annotationTypeBody", () => {
               type: "CLASS_BODY",
               declarations: []
             },
-            name: "A",
+            name: {
+              type: "IDENTIFIER",
+              value: "A"
+            },
             type: "CLASS_DECLARATION"
           }
         },
@@ -59,7 +65,10 @@ describe("annotationTypeBody", () => {
               type: "CLASS_BODY",
               declarations: []
             },
-            name: "B",
+            name: {
+              type: "IDENTIFIER",
+              value: "B"
+            },
             type: "CLASS_DECLARATION"
           }
         }

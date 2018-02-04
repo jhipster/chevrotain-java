@@ -7,7 +7,10 @@ describe("continueStatement", () => {
       Parser.parse("continue a;", parser => parser.continueStatement())
     ).toEqual({
       type: "CONTINUE_STATEMENT",
-      identifier: "a"
+      identifier: {
+        type: "IDENTIFIER",
+        value: "a"
+      }
     });
   });
 

@@ -12,7 +12,10 @@ describe("interfaceMethodDeclaration", () => {
       typeType: {
         type: "VOID"
       },
-      name: "a",
+      name: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
       parameters: {
         type: "FORMAL_PARAMETERS",
         parameters: undefined
@@ -38,7 +41,10 @@ describe("interfaceMethodDeclaration", () => {
       typeType: {
         type: "VOID"
       },
-      name: "a",
+      name: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
       parameters: {
         type: "FORMAL_PARAMETERS",
         parameters: undefined
@@ -67,7 +73,10 @@ describe("interfaceMethodDeclaration", () => {
       typeType: {
         type: "VOID"
       },
-      name: "a",
+      name: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
       parameters: {
         type: "FORMAL_PARAMETERS",
         parameters: undefined
@@ -95,7 +104,10 @@ describe("interfaceMethodDeclaration", () => {
           {
             type: "TYPE_PARAMETER",
             annotations: [],
-            name: "Abc",
+            name: {
+              type: "IDENTIFIER",
+              value: "Abc"
+            },
             typeBound: undefined
           }
         ]
@@ -103,7 +115,10 @@ describe("interfaceMethodDeclaration", () => {
       typeType: {
         type: "VOID"
       },
-      name: "a",
+      name: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
       parameters: {
         type: "FORMAL_PARAMETERS",
         parameters: undefined
@@ -129,7 +144,10 @@ describe("interfaceMethodDeclaration", () => {
       typeType: {
         type: "VOID"
       },
-      name: "a",
+      name: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
       parameters: {
         type: "FORMAL_PARAMETERS",
         parameters: undefined
@@ -155,7 +173,10 @@ describe("interfaceMethodDeclaration", () => {
       typeType: {
         type: "VOID"
       },
-      name: "a",
+      name: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
       parameters: {
         type: "FORMAL_PARAMETERS",
         parameters: undefined
@@ -181,7 +202,10 @@ describe("interfaceMethodDeclaration", () => {
       typeType: {
         type: "VOID"
       },
-      name: "a",
+      name: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
       parameters: {
         type: "FORMAL_PARAMETERS",
         parameters: undefined
@@ -192,7 +216,12 @@ describe("interfaceMethodDeclaration", () => {
         list: [
           {
             type: "QUALIFIED_NAME",
-            name: ["Something"]
+            name: [
+              {
+                type: "IDENTIFIER",
+                value: "Something"
+              }
+            ]
           }
         ]
       },

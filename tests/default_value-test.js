@@ -11,7 +11,12 @@ describe("defaultValue", () => {
         type: "ANNOTATION",
         name: {
           type: "QUALIFIED_NAME",
-          name: ["Bean"]
+          name: [
+            {
+              type: "IDENTIFIER",
+              value: "Bean"
+            }
+          ]
         },
         hasBraces: false
       }

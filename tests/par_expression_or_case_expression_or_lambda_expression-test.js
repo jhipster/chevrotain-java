@@ -120,7 +120,12 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
             type: "ANNOTATION",
             name: {
               type: "QUALIFIED_NAME",
-              name: ["Bean"]
+              name: [
+                {
+                  type: "IDENTIFIER",
+                  value: "Bean"
+                }
+              ]
             },
             hasBraces: false,
             value: undefined
@@ -283,7 +288,10 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
               },
               id: {
                 type: "VARIABLE_DECLARATOR_ID",
-                id: "a",
+                id: {
+                  type: "IDENTIFIER",
+                  value: "a"
+                },
                 cntSquares: 0
               },
               dotDotDot: false
@@ -319,7 +327,10 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
               },
               id: {
                 type: "VARIABLE_DECLARATOR_ID",
-                id: "a",
+                id: {
+                  type: "IDENTIFIER",
+                  value: "a"
+                },
                 cntSquares: 0
               },
               dotDotDot: false
@@ -333,7 +344,10 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
               },
               id: {
                 type: "VARIABLE_DECLARATOR_ID",
-                id: "b",
+                id: {
+                  type: "IDENTIFIER",
+                  value: "b"
+                },
                 cntSquares: 0
               },
               dotDotDot: false
@@ -382,7 +396,10 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
               },
               id: {
                 type: "VARIABLE_DECLARATOR_ID",
-                id: "a",
+                id: {
+                  type: "IDENTIFIER",
+                  value: "a"
+                },
                 cntSquares: 0
               },
               dotDotDot: false
@@ -418,7 +435,10 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
               },
               id: {
                 type: "VARIABLE_DECLARATOR_ID",
-                id: "a",
+                id: {
+                  type: "IDENTIFIER",
+                  value: "a"
+                },
                 cntSquares: 0
               },
               dotDotDot: false
@@ -437,7 +457,10 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
               },
               id: {
                 type: "VARIABLE_DECLARATOR_ID",
-                id: "b",
+                id: {
+                  type: "IDENTIFIER",
+                  value: "b"
+                },
                 cntSquares: 0
               },
               dotDotDot: false

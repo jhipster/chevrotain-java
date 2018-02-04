@@ -14,7 +14,10 @@ describe("constantDeclaration", () => {
       declarators: [
         {
           type: "CONSTANT_DECLARATOR",
-          name: "A",
+          name: {
+            type: "IDENTIFIER",
+            value: "A"
+          },
           cntSquares: 0,
           init: {
             type: "THIS"
@@ -38,7 +41,10 @@ describe("constantDeclaration", () => {
       declarators: [
         {
           type: "CONSTANT_DECLARATOR",
-          name: "A",
+          name: {
+            type: "IDENTIFIER",
+            value: "A"
+          },
           cntSquares: 0,
           init: {
             type: "THIS"
@@ -46,7 +52,10 @@ describe("constantDeclaration", () => {
         },
         {
           type: "CONSTANT_DECLARATOR",
-          name: "B",
+          name: {
+            type: "IDENTIFIER",
+            value: "B"
+          },
           cntSquares: 0,
           init: {
             type: "SUPER"

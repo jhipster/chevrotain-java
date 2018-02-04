@@ -10,7 +10,10 @@ describe("variableDeclarators", () => {
           type: "VARIABLE_DECLARATOR",
           id: {
             type: "VARIABLE_DECLARATOR_ID",
-            id: "A",
+            id: {
+              type: "IDENTIFIER",
+              value: "A"
+            },
             cntSquares: 0
           },
           init: undefined
@@ -29,7 +32,10 @@ describe("variableDeclarators", () => {
           type: "VARIABLE_DECLARATOR",
           id: {
             type: "VARIABLE_DECLARATOR_ID",
-            id: "A",
+            id: {
+              type: "IDENTIFIER",
+              value: "A"
+            },
             cntSquares: 0
           },
           init: undefined
@@ -38,7 +44,10 @@ describe("variableDeclarators", () => {
           type: "VARIABLE_DECLARATOR",
           id: {
             type: "VARIABLE_DECLARATOR_ID",
-            id: "B",
+            id: {
+              type: "IDENTIFIER",
+              value: "B"
+            },
             cntSquares: 0
           },
           init: undefined

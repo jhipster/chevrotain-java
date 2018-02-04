@@ -21,11 +21,19 @@ describe("tryStatement", () => {
             types: [
               {
                 type: "QUALIFIED_NAME",
-                name: ["A"]
+                name: [
+                  {
+                    type: "IDENTIFIER",
+                    value: "A"
+                  }
+                ]
               }
             ]
           },
-          id: "e",
+          id: {
+            type: "IDENTIFIER",
+            value: "e"
+          },
           block: {
             type: "BLOCK",
             statements: []
@@ -57,11 +65,19 @@ describe("tryStatement", () => {
             types: [
               {
                 type: "QUALIFIED_NAME",
-                name: ["A"]
+                name: [
+                  {
+                    type: "IDENTIFIER",
+                    value: "A"
+                  }
+                ]
               }
             ]
           },
-          id: "e",
+          id: {
+            type: "IDENTIFIER",
+            value: "e"
+          },
           block: {
             type: "BLOCK",
             statements: []
@@ -75,11 +91,19 @@ describe("tryStatement", () => {
             types: [
               {
                 type: "QUALIFIED_NAME",
-                name: ["B"]
+                name: [
+                  {
+                    type: "IDENTIFIER",
+                    value: "B"
+                  }
+                ]
               }
             ]
           },
-          id: "e",
+          id: {
+            type: "IDENTIFIER",
+            value: "e"
+          },
           block: {
             type: "BLOCK",
             statements: []
@@ -120,7 +144,10 @@ describe("tryStatement", () => {
               },
               id: {
                 type: "VARIABLE_DECLARATOR_ID",
-                id: "a",
+                id: {
+                  type: "IDENTIFIER",
+                  value: "a"
+                },
                 cntSquares: 0
               },
               expression: {
@@ -143,11 +170,19 @@ describe("tryStatement", () => {
             types: [
               {
                 type: "QUALIFIED_NAME",
-                name: ["A"]
+                name: [
+                  {
+                    type: "IDENTIFIER",
+                    value: "A"
+                  }
+                ]
               }
             ]
           },
-          id: "e",
+          id: {
+            type: "IDENTIFIER",
+            value: "e"
+          },
           block: {
             type: "BLOCK",
             statements: []
@@ -179,11 +214,19 @@ describe("tryStatement", () => {
             types: [
               {
                 type: "QUALIFIED_NAME",
-                name: ["A"]
+                name: [
+                  {
+                    type: "IDENTIFIER",
+                    value: "A"
+                  }
+                ]
               }
             ]
           },
-          id: "e",
+          id: {
+            type: "IDENTIFIER",
+            value: "e"
+          },
           block: {
             type: "BLOCK",
             statements: []

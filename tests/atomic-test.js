@@ -16,7 +16,10 @@ describe("atomic", () => {
         elements: [
           {
             type: "IDENTIFIER_NAME_ELEMENT",
-            id: "a",
+            id: {
+              type: "IDENTIFIER",
+              value: "a"
+            },
             typeArguments: undefined
           }
         ]
@@ -34,7 +37,10 @@ describe("atomic", () => {
   it("methodCall", () => {
     expect(Parser.parse("a()", parser => parser.atomic())).toEqual({
       type: "METHOD_CALL",
-      name: "a",
+      name: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
       parameters: undefined
     });
   });

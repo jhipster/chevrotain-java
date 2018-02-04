@@ -12,7 +12,10 @@ describe("interfaceMemberDeclaration", () => {
       typeType: {
         type: "VOID"
       },
-      name: "a",
+      name: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
       parameters: {
         type: "FORMAL_PARAMETERS",
         parameters: undefined
@@ -33,7 +36,10 @@ describe("interfaceMemberDeclaration", () => {
       )
     ).toEqual({
       type: "INTERFACE_DECLARATION",
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       typeParameters: undefined,
       typeList: undefined,
       body: {
@@ -48,7 +54,10 @@ describe("interfaceMemberDeclaration", () => {
       Parser.parse("class A{}", parser => parser.interfaceMemberDeclaration())
     ).toEqual({
       type: "CLASS_DECLARATION",
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       body: {
         type: "CLASS_BODY",
         declarations: []
@@ -61,7 +70,10 @@ describe("interfaceMemberDeclaration", () => {
       Parser.parse("enum A{}", parser => parser.interfaceMemberDeclaration())
     ).toEqual({
       type: "ENUM_DECLARATION",
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       implements: undefined,
       enumConstants: undefined,
       body: undefined

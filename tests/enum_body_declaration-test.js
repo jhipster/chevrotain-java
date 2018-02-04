@@ -23,7 +23,10 @@ describe("enumBodyDeclarations", () => {
             typeType: {
               type: "VOID"
             },
-            name: "a",
+            name: {
+              type: "IDENTIFIER",
+              value: "a"
+            },
             parameters: {
               type: "FORMAL_PARAMETERS",
               parameters: undefined
@@ -54,7 +57,10 @@ describe("enumBodyDeclarations", () => {
             typeType: {
               type: "VOID"
             },
-            name: "a",
+            name: {
+              type: "IDENTIFIER",
+              value: "a"
+            },
             parameters: {
               type: "FORMAL_PARAMETERS",
               parameters: undefined

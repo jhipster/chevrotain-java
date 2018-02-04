@@ -8,7 +8,10 @@ describe("identifierName", () => {
       elements: [
         {
           type: "IDENTIFIER_NAME_ELEMENT",
-          id: "a",
+          id: {
+            type: "IDENTIFIER",
+            value: "a"
+          },
           typeArguments: undefined
         }
       ]
@@ -21,12 +24,18 @@ describe("identifierName", () => {
       elements: [
         {
           type: "IDENTIFIER_NAME_ELEMENT",
-          id: "a",
+          id: {
+            type: "IDENTIFIER",
+            value: "a"
+          },
           typeArguments: undefined
         },
         {
           type: "IDENTIFIER_NAME_ELEMENT",
-          id: "b",
+          id: {
+            type: "IDENTIFIER",
+            value: "b"
+          },
           typeArguments: undefined
         }
       ]

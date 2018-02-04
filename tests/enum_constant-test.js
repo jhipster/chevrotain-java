@@ -6,7 +6,10 @@ describe("enumConstant", () => {
     expect(Parser.parse("A", parser => parser.enumConstant())).toEqual({
       type: "ENUM_CONSTANT",
       modifiers: [],
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       arguments: undefined,
       body: undefined
     });
@@ -20,13 +23,21 @@ describe("enumConstant", () => {
           type: "ANNOTATION",
           name: {
             type: "QUALIFIED_NAME",
-            name: ["Bean"]
+            name: [
+              {
+                type: "IDENTIFIER",
+                value: "Bean"
+              }
+            ]
           },
           hasBraces: false,
           value: undefined
         }
       ],
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       arguments: undefined,
       body: undefined
     });
@@ -42,7 +53,12 @@ describe("enumConstant", () => {
           type: "ANNOTATION",
           name: {
             type: "QUALIFIED_NAME",
-            name: ["Bean"]
+            name: [
+              {
+                type: "IDENTIFIER",
+                value: "Bean"
+              }
+            ]
           },
           hasBraces: false,
           value: undefined
@@ -51,13 +67,21 @@ describe("enumConstant", () => {
           type: "ANNOTATION",
           name: {
             type: "QUALIFIED_NAME",
-            name: ["Something"]
+            name: [
+              {
+                type: "IDENTIFIER",
+                value: "Something"
+              }
+            ]
           },
           hasBraces: false,
           value: undefined
         }
       ],
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       arguments: undefined,
       body: undefined
     });
@@ -67,7 +91,10 @@ describe("enumConstant", () => {
     expect(Parser.parse("A()", parser => parser.enumConstant())).toEqual({
       type: "ENUM_CONSTANT",
       modifiers: [],
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       arguments: {
         type: "ARGUMENTS"
       },
@@ -79,7 +106,10 @@ describe("enumConstant", () => {
     expect(Parser.parse("A {}", parser => parser.enumConstant())).toEqual({
       type: "ENUM_CONSTANT",
       modifiers: [],
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       arguments: undefined,
       body: {
         type: "CLASS_BODY",

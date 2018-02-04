@@ -15,14 +15,20 @@ describe("genericConstructorDeclaration", () => {
           {
             type: "TYPE_PARAMETER",
             annotations: [],
-            name: "A",
+            name: {
+              type: "IDENTIFIER",
+              value: "A"
+            },
             typeBound: undefined
           }
         ]
       },
       constructorDeclaration: {
         type: "CONSTRUCTOR_DECLARATION",
-        name: "a",
+        name: {
+          type: "IDENTIFIER",
+          value: "a"
+        },
         parameters: {
           type: "FORMAL_PARAMETERS",
           parameters: undefined

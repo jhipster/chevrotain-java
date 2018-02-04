@@ -8,7 +8,12 @@ describe("catchType", () => {
       types: [
         {
           type: "QUALIFIED_NAME",
-          name: ["pkg"]
+          name: [
+            {
+              type: "IDENTIFIER",
+              value: "pkg"
+            }
+          ]
         }
       ]
     });
@@ -20,11 +25,21 @@ describe("catchType", () => {
       types: [
         {
           type: "QUALIFIED_NAME",
-          name: ["pkg"]
+          name: [
+            {
+              type: "IDENTIFIER",
+              value: "pkg"
+            }
+          ]
         },
         {
           type: "QUALIFIED_NAME",
-          name: ["abc"]
+          name: [
+            {
+              type: "IDENTIFIER",
+              value: "abc"
+            }
+          ]
         }
       ]
     });

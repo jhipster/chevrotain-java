@@ -21,7 +21,10 @@ describe("resource", () => {
       },
       id: {
         type: "VARIABLE_DECLARATOR_ID",
-        id: "a",
+        id: {
+          type: "IDENTIFIER",
+          value: "a"
+        },
         cntSquares: 0
       },
       expression: {
@@ -51,7 +54,10 @@ describe("resource", () => {
       },
       id: {
         type: "VARIABLE_DECLARATOR_ID",
-        id: "a",
+        id: {
+          type: "IDENTIFIER",
+          value: "a"
+        },
         cntSquares: 0
       },
       expression: {
@@ -68,7 +74,15 @@ describe("resource", () => {
       modifiers: [
         {
           type: "ANNOTATION",
-          name: { type: "QUALIFIED_NAME", name: ["Bean"] },
+          name: {
+            type: "QUALIFIED_NAME",
+            name: [
+              {
+                type: "IDENTIFIER",
+                value: "Bean"
+              }
+            ]
+          },
           hasBraces: false,
           value: undefined
         },
@@ -89,7 +103,10 @@ describe("resource", () => {
       },
       id: {
         type: "VARIABLE_DECLARATOR_ID",
-        id: "a",
+        id: {
+          type: "IDENTIFIER",
+          value: "a"
+        },
         cntSquares: 0
       },
       expression: {

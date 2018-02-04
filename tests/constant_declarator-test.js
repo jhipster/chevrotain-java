@@ -7,7 +7,10 @@ describe("constantDeclarator", () => {
       Parser.parse("A = this", parser => parser.constantDeclarator())
     ).toEqual({
       type: "CONSTANT_DECLARATOR",
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       cntSquares: 0,
       init: {
         type: "THIS"
@@ -20,7 +23,10 @@ describe("constantDeclarator", () => {
       Parser.parse("A[] = this", parser => parser.constantDeclarator())
     ).toEqual({
       type: "CONSTANT_DECLARATOR",
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       cntSquares: 1,
       init: {
         type: "THIS"
@@ -33,7 +39,10 @@ describe("constantDeclarator", () => {
       Parser.parse("A[][] = this", parser => parser.constantDeclarator())
     ).toEqual({
       type: "CONSTANT_DECLARATOR",
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       cntSquares: 2,
       init: {
         type: "THIS"

@@ -39,7 +39,10 @@ describe("classBodyDeclaration", () => {
         typeType: {
           type: "VOID"
         },
-        name: "a",
+        name: {
+          type: "IDENTIFIER",
+          value: "a"
+        },
         parameters: {
           type: "FORMAL_PARAMETERS",
           parameters: undefined
@@ -64,7 +67,12 @@ describe("classBodyDeclaration", () => {
           type: "ANNOTATION",
           name: {
             type: "QUALIFIED_NAME",
-            name: ["Bean"]
+            name: [
+              {
+                type: "IDENTIFIER",
+                value: "Bean"
+              }
+            ]
           },
           hasBraces: false,
           value: undefined
@@ -75,7 +83,10 @@ describe("classBodyDeclaration", () => {
         typeType: {
           type: "VOID"
         },
-        name: "a",
+        name: {
+          type: "IDENTIFIER",
+          value: "a"
+        },
         parameters: {
           type: "FORMAL_PARAMETERS",
           parameters: undefined
@@ -102,7 +113,12 @@ describe("classBodyDeclaration", () => {
           type: "ANNOTATION",
           name: {
             type: "QUALIFIED_NAME",
-            name: ["Bean"]
+            name: [
+              {
+                type: "IDENTIFIER",
+                value: "Bean"
+              }
+            ]
           },
           hasBraces: false,
           value: undefined
@@ -117,7 +133,10 @@ describe("classBodyDeclaration", () => {
         typeType: {
           type: "VOID"
         },
-        name: "a",
+        name: {
+          type: "IDENTIFIER",
+          value: "a"
+        },
         parameters: {
           type: "FORMAL_PARAMETERS",
           parameters: undefined

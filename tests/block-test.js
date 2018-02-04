@@ -27,7 +27,10 @@ describe("block", () => {
                 type: "VARIABLE_DECLARATOR",
                 id: {
                   type: "VARIABLE_DECLARATOR_ID",
-                  id: "A",
+                  id: {
+                    type: "IDENTIFIER",
+                    value: "A"
+                  },
                   cntSquares: 0
                 },
                 init: undefined
@@ -59,7 +62,10 @@ describe("block", () => {
                 type: "VARIABLE_DECLARATOR",
                 id: {
                   type: "VARIABLE_DECLARATOR_ID",
-                  id: "A",
+                  id: {
+                    type: "IDENTIFIER",
+                    value: "A"
+                  },
                   cntSquares: 0
                 },
                 init: undefined
@@ -72,7 +78,10 @@ describe("block", () => {
           modifiers: [],
           declaration: {
             type: "CLASS_DECLARATION",
-            name: "A",
+            name: {
+              type: "IDENTIFIER",
+              value: "A"
+            },
             typeParameters: undefined,
             extends: undefined,
             implements: undefined,

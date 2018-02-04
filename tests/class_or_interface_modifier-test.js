@@ -72,7 +72,12 @@ describe("classOrInterfaceModifier", () => {
       type: "ANNOTATION",
       name: {
         type: "QUALIFIED_NAME",
-        name: ["Bean"]
+        name: [
+          {
+            type: "IDENTIFIER",
+            value: "Bean"
+          }
+        ]
       },
       hasBraces: false
     });
@@ -85,7 +90,12 @@ describe("classOrInterfaceModifier", () => {
       type: "ANNOTATION",
       name: {
         type: "QUALIFIED_NAME",
-        name: ["Bean"]
+        name: [
+          {
+            type: "IDENTIFIER",
+            value: "Bean"
+          }
+        ]
       },
       hasBraces: true,
       value: undefined
@@ -101,14 +111,24 @@ describe("classOrInterfaceModifier", () => {
       type: "ANNOTATION",
       name: {
         type: "QUALIFIED_NAME",
-        name: ["Bean"]
+        name: [
+          {
+            type: "IDENTIFIER",
+            value: "Bean"
+          }
+        ]
       },
       hasBraces: true,
       value: {
         type: "ANNOTATION",
         name: {
           type: "QUALIFIED_NAME",
-          name: ["Something"]
+          name: [
+            {
+              type: "IDENTIFIER",
+              value: "Something"
+            }
+          ]
         },
         hasBraces: false,
         value: undefined
@@ -125,7 +145,12 @@ describe("classOrInterfaceModifier", () => {
       type: "ANNOTATION",
       name: {
         type: "QUALIFIED_NAME",
-        name: ["Bean"]
+        name: [
+          {
+            type: "IDENTIFIER",
+            value: "Bean"
+          }
+        ]
       },
       hasBraces: true,
       value: {
@@ -135,7 +160,12 @@ describe("classOrInterfaceModifier", () => {
             type: "ANNOTATION",
             name: {
               type: "QUALIFIED_NAME",
-              name: ["Something"]
+              name: [
+                {
+                  type: "IDENTIFIER",
+                  value: "Something"
+                }
+              ]
             },
             hasBraces: false,
             value: undefined
@@ -154,7 +184,12 @@ describe("classOrInterfaceModifier", () => {
       type: "ANNOTATION",
       name: {
         type: "QUALIFIED_NAME",
-        name: ["Bean"]
+        name: [
+          {
+            type: "IDENTIFIER",
+            value: "Bean"
+          }
+        ]
       },
       hasBraces: true,
       value: {
@@ -162,12 +197,20 @@ describe("classOrInterfaceModifier", () => {
         pairs: [
           {
             type: "ELEMENT_VALUE_PAIR",
-            key: "key",
+            key: {
+              type: "IDENTIFIER",
+              value: "key"
+            },
             value: {
               type: "ANNOTATION",
               name: {
                 type: "QUALIFIED_NAME",
-                name: ["Value"]
+                name: [
+                  {
+                    type: "IDENTIFIER",
+                    value: "Value"
+                  }
+                ]
               },
               hasBraces: false,
               value: undefined

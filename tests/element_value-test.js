@@ -7,7 +7,12 @@ describe("elementValue", () => {
       type: "ANNOTATION",
       name: {
         type: "QUALIFIED_NAME",
-        name: ["Bean"]
+        name: [
+          {
+            type: "IDENTIFIER",
+            value: "Bean"
+          }
+        ]
       },
       hasBraces: false,
       value: undefined
@@ -30,7 +35,12 @@ describe("elementValue", () => {
           type: "ANNOTATION",
           name: {
             type: "QUALIFIED_NAME",
-            name: ["Something"]
+            name: [
+              {
+                type: "IDENTIFIER",
+                value: "Something"
+              }
+            ]
           },
           hasBraces: false,
           value: undefined

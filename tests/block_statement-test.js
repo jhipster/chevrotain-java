@@ -22,7 +22,10 @@ describe("blockStatement", () => {
             type: "VARIABLE_DECLARATOR",
             id: {
               type: "VARIABLE_DECLARATOR_ID",
-              id: "A",
+              id: {
+                type: "IDENTIFIER",
+                value: "A"
+              },
               cntSquares: 0
             },
             init: undefined
@@ -42,7 +45,12 @@ describe("blockStatement", () => {
           type: "ANNOTATION",
           name: {
             type: "QUALIFIED_NAME",
-            name: ["Bean"]
+            name: [
+              {
+                type: "IDENTIFIER",
+                value: "Bean"
+              }
+            ]
           },
           hasBraces: false,
           value: undefined
@@ -59,7 +67,10 @@ describe("blockStatement", () => {
             type: "VARIABLE_DECLARATOR",
             id: {
               type: "VARIABLE_DECLARATOR_ID",
-              id: "A",
+              id: {
+                type: "IDENTIFIER",
+                value: "A"
+              },
               cntSquares: 0
             },
             init: undefined
@@ -113,7 +124,10 @@ describe("blockStatement", () => {
       modifiers: [],
       declaration: {
         type: "CLASS_DECLARATION",
-        name: "A",
+        name: {
+          type: "IDENTIFIER",
+          value: "A"
+        },
         typeParameters: undefined,
         extends: undefined,
         implements: undefined,
@@ -133,7 +147,10 @@ describe("blockStatement", () => {
       modifiers: [],
       declaration: {
         type: "INTERFACE_DECLARATION",
-        name: "A",
+        name: {
+          type: "IDENTIFIER",
+          value: "A"
+        },
         typeParameters: undefined,
         typeList: undefined,
         body: {
@@ -152,7 +169,10 @@ describe("blockStatement", () => {
       modifiers: [],
       declaration: {
         type: "CLASS_DECLARATION",
-        name: "A",
+        name: {
+          type: "IDENTIFIER",
+          value: "A"
+        },
         typeParameters: undefined,
         extends: undefined,
         implements: undefined,
@@ -177,7 +197,10 @@ describe("blockStatement", () => {
       ],
       declaration: {
         type: "CLASS_DECLARATION",
-        name: "A",
+        name: {
+          type: "IDENTIFIER",
+          value: "A"
+        },
         typeParameters: undefined,
         extends: undefined,
         implements: undefined,
@@ -206,7 +229,10 @@ describe("blockStatement", () => {
       ],
       declaration: {
         type: "CLASS_DECLARATION",
-        name: "A",
+        name: {
+          type: "IDENTIFIER",
+          value: "A"
+        },
         typeParameters: undefined,
         extends: undefined,
         implements: undefined,

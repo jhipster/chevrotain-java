@@ -3,7 +3,10 @@ const Parser = require("../src/index");
 
 describe("lambdaParameters", () => {
   it("identifier", () => {
-    expect(Parser.parse("a", parser => parser.lambdaParameters())).toEqual("a");
+    expect(Parser.parse("a", parser => parser.lambdaParameters())).toEqual({
+      type: "IDENTIFIER",
+      value: "a"
+    });
   });
 
   it("empty parameters", () => {
@@ -31,7 +34,10 @@ describe("lambdaParameters", () => {
             },
             id: {
               type: "VARIABLE_DECLARATOR_ID",
-              id: "a",
+              id: {
+                type: "IDENTIFIER",
+                value: "a"
+              },
               cntSquares: 0
             }
           }

@@ -16,7 +16,14 @@ describe("fieldDeclaration", () => {
         list: [
           {
             type: "VARIABLE_DECLARATOR",
-            id: { type: "VARIABLE_DECLARATOR_ID", id: "def", cntSquares: 0 },
+            id: {
+              type: "VARIABLE_DECLARATOR_ID",
+              id: {
+                type: "IDENTIFIER",
+                value: "def"
+              },
+              cntSquares: 0
+            },
             init: undefined
           }
         ]

@@ -100,11 +100,19 @@ describe("statement", () => {
             types: [
               {
                 type: "QUALIFIED_NAME",
-                name: ["A"]
+                name: [
+                  {
+                    type: "IDENTIFIER",
+                    value: "A"
+                  }
+                ]
               }
             ]
           },
-          id: "e",
+          id: {
+            type: "IDENTIFIER",
+            value: "e"
+          },
           block: {
             type: "BLOCK",
             statements: []
@@ -162,14 +170,20 @@ describe("statement", () => {
   it("breakStatement", () => {
     expect(Parser.parse("break a;", parser => parser.statement())).toEqual({
       type: "BREAK_STATEMENT",
-      identifier: "a"
+      identifier: {
+        type: "IDENTIFIER",
+        value: "a"
+      }
     });
   });
 
   it("continueStatement", () => {
     expect(Parser.parse("continue a;", parser => parser.statement())).toEqual({
       type: "CONTINUE_STATEMENT",
-      identifier: "a"
+      identifier: {
+        type: "IDENTIFIER",
+        value: "a"
+      }
     });
   });
 
@@ -191,7 +205,10 @@ describe("statement", () => {
   it("identifierStatement", () => {
     expect(Parser.parse("a:this;", parser => parser.statement())).toEqual({
       type: "IDENTIFIER_STATEMENT",
-      identifier: "a",
+      identifier: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
       statement: {
         type: "EXPRESSION_STATEMENT",
         expression: {

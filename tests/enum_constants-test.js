@@ -9,7 +9,10 @@ describe("enumConstants", () => {
         {
           type: "ENUM_CONSTANT",
           modifiers: [],
-          name: "A",
+          name: {
+            type: "IDENTIFIER",
+            value: "A"
+          },
           arguments: undefined,
           body: undefined
         }
@@ -24,14 +27,20 @@ describe("enumConstants", () => {
         {
           type: "ENUM_CONSTANT",
           modifiers: [],
-          name: "A",
+          name: {
+            type: "IDENTIFIER",
+            value: "A"
+          },
           arguments: undefined,
           body: undefined
         },
         {
           type: "ENUM_CONSTANT",
           modifiers: [],
-          name: "B",
+          name: {
+            type: "IDENTIFIER",
+            value: "B"
+          },
           arguments: undefined,
           body: undefined
         }

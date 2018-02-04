@@ -24,7 +24,10 @@ describe("interfaceBody", () => {
             typeType: {
               type: "VOID"
             },
-            name: "a",
+            name: {
+              type: "IDENTIFIER",
+              value: "a"
+            },
             parameters: {
               type: "FORMAL_PARAMETERS",
               parameters: undefined
@@ -58,7 +61,10 @@ describe("interfaceBody", () => {
             typeType: {
               type: "VOID"
             },
-            name: "a",
+            name: {
+              type: "IDENTIFIER",
+              value: "a"
+            },
             parameters: {
               type: "FORMAL_PARAMETERS",
               parameters: undefined
@@ -80,7 +86,10 @@ describe("interfaceBody", () => {
             typeType: {
               type: "VOID"
             },
-            name: "b",
+            name: {
+              type: "IDENTIFIER",
+              value: "b"
+            },
             parameters: {
               type: "FORMAL_PARAMETERS",
               parameters: undefined

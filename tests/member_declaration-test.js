@@ -10,7 +10,10 @@ describe("memberDeclaration", () => {
       typeType: {
         type: "VOID"
       },
-      name: "a",
+      name: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
       parameters: {
         type: "FORMAL_PARAMETERS",
         parameters: undefined
@@ -29,7 +32,10 @@ describe("memberDeclaration", () => {
       Parser.parse("a() {}", parser => parser.memberDeclaration())
     ).toEqual({
       type: "CONSTRUCTOR_DECLARATION",
-      name: "a",
+      name: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
       parameters: {
         type: "FORMAL_PARAMETERS",
         parameters: undefined
@@ -47,7 +53,10 @@ describe("memberDeclaration", () => {
       Parser.parse("interface A{}", parser => parser.memberDeclaration())
     ).toEqual({
       type: "INTERFACE_DECLARATION",
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       typeParameters: undefined,
       typeList: undefined,
       body: {
@@ -62,7 +71,10 @@ describe("memberDeclaration", () => {
       Parser.parse("@interface A{}", parser => parser.memberDeclaration())
     ).toEqual({
       type: "ANNOTATION_TYPE_DECLARATION",
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       body: {
         type: "ANNOTATION_TYPE_BODY",
         declarations: []
@@ -75,7 +87,10 @@ describe("memberDeclaration", () => {
       Parser.parse("class A{}", parser => parser.memberDeclaration())
     ).toEqual({
       type: "CLASS_DECLARATION",
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       body: {
         type: "CLASS_BODY",
         declarations: []
@@ -88,7 +103,10 @@ describe("memberDeclaration", () => {
       Parser.parse("enum A{}", parser => parser.memberDeclaration())
     ).toEqual({
       type: "ENUM_DECLARATION",
-      name: "A",
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
       implements: undefined,
       enumConstants: undefined
     });

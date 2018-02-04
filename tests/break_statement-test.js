@@ -6,7 +6,10 @@ describe("breakStatement", () => {
     expect(Parser.parse("break a;", parser => parser.breakStatement())).toEqual(
       {
         type: "BREAK_STATEMENT",
-        identifier: "a"
+        identifier: {
+          type: "IDENTIFIER",
+          value: "a"
+        }
       }
     );
   });
