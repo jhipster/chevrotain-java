@@ -276,53 +276,13 @@ class SelectParser extends chevrotain.Parser {
     });
 
     // memberDeclaration
-    // : fieldDeclaration
-    // | methodDeclaration
-    // | constructorDeclaration
+    // : fieldDeclarationOrMethodDeclarationOrConstructorDeclaration
     // | genericMethodDeclarationOrGenericConstructorDeclaration
     // | interfaceDeclaration
     // | annotationTypeDeclaration
     // | classDeclaration
     // | enumDeclaration
     $.RULE("memberDeclaration", () => {
-      // fieldDeclaration
-      // $.CONSUME(tokens.Identifier);
-      // $.MANY(() => {
-      //   $.CONSUME(tokens.LSquare);
-      //   $.CONSUME(tokens.RSquare);
-      // });
-      // $.OPTION(() => {
-      //   $.CONSUME(tokens.Equals);
-      //   $.SUBRULE($.variableInitializer);
-      // });
-      // $.MANY(() => {
-      //   $.CONSUME(tokens.Comma);
-      //   $.CONSUME(tokens.Identifier);
-      //     $.MANY(() => {
-      //       $.CONSUME(tokens.LSquare);
-      //       $.CONSUME(tokens.RSquare);
-      //     });
-      //     $.OPTION(() => {
-      //       $.CONSUME(tokens.Equals);
-      //       $.SUBRULE($.variableInitializer);
-      //     });
-      //   }
-      // });
-      // $.CONSUME(tokens.SemiColon);
-
-      // methodDeclaration
-      // $.CONSUME(tokens.Identifier);
-      // $.SUBRULE($.formalParameters);
-      // $.MANY(() => {
-      //   $.CONSUME(tokens.LSquare);
-      //   $.CONSUME(tokens.RSquare);
-      // });
-      // $.OPTION(() => {
-      //   $.CONSUME(tokens.Throws);
-      //   $.SUBRULE($.qualifiedNameList);
-      // });
-      // $.SUBRULE($.methodBody);
-
       $.OR([
         {
           ALT: () =>
@@ -341,6 +301,10 @@ class SelectParser extends chevrotain.Parser {
       ]);
     });
 
+    // fieldDeclarationOrMethodDeclarationOrConstructorDeclaration
+    // : fieldDeclaration
+    // | methodDeclaration
+    // | constructorDeclaration
     $.RULE(
       "fieldDeclarationOrMethodDeclarationOrConstructorDeclaration",
       () => {
@@ -627,31 +591,107 @@ class SelectParser extends chevrotain.Parser {
     });
 
     // interfaceMemberDeclaration
-    // : constantDeclaration
-    // | interfaceMethodDeclaration
-    // | genericInterfaceMethodDeclaration
+    // : constantDeclarationOrInterfaceMethodDeclaration
     // | interfaceDeclaration
     // | annotationTypeDeclaration
     // | classDeclaration
     // | enumDeclaration
     $.RULE("interfaceMemberDeclaration", () => {
       $.OR([
-        // TODO: refactoring
-        // {
-        //   ALT: () => {
-        //     $.SUBRULE($.constantDeclaration);
-        //   }
-        // },
-        { ALT: () => $.SUBRULE($.interfaceMethodDeclaration) },
-        // TODO: refactoring
-        // {
-        //   ALT: () => {
-        //     $.SUBRULE($.genericInterfaceMethodDeclaration);
-        //   }
-        // },
+        {
+          ALT: () =>
+            $.SUBRULE($.constantDeclarationOrInterfaceMethodDeclaration)
+        },
         { ALT: () => $.SUBRULE($.interfaceDeclaration) },
         { ALT: () => $.SUBRULE($.classDeclaration) },
         { ALT: () => $.SUBRULE($.enumDeclaration) }
+      ]);
+    });
+
+    // constantDeclarationOrInterfaceMethodDeclaration
+    // : constantDeclaration
+    // | interfaceMethodDeclaration
+    $.RULE("constantDeclarationOrInterfaceMethodDeclaration", () => {
+      let isConstantDeclaration = true;
+      let isInterfaceMethodDeclaration = true;
+
+      $.OR([
+        // {
+        //   ALT: () => {
+        //     // $.SUBRULE($.constantDeclaration);
+        //     $.SUBRULE($.typeType);
+        //     $.AT_LEAST_ONE_SEP({
+        //       SEP: tokens.Comma,
+        //       DEF: () => {
+        //         $.SUBRULE($.constantDeclarator);
+        //       }
+        //     });
+        //     $.CONSUME(tokens.SemiColon);
+        //   }
+        // },
+        {
+          ALT: () => {
+            // interfaceMethodDeclaration
+            $.MANY(() => {
+              $.SUBRULE($.interfaceMethodModifier);
+              isConstantDeclaration = false;
+            });
+            $.OPTION(() => {
+              $.SUBRULE($.typeParameters);
+              isConstantDeclaration = false;
+            });
+            $.MANY2(() => {
+              $.SUBRULE($.annotation);
+              isConstantDeclaration = false;
+            });
+            $.OR2([
+              {
+                ALT: () => {
+                  $.SUBRULE($.typeType);
+
+                  $.OPTION2({
+                    GATE: () => isConstantDeclaration,
+                    DEF: () => {
+                      $.AT_LEAST_ONE_SEP({
+                        SEP: tokens.Comma,
+                        DEF: () => {
+                          $.SUBRULE($.constantDeclarator);
+                        }
+                      });
+                      $.CONSUME(tokens.SemiColon);
+                      isInterfaceMethodDeclaration = false;
+                    }
+                  });
+                }
+              },
+              { ALT: () => $.CONSUME(tokens.Void) }
+            ]);
+
+            $.OR3([
+              {
+                GATE: () => isInterfaceMethodDeclaration,
+                ALT: () => {
+                  $.CONSUME(tokens.Identifier);
+                  $.SUBRULE($.formalParameters);
+                  $.MANY3(() => {
+                    $.CONSUME(tokens.LSquare);
+                    $.CONSUME(tokens.RSquare);
+                  });
+                  $.OPTION3(() => {
+                    $.CONSUME(tokens.Throws);
+                    $.SUBRULE($.qualifiedNameList);
+                  });
+                  $.SUBRULE($.methodBody);
+                }
+              },
+              {
+                ALT: () => {
+                  // empty for constant declaration
+                }
+              }
+            ]);
+          }
+        }
       ]);
     });
 
@@ -711,13 +751,6 @@ class SelectParser extends chevrotain.Parser {
         $.SUBRULE($.qualifiedNameList);
       });
       $.SUBRULE($.methodBody);
-    });
-
-    // genericInterfaceMethodDeclaration
-    // : typeParameters interfaceMethodDeclaration
-    $.RULE("genericInterfaceMethodDeclaration", () => {
-      $.SUBRULE($.typeParameters);
-      $.SUBRULE($.interfaceMethodDeclaration);
     });
 
     // // Java8

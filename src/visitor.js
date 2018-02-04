@@ -639,14 +639,63 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   interfaceMemberDeclaration(ctx) {
-    if (ctx.interfaceMethodDeclaration.length > 0) {
-      return this.visit(ctx.interfaceMethodDeclaration);
+    if (ctx.constantDeclarationOrInterfaceMethodDeclaration.length > 0) {
+      return this.visit(ctx.constantDeclarationOrInterfaceMethodDeclaration);
     } else if (ctx.interfaceDeclaration.length > 0) {
       return this.visit(ctx.interfaceDeclaration);
     } else if (ctx.classDeclaration.length > 0) {
       return this.visit(ctx.classDeclaration);
     } else if (ctx.enumDeclaration.length > 0) {
       return this.visit(ctx.enumDeclaration);
+    }
+  }
+
+  constantDeclarationOrInterfaceMethodDeclaration(ctx) {
+    if (ctx.SemiColon.length > 0) {
+      // constantDeclaration
+      const typeType = this.visit(ctx.typeType);
+      const declarators = ctx.constantDeclarator.map(declarator =>
+        this.visit(declarator)
+      );
+
+      return {
+        type: "CONSTANT_DECLARATION",
+        typeType: typeType,
+        declarators: declarators
+      };
+    }
+
+    if (ctx.methodBody.length > 0) {
+      // interfaceMethodDeclaration
+      const modifiers = ctx.interfaceMethodModifier.map(modifier =>
+        this.visit(modifier)
+      );
+      const typeParameters = this.visit(ctx.typeParameters);
+      let typeType = undefined;
+      if (ctx.typeType.length > 0) {
+        typeType = this.visit(ctx.typeType);
+      } else if (ctx.Void.length > 0) {
+        typeType = {
+          type: "VOID"
+        };
+      }
+      const name = this.identifier(ctx.Identifier[0]);
+      const parameters = this.visit(ctx.formalParameters);
+      const cntSquares = ctx.LSquare.length;
+      const throws = this.visit(ctx.qualifiedNameList);
+      const body = this.visit(ctx.methodBody);
+
+      return {
+        type: "INTERFACE_METHOD_DECLARATION",
+        modifiers: modifiers,
+        typeParameters: typeParameters,
+        typeType: typeType,
+        name: name,
+        parameters: parameters,
+        cntSquares: cntSquares,
+        throws: throws,
+        body: body
+      };
     }
   }
 
@@ -698,19 +747,6 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       cntSquares: cntSquares,
       throws: throws,
       body: body
-    };
-  }
-
-  genericInterfaceMethodDeclaration(ctx) {
-    const typeParameters = this.visit(ctx.typeParameters);
-    const interfaceMethodDeclaration = this.visit(
-      ctx.interfaceMethodDeclaration
-    );
-
-    return {
-      type: "GENERIC_INTERFACE_METHOD_DECLARATION",
-      typeParameters: typeParameters,
-      interfaceMethodDeclaration: interfaceMethodDeclaration
     };
   }
 

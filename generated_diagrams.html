@@ -1694,7 +1694,7 @@
             "definition": [
               {
                 "type": "NonTerminal",
-                "name": "interfaceMethodDeclaration",
+                "name": "constantDeclarationOrInterfaceMethodDeclaration",
                 "occurrenceInParent": 1
               }
             ]
@@ -1726,6 +1726,175 @@
                 "type": "NonTerminal",
                 "name": "enumDeclaration",
                 "occurrenceInParent": 1
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "constantDeclarationOrInterfaceMethodDeclaration",
+    "definition": [
+      {
+        "type": "Alternation",
+        "definition": [
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "Repetition",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "interfaceMethodModifier",
+                    "occurrenceInParent": 1
+                  }
+                ]
+              },
+              {
+                "type": "Option",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "typeParameters",
+                    "occurrenceInParent": 1
+                  }
+                ]
+              },
+              {
+                "type": "Repetition",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "annotation",
+                    "occurrenceInParent": 1
+                  }
+                ]
+              },
+              {
+                "type": "Alternation",
+                "definition": [
+                  {
+                    "type": "Flat",
+                    "definition": [
+                      {
+                        "type": "NonTerminal",
+                        "name": "typeType",
+                        "occurrenceInParent": 1
+                      },
+                      {
+                        "type": "Option",
+                        "definition": [
+                          {
+                            "type": "RepetitionMandatoryWithSeparator",
+                            "separator": {
+                              "type": "Terminal",
+                              "name": "Comma",
+                              "label": "','",
+                              "occurrenceInParent": 1,
+                              "pattern": ","
+                            },
+                            "definition": [
+                              {
+                                "type": "NonTerminal",
+                                "name": "constantDeclarator",
+                                "occurrenceInParent": 1
+                              }
+                            ]
+                          },
+                          {
+                            "type": "Terminal",
+                            "name": "SemiColon",
+                            "label": "';'",
+                            "occurrenceInParent": 1,
+                            "pattern": ";"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Flat",
+                    "definition": [
+                      {
+                        "type": "Terminal",
+                        "name": "Void",
+                        "label": "'void'",
+                        "occurrenceInParent": 1,
+                        "pattern": "void"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "Alternation",
+                "definition": [
+                  {
+                    "type": "Flat",
+                    "definition": [
+                      {
+                        "type": "Terminal",
+                        "name": "Identifier",
+                        "label": "Identifier",
+                        "occurrenceInParent": 1,
+                        "pattern": "[a-zA-Z]\\w*"
+                      },
+                      {
+                        "type": "NonTerminal",
+                        "name": "formalParameters",
+                        "occurrenceInParent": 1
+                      },
+                      {
+                        "type": "Repetition",
+                        "definition": [
+                          {
+                            "type": "Terminal",
+                            "name": "LSquare",
+                            "label": "'['",
+                            "occurrenceInParent": 1,
+                            "pattern": "\\["
+                          },
+                          {
+                            "type": "Terminal",
+                            "name": "RSquare",
+                            "label": "']'",
+                            "occurrenceInParent": 1,
+                            "pattern": "]"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "Option",
+                        "definition": [
+                          {
+                            "type": "Terminal",
+                            "name": "Throws",
+                            "label": "'throws'",
+                            "occurrenceInParent": 1,
+                            "pattern": "throws"
+                          },
+                          {
+                            "type": "NonTerminal",
+                            "name": "qualifiedNameList",
+                            "occurrenceInParent": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "NonTerminal",
+                        "name": "methodBody",
+                        "occurrenceInParent": 1
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Flat",
+                    "definition": []
+                  }
+                ]
               }
             ]
           }
@@ -1902,22 +2071,6 @@
       {
         "type": "NonTerminal",
         "name": "methodBody",
-        "occurrenceInParent": 1
-      }
-    ]
-  },
-  {
-    "type": "Rule",
-    "name": "genericInterfaceMethodDeclaration",
-    "definition": [
-      {
-        "type": "NonTerminal",
-        "name": "typeParameters",
-        "occurrenceInParent": 1
-      },
-      {
-        "type": "NonTerminal",
-        "name": "interfaceMethodDeclaration",
         "occurrenceInParent": 1
       }
     ]

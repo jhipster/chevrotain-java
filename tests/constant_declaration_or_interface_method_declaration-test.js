@@ -1,10 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
 
-describe("interfaceMethodDeclaration", () => {
-  it("void", () => {
+describe("constantDeclarationOrInterfaceMethodDeclaration", () => {
+  it("interfaceMethodDeclaration: void", () => {
     expect(
-      Parser.parse("void a() {}", parser => parser.interfaceMethodDeclaration())
+      Parser.parse("void a() {}", parser =>
+        parser.constantDeclarationOrInterfaceMethodDeclaration()
+      )
     ).toEqual({
       type: "INTERFACE_METHOD_DECLARATION",
       modifiers: [],
@@ -29,10 +31,10 @@ describe("interfaceMethodDeclaration", () => {
     });
   });
 
-  it("one modifier", () => {
+  it("interfaceMethodDeclaration: one modifier", () => {
     expect(
       Parser.parse("public void a() {}", parser =>
-        parser.interfaceMethodDeclaration()
+        parser.constantDeclarationOrInterfaceMethodDeclaration()
       )
     ).toEqual({
       type: "INTERFACE_METHOD_DECLARATION",
@@ -58,10 +60,10 @@ describe("interfaceMethodDeclaration", () => {
     });
   });
 
-  it("multiple modifier", () => {
+  it("interfaceMethodDeclaration: multiple modifier", () => {
     expect(
       Parser.parse("public static void a() {}", parser =>
-        parser.interfaceMethodDeclaration()
+        parser.constantDeclarationOrInterfaceMethodDeclaration()
       )
     ).toEqual({
       type: "INTERFACE_METHOD_DECLARATION",
@@ -90,10 +92,10 @@ describe("interfaceMethodDeclaration", () => {
     });
   });
 
-  it("typeParameter", () => {
+  it("interfaceMethodDeclaration: typeParameter", () => {
     expect(
       Parser.parse("<Abc> void a() {}", parser =>
-        parser.interfaceMethodDeclaration()
+        parser.constantDeclarationOrInterfaceMethodDeclaration()
       )
     ).toEqual({
       type: "INTERFACE_METHOD_DECLARATION",
@@ -132,10 +134,10 @@ describe("interfaceMethodDeclaration", () => {
     });
   });
 
-  it("single square", () => {
+  it("interfaceMethodDeclaration: single square", () => {
     expect(
       Parser.parse("void a()[] {}", parser =>
-        parser.interfaceMethodDeclaration()
+        parser.constantDeclarationOrInterfaceMethodDeclaration()
       )
     ).toEqual({
       type: "INTERFACE_METHOD_DECLARATION",
@@ -161,10 +163,10 @@ describe("interfaceMethodDeclaration", () => {
     });
   });
 
-  it("multiple squares", () => {
+  it("interfaceMethodDeclaration: multiple squares", () => {
     expect(
       Parser.parse("void a()[][] {}", parser =>
-        parser.interfaceMethodDeclaration()
+        parser.constantDeclarationOrInterfaceMethodDeclaration()
       )
     ).toEqual({
       type: "INTERFACE_METHOD_DECLARATION",
@@ -190,10 +192,10 @@ describe("interfaceMethodDeclaration", () => {
     });
   });
 
-  it("throws", () => {
+  it("interfaceMethodDeclaration: throws", () => {
     expect(
       Parser.parse("void a() throws Something {}", parser =>
-        parser.interfaceMethodDeclaration()
+        parser.constantDeclarationOrInterfaceMethodDeclaration()
       )
     ).toEqual({
       type: "INTERFACE_METHOD_DECLARATION",
@@ -232,10 +234,10 @@ describe("interfaceMethodDeclaration", () => {
     });
   });
 
-  it("genericInterfaceMethodDeclaration", () => {
+  it("genericInterfaceMethodDeclaration: simple", () => {
     expect(
       Parser.parse("<A> void a() {}", parser =>
-        parser.interfaceMethodDeclaration()
+        parser.constantDeclarationOrInterfaceMethodDeclaration()
       )
     ).toEqual({
       type: "INTERFACE_METHOD_DECLARATION",
@@ -271,6 +273,71 @@ describe("interfaceMethodDeclaration", () => {
         type: "BLOCK",
         statements: []
       }
+    });
+  });
+
+  it("constantDeclaration: single declaration", () => {
+    expect(
+      Parser.parse("boolean A = this;", parser =>
+        parser.constantDeclarationOrInterfaceMethodDeclaration()
+      )
+    ).toEqual({
+      type: "CONSTANT_DECLARATION",
+      typeType: {
+        type: "PRIMITIVE_TYPE",
+        value: "boolean"
+      },
+      declarators: [
+        {
+          type: "CONSTANT_DECLARATOR",
+          name: {
+            type: "IDENTIFIER",
+            value: "A"
+          },
+          cntSquares: 0,
+          init: {
+            type: "THIS"
+          }
+        }
+      ]
+    });
+  });
+
+  it("constantDeclaration: mutiple declarations", () => {
+    expect(
+      Parser.parse("boolean A = this, B = super;", parser =>
+        parser.constantDeclarationOrInterfaceMethodDeclaration()
+      )
+    ).toEqual({
+      type: "CONSTANT_DECLARATION",
+      typeType: {
+        type: "PRIMITIVE_TYPE",
+        value: "boolean"
+      },
+      declarators: [
+        {
+          type: "CONSTANT_DECLARATOR",
+          name: {
+            type: "IDENTIFIER",
+            value: "A"
+          },
+          cntSquares: 0,
+          init: {
+            type: "THIS"
+          }
+        },
+        {
+          type: "CONSTANT_DECLARATOR",
+          name: {
+            type: "IDENTIFIER",
+            value: "B"
+          },
+          cntSquares: 0,
+          init: {
+            type: "SUPER"
+          }
+        }
+      ]
     });
   });
 });
