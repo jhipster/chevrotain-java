@@ -150,7 +150,8 @@ describe("statementWithStartingToken", () => {
       type: "SWITCH_STATEMENT",
       condition: {
         type: "THIS"
-      }
+      },
+      statementGroups: []
     });
   });
 

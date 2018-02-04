@@ -130,7 +130,8 @@ describe("statement", () => {
       type: "SWITCH_STATEMENT",
       condition: {
         type: "THIS"
-      }
+      },
+      statementGroups: []
     });
   });
 

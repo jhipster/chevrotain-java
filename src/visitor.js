@@ -1151,10 +1151,14 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
   switchStatement(ctx) {
     const condition = this.visit(ctx.expression);
+    const statementGroups = ctx.switchBlockStatementGroup.map(
+      switchBlockStatementGroup => this.visit(switchBlockStatementGroup)
+    );
 
     return {
       type: "SWITCH_STATEMENT",
-      condition: condition
+      condition: condition,
+      statementGroups: statementGroups
     };
   }
 
@@ -1309,6 +1313,19 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     };
   }
 
+  switchBlockStatementGroup(ctx) {
+    const labels = ctx.switchLabel.map(switchLabel => this.visit(switchLabel));
+    const statements = ctx.blockStatement.map(blockStatement =>
+      this.visit(blockStatement)
+    );
+
+    return {
+      type: "SWITCH_BLOCK_STATEMENT_GROUP",
+      labels: labels,
+      statements: statements
+    };
+  }
+
   switchLabel(ctx) {
     if (ctx.switchLabelCase.length > 0) {
       return this.visit(ctx.switchLabelCase);
@@ -1319,11 +1336,11 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   switchLabelCase(ctx) {
-    const cs = this.identifier(ctx.Identifier[0]);
+    const expression = this.visit(ctx.expression);
 
     return {
       type: "SWITCH_LABEL_CASE",
-      case: cs
+      expression: expression
     };
   }
 

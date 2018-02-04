@@ -1183,12 +1183,9 @@ class SelectParser extends chevrotain.Parser {
       $.SUBRULE($.expression);
       $.CONSUME(tokens.RBrace);
       $.CONSUME(tokens.LCurly);
-      // $.MANY(() => {
-      //   $.SUBRULE($.switchBlockStatementGroup);
-      // });
-      // $.MANY(() => {
-      //   $.SUBRULE($.switchLabel);
-      // });
+      $.MANY(() => {
+        $.SUBRULE($.switchBlockStatementGroup);
+      });
       $.CONSUME(tokens.RCurly);
     });
 
@@ -1329,23 +1326,17 @@ class SelectParser extends chevrotain.Parser {
       $.SUBRULE($.expression);
     });
 
-    // /** Matches cases then statements, both of which are mandatory.
-    //  *  To handle empty cases at the end, we add switchLabel* to statement.
-    //  */
     // switchBlockStatementGroup
-    // : switchLabel+ blockStatement+
-    // $.RULE("switchBlockStatementGroup", () => {
-    //   $.AT_LEAST_ONE_SEP({
-    //     DEF: () => {
-    //       $.SUBRULE($.switchLabel);
-    //     }
-    //   });
-    //   $.AT_LEAST_ONE_SEP({
-    //     DEF: () => {
-    //       $.SUBRULE($.blockStatement);
-    //     }
-    //   });
-    // });
+    // : switchLabel+ blockStatement*
+    $.RULE("switchBlockStatementGroup", () => {
+      $.SUBRULE($.switchLabel);
+      $.MANY(() => {
+        $.SUBRULE2($.switchLabel);
+      });
+      $.MANY2(() => {
+        $.SUBRULE2($.blockStatement);
+      });
+    });
 
     // switchLabel
     // : switchLabelCase
@@ -1361,19 +1352,7 @@ class SelectParser extends chevrotain.Parser {
     // : CASE (expression | IDENTIFIER) ':'
     $.RULE("switchLabelCase", () => {
       $.CONSUME(tokens.Case);
-      // TODO: refactoring
-      // $.OR([
-      //   {
-      //     ALT: () => {
-      //       $.SUBRULE($.expression);
-      //     }
-      //   },
-      //   {
-      //     ALT: () => {
-      $.CONSUME(tokens.Identifier);
-      //     }
-      //   }
-      // ]);
+      $.SUBRULE($.expression);
       $.CONSUME(tokens.Colon);
     });
 

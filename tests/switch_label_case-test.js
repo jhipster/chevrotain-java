@@ -6,7 +6,7 @@ describe("switchLabelCase", () => {
     expect(Parser.parse("case a:", parser => parser.switchLabelCase())).toEqual(
       {
         type: "SWITCH_LABEL_CASE",
-        case: {
+        expression: {
           type: "IDENTIFIER",
           value: "a"
         }

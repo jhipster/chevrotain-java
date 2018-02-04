@@ -3322,6 +3322,16 @@
         "pattern": "{"
       },
       {
+        "type": "Repetition",
+        "definition": [
+          {
+            "type": "NonTerminal",
+            "name": "switchBlockStatementGroup",
+            "occurrenceInParent": 1
+          }
+        ]
+      },
+      {
         "type": "Terminal",
         "name": "RCurly",
         "label": "'}'",
@@ -3742,6 +3752,37 @@
   },
   {
     "type": "Rule",
+    "name": "switchBlockStatementGroup",
+    "definition": [
+      {
+        "type": "NonTerminal",
+        "name": "switchLabel",
+        "occurrenceInParent": 1
+      },
+      {
+        "type": "Repetition",
+        "definition": [
+          {
+            "type": "NonTerminal",
+            "name": "switchLabel",
+            "occurrenceInParent": 2
+          }
+        ]
+      },
+      {
+        "type": "Repetition",
+        "definition": [
+          {
+            "type": "NonTerminal",
+            "name": "blockStatement",
+            "occurrenceInParent": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "Rule",
     "name": "switchLabel",
     "definition": [
       {
@@ -3783,11 +3824,9 @@
         "pattern": "case"
       },
       {
-        "type": "Terminal",
-        "name": "Identifier",
-        "label": "Identifier",
-        "occurrenceInParent": 1,
-        "pattern": "[a-zA-Z]\\w*"
+        "type": "NonTerminal",
+        "name": "expression",
+        "occurrenceInParent": 1
       },
       {
         "type": "Terminal",
