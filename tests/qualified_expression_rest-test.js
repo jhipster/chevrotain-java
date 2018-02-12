@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("qualifiedExpressionRest", () => {
   it("methodCall", () => {
     expect(
       Parser.parse(".a()", parser => parser.qualifiedExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "METHOD_CALL",
       name: {
         type: "IDENTIFIER",
@@ -18,7 +19,7 @@ describe("qualifiedExpressionRest", () => {
   it("identifier", () => {
     expect(
       Parser.parse(".a", parser => parser.qualifiedExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "IDENTIFIER",
       value: "a"
     });
@@ -27,7 +28,7 @@ describe("qualifiedExpressionRest", () => {
   it("this", () => {
     expect(
       Parser.parse(".this", parser => parser.qualifiedExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "THIS"
     });
   });
@@ -35,7 +36,7 @@ describe("qualifiedExpressionRest", () => {
   it("super", () => {
     expect(
       Parser.parse(".super", parser => parser.qualifiedExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "SUPER"
     });
   });
@@ -43,7 +44,7 @@ describe("qualifiedExpressionRest", () => {
   it("creatorOptionalNonWildcardInnerCreator", () => {
     expect(
       Parser.parse(".new a()", parser => parser.qualifiedExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "CREATOR_OPTIONAL_NON_WILDCARD_INNER_CREATOR",
       typeArguments: undefined,
       innerCreator: {
@@ -69,7 +70,7 @@ describe("qualifiedExpressionRest", () => {
       Parser.parse(".<boolean> super()", parser =>
         parser.qualifiedExpressionRest()
       )
-    ).toEqual({
+    ).to.eql({
       type: "EXPLICIT_GENERIC_INVOCATION",
       typeArguments: {
         type: "NON_WILDCARD_TYPE_ARGUMENTS",

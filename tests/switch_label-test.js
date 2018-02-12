@@ -1,9 +1,10 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("switchLabel", () => {
   it("switchLabelCase", () => {
-    expect(Parser.parse("case a:", parser => parser.switchLabel())).toEqual({
+    expect(Parser.parse("case a:", parser => parser.switchLabel())).to.eql({
       type: "SWITCH_LABEL_CASE",
       expression: {
         type: "IDENTIFIER",
@@ -13,7 +14,7 @@ describe("switchLabel", () => {
   });
 
   it("switchLabelDefault", () => {
-    expect(Parser.parse("default :", parser => parser.switchLabel())).toEqual({
+    expect(Parser.parse("default :", parser => parser.switchLabel())).to.eql({
       type: "SWITCH_LABEL_DEFAULT"
     });
   });

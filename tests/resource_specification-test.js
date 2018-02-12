@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("resourceSpecification", () => {
   it("one resource", () => {
     expect(
       Parser.parse("( A.B a = this )", parser => parser.resourceSpecification())
-    ).toEqual({
+    ).to.eql({
       type: "RESOURCE_SPECIFICATION",
       resources: {
         type: "RESOURCES",
@@ -48,7 +49,7 @@ describe("resourceSpecification", () => {
       Parser.parse("( A.B a = this; B.C b = this )", parser =>
         parser.resourceSpecification()
       )
-    ).toEqual({
+    ).to.eql({
       type: "RESOURCE_SPECIFICATION",
       resources: {
         type: "RESOURCES",
@@ -119,7 +120,7 @@ describe("resourceSpecification", () => {
       Parser.parse("( A.B a = this; B.C b = this; )", parser =>
         parser.resourceSpecification()
       )
-    ).toEqual({
+    ).to.eql({
       type: "RESOURCE_SPECIFICATION",
       resources: {
         type: "RESOURCES",

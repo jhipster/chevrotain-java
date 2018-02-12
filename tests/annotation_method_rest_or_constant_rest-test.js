@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("annotationMethodRestOrConstantRest", () => {
   it("annotationMethodRest", () => {
     expect(
       Parser.parse("a()", parser => parser.annotationMethodRestOrConstantRest())
-    ).toEqual({
+    ).to.eql({
       type: "ANNOTATION_METHOD_REST",
       name: {
         type: "IDENTIFIER",
@@ -18,7 +19,7 @@ describe("annotationMethodRestOrConstantRest", () => {
   it("annotationConstantRest", () => {
     expect(
       Parser.parse("A", parser => parser.annotationMethodRestOrConstantRest())
-    ).toEqual({
+    ).to.eql({
       type: "VARIABLE_DECLARATORS",
       list: [
         {

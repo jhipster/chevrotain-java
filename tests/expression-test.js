@@ -1,15 +1,16 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("expression", () => {
   it("primary", () => {
-    expect(Parser.parse("this", parser => parser.expression())).toEqual({
+    expect(Parser.parse("this", parser => parser.expression())).to.eql({
       type: "THIS"
     });
   });
 
   it("identifier", () => {
-    expect(Parser.parse("abc", parser => parser.expression())).toEqual({
+    expect(Parser.parse("abc", parser => parser.expression())).to.eql({
       type: "IDENTIFIER",
       value: "abc"
     });
@@ -18,7 +19,7 @@ describe("expression", () => {
   it("instanceofExpression", () => {
     expect(
       Parser.parse("this instanceof boolean", parser => parser.expression())
-    ).toEqual({
+    ).to.eql({
       type: "INSTANCEOF_EXPRESSION",
       expression: {
         type: "THIS"
@@ -31,7 +32,7 @@ describe("expression", () => {
   });
 
   it("squareExpression", () => {
-    expect(Parser.parse("this[super]", parser => parser.expression())).toEqual({
+    expect(Parser.parse("this[super]", parser => parser.expression())).to.eql({
       type: "SQUARE_EXPRESSION",
       expression: {
         type: "THIS"
@@ -43,7 +44,7 @@ describe("expression", () => {
   });
 
   it("postfixExpression", () => {
-    expect(Parser.parse("this++", parser => parser.expression())).toEqual({
+    expect(Parser.parse("this++", parser => parser.expression())).to.eql({
       type: "POSTFIX_EXPRESSION",
       postfix: "++",
       expression: {
@@ -55,7 +56,7 @@ describe("expression", () => {
   it("ifElseExpression", () => {
     expect(
       Parser.parse("this ? super : null", parser => parser.expression())
-    ).toEqual({
+    ).to.eql({
       type: "IF_ELSE_EXPRESSION",
       condition: {
         type: "THIS"
@@ -70,7 +71,7 @@ describe("expression", () => {
   });
 
   it("qualifiedExpression", () => {
-    expect(Parser.parse("this.a()", parser => parser.expression())).toEqual({
+    expect(Parser.parse("this.a()", parser => parser.expression())).to.eql({
       type: "QUALIFIED_EXPRESSION",
       expression: {
         type: "THIS"
@@ -87,7 +88,7 @@ describe("expression", () => {
   });
 
   it("operatorExpression Star", () => {
-    expect(Parser.parse("this*super", parser => parser.expression())).toEqual({
+    expect(Parser.parse("this*super", parser => parser.expression())).to.eql({
       type: "OPERATOR_EXPRESSION",
       left: {
         type: "THIS"
@@ -102,7 +103,7 @@ describe("expression", () => {
   it("multiple operatorExpressions", () => {
     expect(
       Parser.parse("this*super+null", parser => parser.expression())
-    ).toEqual({
+    ).to.eql({
       type: "OPERATOR_EXPRESSION",
       left: {
         type: "THIS"
@@ -122,7 +123,7 @@ describe("expression", () => {
   });
 
   it("PrefixExpression", () => {
-    expect(Parser.parse("+this", parser => parser.expression())).toEqual({
+    expect(Parser.parse("+this", parser => parser.expression())).to.eql({
       type: "PREFIX_EXPRESSION",
       prefix: "+",
       expression: {
@@ -132,7 +133,7 @@ describe("expression", () => {
   });
 
   it("parExpression", () => {
-    expect(Parser.parse("(this)", parser => parser.expression())).toEqual({
+    expect(Parser.parse("(this)", parser => parser.expression())).to.eql({
       type: "PAR_EXPRESSION",
       expression: {
         type: "THIS"
@@ -141,7 +142,7 @@ describe("expression", () => {
   });
 
   it("lambdaExpression: one identifier with parens", () => {
-    expect(Parser.parse("(a) -> {}", parser => parser.expression())).toEqual({
+    expect(Parser.parse("(a) -> {}", parser => parser.expression())).to.eql({
       type: "LAMBDA_EXPRESSION",
       parameters: {
         type: "IDENTIFIERS",
@@ -163,7 +164,7 @@ describe("expression", () => {
   });
 
   it("lambdaExpression: one identifier without parens", () => {
-    expect(Parser.parse("a -> {}", parser => parser.expression())).toEqual({
+    expect(Parser.parse("a -> {}", parser => parser.expression())).to.eql({
       type: "LAMBDA_EXPRESSION",
       parameters: {
         type: "IDENTIFIERS",
@@ -185,7 +186,7 @@ describe("expression", () => {
   });
 
   it("methodReference: identifier", () => {
-    expect(Parser.parse("B.C::A", parser => parser.expression())).toEqual({
+    expect(Parser.parse("B.C::A", parser => parser.expression())).to.eql({
       type: "METHOD_REFERENCE",
       reference: {
         type: "CLASS_OR_INTERFACE_TYPE",

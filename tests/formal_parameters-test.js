@@ -1,9 +1,10 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("formalParameters", () => {
   it("empty", () => {
-    expect(Parser.parse("()", parser => parser.formalParameters())).toEqual({
+    expect(Parser.parse("()", parser => parser.formalParameters())).to.eql({
       type: "FORMAL_PARAMETERS",
       parameters: undefined
     });
@@ -12,7 +13,7 @@ describe("formalParameters", () => {
   it("formalParameterList", () => {
     expect(
       Parser.parse("(boolean a)", parser => parser.formalParameters())
-    ).toEqual({
+    ).to.eql({
       type: "FORMAL_PARAMETERS",
       parameters: {
         type: "FORMAL_PARAMETER_LIST",

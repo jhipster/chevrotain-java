@@ -1,16 +1,17 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("statement", () => {
   it("block", () => {
-    expect(Parser.parse("{}", parser => parser.statement())).toEqual({
+    expect(Parser.parse("{}", parser => parser.statement())).to.eql({
       type: "BLOCK",
       statements: []
     });
   });
 
   it("assertStatement", () => {
-    expect(Parser.parse("assert this;", parser => parser.statement())).toEqual({
+    expect(Parser.parse("assert this;", parser => parser.statement())).to.eql({
       type: "ASSERT_STATEMENT",
       expressions: [
         {
@@ -21,7 +22,7 @@ describe("statement", () => {
   });
 
   it("ifStatement", () => {
-    expect(Parser.parse("if (this) {}", parser => parser.statement())).toEqual({
+    expect(Parser.parse("if (this) {}", parser => parser.statement())).to.eql({
       type: "IF_STATEMENT",
       condition: {
         type: "THIS"
@@ -35,7 +36,7 @@ describe("statement", () => {
   });
 
   it("forStatement", () => {
-    expect(Parser.parse("for (;;) {}", parser => parser.statement())).toEqual({
+    expect(Parser.parse("for (;;) {}", parser => parser.statement())).to.eql({
       type: "FOR_STATEMENT",
       forControl: {
         type: "BASIC_FOR_STATEMENT",
@@ -53,7 +54,7 @@ describe("statement", () => {
   it("whileStatement", () => {
     expect(
       Parser.parse("while (this) {}", parser => parser.statement())
-    ).toEqual({
+    ).to.eql({
       type: "WHILE_STATEMENT",
       condition: {
         type: "THIS"
@@ -61,15 +62,14 @@ describe("statement", () => {
       body: {
         type: "BLOCK",
         statements: []
-      },
-      else: undefined
+      }
     });
   });
 
   it("doWhileStatement", () => {
     expect(
       Parser.parse("do {} while (this);", parser => parser.statement())
-    ).toEqual({
+    ).to.eql({
       type: "DO_WHILE_STATEMENT",
       body: {
         type: "BLOCK",
@@ -84,7 +84,7 @@ describe("statement", () => {
   it("tryStatement", () => {
     expect(
       Parser.parse("try {} catch (A e) {}", parser => parser.statement())
-    ).toEqual({
+    ).to.eql({
       type: "TRY_STATEMENT",
       resourceSpecification: undefined,
       body: {
@@ -126,7 +126,7 @@ describe("statement", () => {
   it("switchStatement", () => {
     expect(
       Parser.parse("switch (this) {}", parser => parser.statement())
-    ).toEqual({
+    ).to.eql({
       type: "SWITCH_STATEMENT",
       condition: {
         type: "THIS"
@@ -138,7 +138,7 @@ describe("statement", () => {
   it("synchronizedStatement", () => {
     expect(
       Parser.parse("synchronized (this) {}", parser => parser.statement())
-    ).toEqual({
+    ).to.eql({
       type: "SYNCHRONIZED_STATEMENT",
       condition: {
         type: "THIS"
@@ -151,7 +151,7 @@ describe("statement", () => {
   });
 
   it("returnStatement", () => {
-    expect(Parser.parse("return this;", parser => parser.statement())).toEqual({
+    expect(Parser.parse("return this;", parser => parser.statement())).to.eql({
       type: "RETURN_STATEMENT",
       expression: {
         type: "THIS"
@@ -160,7 +160,7 @@ describe("statement", () => {
   });
 
   it("throwStatement", () => {
-    expect(Parser.parse("throw this;", parser => parser.statement())).toEqual({
+    expect(Parser.parse("throw this;", parser => parser.statement())).to.eql({
       type: "THROW_STATEMENT",
       expression: {
         type: "THIS"
@@ -169,7 +169,7 @@ describe("statement", () => {
   });
 
   it("breakStatement", () => {
-    expect(Parser.parse("break a;", parser => parser.statement())).toEqual({
+    expect(Parser.parse("break a;", parser => parser.statement())).to.eql({
       type: "BREAK_STATEMENT",
       identifier: {
         type: "IDENTIFIER",
@@ -179,7 +179,7 @@ describe("statement", () => {
   });
 
   it("continueStatement", () => {
-    expect(Parser.parse("continue a;", parser => parser.statement())).toEqual({
+    expect(Parser.parse("continue a;", parser => parser.statement())).to.eql({
       type: "CONTINUE_STATEMENT",
       identifier: {
         type: "IDENTIFIER",
@@ -189,13 +189,13 @@ describe("statement", () => {
   });
 
   it("semiColonStatement", () => {
-    expect(Parser.parse(";", parser => parser.statement())).toEqual({
+    expect(Parser.parse(";", parser => parser.statement())).to.eql({
       type: "SEMI_COLON_STATEMENT"
     });
   });
 
   it("expressionStatement", () => {
-    expect(Parser.parse("this;", parser => parser.statement())).toEqual({
+    expect(Parser.parse("this;", parser => parser.statement())).to.eql({
       type: "EXPRESSION_STATEMENT",
       expression: {
         type: "THIS"
@@ -204,7 +204,7 @@ describe("statement", () => {
   });
 
   it("identifierStatement", () => {
-    expect(Parser.parse("a:this;", parser => parser.statement())).toEqual({
+    expect(Parser.parse("a:this;", parser => parser.statement())).to.eql({
       type: "IDENTIFIER_STATEMENT",
       identifier: {
         type: "IDENTIFIER",

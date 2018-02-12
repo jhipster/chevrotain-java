@@ -1,9 +1,10 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("methodCall", () => {
   it("empty parameters", () => {
-    expect(Parser.parse("a()", parser => parser.methodCall())).toEqual({
+    expect(Parser.parse("a()", parser => parser.methodCall())).to.eql({
       type: "METHOD_CALL",
       name: {
         type: "IDENTIFIER",
@@ -14,7 +15,7 @@ describe("methodCall", () => {
   });
 
   it("with parameters", () => {
-    expect(Parser.parse("a(this)", parser => parser.methodCall())).toEqual({
+    expect(Parser.parse("a(this)", parser => parser.methodCall())).to.eql({
       type: "METHOD_CALL",
       name: {
         type: "IDENTIFIER",

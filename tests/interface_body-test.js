@@ -1,9 +1,10 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("interfaceBody", () => {
   it("empty", () => {
-    expect(Parser.parse("{}", parser => parser.interfaceBody())).toEqual({
+    expect(Parser.parse("{}", parser => parser.interfaceBody())).to.eql({
       type: "INTERFACE_BODY",
       declarations: []
     });
@@ -12,7 +13,7 @@ describe("interfaceBody", () => {
   it("one declaration", () => {
     expect(
       Parser.parse("{ void a() {} }", parser => parser.interfaceBody())
-    ).toEqual({
+    ).to.eql({
       type: "INTERFACE_BODY",
       declarations: [
         {
@@ -21,6 +22,7 @@ describe("interfaceBody", () => {
           declaration: {
             type: "INTERFACE_METHOD_DECLARATION",
             modifiers: [],
+            typeParameters: undefined,
             typeType: {
               type: "VOID"
             },
@@ -49,7 +51,7 @@ describe("interfaceBody", () => {
       Parser.parse("{ void a() {} void b() {} }", parser =>
         parser.interfaceBody()
       )
-    ).toEqual({
+    ).to.eql({
       type: "INTERFACE_BODY",
       declarations: [
         {
@@ -58,6 +60,8 @@ describe("interfaceBody", () => {
           declaration: {
             type: "INTERFACE_METHOD_DECLARATION",
             modifiers: [],
+            typeParameters: undefined,
+
             typeType: {
               type: "VOID"
             },
@@ -83,6 +87,7 @@ describe("interfaceBody", () => {
           declaration: {
             type: "INTERFACE_METHOD_DECLARATION",
             modifiers: [],
+            typeParameters: undefined,
             typeType: {
               type: "VOID"
             },

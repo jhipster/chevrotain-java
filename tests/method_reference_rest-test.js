@@ -1,24 +1,23 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("methodReferenceRest", () => {
   it("identifier", () => {
-    expect(Parser.parse("::A", parser => parser.methodReferenceRest())).toEqual(
-      {
-        type: "METHOD_REFERENCE_REST",
-        typeArguments: undefined,
-        name: {
-          type: "IDENTIFIER",
-          value: "A"
-        }
+    expect(Parser.parse("::A", parser => parser.methodReferenceRest())).to.eql({
+      type: "METHOD_REFERENCE_REST",
+      typeArguments: undefined,
+      name: {
+        type: "IDENTIFIER",
+        value: "A"
       }
-    );
+    });
   });
 
   it("new", () => {
     expect(
       Parser.parse("::new", parser => parser.methodReferenceRest())
-    ).toEqual({
+    ).to.eql({
       type: "METHOD_REFERENCE_REST",
       typeArguments: undefined,
       name: {
@@ -30,7 +29,7 @@ describe("methodReferenceRest", () => {
   it("typeArguments", () => {
     expect(
       Parser.parse("::<B>A", parser => parser.methodReferenceRest())
-    ).toEqual({
+    ).to.eql({
       type: "METHOD_REFERENCE_REST",
       typeArguments: {
         type: "TYPE_ARGUMENTS",

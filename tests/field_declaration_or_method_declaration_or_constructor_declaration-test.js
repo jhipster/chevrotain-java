@@ -1,5 +1,6 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("memberDeclaration", () => {
   it("methodDeclaration: void", () => {
@@ -7,7 +8,7 @@ describe("memberDeclaration", () => {
       Parser.parse("void a() {}", parser =>
         parser.fieldDeclarationOrMethodDeclarationOrConstructorDeclaration()
       )
-    ).toEqual({
+    ).to.eql({
       type: "METHOD_DECLARATION",
       typeType: {
         type: "VOID"
@@ -34,7 +35,7 @@ describe("memberDeclaration", () => {
       Parser.parse("A a() {}", parser =>
         parser.fieldDeclarationOrMethodDeclarationOrConstructorDeclaration()
       )
-    ).toEqual({
+    ).to.eql({
       type: "METHOD_DECLARATION",
       typeType: {
         type: "IDENTIFIER",
@@ -62,7 +63,7 @@ describe("memberDeclaration", () => {
       Parser.parse("A[] a() {}", parser =>
         parser.fieldDeclarationOrMethodDeclarationOrConstructorDeclaration()
       )
-    ).toEqual({
+    ).to.eql({
       type: "METHOD_DECLARATION",
       typeType: {
         type: "TYPE_TYPE",
@@ -95,7 +96,7 @@ describe("memberDeclaration", () => {
       Parser.parse("A<B> a() {}", parser =>
         parser.fieldDeclarationOrMethodDeclarationOrConstructorDeclaration()
       )
-    ).toEqual({
+    ).to.eql({
       type: "METHOD_DECLARATION",
       typeType: {
         type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
@@ -140,7 +141,7 @@ describe("memberDeclaration", () => {
       Parser.parse("boolean a() {}", parser =>
         parser.fieldDeclarationOrMethodDeclarationOrConstructorDeclaration()
       )
-    ).toEqual({
+    ).to.eql({
       type: "METHOD_DECLARATION",
       typeType: {
         type: "PRIMITIVE_TYPE",
@@ -168,7 +169,7 @@ describe("memberDeclaration", () => {
       Parser.parse("void a()[] {}", parser =>
         parser.fieldDeclarationOrMethodDeclarationOrConstructorDeclaration()
       )
-    ).toEqual({
+    ).to.eql({
       type: "METHOD_DECLARATION",
       typeType: {
         type: "VOID"
@@ -195,7 +196,7 @@ describe("memberDeclaration", () => {
       Parser.parse("void a()[][] {}", parser =>
         parser.fieldDeclarationOrMethodDeclarationOrConstructorDeclaration()
       )
-    ).toEqual({
+    ).to.eql({
       type: "METHOD_DECLARATION",
       typeType: {
         type: "VOID"
@@ -222,7 +223,7 @@ describe("memberDeclaration", () => {
       Parser.parse("void a() throws Something {}", parser =>
         parser.methodDeclaration()
       )
-    ).toEqual({
+    ).to.eql({
       type: "METHOD_DECLARATION",
       typeType: {
         type: "VOID"
@@ -262,7 +263,7 @@ describe("memberDeclaration", () => {
       Parser.parse("a() {}", parser =>
         parser.fieldDeclarationOrMethodDeclarationOrConstructorDeclaration()
       )
-    ).toEqual({
+    ).to.eql({
       type: "CONSTRUCTOR_DECLARATION",
       name: {
         type: "IDENTIFIER",
@@ -285,7 +286,7 @@ describe("memberDeclaration", () => {
       Parser.parse("a() throws Something {}", parser =>
         parser.fieldDeclarationOrMethodDeclarationOrConstructorDeclaration()
       )
-    ).toEqual({
+    ).to.eql({
       type: "CONSTRUCTOR_DECLARATION",
       name: {
         type: "IDENTIFIER",
@@ -321,7 +322,7 @@ describe("memberDeclaration", () => {
       Parser.parse("Abc def;", parser =>
         parser.fieldDeclarationOrMethodDeclarationOrConstructorDeclaration()
       )
-    ).toEqual({
+    ).to.eql({
       type: "FIELD_DECLARATION",
       typeType: {
         type: "IDENTIFIER",

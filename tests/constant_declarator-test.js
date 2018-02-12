@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("constantDeclarator", () => {
   it("without init", () => {
     expect(
       Parser.parse("A = this", parser => parser.constantDeclarator())
-    ).toEqual({
+    ).to.eql({
       type: "CONSTANT_DECLARATOR",
       name: {
         type: "IDENTIFIER",
@@ -21,7 +22,7 @@ describe("constantDeclarator", () => {
   it("one square", () => {
     expect(
       Parser.parse("A[] = this", parser => parser.constantDeclarator())
-    ).toEqual({
+    ).to.eql({
       type: "CONSTANT_DECLARATOR",
       name: {
         type: "IDENTIFIER",
@@ -37,7 +38,7 @@ describe("constantDeclarator", () => {
   it("multiple squares", () => {
     expect(
       Parser.parse("A[][] = this", parser => parser.constantDeclarator())
-    ).toEqual({
+    ).to.eql({
       type: "CONSTANT_DECLARATOR",
       name: {
         type: "IDENTIFIER",

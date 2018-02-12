@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("annotationTypeElementRest", () => {
   it("annotationTypeElementRest", () => {
     expect(
       Parser.parse("boolean a();", parser => parser.annotationTypeElementRest())
-    ).toEqual({
+    ).to.eql({
       type: "ANNOTATION_TYPE_ELEMENT_REST",
       typeType: {
         type: "PRIMITIVE_TYPE",
@@ -24,7 +25,7 @@ describe("annotationTypeElementRest", () => {
   it("class", () => {
     expect(
       Parser.parse("class A{}", parser => parser.annotationTypeElementRest())
-    ).toEqual({
+    ).to.eql({
       type: "CLASS_DECLARATION",
       name: {
         type: "IDENTIFIER",
@@ -33,19 +34,25 @@ describe("annotationTypeElementRest", () => {
       body: {
         type: "CLASS_BODY",
         declarations: []
-      }
+      },
+      typeParameters: undefined,
+      extends: undefined,
+      implements: undefined
     });
   });
 
   it("enum", () => {
     expect(
       Parser.parse("enum A{}", parser => parser.annotationTypeElementRest())
-    ).toEqual({
+    ).to.eql({
       type: "ENUM_DECLARATION",
       name: {
         type: "IDENTIFIER",
         value: "A"
-      }
+      },
+      body: undefined,
+      enumConstants: undefined,
+      implements: undefined
     });
   });
 
@@ -54,8 +61,10 @@ describe("annotationTypeElementRest", () => {
       Parser.parse("interface A{}", parser =>
         parser.annotationTypeElementRest()
       )
-    ).toEqual({
+    ).to.eql({
       type: "INTERFACE_DECLARATION",
+      typeList: undefined,
+      typeParameters: undefined,
       name: {
         type: "IDENTIFIER",
         value: "A"
@@ -72,7 +81,7 @@ describe("annotationTypeElementRest", () => {
       Parser.parse("@interface A{}", parser =>
         parser.annotationTypeElementRest()
       )
-    ).toEqual({
+    ).to.eql({
       type: "ANNOTATION_TYPE_DECLARATION",
       name: {
         type: "IDENTIFIER",

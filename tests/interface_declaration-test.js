@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("interfaceDeclaration", () => {
   it("empty", () => {
     expect(
       Parser.parse("interface A{}", parser => parser.interfaceDeclaration())
-    ).toEqual({
+    ).to.eql({
       type: "INTERFACE_DECLARATION",
       name: {
         type: "IDENTIFIER",
@@ -23,7 +24,7 @@ describe("interfaceDeclaration", () => {
   it("typeParameters", () => {
     expect(
       Parser.parse("interface A<B>{}", parser => parser.interfaceDeclaration())
-    ).toEqual({
+    ).to.eql({
       type: "INTERFACE_DECLARATION",
       name: {
         type: "IDENTIFIER",
@@ -56,7 +57,7 @@ describe("interfaceDeclaration", () => {
       Parser.parse("interface A extends boolean {}", parser =>
         parser.interfaceDeclaration()
       )
-    ).toEqual({
+    ).to.eql({
       type: "INTERFACE_DECLARATION",
       name: {
         type: "IDENTIFIER",

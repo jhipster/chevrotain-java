@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("fieldDeclaration", () => {
   it("simple", () => {
     expect(
       Parser.parse("Abc def;", parser => parser.fieldDeclaration())
-    ).toEqual({
+    ).to.eql({
       type: "FIELD_DECLARATION",
       typeType: {
         type: "IDENTIFIER",

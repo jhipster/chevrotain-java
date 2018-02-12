@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("elementValuePair", () => {
   it("elementValuePair", () => {
     expect(
       Parser.parse("key=@Value", parser => parser.elementValuePair())
-    ).toEqual({
+    ).to.eql({
       type: "ELEMENT_VALUE_PAIR",
       key: {
         type: "IDENTIFIER",

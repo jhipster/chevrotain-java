@@ -1,27 +1,29 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("typeType", () => {
   it("primitiveType", () => {
-    expect(Parser.parse("boolean", parser => parser.typeType())).toEqual({
+    expect(Parser.parse("boolean", parser => parser.typeType())).to.eql({
       type: "PRIMITIVE_TYPE",
       value: "boolean"
     });
   });
 
   it("identifier", () => {
-    expect(Parser.parse("A", parser => parser.typeType())).toEqual({
+    expect(Parser.parse("A", parser => parser.typeType())).to.eql({
       type: "IDENTIFIER",
       value: "A"
     });
   });
 
   it("identifier with annotation", () => {
-    expect(Parser.parse("@Bean boolean", parser => parser.typeType())).toEqual({
+    expect(Parser.parse("@Bean boolean", parser => parser.typeType())).to.eql({
       type: "TYPE_TYPE",
       annotations: [
         {
           type: "ANNOTATION",
+          value: undefined,
           name: {
             type: "QUALIFIED_NAME",
             name: [
@@ -43,7 +45,7 @@ describe("typeType", () => {
   });
 
   it("one square", () => {
-    expect(Parser.parse("boolean[]", parser => parser.typeType())).toEqual({
+    expect(Parser.parse("boolean[]", parser => parser.typeType())).to.eql({
       type: "TYPE_TYPE",
       annotations: [],
       value: {
@@ -55,7 +57,7 @@ describe("typeType", () => {
   });
 
   it("multiple square", () => {
-    expect(Parser.parse("boolean[][]", parser => parser.typeType())).toEqual({
+    expect(Parser.parse("boolean[][]", parser => parser.typeType())).to.eql({
       type: "TYPE_TYPE",
       annotations: [],
       value: {
@@ -67,8 +69,9 @@ describe("typeType", () => {
   });
 
   it("annotation", () => {
-    expect(Parser.parse("@Bean", parser => parser.typeType())).toEqual({
+    expect(Parser.parse("@Bean", parser => parser.typeType())).to.eql({
       type: "ANNOTATION",
+      value: undefined,
       name: {
         type: "QUALIFIED_NAME",
         name: [

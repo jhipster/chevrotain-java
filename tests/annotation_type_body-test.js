@@ -1,9 +1,10 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("annotationTypeBody", () => {
   it("empty", () => {
-    expect(Parser.parse("{}", parser => parser.annotationTypeBody())).toEqual({
+    expect(Parser.parse("{}", parser => parser.annotationTypeBody())).to.eql({
       type: "ANNOTATION_TYPE_BODY",
       declarations: []
     });
@@ -12,7 +13,7 @@ describe("annotationTypeBody", () => {
   it("single", () => {
     expect(
       Parser.parse("{class A{}}", parser => parser.annotationTypeBody())
-    ).toEqual({
+    ).to.eql({
       type: "ANNOTATION_TYPE_BODY",
       declarations: [
         {
@@ -27,7 +28,10 @@ describe("annotationTypeBody", () => {
               type: "IDENTIFIER",
               value: "A"
             },
-            type: "CLASS_DECLARATION"
+            type: "CLASS_DECLARATION",
+            typeParameters: undefined,
+            extends: undefined,
+            implements: undefined
           }
         }
       ]
@@ -39,7 +43,7 @@ describe("annotationTypeBody", () => {
       Parser.parse("{class A{}; class B{}}", parser =>
         parser.annotationTypeBody()
       )
-    ).toEqual({
+    ).to.eql({
       type: "ANNOTATION_TYPE_BODY",
       declarations: [
         {
@@ -54,7 +58,10 @@ describe("annotationTypeBody", () => {
               type: "IDENTIFIER",
               value: "A"
             },
-            type: "CLASS_DECLARATION"
+            type: "CLASS_DECLARATION",
+            typeParameters: undefined,
+            extends: undefined,
+            implements: undefined
           }
         },
         {
@@ -69,7 +76,10 @@ describe("annotationTypeBody", () => {
               type: "IDENTIFIER",
               value: "B"
             },
-            type: "CLASS_DECLARATION"
+            type: "CLASS_DECLARATION",
+            typeParameters: undefined,
+            extends: undefined,
+            implements: undefined
           }
         }
       ]

@@ -2,14 +2,12 @@
 extends:
 - eslint:recommended
 - plugin:prettier/recommended
-- plugin:jest/recommended
 plugins:
 - import
 root: true
 env:
   es6: true
   node: true
-  jest: true
 rules:
   curly: error
   import/no-extraneous-dependencies:
@@ -38,3 +36,5 @@ overrides:
     strict: off
   globals:
     run_spec: true
+    describe: true
+    it: true

@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("continueStatement", () => {
   it("with identifier", () => {
     expect(
       Parser.parse("continue a;", parser => parser.continueStatement())
-    ).toEqual({
+    ).to.eql({
       type: "CONTINUE_STATEMENT",
       identifier: {
         type: "IDENTIFIER",
@@ -17,7 +18,7 @@ describe("continueStatement", () => {
   it("without identifier", () => {
     expect(
       Parser.parse("continue;", parser => parser.continueStatement())
-    ).toEqual({
+    ).to.eql({
       type: "CONTINUE_STATEMENT",
       identifier: undefined
     });

@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("dotIdentifierArguments", () => {
   it("without arguments", () => {
     expect(
       Parser.parse(".a", parser => parser.dotIdentifierArguments())
-    ).toEqual({
+    ).to.eql({
       type: "DOT_IDENTIFIER_ARGUMENTS",
       name: {
         type: "IDENTIFIER",
@@ -18,7 +19,7 @@ describe("dotIdentifierArguments", () => {
   it("with arguments", () => {
     expect(
       Parser.parse(".a()", parser => parser.dotIdentifierArguments())
-    ).toEqual({
+    ).to.eql({
       type: "DOT_IDENTIFIER_ARGUMENTS",
       name: {
         type: "IDENTIFIER",

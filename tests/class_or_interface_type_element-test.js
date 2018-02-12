@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("classOrInterfaceTypeElement", () => {
   it("identifier", () => {
     expect(
       Parser.parse("A", parser => parser.classOrInterfaceTypeElement())
-    ).toEqual({
+    ).to.eql({
       type: "IDENTIFIER",
       value: "A"
     });
@@ -14,7 +15,7 @@ describe("classOrInterfaceTypeElement", () => {
   it("typeArguments", () => {
     expect(
       Parser.parse("A<boolean>", parser => parser.classOrInterfaceTypeElement())
-    ).toEqual({
+    ).to.eql({
       type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
       name: {
         type: "IDENTIFIER",

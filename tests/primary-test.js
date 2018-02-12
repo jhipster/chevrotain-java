@@ -1,41 +1,42 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("primary", () => {
   it("this", () => {
-    expect(Parser.parse("this", parser => parser.primary())).toEqual({
+    expect(Parser.parse("this", parser => parser.primary())).to.eql({
       type: "THIS"
     });
   });
 
   it("super", () => {
-    expect(Parser.parse("super", parser => parser.primary())).toEqual({
+    expect(Parser.parse("super", parser => parser.primary())).to.eql({
       type: "SUPER"
     });
   });
 
   it("floatLiteral", () => {
-    expect(Parser.parse("0.1", parser => parser.primary())).toEqual({
+    expect(Parser.parse("0.1", parser => parser.primary())).to.eql({
       type: "FLOAT_LITERAL",
       value: "0.1"
     });
   });
 
   it("void", () => {
-    expect(Parser.parse("void", parser => parser.primary())).toEqual({
+    expect(Parser.parse("void", parser => parser.primary())).to.eql({
       type: "VOID"
     });
   });
 
   it("identifier", () => {
-    expect(Parser.parse("A", parser => parser.primary())).toEqual({
+    expect(Parser.parse("A", parser => parser.primary())).to.eql({
       type: "IDENTIFIER",
       value: "A"
     });
   });
 
   it("identifier.identifier", () => {
-    expect(Parser.parse("A.B", parser => parser.primary())).toEqual({
+    expect(Parser.parse("A.B", parser => parser.primary())).to.eql({
       type: "CLASS_OR_INTERFACE_TYPE",
       elements: [
         {
@@ -51,14 +52,14 @@ describe("primary", () => {
   });
 
   it("identifier.class", () => {
-    expect(Parser.parse("A.class", parser => parser.primary())).toEqual({
+    expect(Parser.parse("A.class", parser => parser.primary())).to.eql({
       type: "IDENTIFIER",
       value: "A.class"
     });
   });
 
   it("identifier.class with annotation", () => {
-    expect(Parser.parse("@Bean A.class", parser => parser.primary())).toEqual({
+    expect(Parser.parse("@Bean A.class", parser => parser.primary())).to.eql({
       type: "TYPE_TYPE",
       annotations: [
         {
@@ -85,7 +86,7 @@ describe("primary", () => {
   });
 
   it("identifier.identifier.class", () => {
-    expect(Parser.parse("A.B.class", parser => parser.primary())).toEqual({
+    expect(Parser.parse("A.B.class", parser => parser.primary())).to.eql({
       type: "CLASS_OR_INTERFACE_TYPE",
       elements: [
         {
@@ -101,7 +102,7 @@ describe("primary", () => {
   });
 
   it("identifier with typeArguments", () => {
-    expect(Parser.parse("A<B>", parser => parser.primary())).toEqual({
+    expect(Parser.parse("A<B>", parser => parser.primary())).to.eql({
       type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
       name: {
         type: "IDENTIFIER",
@@ -125,28 +126,28 @@ describe("primary", () => {
   });
 
   it("genericInvocation", () => {
-    expect(
-      Parser.parse("<boolean> this()", parser => parser.primary())
-    ).toEqual({
-      type: "GENERIC_INVOCATION",
-      typeArguments: {
-        type: "NON_WILDCARD_TYPE_ARGUMENTS",
-        typeList: {
-          type: "TYPE_LIST",
-          list: [
-            {
-              type: "PRIMITIVE_TYPE",
-              value: "boolean"
-            }
-          ]
-        }
-      },
-      arguments: {
-        type: "THIS_ARGUMENTS",
+    expect(Parser.parse("<boolean> this()", parser => parser.primary())).to.eql(
+      {
+        type: "GENERIC_INVOCATION",
+        typeArguments: {
+          type: "NON_WILDCARD_TYPE_ARGUMENTS",
+          typeList: {
+            type: "TYPE_LIST",
+            list: [
+              {
+                type: "PRIMITIVE_TYPE",
+                value: "boolean"
+              }
+            ]
+          }
+        },
         arguments: {
-          type: "ARGUMENTS"
+          type: "THIS_ARGUMENTS",
+          arguments: {
+            type: "ARGUMENTS"
+          }
         }
       }
-    });
+    );
   });
 });

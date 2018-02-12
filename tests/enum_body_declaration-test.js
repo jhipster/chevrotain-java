@@ -1,9 +1,10 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("enumBodyDeclarations", () => {
   it("empty", () => {
-    expect(Parser.parse(";", parser => parser.enumBodyDeclarations())).toEqual({
+    expect(Parser.parse(";", parser => parser.enumBodyDeclarations())).to.eql({
       type: "ENUM_BODY_DECLARATIONS",
       declarations: []
     });
@@ -12,7 +13,7 @@ describe("enumBodyDeclarations", () => {
   it("one declaration", () => {
     expect(
       Parser.parse("; void a() {}", parser => parser.enumBodyDeclarations())
-    ).toEqual({
+    ).to.eql({
       type: "ENUM_BODY_DECLARATIONS",
       declarations: [
         {
@@ -46,7 +47,7 @@ describe("enumBodyDeclarations", () => {
   it("multiple declarations", () => {
     expect(
       Parser.parse("; void a() {} {}", parser => parser.enumBodyDeclarations())
-    ).toEqual({
+    ).to.eql({
       type: "ENUM_BODY_DECLARATIONS",
       declarations: [
         {

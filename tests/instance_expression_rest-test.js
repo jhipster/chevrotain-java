@@ -1,5 +1,6 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("instanceofExpressionRest", () => {
   it("simple", () => {
@@ -7,7 +8,7 @@ describe("instanceofExpressionRest", () => {
       Parser.parse("instanceof boolean", parser =>
         parser.instanceofExpressionRest()
       )
-    ).toEqual({
+    ).to.eql({
       type: "INSTANCEOF_EXPRESSION_REST",
       typeType: {
         type: "PRIMITIVE_TYPE",

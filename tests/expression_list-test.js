@@ -1,9 +1,10 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("expressionList", () => {
   it("single", () => {
-    expect(Parser.parse("this", parser => parser.expressionList())).toEqual({
+    expect(Parser.parse("this", parser => parser.expressionList())).to.eql({
       type: "EXPRESSION_LIST",
       list: [
         {
@@ -16,7 +17,7 @@ describe("expressionList", () => {
   it("multiple", () => {
     expect(
       Parser.parse("this, null", parser => parser.expressionList())
-    ).toEqual({
+    ).to.eql({
       type: "EXPRESSION_LIST",
       list: [
         {

@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("interfaceMemberDeclaration", () => {
   it("interfaceMethodDeclaration", () => {
     expect(
       Parser.parse("void a() {}", parser => parser.interfaceMemberDeclaration())
-    ).toEqual({
+    ).to.eql({
       type: "INTERFACE_METHOD_DECLARATION",
       modifiers: [],
       typeParameters: undefined,
@@ -34,7 +35,7 @@ describe("interfaceMemberDeclaration", () => {
       Parser.parse("interface A{}", parser =>
         parser.interfaceMemberDeclaration()
       )
-    ).toEqual({
+    ).to.eql({
       type: "INTERFACE_DECLARATION",
       name: {
         type: "IDENTIFIER",
@@ -52,7 +53,7 @@ describe("interfaceMemberDeclaration", () => {
   it("classDeclaration", () => {
     expect(
       Parser.parse("class A{}", parser => parser.interfaceMemberDeclaration())
-    ).toEqual({
+    ).to.eql({
       type: "CLASS_DECLARATION",
       name: {
         type: "IDENTIFIER",
@@ -61,14 +62,17 @@ describe("interfaceMemberDeclaration", () => {
       body: {
         type: "CLASS_BODY",
         declarations: []
-      }
+      },
+      extends: undefined,
+      implements: undefined,
+      typeParameters: undefined
     });
   });
 
   it("enumDeclaration", () => {
     expect(
       Parser.parse("enum A{}", parser => parser.interfaceMemberDeclaration())
-    ).toEqual({
+    ).to.eql({
       type: "ENUM_DECLARATION",
       name: {
         type: "IDENTIFIER",

@@ -1,9 +1,10 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("qualifiedNameList", () => {
   it("single", () => {
-    expect(Parser.parse("pkg", parser => parser.qualifiedNameList())).toEqual({
+    expect(Parser.parse("pkg", parser => parser.qualifiedNameList())).to.eql({
       type: "QUALIFIED_NAME_LIST",
       list: [
         {
@@ -22,7 +23,7 @@ describe("qualifiedNameList", () => {
   it("multiple", () => {
     expect(
       Parser.parse("pkg,abc", parser => parser.qualifiedNameList())
-    ).toEqual({
+    ).to.eql({
       type: "QUALIFIED_NAME_LIST",
       list: [
         {

@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("operatorExpressionRest", () => {
   it("Star", () => {
     expect(
       Parser.parse("*super", parser => parser.operatorExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "OPERATOR_EXPRESSION_REST",
       operator: "*",
       expression: {
@@ -17,7 +18,7 @@ describe("operatorExpressionRest", () => {
   it("Dash", () => {
     expect(
       Parser.parse("/super", parser => parser.operatorExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "OPERATOR_EXPRESSION_REST",
       operator: "/",
       expression: {
@@ -29,7 +30,7 @@ describe("operatorExpressionRest", () => {
   it("Percentage", () => {
     expect(
       Parser.parse("%super", parser => parser.operatorExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "OPERATOR_EXPRESSION_REST",
       operator: "%",
       expression: {
@@ -41,7 +42,7 @@ describe("operatorExpressionRest", () => {
   it("Plus", () => {
     expect(
       Parser.parse("+super", parser => parser.operatorExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "OPERATOR_EXPRESSION_REST",
       operator: "+",
       expression: {
@@ -53,7 +54,7 @@ describe("operatorExpressionRest", () => {
   it("Minus", () => {
     expect(
       Parser.parse("-super", parser => parser.operatorExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "OPERATOR_EXPRESSION_REST",
       operator: "-",
       expression: {
@@ -65,7 +66,7 @@ describe("operatorExpressionRest", () => {
   it("LessLess", () => {
     expect(
       Parser.parse("<<super", parser => parser.operatorExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "OPERATOR_EXPRESSION_REST",
       operator: "<<",
       expression: {
@@ -77,7 +78,7 @@ describe("operatorExpressionRest", () => {
   it("GreaterGreater", () => {
     expect(
       Parser.parse(">>super", parser => parser.operatorExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "OPERATOR_EXPRESSION_REST",
       operator: ">>",
       expression: {
@@ -89,7 +90,7 @@ describe("operatorExpressionRest", () => {
   it("GreaterGreaterGreater", () => {
     expect(
       Parser.parse(">>>super", parser => parser.operatorExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "OPERATOR_EXPRESSION_REST",
       operator: ">>>",
       expression: {
@@ -101,7 +102,7 @@ describe("operatorExpressionRest", () => {
   it("LessEquals", () => {
     expect(
       Parser.parse("<=super", parser => parser.operatorExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "OPERATOR_EXPRESSION_REST",
       operator: "<=",
       expression: {
@@ -113,7 +114,7 @@ describe("operatorExpressionRest", () => {
   it("GreaterEquals", () => {
     expect(
       Parser.parse(">=super", parser => parser.operatorExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "OPERATOR_EXPRESSION_REST",
       operator: ">=",
       expression: {
@@ -125,7 +126,7 @@ describe("operatorExpressionRest", () => {
   it("Greater", () => {
     expect(
       Parser.parse(">super", parser => parser.operatorExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "OPERATOR_EXPRESSION_REST",
       operator: ">",
       expression: {
@@ -137,7 +138,7 @@ describe("operatorExpressionRest", () => {
   it("Less", () => {
     expect(
       Parser.parse("<super", parser => parser.operatorExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "OPERATOR_EXPRESSION_REST",
       operator: "<",
       expression: {
@@ -149,7 +150,7 @@ describe("operatorExpressionRest", () => {
   it("EqualsEquals", () => {
     expect(
       Parser.parse("==super", parser => parser.operatorExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "OPERATOR_EXPRESSION_REST",
       operator: "==",
       expression: {
@@ -161,7 +162,7 @@ describe("operatorExpressionRest", () => {
   it("ExclamationmarkEquals", () => {
     expect(
       Parser.parse("!=super", parser => parser.operatorExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "OPERATOR_EXPRESSION_REST",
       operator: "!=",
       expression: {
@@ -173,7 +174,7 @@ describe("operatorExpressionRest", () => {
   it("And", () => {
     expect(
       Parser.parse("&super", parser => parser.operatorExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "OPERATOR_EXPRESSION_REST",
       operator: "&",
       expression: {
@@ -185,7 +186,7 @@ describe("operatorExpressionRest", () => {
   it("Caret", () => {
     expect(
       Parser.parse("^super", parser => parser.operatorExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "OPERATOR_EXPRESSION_REST",
       operator: "^",
       expression: {
@@ -197,7 +198,7 @@ describe("operatorExpressionRest", () => {
   it("|", () => {
     expect(
       Parser.parse("|super", parser => parser.operatorExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "OPERATOR_EXPRESSION_REST",
       operator: "|",
       expression: {
@@ -209,7 +210,7 @@ describe("operatorExpressionRest", () => {
   it("AndAnd", () => {
     expect(
       Parser.parse("&&super", parser => parser.operatorExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "OPERATOR_EXPRESSION_REST",
       operator: "&&",
       expression: {
@@ -221,7 +222,7 @@ describe("operatorExpressionRest", () => {
   it("OrOr", () => {
     expect(
       Parser.parse("||super", parser => parser.operatorExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "OPERATOR_EXPRESSION_REST",
       operator: "||",
       expression: {
@@ -233,7 +234,7 @@ describe("operatorExpressionRest", () => {
   it("Equals", () => {
     expect(
       Parser.parse("=super", parser => parser.operatorExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "OPERATOR_EXPRESSION_REST",
       operator: "=",
       expression: {
@@ -245,7 +246,7 @@ describe("operatorExpressionRest", () => {
   it("PlusEquals", () => {
     expect(
       Parser.parse("+=super", parser => parser.operatorExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "OPERATOR_EXPRESSION_REST",
       operator: "+=",
       expression: {
@@ -257,7 +258,7 @@ describe("operatorExpressionRest", () => {
   it("MinusEquals", () => {
     expect(
       Parser.parse("-=super", parser => parser.operatorExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "OPERATOR_EXPRESSION_REST",
       operator: "-=",
       expression: {
@@ -269,7 +270,7 @@ describe("operatorExpressionRest", () => {
   it("StarEquals", () => {
     expect(
       Parser.parse("*=super", parser => parser.operatorExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "OPERATOR_EXPRESSION_REST",
       operator: "*=",
       expression: {
@@ -281,7 +282,7 @@ describe("operatorExpressionRest", () => {
   it("DashEquals", () => {
     expect(
       Parser.parse("/=super", parser => parser.operatorExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "OPERATOR_EXPRESSION_REST",
       operator: "/=",
       expression: {
@@ -293,7 +294,7 @@ describe("operatorExpressionRest", () => {
   it("AndEquals", () => {
     expect(
       Parser.parse("&=super", parser => parser.operatorExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "OPERATOR_EXPRESSION_REST",
       operator: "&=",
       expression: {
@@ -305,7 +306,7 @@ describe("operatorExpressionRest", () => {
   it("OrEquals", () => {
     expect(
       Parser.parse("|=super", parser => parser.operatorExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "OPERATOR_EXPRESSION_REST",
       operator: "|=",
       expression: {
@@ -317,7 +318,7 @@ describe("operatorExpressionRest", () => {
   it("CaretEquals", () => {
     expect(
       Parser.parse("^=super", parser => parser.operatorExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "OPERATOR_EXPRESSION_REST",
       operator: "^=",
       expression: {
@@ -329,7 +330,7 @@ describe("operatorExpressionRest", () => {
   it("GreaterGreaterEquals", () => {
     expect(
       Parser.parse(">>=super", parser => parser.operatorExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "OPERATOR_EXPRESSION_REST",
       operator: ">>=",
       expression: {
@@ -341,7 +342,7 @@ describe("operatorExpressionRest", () => {
   it("GreaterGreaterGreaterEquals", () => {
     expect(
       Parser.parse(">>>=super", parser => parser.operatorExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "OPERATOR_EXPRESSION_REST",
       operator: ">>>=",
       expression: {
@@ -353,7 +354,7 @@ describe("operatorExpressionRest", () => {
   it("LessLessEquals", () => {
     expect(
       Parser.parse("<<=super", parser => parser.operatorExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "OPERATOR_EXPRESSION_REST",
       operator: "<<=",
       expression: {
@@ -365,7 +366,7 @@ describe("operatorExpressionRest", () => {
   it("PercentageEquals", () => {
     expect(
       Parser.parse("%=super", parser => parser.operatorExpressionRest())
-    ).toEqual({
+    ).to.eql({
       type: "OPERATOR_EXPRESSION_REST",
       operator: "%=",
       expression: {

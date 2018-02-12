@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("creator", () => {
   it("nonWildcardCreator", () => {
     expect(
       Parser.parse("new <boolean> a()", parser => parser.creator())
-    ).toEqual({
+    ).to.eql({
       type: "NON_WILDCARD_CREATOR",
       typeArguments: {
         type: "NON_WILDCARD_TYPE_ARGUMENTS",
@@ -43,7 +44,7 @@ describe("creator", () => {
   });
 
   it("simpleCreator", () => {
-    expect(Parser.parse("new a()", parser => parser.creator())).toEqual({
+    expect(Parser.parse("new a()", parser => parser.creator())).to.eql({
       type: "SIMPLE_CREATOR",
       name: {
         type: "IDENTIFIER_NAME",

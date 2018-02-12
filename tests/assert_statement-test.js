@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("assertStatement", () => {
   it("one expression", () => {
     expect(
       Parser.parse("assert this;", parser => parser.assertStatement())
-    ).toEqual({
+    ).to.eql({
       type: "ASSERT_STATEMENT",
       expressions: [
         {
@@ -18,7 +19,7 @@ describe("assertStatement", () => {
   it("multiple expressions", () => {
     expect(
       Parser.parse("assert this:super;", parser => parser.assertStatement())
-    ).toEqual({
+    ).to.eql({
       type: "ASSERT_STATEMENT",
       expressions: [
         {

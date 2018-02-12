@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("tryStatement", () => {
   it("one catchClause", () => {
     expect(
       Parser.parse("try {} catch (A e) {}", parser => parser.tryStatement())
-    ).toEqual({
+    ).to.eql({
       type: "TRY_STATEMENT",
       resourceSpecification: undefined,
       body: {
@@ -49,7 +50,7 @@ describe("tryStatement", () => {
       Parser.parse("try {} catch (A e) {} catch (B e) {}", parser =>
         parser.tryStatement()
       )
-    ).toEqual({
+    ).to.eql({
       type: "TRY_STATEMENT",
       resourceSpecification: undefined,
       body: {
@@ -119,7 +120,7 @@ describe("tryStatement", () => {
       Parser.parse("try ( A.B a = this ) {} catch (A e) {}", parser =>
         parser.tryStatement()
       )
-    ).toEqual({
+    ).to.eql({
       type: "TRY_STATEMENT",
       resourceSpecification: {
         type: "RESOURCE_SPECIFICATION",
@@ -198,7 +199,7 @@ describe("tryStatement", () => {
       Parser.parse("try {} catch (A e) {} finally {}", parser =>
         parser.tryStatement()
       )
-    ).toEqual({
+    ).to.eql({
       type: "TRY_STATEMENT",
       resourceSpecification: undefined,
       body: {
@@ -246,7 +247,7 @@ describe("tryStatement", () => {
   it("only finallyBlock", () => {
     expect(
       Parser.parse("try {} finally {}", parser => parser.tryStatement())
-    ).toEqual({
+    ).to.eql({
       type: "TRY_STATEMENT",
       resourceSpecification: undefined,
       body: {

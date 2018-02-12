@@ -1,9 +1,10 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("classBody", () => {
   it("empty", () => {
-    expect(Parser.parse("{}", parser => parser.classBody())).toEqual({
+    expect(Parser.parse("{}", parser => parser.classBody())).to.eql({
       type: "CLASS_BODY",
       declarations: []
     });
@@ -12,7 +13,7 @@ describe("classBody", () => {
   it("one declaration", () => {
     expect(
       Parser.parse("{ void a() {} }", parser => parser.classBody())
-    ).toEqual({
+    ).to.eql({
       type: "CLASS_BODY",
       declarations: [
         {
@@ -46,7 +47,7 @@ describe("classBody", () => {
   it("multiple declarations", () => {
     expect(
       Parser.parse("{ void a() {} {} }", parser => parser.classBody())
-    ).toEqual({
+    ).to.eql({
       type: "CLASS_BODY",
       declarations: [
         {

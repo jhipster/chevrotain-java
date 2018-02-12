@@ -1,9 +1,10 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("enumConstant", () => {
   it("identifier", () => {
-    expect(Parser.parse("A", parser => parser.enumConstant())).toEqual({
+    expect(Parser.parse("A", parser => parser.enumConstant())).to.eql({
       type: "ENUM_CONSTANT",
       modifiers: [],
       name: {
@@ -16,7 +17,7 @@ describe("enumConstant", () => {
   });
 
   it("one annotation", () => {
-    expect(Parser.parse("@Bean A", parser => parser.enumConstant())).toEqual({
+    expect(Parser.parse("@Bean A", parser => parser.enumConstant())).to.eql({
       type: "ENUM_CONSTANT",
       modifiers: [
         {
@@ -46,7 +47,7 @@ describe("enumConstant", () => {
   it("multiple annotations", () => {
     expect(
       Parser.parse("@Bean @Something A", parser => parser.enumConstant())
-    ).toEqual({
+    ).to.eql({
       type: "ENUM_CONSTANT",
       modifiers: [
         {
@@ -88,7 +89,7 @@ describe("enumConstant", () => {
   });
 
   it("arguments", () => {
-    expect(Parser.parse("A()", parser => parser.enumConstant())).toEqual({
+    expect(Parser.parse("A()", parser => parser.enumConstant())).to.eql({
       type: "ENUM_CONSTANT",
       modifiers: [],
       name: {
@@ -103,7 +104,7 @@ describe("enumConstant", () => {
   });
 
   it("body", () => {
-    expect(Parser.parse("A {}", parser => parser.enumConstant())).toEqual({
+    expect(Parser.parse("A {}", parser => parser.enumConstant())).to.eql({
       type: "ENUM_CONSTANT",
       modifiers: [],
       name: {

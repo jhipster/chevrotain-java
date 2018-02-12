@@ -1,24 +1,23 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("classBodyDeclaration", () => {
   it("classBodyBlock", () => {
-    expect(Parser.parse("{}", parser => parser.classBodyDeclaration())).toEqual(
-      {
-        type: "CLASS_BODY_BLOCK",
-        static: false,
-        block: {
-          type: "BLOCK",
-          statements: []
-        }
+    expect(Parser.parse("{}", parser => parser.classBodyDeclaration())).to.eql({
+      type: "CLASS_BODY_BLOCK",
+      static: false,
+      block: {
+        type: "BLOCK",
+        statements: []
       }
-    );
+    });
   });
 
   it("classBodyBlock - static", () => {
     expect(
       Parser.parse("static {}", parser => parser.classBodyDeclaration())
-    ).toEqual({
+    ).to.eql({
       type: "CLASS_BODY_BLOCK",
       static: true,
       block: {
@@ -31,7 +30,7 @@ describe("classBodyDeclaration", () => {
   it("classBodyMemberDeclaration", () => {
     expect(
       Parser.parse("void a() {}", parser => parser.classBodyDeclaration())
-    ).toEqual({
+    ).to.eql({
       type: "CLASS_BODY_MEMBER_DECLARATION",
       modifiers: [],
       declaration: {
@@ -60,7 +59,7 @@ describe("classBodyDeclaration", () => {
   it("classBodyMemberDeclaration - one modifier", () => {
     expect(
       Parser.parse("@Bean void a() {}", parser => parser.classBodyDeclaration())
-    ).toEqual({
+    ).to.eql({
       type: "CLASS_BODY_MEMBER_DECLARATION",
       modifiers: [
         {
@@ -106,7 +105,7 @@ describe("classBodyDeclaration", () => {
       Parser.parse("@Bean public void a() {}", parser =>
         parser.classBodyDeclaration()
       )
-    ).toEqual({
+    ).to.eql({
       type: "CLASS_BODY_MEMBER_DECLARATION",
       modifiers: [
         {

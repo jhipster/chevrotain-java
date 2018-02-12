@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("import", () => {
   it("single qualifiers", () => {
     expect(
       Parser.parse("import imp;", parser => parser.importDeclaration())
-    ).toEqual({
+    ).to.eql({
       type: "IMPORT_DECLARATION",
       static: false,
       name: {
@@ -23,7 +24,7 @@ describe("import", () => {
   it("multiple qualifiers", () => {
     expect(
       Parser.parse("import imp.name;", parser => parser.importDeclaration())
-    ).toEqual({
+    ).to.eql({
       type: "IMPORT_DECLARATION",
       static: false,
       name: {
@@ -45,7 +46,7 @@ describe("import", () => {
   it("star qualifier", () => {
     expect(
       Parser.parse("import java.util.*;", parser => parser.importDeclaration())
-    ).toEqual({
+    ).to.eql({
       type: "IMPORT_DECLARATION",
       static: false,
       name: {
@@ -71,7 +72,7 @@ describe("import", () => {
   it("static", () => {
     expect(
       Parser.parse("import static imp;", parser => parser.importDeclaration())
-    ).toEqual({
+    ).to.eql({
       type: "IMPORT_DECLARATION",
       static: true,
       name: {

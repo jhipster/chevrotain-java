@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("methodDeclaration", () => {
   it("void", () => {
     expect(
       Parser.parse("void a() {}", parser => parser.methodDeclaration())
-    ).toEqual({
+    ).to.eql({
       type: "METHOD_DECLARATION",
       typeType: {
         type: "VOID"
@@ -30,7 +31,7 @@ describe("methodDeclaration", () => {
   it("typeParameter", () => {
     expect(
       Parser.parse("boolean a() {}", parser => parser.methodDeclaration())
-    ).toEqual({
+    ).to.eql({
       type: "METHOD_DECLARATION",
       typeType: {
         type: "PRIMITIVE_TYPE",
@@ -56,7 +57,7 @@ describe("methodDeclaration", () => {
   it("single square", () => {
     expect(
       Parser.parse("void a()[] {}", parser => parser.methodDeclaration())
-    ).toEqual({
+    ).to.eql({
       type: "METHOD_DECLARATION",
       typeType: {
         type: "VOID"
@@ -81,7 +82,7 @@ describe("methodDeclaration", () => {
   it("multiple squares", () => {
     expect(
       Parser.parse("void a()[][] {}", parser => parser.methodDeclaration())
-    ).toEqual({
+    ).to.eql({
       type: "METHOD_DECLARATION",
       typeType: {
         type: "VOID"
@@ -108,7 +109,7 @@ describe("methodDeclaration", () => {
       Parser.parse("void a() throws Something {}", parser =>
         parser.methodDeclaration()
       )
-    ).toEqual({
+    ).to.eql({
       type: "METHOD_DECLARATION",
       typeType: {
         type: "VOID"

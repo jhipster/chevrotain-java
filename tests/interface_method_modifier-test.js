@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("interfaceMethodModifier", () => {
   it("public", () => {
     expect(
       Parser.parse("public", parser => parser.interfaceMethodModifier())
-    ).toEqual({
+    ).to.eql({
       type: "MODIFIER",
       value: "public"
     });
@@ -14,7 +15,7 @@ describe("interfaceMethodModifier", () => {
   it("protected", () => {
     expect(
       Parser.parse("default", parser => parser.interfaceMethodModifier())
-    ).toEqual({
+    ).to.eql({
       type: "MODIFIER",
       value: "default"
     });
@@ -23,7 +24,7 @@ describe("interfaceMethodModifier", () => {
   it("static", () => {
     expect(
       Parser.parse("static", parser => parser.interfaceMethodModifier())
-    ).toEqual({
+    ).to.eql({
       type: "MODIFIER",
       value: "static"
     });
@@ -32,7 +33,7 @@ describe("interfaceMethodModifier", () => {
   it("abstract", () => {
     expect(
       Parser.parse("abstract", parser => parser.interfaceMethodModifier())
-    ).toEqual({
+    ).to.eql({
       type: "MODIFIER",
       value: "abstract"
     });
@@ -41,7 +42,7 @@ describe("interfaceMethodModifier", () => {
   it("strictfp", () => {
     expect(
       Parser.parse("strictfp", parser => parser.interfaceMethodModifier())
-    ).toEqual({
+    ).to.eql({
       type: "MODIFIER",
       value: "strictfp"
     });
@@ -50,7 +51,7 @@ describe("interfaceMethodModifier", () => {
   it("annotation", () => {
     expect(
       Parser.parse("@Bean", parser => parser.interfaceMethodModifier())
-    ).toEqual({
+    ).to.eql({
       type: "ANNOTATION",
       name: {
         type: "QUALIFIED_NAME",
@@ -61,6 +62,7 @@ describe("interfaceMethodModifier", () => {
           }
         ]
       },
+      value: undefined,
       hasBraces: false
     });
   });

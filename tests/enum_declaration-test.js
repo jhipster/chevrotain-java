@@ -1,20 +1,21 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("enum", () => {
   it("empty", () => {
-    expect(
-      Parser.parse("enum A{}", parser => parser.enumDeclaration())
-    ).toEqual({
-      type: "ENUM_DECLARATION",
-      name: {
-        type: "IDENTIFIER",
-        value: "A"
-      },
-      implements: undefined,
-      enumConstants: undefined,
-      body: undefined
-    });
+    expect(Parser.parse("enum A{}", parser => parser.enumDeclaration())).to.eql(
+      {
+        type: "ENUM_DECLARATION",
+        name: {
+          type: "IDENTIFIER",
+          value: "A"
+        },
+        implements: undefined,
+        enumConstants: undefined,
+        body: undefined
+      }
+    );
   });
 
   it("implements", () => {
@@ -22,7 +23,7 @@ describe("enum", () => {
       Parser.parse("enum A implements Something{}", parser =>
         parser.enumDeclaration()
       )
-    ).toEqual({
+    ).to.eql({
       type: "ENUM_DECLARATION",
       name: {
         type: "IDENTIFIER",
@@ -45,7 +46,7 @@ describe("enum", () => {
   it("enumConstants", () => {
     expect(
       Parser.parse("enum A{B}", parser => parser.enumDeclaration())
-    ).toEqual({
+    ).to.eql({
       type: "ENUM_DECLARATION",
       name: {
         type: "IDENTIFIER",
@@ -74,7 +75,7 @@ describe("enum", () => {
   it("enumConstants with comma at the end", () => {
     expect(
       Parser.parse("enum A{B,}", parser => parser.enumDeclaration())
-    ).toEqual({
+    ).to.eql({
       type: "ENUM_DECLARATION",
       name: {
         type: "IDENTIFIER",
@@ -103,7 +104,7 @@ describe("enum", () => {
   it("enumBodyDeclarations", () => {
     expect(
       Parser.parse("enum A{; void a() {}}", parser => parser.enumDeclaration())
-    ).toEqual({
+    ).to.eql({
       type: "ENUM_DECLARATION",
       name: {
         type: "IDENTIFIER",
@@ -148,7 +149,7 @@ describe("enum", () => {
       Parser.parse("enum A{B,; void a() {}}", parser =>
         parser.enumDeclaration()
       )
-    ).toEqual({
+    ).to.eql({
       type: "ENUM_DECLARATION",
       name: {
         type: "IDENTIFIER",

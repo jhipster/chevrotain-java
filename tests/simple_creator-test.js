@@ -1,9 +1,10 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("simpleCreator", () => {
   it("rest classCreatorRest", () => {
-    expect(Parser.parse("a()", parser => parser.simpleCreator())).toEqual({
+    expect(Parser.parse("a()", parser => parser.simpleCreator())).to.eql({
       type: "SIMPLE_CREATOR",
       name: {
         type: "IDENTIFIER_NAME",
@@ -29,7 +30,7 @@ describe("simpleCreator", () => {
   });
 
   it("rest arrayCreatorRest", () => {
-    expect(Parser.parse("a[]{}", parser => parser.simpleCreator())).toEqual({
+    expect(Parser.parse("a[]{}", parser => parser.simpleCreator())).to.eql({
       type: "SIMPLE_CREATOR",
       name: {
         type: "IDENTIFIER_NAME",

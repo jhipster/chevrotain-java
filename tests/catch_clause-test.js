@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("catchClause", () => {
   it("simple", () => {
     expect(
       Parser.parse("catch (A e) {}", parser => parser.catchClause())
-    ).toEqual({
+    ).to.eql({
       type: "CATCH_CLAUSE",
       modifiers: [],
       catchType: {
@@ -36,11 +37,12 @@ describe("catchClause", () => {
   it("one modifier", () => {
     expect(
       Parser.parse("catch (@Bean A e) {}", parser => parser.catchClause())
-    ).toEqual({
+    ).to.eql({
       type: "CATCH_CLAUSE",
       modifiers: [
         {
           type: "ANNOTATION",
+          value: undefined,
           name: {
             type: "QUALIFIED_NAME",
             name: [
@@ -81,11 +83,12 @@ describe("catchClause", () => {
   it("multiple modifiers", () => {
     expect(
       Parser.parse("catch (@Bean final A e) {}", parser => parser.catchClause())
-    ).toEqual({
+    ).to.eql({
       type: "CATCH_CLAUSE",
       modifiers: [
         {
           type: "ANNOTATION",
+          value: undefined,
           name: {
             type: "QUALIFIED_NAME",
             name: [

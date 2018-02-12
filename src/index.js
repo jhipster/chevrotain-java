@@ -21,8 +21,10 @@ function parse(inputText, entryPoint = parser => parser.compilationUnit()) {
     );
   }
 
-  // Visit
-  return toAstVisitorInstance.visit(cst);
+  // transform CST to AST
+  const ast = toAstVisitorInstance.visit(cst);
+
+  return ast;
 }
 
 module.exports = { parse };

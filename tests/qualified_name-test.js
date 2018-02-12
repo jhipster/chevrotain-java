@@ -1,9 +1,10 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("qualifiedName", () => {
   it("single", () => {
-    expect(Parser.parse("pkg", parser => parser.qualifiedName())).toEqual({
+    expect(Parser.parse("pkg", parser => parser.qualifiedName())).to.eql({
       type: "QUALIFIED_NAME",
       name: [
         {
@@ -15,7 +16,7 @@ describe("qualifiedName", () => {
   });
 
   it("multiple", () => {
-    expect(Parser.parse("pkg.name", parser => parser.qualifiedName())).toEqual({
+    expect(Parser.parse("pkg.name", parser => parser.qualifiedName())).to.eql({
       type: "QUALIFIED_NAME",
       name: [
         {

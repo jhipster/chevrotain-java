@@ -1,9 +1,10 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("prefixExpression", () => {
   it("Plus", () => {
-    expect(Parser.parse("+this", parser => parser.prefixExpression())).toEqual({
+    expect(Parser.parse("+this", parser => parser.prefixExpression())).to.eql({
       type: "PREFIX_EXPRESSION",
       prefix: "+",
       expression: {
@@ -13,7 +14,7 @@ describe("prefixExpression", () => {
   });
 
   it("Minus", () => {
-    expect(Parser.parse("-this", parser => parser.prefixExpression())).toEqual({
+    expect(Parser.parse("-this", parser => parser.prefixExpression())).to.eql({
       type: "PREFIX_EXPRESSION",
       prefix: "-",
       expression: {
@@ -23,31 +24,27 @@ describe("prefixExpression", () => {
   });
 
   it("PlusPlus", () => {
-    expect(Parser.parse("++this", parser => parser.prefixExpression())).toEqual(
-      {
-        type: "PREFIX_EXPRESSION",
-        prefix: "++",
-        expression: {
-          type: "THIS"
-        }
+    expect(Parser.parse("++this", parser => parser.prefixExpression())).to.eql({
+      type: "PREFIX_EXPRESSION",
+      prefix: "++",
+      expression: {
+        type: "THIS"
       }
-    );
+    });
   });
 
   it("MinusMinus", () => {
-    expect(Parser.parse("--this", parser => parser.prefixExpression())).toEqual(
-      {
-        type: "PREFIX_EXPRESSION",
-        prefix: "--",
-        expression: {
-          type: "THIS"
-        }
+    expect(Parser.parse("--this", parser => parser.prefixExpression())).to.eql({
+      type: "PREFIX_EXPRESSION",
+      prefix: "--",
+      expression: {
+        type: "THIS"
       }
-    );
+    });
   });
 
   it("Tilde", () => {
-    expect(Parser.parse("~this", parser => parser.prefixExpression())).toEqual({
+    expect(Parser.parse("~this", parser => parser.prefixExpression())).to.eql({
       type: "PREFIX_EXPRESSION",
       prefix: "~",
       expression: {
@@ -57,7 +54,7 @@ describe("prefixExpression", () => {
   });
 
   it("Exclamationmark", () => {
-    expect(Parser.parse("!this", parser => parser.prefixExpression())).toEqual({
+    expect(Parser.parse("!this", parser => parser.prefixExpression())).to.eql({
       type: "PREFIX_EXPRESSION",
       prefix: "!",
       expression: {

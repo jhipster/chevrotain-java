@@ -1,30 +1,29 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("typeArguments", () => {
   it("single", () => {
-    expect(Parser.parse("<boolean>", parser => parser.typeArguments())).toEqual(
-      {
-        type: "TYPE_ARGUMENTS",
-        arguments: [
-          {
-            type: "TYPE_ARGUMENT",
-            argument: {
-              type: "PRIMITIVE_TYPE",
-              value: "boolean"
-            },
-            super: undefined,
-            extends: undefined
-          }
-        ]
-      }
-    );
+    expect(Parser.parse("<boolean>", parser => parser.typeArguments())).to.eql({
+      type: "TYPE_ARGUMENTS",
+      arguments: [
+        {
+          type: "TYPE_ARGUMENT",
+          argument: {
+            type: "PRIMITIVE_TYPE",
+            value: "boolean"
+          },
+          super: undefined,
+          extends: undefined
+        }
+      ]
+    });
   });
 
   it("multi", () => {
     expect(
       Parser.parse("<boolean, char>", parser => parser.typeArguments())
-    ).toEqual({
+    ).to.eql({
       type: "TYPE_ARGUMENTS",
       arguments: [
         {

@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("defaultValue", () => {
   it("annotation", () => {
     expect(
       Parser.parse("default @Bean", parser => parser.defaultValue())
-    ).toEqual({
+    ).to.eql({
       type: "DEFAULT_VALUE",
       value: {
         type: "ANNOTATION",
@@ -18,7 +19,8 @@ describe("defaultValue", () => {
             }
           ]
         },
-        hasBraces: false
+        hasBraces: false,
+        value: undefined
       }
     });
   });

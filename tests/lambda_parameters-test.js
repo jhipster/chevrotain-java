@@ -1,16 +1,17 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("lambdaParameters", () => {
   it("identifier", () => {
-    expect(Parser.parse("a", parser => parser.lambdaParameters())).toEqual({
+    expect(Parser.parse("a", parser => parser.lambdaParameters())).to.eql({
       type: "IDENTIFIER",
       value: "a"
     });
   });
 
   it("empty parameters", () => {
-    expect(Parser.parse("()", parser => parser.lambdaParameters())).toEqual({
+    expect(Parser.parse("()", parser => parser.lambdaParameters())).to.eql({
       type: "FORMAL_PARAMETERS",
       parameters: undefined
     });
@@ -19,7 +20,7 @@ describe("lambdaParameters", () => {
   it("formalParameters", () => {
     expect(
       Parser.parse("(boolean a)", parser => parser.lambdaParameters())
-    ).toEqual({
+    ).to.eql({
       type: "FORMAL_PARAMETERS",
       parameters: {
         type: "FORMAL_PARAMETER_LIST",
@@ -47,7 +48,7 @@ describe("lambdaParameters", () => {
   });
 
   it("identfiers", () => {
-    expect(Parser.parse("(a)", parser => parser.lambdaParameters())).toEqual({
+    expect(Parser.parse("(a)", parser => parser.lambdaParameters())).to.eql({
       type: "IDENTIFIERS",
       identifiers: {
         type: "IDENTIFIER_LIST",

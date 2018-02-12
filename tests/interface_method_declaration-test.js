@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("interfaceMethodDeclaration", () => {
   it("void", () => {
     expect(
       Parser.parse("void a() {}", parser => parser.interfaceMethodDeclaration())
-    ).toEqual({
+    ).to.eql({
       type: "INTERFACE_METHOD_DECLARATION",
       modifiers: [],
       typeParameters: undefined,
@@ -34,7 +35,7 @@ describe("interfaceMethodDeclaration", () => {
       Parser.parse("public void a() {}", parser =>
         parser.interfaceMethodDeclaration()
       )
-    ).toEqual({
+    ).to.eql({
       type: "INTERFACE_METHOD_DECLARATION",
       modifiers: [{ type: "MODIFIER", value: "public" }],
       typeParameters: undefined,
@@ -63,7 +64,7 @@ describe("interfaceMethodDeclaration", () => {
       Parser.parse("public static void a() {}", parser =>
         parser.interfaceMethodDeclaration()
       )
-    ).toEqual({
+    ).to.eql({
       type: "INTERFACE_METHOD_DECLARATION",
       modifiers: [
         { type: "MODIFIER", value: "public" },
@@ -95,7 +96,7 @@ describe("interfaceMethodDeclaration", () => {
       Parser.parse("<Abc> void a() {}", parser =>
         parser.interfaceMethodDeclaration()
       )
-    ).toEqual({
+    ).to.eql({
       type: "INTERFACE_METHOD_DECLARATION",
       modifiers: [],
       typeParameters: {
@@ -137,7 +138,7 @@ describe("interfaceMethodDeclaration", () => {
       Parser.parse("void a()[] {}", parser =>
         parser.interfaceMethodDeclaration()
       )
-    ).toEqual({
+    ).to.eql({
       type: "INTERFACE_METHOD_DECLARATION",
       modifiers: [],
       typeParameters: undefined,
@@ -166,7 +167,7 @@ describe("interfaceMethodDeclaration", () => {
       Parser.parse("void a()[][] {}", parser =>
         parser.interfaceMethodDeclaration()
       )
-    ).toEqual({
+    ).to.eql({
       type: "INTERFACE_METHOD_DECLARATION",
       modifiers: [],
       typeParameters: undefined,
@@ -195,7 +196,7 @@ describe("interfaceMethodDeclaration", () => {
       Parser.parse("void a() throws Something {}", parser =>
         parser.interfaceMethodDeclaration()
       )
-    ).toEqual({
+    ).to.eql({
       type: "INTERFACE_METHOD_DECLARATION",
       modifiers: [],
       typeParameters: undefined,
@@ -237,7 +238,7 @@ describe("interfaceMethodDeclaration", () => {
       Parser.parse("<A> void a() {}", parser =>
         parser.interfaceMethodDeclaration()
       )
-    ).toEqual({
+    ).to.eql({
       type: "INTERFACE_METHOD_DECLARATION",
       modifiers: [],
       typeParameters: {

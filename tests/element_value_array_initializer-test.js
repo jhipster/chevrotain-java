@@ -1,5 +1,6 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("elementValueArrayInitializer", () => {
   it("single", () => {
@@ -7,7 +8,7 @@ describe("elementValueArrayInitializer", () => {
       Parser.parse("{@Something}", parser =>
         parser.elementValueArrayInitializer()
       )
-    ).toEqual({
+    ).to.eql({
       type: "ELEMENT_VALUE_ARRAY_INITIALIZER",
       values: [
         {
@@ -33,7 +34,7 @@ describe("elementValueArrayInitializer", () => {
       Parser.parse("{@Something, @Another}", parser =>
         parser.elementValueArrayInitializer()
       )
-    ).toEqual({
+    ).to.eql({
       type: "ELEMENT_VALUE_ARRAY_INITIALIZER",
       values: [
         {
@@ -72,7 +73,7 @@ describe("elementValueArrayInitializer", () => {
       Parser.parse("{@Something,}", parser =>
         parser.elementValueArrayInitializer()
       )
-    ).toEqual({
+    ).to.eql({
       type: "ELEMENT_VALUE_ARRAY_INITIALIZER",
       values: [
         {

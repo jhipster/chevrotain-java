@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("interfaceBodyDeclaration", () => {
   it("simple", () => {
     expect(
       Parser.parse("void a() {}", parser => parser.interfaceBodyDeclaration())
-    ).toEqual({
+    ).to.eql({
       type: "INTERFACE_BODY_DECLARATION",
       modifiers: [],
       declaration: {
@@ -38,7 +39,7 @@ describe("interfaceBodyDeclaration", () => {
       Parser.parse("@Bean void a() {}", parser =>
         parser.interfaceBodyDeclaration()
       )
-    ).toEqual({
+    ).to.eql({
       type: "INTERFACE_BODY_DECLARATION",
       modifiers: [
         {
@@ -86,7 +87,7 @@ describe("interfaceBodyDeclaration", () => {
       Parser.parse("@Bean public void a() {}", parser =>
         parser.interfaceBodyDeclaration()
       )
-    ).toEqual({
+    ).to.eql({
       type: "INTERFACE_BODY_DECLARATION",
       modifiers: [
         {

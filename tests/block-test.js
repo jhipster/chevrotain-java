@@ -1,16 +1,17 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("block", () => {
   it("empty", () => {
-    expect(Parser.parse("{}", parser => parser.block())).toEqual({
+    expect(Parser.parse("{}", parser => parser.block())).to.eql({
       type: "BLOCK",
       statements: []
     });
   });
 
   it("single statement", () => {
-    expect(Parser.parse("{ boolean A; }", parser => parser.block())).toEqual({
+    expect(Parser.parse("{ boolean A; }", parser => parser.block())).to.eql({
       type: "BLOCK",
       statements: [
         {
@@ -45,7 +46,7 @@ describe("block", () => {
   it("multiple statement", () => {
     expect(
       Parser.parse("{ boolean A; class A {} }", parser => parser.block())
-    ).toEqual({
+    ).to.eql({
       type: "BLOCK",
       statements: [
         {

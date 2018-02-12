@@ -1,9 +1,10 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("variableDeclarators", () => {
   it("single", () => {
-    expect(Parser.parse("A", parser => parser.variableDeclarators())).toEqual({
+    expect(Parser.parse("A", parser => parser.variableDeclarators())).to.eql({
       type: "VARIABLE_DECLARATORS",
       list: [
         {
@@ -23,36 +24,36 @@ describe("variableDeclarators", () => {
   });
 
   it("multiple", () => {
-    expect(
-      Parser.parse("A, B", parser => parser.variableDeclarators())
-    ).toEqual({
-      type: "VARIABLE_DECLARATORS",
-      list: [
-        {
-          type: "VARIABLE_DECLARATOR",
-          id: {
-            type: "VARIABLE_DECLARATOR_ID",
+    expect(Parser.parse("A, B", parser => parser.variableDeclarators())).to.eql(
+      {
+        type: "VARIABLE_DECLARATORS",
+        list: [
+          {
+            type: "VARIABLE_DECLARATOR",
             id: {
-              type: "IDENTIFIER",
-              value: "A"
+              type: "VARIABLE_DECLARATOR_ID",
+              id: {
+                type: "IDENTIFIER",
+                value: "A"
+              },
+              cntSquares: 0
             },
-            cntSquares: 0
+            init: undefined
           },
-          init: undefined
-        },
-        {
-          type: "VARIABLE_DECLARATOR",
-          id: {
-            type: "VARIABLE_DECLARATOR_ID",
+          {
+            type: "VARIABLE_DECLARATOR",
             id: {
-              type: "IDENTIFIER",
-              value: "B"
+              type: "VARIABLE_DECLARATOR_ID",
+              id: {
+                type: "IDENTIFIER",
+                value: "B"
+              },
+              cntSquares: 0
             },
-            cntSquares: 0
-          },
-          init: undefined
-        }
-      ]
-    });
+            init: undefined
+          }
+        ]
+      }
+    );
   });
 });

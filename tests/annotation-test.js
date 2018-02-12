@@ -1,9 +1,10 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("annotation", () => {
   it("annotation", () => {
-    expect(Parser.parse("@Bean", parser => parser.annotation())).toEqual({
+    expect(Parser.parse("@Bean", parser => parser.annotation())).to.eql({
       type: "ANNOTATION",
       name: {
         type: "QUALIFIED_NAME",
@@ -14,12 +15,13 @@ describe("annotation", () => {
           }
         ]
       },
+      value: undefined,
       hasBraces: false
     });
   });
 
   it("annotation with braces", () => {
-    expect(Parser.parse("@Bean()", parser => parser.annotation())).toEqual({
+    expect(Parser.parse("@Bean()", parser => parser.annotation())).to.eql({
       type: "ANNOTATION",
       name: {
         type: "QUALIFIED_NAME",
@@ -38,7 +40,7 @@ describe("annotation", () => {
   it("annotation with element value (annotation)", () => {
     expect(
       Parser.parse("@Bean(@Something)", parser => parser.annotation())
-    ).toEqual({
+    ).to.eql({
       type: "ANNOTATION",
       name: {
         type: "QUALIFIED_NAME",
@@ -70,7 +72,7 @@ describe("annotation", () => {
   it("annotation with element value (elementValueArrayInitializer)", () => {
     expect(
       Parser.parse("@Bean({@Something})", parser => parser.annotation())
-    ).toEqual({
+    ).to.eql({
       type: "ANNOTATION",
       name: {
         type: "QUALIFIED_NAME",
@@ -107,7 +109,7 @@ describe("annotation", () => {
   it("annotation with element value pairs", () => {
     expect(
       Parser.parse("@Bean(key=@Value)", parser => parser.annotation())
-    ).toEqual({
+    ).to.eql({
       type: "ANNOTATION",
       name: {
         type: "QUALIFIED_NAME",

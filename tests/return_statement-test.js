@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("returnStatement", () => {
   it("with expression", () => {
     expect(
       Parser.parse("return this;", parser => parser.returnStatement())
-    ).toEqual({
+    ).to.eql({
       type: "RETURN_STATEMENT",
       expression: {
         type: "THIS"
@@ -14,11 +15,9 @@ describe("returnStatement", () => {
   });
 
   it("only return", () => {
-    expect(Parser.parse("return;", parser => parser.returnStatement())).toEqual(
-      {
-        type: "RETURN_STATEMENT",
-        expression: undefined
-      }
-    );
+    expect(Parser.parse("return;", parser => parser.returnStatement())).to.eql({
+      type: "RETURN_STATEMENT",
+      expression: undefined
+    });
   });
 });

@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("memberDeclaration", () => {
   it("methodDeclaration", () => {
     expect(
       Parser.parse("void a() {}", parser => parser.memberDeclaration())
-    ).toEqual({
+    ).to.eql({
       type: "METHOD_DECLARATION",
       typeType: {
         type: "VOID"
@@ -28,30 +29,30 @@ describe("memberDeclaration", () => {
   });
 
   it("constructorDeclaration", () => {
-    expect(
-      Parser.parse("a() {}", parser => parser.memberDeclaration())
-    ).toEqual({
-      type: "CONSTRUCTOR_DECLARATION",
-      name: {
-        type: "IDENTIFIER",
-        value: "a"
-      },
-      parameters: {
-        type: "FORMAL_PARAMETERS",
-        parameters: undefined
-      },
-      throws: undefined,
-      body: {
-        type: "BLOCK",
-        statements: []
+    expect(Parser.parse("a() {}", parser => parser.memberDeclaration())).to.eql(
+      {
+        type: "CONSTRUCTOR_DECLARATION",
+        name: {
+          type: "IDENTIFIER",
+          value: "a"
+        },
+        parameters: {
+          type: "FORMAL_PARAMETERS",
+          parameters: undefined
+        },
+        throws: undefined,
+        body: {
+          type: "BLOCK",
+          statements: []
+        }
       }
-    });
+    );
   });
 
   it("interfaceDeclaration", () => {
     expect(
       Parser.parse("interface A{}", parser => parser.memberDeclaration())
-    ).toEqual({
+    ).to.eql({
       type: "INTERFACE_DECLARATION",
       name: {
         type: "IDENTIFIER",
@@ -69,7 +70,7 @@ describe("memberDeclaration", () => {
   it("annotationTypeDeclaration", () => {
     expect(
       Parser.parse("@interface A{}", parser => parser.memberDeclaration())
-    ).toEqual({
+    ).to.eql({
       type: "ANNOTATION_TYPE_DECLARATION",
       name: {
         type: "IDENTIFIER",
@@ -85,7 +86,7 @@ describe("memberDeclaration", () => {
   it("classDeclaration", () => {
     expect(
       Parser.parse("class A{}", parser => parser.memberDeclaration())
-    ).toEqual({
+    ).to.eql({
       type: "CLASS_DECLARATION",
       name: {
         type: "IDENTIFIER",
@@ -94,15 +95,19 @@ describe("memberDeclaration", () => {
       body: {
         type: "CLASS_BODY",
         declarations: []
-      }
+      },
+      extends: undefined,
+      implements: undefined,
+      typeParameters: undefined
     });
   });
 
   it("enumDeclaration", () => {
     expect(
       Parser.parse("enum A{}", parser => parser.memberDeclaration())
-    ).toEqual({
+    ).to.eql({
       type: "ENUM_DECLARATION",
+      body: undefined,
       name: {
         type: "IDENTIFIER",
         value: "A"
@@ -115,7 +120,7 @@ describe("memberDeclaration", () => {
   it("genericMethodDeclarationOrGenericConstructorDeclaration", () => {
     expect(
       Parser.parse("<A> void a() {}", parser => parser.memberDeclaration())
-    ).toEqual({
+    ).to.eql({
       type: "GENERIC_METHOD_DECLARATION",
       typeParameters: {
         type: "TYPE_PARAMETERS",
@@ -157,7 +162,7 @@ describe("memberDeclaration", () => {
   it("fieldDeclaration", () => {
     expect(
       Parser.parse("Abc def;", parser => parser.memberDeclaration())
-    ).toEqual({
+    ).to.eql({
       type: "FIELD_DECLARATION",
       typeType: {
         type: "IDENTIFIER",

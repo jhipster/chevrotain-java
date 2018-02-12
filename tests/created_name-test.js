@@ -1,9 +1,10 @@
 "use strict";
 const Parser = require("../src/index");
+const expect = require("chai").expect;
 
 describe("createdName", () => {
   it("identifierName", () => {
-    expect(Parser.parse("a", parser => parser.createdName())).toEqual({
+    expect(Parser.parse("a", parser => parser.createdName())).to.eql({
       type: "IDENTIFIER_NAME",
       elements: [
         {
@@ -19,7 +20,7 @@ describe("createdName", () => {
   });
 
   it("primitiveType", () => {
-    expect(Parser.parse("boolean", parser => parser.createdName())).toEqual({
+    expect(Parser.parse("boolean", parser => parser.createdName())).to.eql({
       type: "PRIMITIVE_TYPE",
       value: "boolean"
     });
