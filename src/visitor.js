@@ -1808,12 +1808,12 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     };
   }
 
-  methodCall(ctx) {
+  methodInvocation(ctx) {
     const name = this.identifier(ctx.Identifier[0]);
     const expressionList = this.visit(ctx.expressionList);
 
     return {
-      type: "METHOD_CALL",
+      type: "METHOD_INVOCATION",
       name: name,
       parameters: expressionList ? expressionList : []
     };
@@ -1934,8 +1934,8 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   atomic(ctx) {
-    if (ctx.methodCall.length > 0) {
-      return this.visit(ctx.methodCall);
+    if (ctx.methodInvocation.length > 0) {
+      return this.visit(ctx.methodInvocation);
     }
 
     if (ctx.primary.length > 0) {
@@ -2118,8 +2118,8 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       expression = this.identifier(ctx.Identifier[0]);
     }
 
-    if (ctx.methodCall.length > 0) {
-      expression = this.visit(ctx.methodCall);
+    if (ctx.methodInvocation.length > 0) {
+      expression = this.visit(ctx.methodInvocation);
     }
 
     if (ctx.This.length > 0) {

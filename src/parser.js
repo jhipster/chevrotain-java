@@ -1676,9 +1676,9 @@ class SelectParser extends chevrotain.Parser {
       });
     });
 
-    // methodCall
+    // methodInvocation
     // : IDENTIFIER '(' expressionList? ')'
-    $.RULE("methodCall", () => {
+    $.RULE("methodInvocation", () => {
       $.CONSUME(tokens.Identifier);
       $.CONSUME(tokens.LBrace);
       $.OPTION(() => {
@@ -1744,12 +1744,12 @@ class SelectParser extends chevrotain.Parser {
     });
 
     // atomic
-    // : methodCall
+    // : methodInvocation
     // | primary
     // | creator
     $.RULE("atomic", () => {
       $.OR([
-        { ALT: () => $.SUBRULE($.methodCall) },
+        { ALT: () => $.SUBRULE($.methodInvocation) },
         { ALT: () => $.SUBRULE($.primary) },
         { ALT: () => $.SUBRULE($.creator) }
       ]);
@@ -1800,7 +1800,7 @@ class SelectParser extends chevrotain.Parser {
     // : '.'
     //   (
     //     IDENTIFIER
-    //     | methodCall
+    //     | methodInvocation
     //     | THIS
     //     | SUPER
     //     | creatorOptionalNonWildcardInnerCreator
@@ -1809,7 +1809,7 @@ class SelectParser extends chevrotain.Parser {
     $.RULE("qualifiedExpressionRest", () => {
       $.CONSUME(tokens.Dot);
       $.OR([
-        { ALT: () => $.SUBRULE($.methodCall) },
+        { ALT: () => $.SUBRULE($.methodInvocation) },
         {
           ALT: () => {
             $.CONSUME(tokens.Identifier);
