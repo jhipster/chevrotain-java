@@ -1393,9 +1393,31 @@
     "name": "methodBody",
     "definition": [
       {
-        "type": "NonTerminal",
-        "name": "block",
-        "occurrenceInParent": 1
+        "type": "Alternation",
+        "definition": [
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "NonTerminal",
+                "name": "block",
+                "occurrenceInParent": 1
+              }
+            ]
+          },
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "Terminal",
+                "name": "SemiColon",
+                "label": "';'",
+                "occurrenceInParent": 1,
+                "pattern": ";"
+              }
+            ]
+          }
+        ]
       }
     ]
   },
@@ -3263,47 +3285,38 @@
                 ]
               },
               {
-                "type": "Alternation",
+                "type": "Option",
                 "definition": [
                   {
-                    "type": "Flat",
+                    "type": "Repetition",
                     "definition": [
                       {
-                        "type": "Repetition",
-                        "definition": [
-                          {
-                            "type": "Terminal",
-                            "name": "LSquare",
-                            "label": "'['",
-                            "occurrenceInParent": 1,
-                            "pattern": "\\["
-                          },
-                          {
-                            "type": "Terminal",
-                            "name": "RSquare",
-                            "label": "']'",
-                            "occurrenceInParent": 1,
-                            "pattern": "]"
-                          }
-                        ]
-                      },
-                      {
-                        "type": "NonTerminal",
-                        "name": "variableDeclarators",
-                        "occurrenceInParent": 1
+                        "type": "Terminal",
+                        "name": "LSquare",
+                        "label": "'['",
+                        "occurrenceInParent": 1,
+                        "pattern": "\\["
                       },
                       {
                         "type": "Terminal",
-                        "name": "SemiColon",
-                        "label": "';'",
-                        "occurrenceInParent": 2,
-                        "pattern": ";"
+                        "name": "RSquare",
+                        "label": "']'",
+                        "occurrenceInParent": 1,
+                        "pattern": "]"
                       }
                     ]
                   },
                   {
-                    "type": "Flat",
-                    "definition": []
+                    "type": "NonTerminal",
+                    "name": "variableDeclarators",
+                    "occurrenceInParent": 1
+                  },
+                  {
+                    "type": "Terminal",
+                    "name": "SemiColon",
+                    "label": "';'",
+                    "occurrenceInParent": 2,
+                    "pattern": ";"
                   }
                 ]
               }
@@ -5165,6 +5178,28 @@
                 "label": "Identifier",
                 "occurrenceInParent": 1,
                 "pattern": "[a-zA-Z]\\w*"
+              },
+              {
+                "type": "Option",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "typeArguments",
+                    "occurrenceInParent": 1
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "Terminal",
+                "name": "Class",
+                "label": "'class'",
+                "occurrenceInParent": 1,
+                "pattern": "class"
               }
             ]
           },
@@ -5211,6 +5246,35 @@
                 "occurrenceInParent": 1
               }
             ]
+          }
+        ]
+      },
+      {
+        "type": "Alternation",
+        "definition": [
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "NonTerminal",
+                "name": "qualifiedExpressionRest",
+                "occurrenceInParent": 1
+              }
+            ]
+          },
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "NonTerminal",
+                "name": "methodReferenceRest",
+                "occurrenceInParent": 1
+              }
+            ]
+          },
+          {
+            "type": "Flat",
+            "definition": []
           }
         ]
       }
@@ -6636,42 +6700,67 @@
                     "definition": [
                       {
                         "type": "NonTerminal",
-                        "name": "typeType",
+                        "name": "annotation",
                         "occurrenceInParent": 1
-                      },
-                      {
-                        "type": "Repetition",
-                        "definition": [
-                          {
-                            "type": "Terminal",
-                            "name": "Dot",
-                            "label": "'.'",
-                            "occurrenceInParent": 1,
-                            "pattern": "\\."
-                          },
-                          {
-                            "type": "NonTerminal",
-                            "name": "classOrInterfaceType",
-                            "occurrenceInParent": 2
-                          }
-                        ]
                       },
                       {
                         "type": "Option",
                         "definition": [
                           {
-                            "type": "Terminal",
-                            "name": "Dot",
-                            "label": "'.'",
-                            "occurrenceInParent": 2,
-                            "pattern": "\\."
+                            "type": "Alternation",
+                            "definition": [
+                              {
+                                "type": "Flat",
+                                "definition": [
+                                  {
+                                    "type": "Terminal",
+                                    "name": "Identifier",
+                                    "label": "Identifier",
+                                    "occurrenceInParent": 1,
+                                    "pattern": "[a-zA-Z]\\w*"
+                                  },
+                                  {
+                                    "type": "Option",
+                                    "definition": [
+                                      {
+                                        "type": "NonTerminal",
+                                        "name": "typeArguments",
+                                        "occurrenceInParent": 1
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "Flat",
+                                "definition": [
+                                  {
+                                    "type": "NonTerminal",
+                                    "name": "primitiveType",
+                                    "occurrenceInParent": 1
+                                  }
+                                ]
+                              }
+                            ]
                           },
                           {
-                            "type": "Terminal",
-                            "name": "Class",
-                            "label": "'class'",
-                            "occurrenceInParent": 1,
-                            "pattern": "class"
+                            "type": "Repetition",
+                            "definition": [
+                              {
+                                "type": "Terminal",
+                                "name": "LSquare",
+                                "label": "'['",
+                                "occurrenceInParent": 1,
+                                "pattern": "\\["
+                              },
+                              {
+                                "type": "Terminal",
+                                "name": "RSquare",
+                                "label": "']'",
+                                "occurrenceInParent": 1,
+                                "pattern": "]"
+                              }
+                            ]
                           }
                         ]
                       }
@@ -6681,15 +6770,76 @@
                     "type": "Flat",
                     "definition": [
                       {
-                        "type": "Terminal",
-                        "name": "Void",
-                        "label": "'void'",
-                        "occurrenceInParent": 1,
-                        "pattern": "void"
+                        "type": "Alternation",
+                        "definition": [
+                          {
+                            "type": "Flat",
+                            "definition": [
+                              {
+                                "type": "Terminal",
+                                "name": "Identifier",
+                                "label": "Identifier",
+                                "occurrenceInParent": 2,
+                                "pattern": "[a-zA-Z]\\w*"
+                              },
+                              {
+                                "type": "Option",
+                                "definition": [
+                                  {
+                                    "type": "NonTerminal",
+                                    "name": "typeArguments",
+                                    "occurrenceInParent": 2
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": "Flat",
+                            "definition": [
+                              {
+                                "type": "NonTerminal",
+                                "name": "primitiveType",
+                                "occurrenceInParent": 2
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "Repetition",
+                        "definition": [
+                          {
+                            "type": "Terminal",
+                            "name": "LSquare",
+                            "label": "'['",
+                            "occurrenceInParent": 2,
+                            "pattern": "\\["
+                          },
+                          {
+                            "type": "Terminal",
+                            "name": "RSquare",
+                            "label": "']'",
+                            "occurrenceInParent": 2,
+                            "pattern": "]"
+                          }
+                        ]
                       }
                     ]
                   }
                 ]
+              }
+            ]
+          },
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "Terminal",
+                "name": "Void",
+                "label": "'void'",
+                "occurrenceInParent": 1,
+                "pattern": "void"
               }
             ]
           },

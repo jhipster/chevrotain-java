@@ -11,7 +11,31 @@ describe("qualifiedExpressionRest", () => {
         type: "IDENTIFIER",
         value: "a"
       },
-      parameters: undefined
+      parameters: []
+    });
+  });
+
+  it("multiple methodCalls", () => {
+    expect(
+      Parser.parse(".a().b()", parser => parser.qualifiedExpressionRest())
+    ).toEqual({
+      type: "QUALIFIED_EXPRESSION",
+      expression: {
+        type: "METHOD_CALL",
+        name: {
+          type: "IDENTIFIER",
+          value: "a"
+        },
+        parameters: []
+      },
+      rest: {
+        type: "METHOD_CALL",
+        name: {
+          type: "IDENTIFIER",
+          value: "b"
+        },
+        parameters: []
+      }
     });
   });
 
@@ -37,6 +61,14 @@ describe("qualifiedExpressionRest", () => {
       Parser.parse(".super", parser => parser.qualifiedExpressionRest())
     ).toEqual({
       type: "SUPER"
+    });
+  });
+
+  it("class", () => {
+    expect(
+      Parser.parse(".class", parser => parser.qualifiedExpressionRest())
+    ).toEqual({
+      type: "CLASS"
     });
   });
 

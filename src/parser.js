@@ -483,8 +483,12 @@ class SelectParser extends chevrotain.Parser {
 
     // methodBody
     // : block
+    // | ";"
     $.RULE("methodBody", () => {
-      $.SUBRULE($.block);
+      $.OR([
+        { ALT: () => $.SUBRULE($.block) },
+        { ALT: () => $.CONSUME(tokens.SemiColon) }
+      ]);
     });
 
     // enumDeclaration
@@ -985,19 +989,6 @@ class SelectParser extends chevrotain.Parser {
           }
         }
       ]);
-      // $.OPTION(() => {
-      //   $.SUBRULE($.annotation);
-      // });
-      // $.OPTION(() => {
-      //   $.OR([
-      //     { ALT: () => $.SUBRULE($.classOrInterfaceType) },
-      //     { ALT: () => $.SUBRULE($.primitiveType) }
-      //   ]);
-      //   $.MANY(() => {
-      //     $.CONSUME(tokens.LSquare);
-      //     $.CONSUME(tokens.RSquare);
-      //   });
-      // });
     });
 
     // typeTypeOrVoid
@@ -1144,9 +1135,6 @@ class SelectParser extends chevrotain.Parser {
     // | identifierStatement
     // | expressionStatement
     $.RULE("blockStatement", () => {
-      // localVariableDeclaration | localTypeDeclaration | localTypeDeclaration
-      // let localDeclaration = false;
-      let identifierStatement = false;
       $.MANY(() => {
         $.SUBRULE($.classOrInterfaceModifier);
       });
@@ -1157,68 +1145,21 @@ class SelectParser extends chevrotain.Parser {
             $.OR2([
               {
                 ALT: () => {
-                  const expression = $.SUBRULE($.expression);
-                  // if expression is only a primitiveType exit out
-                  const isPrimitiveType =
-                    expression.children.atomic[0].children.primary.length ===
-                      1 &&
-                    expression.children.atomic[0].children.primary[0].children
-                      .typeType.length === 1 &&
-                    expression.children.atomic[0].children.primary[0].children
-                      .typeType[0].children.annotation.length === 0 &&
-                    expression.children.atomic[0].children.primary[0].children
-                      .typeType[0].children.classOrInterfaceType.length === 0 &&
-                    expression.children.atomic[0].children.primary[0].children
-                      .typeType[0].children.LSquare.length === 0 &&
-                    expression.children.atomic[0].children.primary[0].children
-                      .typeType[0].children.primitiveType.length === 1;
-
-                  if (isPrimitiveType) {
-                    return;
-                  }
-
-                  const isIdentifier =
-                    expression.children.atomic[0].children.primary.length ===
-                      1 &&
-                    expression.children.atomic[0].children.primary[0].children
-                      .typeType.length === 1 &&
-                    expression.children.atomic[0].children.primary[0].children
-                      .typeType[0].children.annotation.length === 0 &&
-                    expression.children.atomic[0].children.primary[0].children
-                      .typeType[0].children.classOrInterfaceType.length === 1 &&
-                    expression.children.atomic[0].children.primary[0].children
-                      .typeType[0].children.LSquare.length === 0 &&
-                    expression.children.atomic[0].children.primary[0].children
-                      .typeType[0].children.primitiveType.length === 0 &&
-                    expression.children.atomic[0].children.primary[0].children
-                      .typeType[0].children.classOrInterfaceType[0].children.Dot
-                      .length === 0 &&
-                    expression.children.atomic[0].children.primary[0].children
-                      .typeType[0].children.classOrInterfaceType[0].children
-                      .classOrInterfaceTypeElement.length === 1 &&
-                    expression.children.atomic[0].children.primary[0].children
-                      .typeType[0].children.classOrInterfaceType[0].children
-                      .classOrInterfaceTypeElement[0].children.typeArguments
-                      .length === 0;
+                  $.SUBRULE($.expression);
 
                   $.OR3([
                     {
                       // identifierStatement
-                      GATE: () => isIdentifier,
                       ALT: () => {
                         $.CONSUME(tokens.Colon);
                         $.SUBRULE($.statement);
-                        identifierStatement = true;
                       }
                     },
                     {
                       // expressionStatement
-                      ALT: () => {
-                        $.CONSUME(tokens.SemiColon);
-                      }
+                      ALT: () => $.CONSUME(tokens.SemiColon)
                     },
                     {
-                      GATE: () => isIdentifier,
                       ALT: () => {
                         $.OPTION(() => {
                           $.SUBRULE($.typeArguments);
@@ -1235,35 +1176,23 @@ class SelectParser extends chevrotain.Parser {
                   ]);
                 }
               }
-              // { ALT: () => $.SUBRULE($.primitiveType) }
             ]);
-            $.OR4([
-              {
-                GATE: () => !identifierStatement,
-                ALT: () => {
-                  $.MANY3(() => {
-                    $.CONSUME(tokens.LSquare);
-                    $.CONSUME(tokens.RSquare);
-                  });
-                  $.SUBRULE($.variableDeclarators);
-                  $.CONSUME2(tokens.SemiColon);
-                }
-              },
-              {
-                ALT: () => {
-                  // identifierStatement
-                }
-              }
-            ]);
+            $.OPTION2(() => {
+              // if not identifier statement
+              $.MANY3(() => {
+                $.CONSUME(tokens.LSquare);
+                $.CONSUME(tokens.RSquare);
+              });
+              $.SUBRULE($.variableDeclarators);
+              $.CONSUME2(tokens.SemiColon);
+            });
           }
         },
         // localTypeDeclaration
         { ALT: () => $.SUBRULE($.classDeclaration) },
         // localTypeDeclaration
         { ALT: () => $.SUBRULE($.interfaceDeclaration) },
-        {
-          ALT: () => $.SUBRULE($.statementWithStartingToken)
-        }
+        { ALT: () => $.SUBRULE($.statementWithStartingToken) }
       ]);
     });
 
@@ -1778,31 +1707,11 @@ class SelectParser extends chevrotain.Parser {
           ALT: () => {
             $.SUBRULE($.atomic);
             $.OR2([
-              {
-                ALT: () => {
-                  $.SUBRULE($.instanceofExpressionRest);
-                }
-              },
-              {
-                ALT: () => {
-                  $.SUBRULE($.squareExpressionRest);
-                }
-              },
-              {
-                ALT: () => {
-                  $.SUBRULE($.postfixExpressionRest);
-                }
-              },
-              {
-                ALT: () => {
-                  $.SUBRULE($.ifElseExpressionRest);
-                }
-              },
-              {
-                ALT: () => {
-                  $.SUBRULE($.qualifiedExpressionRest);
-                }
-              },
+              { ALT: () => $.SUBRULE($.instanceofExpressionRest) },
+              { ALT: () => $.SUBRULE($.squareExpressionRest) },
+              { ALT: () => $.SUBRULE($.postfixExpressionRest) },
+              { ALT: () => $.SUBRULE($.ifElseExpressionRest) },
+              { ALT: () => $.SUBRULE($.qualifiedExpressionRest) },
               {
                 // lambdaExpression
                 ALT: () => {
@@ -1810,11 +1719,7 @@ class SelectParser extends chevrotain.Parser {
                   $.SUBRULE($.lambdaBody);
                 }
               },
-              {
-                ALT: () => {
-                  $.SUBRULE($.methodReferenceRest);
-                }
-              },
+              { ALT: () => $.SUBRULE($.methodReferenceRest) },
               {
                 ALT: () => {
                   $.MANY(() => {
@@ -1904,34 +1809,28 @@ class SelectParser extends chevrotain.Parser {
     $.RULE("qualifiedExpressionRest", () => {
       $.CONSUME(tokens.Dot);
       $.OR([
-        {
-          ALT: () => {
-            $.SUBRULE($.methodCall);
-          }
-        },
+        { ALT: () => $.SUBRULE($.methodCall) },
         {
           ALT: () => {
             $.CONSUME(tokens.Identifier);
+            $.OPTION(() => {
+              $.SUBRULE($.typeArguments);
+            });
           }
         },
+        { ALT: () => $.CONSUME(tokens.Class) },
+        { ALT: () => $.CONSUME(tokens.This) },
+        { ALT: () => $.CONSUME(tokens.Super) },
+        { ALT: () => $.SUBRULE($.creatorOptionalNonWildcardInnerCreator) },
+        { ALT: () => $.SUBRULE($.explicitGenericInvocation) }
+      ]);
+
+      $.OR2([
+        { ALT: () => $.SUBRULE($.qualifiedExpressionRest) },
+        { ALT: () => $.SUBRULE($.methodReferenceRest) },
         {
           ALT: () => {
-            $.CONSUME(tokens.This);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Super);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.creatorOptionalNonWildcardInnerCreator);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.explicitGenericInvocation);
+            // or nothing
           }
         }
       ]);
@@ -2503,7 +2402,7 @@ class SelectParser extends chevrotain.Parser {
     // | SUPER
     // | literal
     // | IDENTIFIER
-    // | typeTypeOrVoid '.' CLASS
+    //// | typeTypeOrVoid '.' CLASS
     // | nonWildcardTypeArguments (explicitGenericInvocationSuffix | THIS arguments)
     $.RULE("primary", () => {
       $.OR([
@@ -2515,32 +2414,53 @@ class SelectParser extends chevrotain.Parser {
             $.OR2([
               {
                 ALT: () => {
-                  $.SUBRULE($.typeType);
-                  $.MANY({
-                    GATE: () => this.LA(2).tokenType !== tokens.Class,
-                    DEF: () => {
-                      $.CONSUME(tokens.Dot);
-                      $.SUBRULE2($.classOrInterfaceType);
-                    }
-                  });
+                  $.SUBRULE($.annotation);
                   $.OPTION(() => {
-                    $.CONSUME2(tokens.Dot);
-                    $.CONSUME(tokens.Class);
+                    $.OR3([
+                      {
+                        ALT: () => {
+                          $.CONSUME(tokens.Identifier);
+                          $.OPTION2(() => {
+                            $.SUBRULE($.typeArguments);
+                          });
+                        }
+                      },
+                      { ALT: () => $.SUBRULE($.primitiveType) }
+                    ]);
+                    $.MANY(() => {
+                      $.CONSUME(tokens.LSquare);
+                      $.CONSUME(tokens.RSquare);
+                    });
                   });
                 }
               },
               {
                 ALT: () => {
-                  $.CONSUME(tokens.Void);
+                  $.OR4([
+                    {
+                      ALT: () => {
+                        $.CONSUME2(tokens.Identifier);
+                        $.OPTION3(() => {
+                          $.SUBRULE2($.typeArguments);
+                        });
+                      }
+                    },
+                    { ALT: () => $.SUBRULE2($.primitiveType) }
+                  ]);
+                  $.MANY2(() => {
+                    $.CONSUME2(tokens.LSquare);
+                    $.CONSUME2(tokens.RSquare);
+                  });
                 }
               }
             ]);
           }
         },
+        { ALT: () => $.CONSUME(tokens.Void) },
         {
           ALT: () => {
             $.SUBRULE($.nonWildcardTypeArguments);
-            $.OR3([
+            $.OR5([
               { ALT: () => $.SUBRULE($.explicitGenericInvocationSuffix) },
               {
                 ALT: () => {

@@ -402,7 +402,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
           if (annotations.length !== 0 || cntSquares !== 0) {
             typeType = {
               type: "TYPE_TYPE",
-              annotations: annotations,
+              modifiers: annotations,
               value: typeType,
               cntSquares: cntSquares
             };
@@ -545,7 +545,12 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   methodBody(ctx) {
-    return this.visit(ctx.block);
+    if (ctx.block.length > 0) {
+      return this.visit(ctx.block);
+    }
+    if (ctx.SemiColon.length > 0) {
+      return undefined;
+    }
   }
 
   enumDeclaration(ctx) {
@@ -608,7 +613,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       type: "INTERFACE_DECLARATION",
       name: name,
       typeParameters: typeParameters,
-      typeList: typeList,
+      extends: typeList,
       body: body
     };
   }
@@ -951,7 +956,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
     return {
       type: "TYPE_TYPE",
-      annotations: annotations,
+      modifiers: annotations,
       value: value,
       cntSquares: cntSquares
     };
@@ -1074,7 +1079,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
     return {
       type: "FORMAL_PARAMETERS",
-      parameters: parameters
+      parameters: parameters ? parameters : []
     };
   }
 
@@ -1092,10 +1097,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       }
     }
 
-    return {
-      type: "FORMAL_PARAMETER_LIST",
-      formalParameters: formalParameters
-    };
+    return formalParameters;
   }
 
   formalParameter(ctx) {
@@ -1127,48 +1129,63 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   blockStatement(ctx) {
-    if (ctx.Colon.length > 0) {
-      if (ctx.classOrInterfaceModifier.length > 0) {
-        throw new MismatchedTokenException(
-          "Identifier statement is not allowed to have annotations or modifiers.",
-          undefined
-        );
-      }
-      const identifier = this.visit(ctx.expression);
-      const statement = this.visit(ctx.statement);
-
-      return {
-        type: "IDENTIFIER_STATEMENT",
-        identifier: identifier,
-        statement: statement
-      };
-    }
-
-    if (
-      ctx.classDeclaration.length > 0 ||
-      ctx.interfaceDeclaration.length > 0
-    ) {
-      // localTypeDeclaration
-      const modifiers = ctx.classOrInterfaceModifier.map(modifier =>
-        this.visit(modifier)
-      );
-      let declaration = undefined;
-      if (ctx.classDeclaration.length > 0) {
-        declaration = this.visit(ctx.classDeclaration);
-      }
-      if (ctx.interfaceDeclaration.length > 0) {
-        declaration = this.visit(ctx.interfaceDeclaration);
-      }
-
-      return {
-        type: "LOCAL_TYPE_DECLARATION",
-        modifiers: modifiers,
-        declaration: declaration
-      };
-    }
-
     if (ctx.expression.length > 0) {
       const expression = this.visit(ctx.expression);
+
+      if (expression.type === "PRIMITIVE_TYPE") {
+        // if expression is only a primitiveType nothing else is allowed with it
+        if (ctx.Colon.length > 0) {
+          throw new MismatchedTokenException(
+            "Primitive type with colon found",
+            undefined
+          );
+        }
+        if (ctx.typeArguments.length > 0 || ctx.Dot.length > 0) {
+          throw new MismatchedTokenException(
+            "Primitive type with type arguments or dot found",
+            undefined
+          );
+        }
+      }
+
+      if (expression.type !== "IDENTIFIER") {
+        // if expression is only a primitiveType nothing else is allowed with it
+        if (ctx.Colon.length > 0) {
+          throw new MismatchedTokenException(
+            "Only identifier is allowed with colon",
+            undefined
+          );
+        }
+        if (ctx.typeArguments.length > 0 || ctx.Dot.length > 0) {
+          throw new MismatchedTokenException(
+            "Only identifier is allowed with type arguments or dot",
+            undefined
+          );
+        }
+      }
+
+      // identifier statement
+      if (expression.type === "IDENTIFIER" || ctx.Colon.length > 0) {
+        if (ctx.classOrInterfaceModifier.length > 0) {
+          throw new MismatchedTokenException(
+            "Identifier statement is not allowed to have annotations or modifiers.",
+            undefined
+          );
+        }
+        if (ctx.LSquare.length > 0 || ctx.variableDeclarators.length > 0) {
+          throw new MismatchedTokenException(
+            "Identifier statement is not allowed to have squares or variable declarators",
+            undefined
+          );
+        }
+        const statement = this.visit(ctx.statement);
+
+        return {
+          type: "IDENTIFIER_STATEMENT",
+          identifier: expression,
+          statement: statement
+        };
+      }
 
       if (
         expression.type === "IDENTIFIER" ||
@@ -1204,10 +1221,35 @@ class SQLToAstVisitor extends BaseSQLVisitor {
         };
       }
 
-      // expressionStatement
+      if (expression.type === "IDENTIFIER" || ctx.SemiColon.length > 0) {
+        // expressionStatement
+        return {
+          type: "EXPRESSION_STATEMENT",
+          expression: expression
+        };
+      }
+    }
+
+    if (
+      ctx.classDeclaration.length > 0 ||
+      ctx.interfaceDeclaration.length > 0
+    ) {
+      // localTypeDeclaration
+      const modifiers = ctx.classOrInterfaceModifier.map(modifier =>
+        this.visit(modifier)
+      );
+      let declaration = undefined;
+      if (ctx.classDeclaration.length > 0) {
+        declaration = this.visit(ctx.classDeclaration);
+      }
+      if (ctx.interfaceDeclaration.length > 0) {
+        declaration = this.visit(ctx.interfaceDeclaration);
+      }
+
       return {
-        type: "EXPRESSION_STATEMENT",
-        expression: expression
+        type: "LOCAL_TYPE_DECLARATION",
+        modifiers: modifiers,
+        declaration: declaration
       };
     }
   }
@@ -1762,7 +1804,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
     return {
       type: "EXPRESSION_LIST",
-      list: list
+      list: list ? list : []
     };
   }
 
@@ -1773,7 +1815,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     return {
       type: "METHOD_CALL",
       name: name,
-      parameters: expressionList
+      parameters: expressionList ? expressionList : []
     };
   }
 
@@ -2070,33 +2112,64 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   qualifiedExpressionRest(ctx) {
+    let expression = undefined;
+
     if (ctx.Identifier.length > 0) {
-      return this.identifier(ctx.Identifier[0]);
+      expression = this.identifier(ctx.Identifier[0]);
     }
 
     if (ctx.methodCall.length > 0) {
-      return this.visit(ctx.methodCall);
+      expression = this.visit(ctx.methodCall);
     }
 
     if (ctx.This.length > 0) {
-      return {
+      expression = {
         type: "THIS"
       };
     }
 
     if (ctx.Super.length > 0) {
-      return {
+      expression = {
         type: "SUPER"
       };
     }
 
+    if (ctx.Class.length > 0) {
+      expression = {
+        type: "CLASS"
+      };
+    }
+
     if (ctx.creatorOptionalNonWildcardInnerCreator.length > 0) {
-      return this.visit(ctx.creatorOptionalNonWildcardInnerCreator);
+      expression = this.visit(ctx.creatorOptionalNonWildcardInnerCreator);
     }
 
     if (ctx.explicitGenericInvocation.length > 0) {
-      return this.visit(ctx.explicitGenericInvocation);
+      expression = this.visit(ctx.explicitGenericInvocation);
     }
+
+    if (ctx.qualifiedExpressionRest.length > 0) {
+      const rest = this.visit(ctx.qualifiedExpressionRest);
+
+      return {
+        type: "QUALIFIED_EXPRESSION",
+        expression: expression,
+        rest: rest
+      };
+    }
+
+    if (ctx.methodReferenceRest.length > 0) {
+      const rest = this.visit(ctx.methodReferenceRest);
+
+      return {
+        type: "METHOD_REFERENCE",
+        reference: expression,
+        typeArguments: rest.typeArguments,
+        name: rest.name
+      };
+    }
+
+    return expression;
   }
 
   parExpressionOrCastExpressionOrLambdaExpression(ctx) {
@@ -2107,7 +2180,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       if (ctx.variableDeclaratorId.length > 0) {
         parameters = {
           type: "FORMAL_PARAMETERS",
-          parameters: undefined
+          parameters: []
         };
       } else {
         parameters = {
@@ -2117,10 +2190,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       }
       if (ctx.expression.length > 0) {
         if (ctx.variableDeclaratorId.length > 0) {
-          parameters.parameters = {
-            type: "FORMAL_PARAMETER_LIST",
-            formalParameters: []
-          };
+          parameters.parameters = [];
 
           for (let i = 0; i < ctx.expression.length; i++) {
             const typeType = this.visit(ctx.expression[i]);
@@ -2144,7 +2214,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
               });
             }
 
-            parameters.parameters.formalParameters.push({
+            parameters.parameters.push({
               type: "FORMAL_PARAMETER",
               modifiers: modifiers,
               typeType: typeType,
@@ -2330,7 +2400,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
       return {
         type: "FORMAL_PARAMETERS",
-        parameters: parameters
+        parameters: parameters ? parameters : []
       };
     }
 
@@ -2346,7 +2416,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     if (ctx.LBrace.length > 0) {
       return {
         type: "FORMAL_PARAMETERS",
-        parameters: undefined
+        parameters: []
       };
     }
   }
@@ -2581,30 +2651,47 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       };
     }
 
-    if (ctx.typeType.length > 0) {
-      const typeType = this.visit(ctx.typeType);
-      if (ctx.classOrInterfaceType.length > 0) {
-        const classOrInterfaceTypes = this.visit(ctx.classOrInterfaceType);
-        for (let i = 0; i < classOrInterfaceTypes.length; i++) {
-          typeType.elements.push(classOrInterfaceTypes[i]);
-        }
-      }
+    const annotations = ctx.annotation.map(annotation =>
+      this.visit(annotation)
+    );
+    const cntSquares = ctx.LSquare.length;
 
-      if (ctx.Class.length > 0) {
-        if (typeType.type === "IDENTIFIER") {
-          typeType.value += ".class";
-        } else if (
-          typeType.type === "TYPE_TYPE" &&
-          typeType.value.type === "IDENTIFIER"
-        ) {
-          typeType.value.value += ".class";
-        } else if (typeType.type === "CLASS_OR_INTERFACE_TYPE") {
-          typeType.elements[typeType.elements.length - 1].value += ".class";
-        }
+    let value = undefined;
+    if (ctx.primitiveType.length > 0) {
+      value = this.visit(ctx.primitiveType);
+      // if empty typeType return child
+      if (annotations.length === 0 && cntSquares === 0) {
+        return value;
       }
+    } else if (ctx.Identifier && ctx.Identifier.length > 0) {
+      const name = this.identifier(ctx.Identifier[0]);
+      const typeArguments = this.visit(ctx.typeArguments);
 
-      return typeType;
+      if (!typeArguments) {
+        value = name;
+      } else {
+        value = {
+          type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
+          name: name,
+          typeArguments: typeArguments
+        };
+      }
     }
+
+    if (!value) {
+      return annotations[0];
+    }
+
+    if (annotations.length === 0 && cntSquares === 0) {
+      return value;
+    }
+
+    return {
+      type: "TYPE_TYPE",
+      modifiers: annotations,
+      value: value,
+      cntSquares: cntSquares
+    };
   }
 
   literal(ctx) {

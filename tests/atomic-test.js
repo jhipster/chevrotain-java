@@ -41,7 +41,7 @@ describe("atomic", () => {
         type: "IDENTIFIER",
         value: "a"
       },
-      parameters: undefined
+      parameters: []
     });
   });
 });

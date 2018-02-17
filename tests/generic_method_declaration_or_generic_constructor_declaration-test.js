@@ -34,7 +34,7 @@ describe("genericMethodDeclarationOrGenericConstructorDeclaration", () => {
         },
         parameters: {
           type: "FORMAL_PARAMETERS",
-          parameters: undefined
+          parameters: []
         },
         cntSquares: 0,
         throws: undefined,
@@ -75,7 +75,7 @@ describe("genericMethodDeclarationOrGenericConstructorDeclaration", () => {
         },
         parameters: {
           type: "FORMAL_PARAMETERS",
-          parameters: undefined
+          parameters: []
         },
         throws: undefined,
         body: {

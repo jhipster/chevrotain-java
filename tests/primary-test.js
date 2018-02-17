@@ -34,72 +34,6 @@ describe("primary", () => {
     });
   });
 
-  it("identifier.identifier", () => {
-    expect(Parser.parse("A.B", parser => parser.primary())).toEqual({
-      type: "CLASS_OR_INTERFACE_TYPE",
-      elements: [
-        {
-          type: "IDENTIFIER",
-          value: "A"
-        },
-        {
-          type: "IDENTIFIER",
-          value: "B"
-        }
-      ]
-    });
-  });
-
-  it("identifier.class", () => {
-    expect(Parser.parse("A.class", parser => parser.primary())).toEqual({
-      type: "IDENTIFIER",
-      value: "A.class"
-    });
-  });
-
-  it("identifier.class with annotation", () => {
-    expect(Parser.parse("@Bean A.class", parser => parser.primary())).toEqual({
-      type: "TYPE_TYPE",
-      annotations: [
-        {
-          type: "ANNOTATION",
-          name: {
-            type: "QUALIFIED_NAME",
-            name: [
-              {
-                type: "IDENTIFIER",
-                value: "Bean"
-              }
-            ]
-          },
-          hasBraces: false,
-          value: undefined
-        }
-      ],
-      value: {
-        type: "IDENTIFIER",
-        value: "A.class"
-      },
-      cntSquares: 0
-    });
-  });
-
-  it("identifier.identifier.class", () => {
-    expect(Parser.parse("A.B.class", parser => parser.primary())).toEqual({
-      type: "CLASS_OR_INTERFACE_TYPE",
-      elements: [
-        {
-          type: "IDENTIFIER",
-          value: "A"
-        },
-        {
-          type: "IDENTIFIER",
-          value: "B.class"
-        }
-      ]
-    });
-  });
-
   it("identifier with typeArguments", () => {
     expect(Parser.parse("A<B>", parser => parser.primary())).toEqual({
       type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
@@ -147,6 +81,33 @@ describe("primary", () => {
           type: "ARGUMENTS"
         }
       }
+    });
+  });
+
+  it("identifier with annotation", () => {
+    expect(Parser.parse("@Bean A", parser => parser.expression())).toEqual({
+      type: "TYPE_TYPE",
+      modifiers: [
+        {
+          type: "ANNOTATION",
+          name: {
+            type: "QUALIFIED_NAME",
+            name: [
+              {
+                type: "IDENTIFIER",
+                value: "Bean"
+              }
+            ]
+          },
+          hasBraces: false,
+          value: undefined
+        }
+      ],
+      value: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
+      cntSquares: 0
     });
   });
 });

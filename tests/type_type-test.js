@@ -19,7 +19,7 @@ describe("typeType", () => {
   it("identifier with annotation", () => {
     expect(Parser.parse("@Bean boolean", parser => parser.typeType())).toEqual({
       type: "TYPE_TYPE",
-      annotations: [
+      modifiers: [
         {
           type: "ANNOTATION",
           name: {
@@ -45,7 +45,7 @@ describe("typeType", () => {
   it("one square", () => {
     expect(Parser.parse("boolean[]", parser => parser.typeType())).toEqual({
       type: "TYPE_TYPE",
-      annotations: [],
+      modifiers: [],
       value: {
         type: "PRIMITIVE_TYPE",
         value: "boolean"
@@ -57,7 +57,7 @@ describe("typeType", () => {
   it("multiple square", () => {
     expect(Parser.parse("boolean[][]", parser => parser.typeType())).toEqual({
       type: "TYPE_TYPE",
-      annotations: [],
+      modifiers: [],
       value: {
         type: "PRIMITIVE_TYPE",
         value: "boolean"

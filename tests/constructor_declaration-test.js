@@ -13,7 +13,7 @@ describe("constructorDeclaration", () => {
       },
       parameters: {
         type: "FORMAL_PARAMETERS",
-        parameters: undefined
+        parameters: []
       },
       throws: undefined,
       body: {
@@ -36,7 +36,7 @@ describe("constructorDeclaration", () => {
       },
       parameters: {
         type: "FORMAL_PARAMETERS",
-        parameters: undefined
+        parameters: []
       },
       throws: {
         type: "QUALIFIED_NAME_LIST",

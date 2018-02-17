@@ -9,7 +9,7 @@ describe("lambdaExpression", () => {
       type: "LAMBDA_EXPRESSION",
       parameters: {
         type: "FORMAL_PARAMETERS",
-        parameters: undefined
+        parameters: []
       },
       body: {
         type: "BLOCK",

@@ -18,7 +18,7 @@ describe("memberDeclaration", () => {
       },
       parameters: {
         type: "FORMAL_PARAMETERS",
-        parameters: undefined
+        parameters: []
       },
       cntSquares: 0,
       throws: undefined,
@@ -46,7 +46,7 @@ describe("memberDeclaration", () => {
       },
       parameters: {
         type: "FORMAL_PARAMETERS",
-        parameters: undefined
+        parameters: []
       },
       cntSquares: 0,
       throws: undefined,
@@ -66,7 +66,7 @@ describe("memberDeclaration", () => {
       type: "METHOD_DECLARATION",
       typeType: {
         type: "TYPE_TYPE",
-        annotations: [],
+        modifiers: [],
         value: {
           type: "IDENTIFIER",
           value: "A"
@@ -79,7 +79,7 @@ describe("memberDeclaration", () => {
       },
       parameters: {
         type: "FORMAL_PARAMETERS",
-        parameters: undefined
+        parameters: []
       },
       cntSquares: 0,
       throws: undefined,
@@ -124,7 +124,7 @@ describe("memberDeclaration", () => {
       },
       parameters: {
         type: "FORMAL_PARAMETERS",
-        parameters: undefined
+        parameters: []
       },
       cntSquares: 0,
       throws: undefined,
@@ -152,7 +152,7 @@ describe("memberDeclaration", () => {
       },
       parameters: {
         type: "FORMAL_PARAMETERS",
-        parameters: undefined
+        parameters: []
       },
       cntSquares: 0,
       throws: undefined,
@@ -179,7 +179,7 @@ describe("memberDeclaration", () => {
       },
       parameters: {
         type: "FORMAL_PARAMETERS",
-        parameters: undefined
+        parameters: []
       },
       cntSquares: 1,
       throws: undefined,
@@ -206,7 +206,7 @@ describe("memberDeclaration", () => {
       },
       parameters: {
         type: "FORMAL_PARAMETERS",
-        parameters: undefined
+        parameters: []
       },
       cntSquares: 2,
       throws: undefined,
@@ -233,7 +233,7 @@ describe("memberDeclaration", () => {
       },
       parameters: {
         type: "FORMAL_PARAMETERS",
-        parameters: undefined
+        parameters: []
       },
       cntSquares: 0,
       throws: {
@@ -270,7 +270,7 @@ describe("memberDeclaration", () => {
       },
       parameters: {
         type: "FORMAL_PARAMETERS",
-        parameters: undefined
+        parameters: []
       },
       throws: undefined,
       body: {
@@ -293,7 +293,7 @@ describe("memberDeclaration", () => {
       },
       parameters: {
         type: "FORMAL_PARAMETERS",
-        parameters: undefined
+        parameters: []
       },
       throws: {
         type: "QUALIFIED_NAME_LIST",

@@ -29,7 +29,7 @@ describe("enumBodyDeclarations", () => {
             },
             parameters: {
               type: "FORMAL_PARAMETERS",
-              parameters: undefined
+              parameters: []
             },
             cntSquares: 0,
             throws: undefined,
@@ -63,7 +63,7 @@ describe("enumBodyDeclarations", () => {
             },
             parameters: {
               type: "FORMAL_PARAMETERS",
-              parameters: undefined
+              parameters: []
             },
             cntSquares: 0,
             throws: undefined,

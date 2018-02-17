@@ -12,7 +12,7 @@ describe("lambdaParameters", () => {
   it("empty parameters", () => {
     expect(Parser.parse("()", parser => parser.lambdaParameters())).toEqual({
       type: "FORMAL_PARAMETERS",
-      parameters: undefined
+      parameters: []
     });
   });
 
@@ -21,28 +21,25 @@ describe("lambdaParameters", () => {
       Parser.parse("(boolean a)", parser => parser.lambdaParameters())
     ).toEqual({
       type: "FORMAL_PARAMETERS",
-      parameters: {
-        type: "FORMAL_PARAMETER_LIST",
-        formalParameters: [
-          {
-            type: "FORMAL_PARAMETER",
-            modifiers: [],
-            dotDotDot: false,
-            typeType: {
-              type: "PRIMITIVE_TYPE",
-              value: "boolean"
-            },
+      parameters: [
+        {
+          type: "FORMAL_PARAMETER",
+          modifiers: [],
+          dotDotDot: false,
+          typeType: {
+            type: "PRIMITIVE_TYPE",
+            value: "boolean"
+          },
+          id: {
+            type: "VARIABLE_DECLARATOR_ID",
             id: {
-              type: "VARIABLE_DECLARATOR_ID",
-              id: {
-                type: "IDENTIFIER",
-                value: "a"
-              },
-              cntSquares: 0
-            }
+              type: "IDENTIFIER",
+              value: "a"
+            },
+            cntSquares: 0
           }
-        ]
-      }
+        }
+      ]
     });
   });
 

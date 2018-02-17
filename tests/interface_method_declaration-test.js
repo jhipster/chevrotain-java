@@ -18,7 +18,7 @@ describe("interfaceMethodDeclaration", () => {
       },
       parameters: {
         type: "FORMAL_PARAMETERS",
-        parameters: undefined
+        parameters: []
       },
       cntSquares: 0,
       throws: undefined,
@@ -47,7 +47,7 @@ describe("interfaceMethodDeclaration", () => {
       },
       parameters: {
         type: "FORMAL_PARAMETERS",
-        parameters: undefined
+        parameters: []
       },
       cntSquares: 0,
       throws: undefined,
@@ -79,7 +79,7 @@ describe("interfaceMethodDeclaration", () => {
       },
       parameters: {
         type: "FORMAL_PARAMETERS",
-        parameters: undefined
+        parameters: []
       },
       cntSquares: 0,
       throws: undefined,
@@ -121,7 +121,7 @@ describe("interfaceMethodDeclaration", () => {
       },
       parameters: {
         type: "FORMAL_PARAMETERS",
-        parameters: undefined
+        parameters: []
       },
       cntSquares: 0,
       throws: undefined,
@@ -150,7 +150,7 @@ describe("interfaceMethodDeclaration", () => {
       },
       parameters: {
         type: "FORMAL_PARAMETERS",
-        parameters: undefined
+        parameters: []
       },
       cntSquares: 1,
       throws: undefined,
@@ -179,7 +179,7 @@ describe("interfaceMethodDeclaration", () => {
       },
       parameters: {
         type: "FORMAL_PARAMETERS",
-        parameters: undefined
+        parameters: []
       },
       cntSquares: 2,
       throws: undefined,
@@ -208,7 +208,7 @@ describe("interfaceMethodDeclaration", () => {
       },
       parameters: {
         type: "FORMAL_PARAMETERS",
-        parameters: undefined
+        parameters: []
       },
       cntSquares: 0,
       throws: {
@@ -263,7 +263,7 @@ describe("interfaceMethodDeclaration", () => {
       },
       parameters: {
         type: "FORMAL_PARAMETERS",
-        parameters: undefined
+        parameters: []
       },
       cntSquares: 0,
       throws: undefined,

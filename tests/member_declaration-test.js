@@ -16,7 +16,7 @@ describe("memberDeclaration", () => {
       },
       parameters: {
         type: "FORMAL_PARAMETERS",
-        parameters: undefined
+        parameters: []
       },
       cntSquares: 0,
       throws: undefined,
@@ -38,7 +38,7 @@ describe("memberDeclaration", () => {
       },
       parameters: {
         type: "FORMAL_PARAMETERS",
-        parameters: undefined
+        parameters: []
       },
       throws: undefined,
       body: {
@@ -142,7 +142,7 @@ describe("memberDeclaration", () => {
         },
         parameters: {
           type: "FORMAL_PARAMETERS",
-          parameters: undefined
+          parameters: []
         },
         cntSquares: 0,
         throws: undefined,

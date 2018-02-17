@@ -81,7 +81,25 @@ describe("expression", () => {
           type: "IDENTIFIER",
           value: "a"
         },
-        parameters: undefined
+        parameters: []
+      }
+    });
+  });
+
+  it("qualifiedExpression with starting identifier", () => {
+    expect(Parser.parse("a.b()", parser => parser.expression())).toEqual({
+      type: "QUALIFIED_EXPRESSION",
+      expression: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
+      rest: {
+        type: "METHOD_CALL",
+        name: {
+          type: "IDENTIFIER",
+          value: "b"
+        },
+        parameters: []
       }
     });
   });
@@ -186,25 +204,99 @@ describe("expression", () => {
 
   it("methodReference: identifier", () => {
     expect(Parser.parse("B.C::A", parser => parser.expression())).toEqual({
-      type: "METHOD_REFERENCE",
-      reference: {
-        type: "CLASS_OR_INTERFACE_TYPE",
-        elements: [
-          {
-            type: "IDENTIFIER",
-            value: "B"
-          },
-          {
-            type: "IDENTIFIER",
-            value: "C"
-          }
-        ]
-      },
-      typeArguments: undefined,
-      name: {
+      type: "QUALIFIED_EXPRESSION",
+      expression: {
         type: "IDENTIFIER",
-        value: "A"
+        value: "B"
+      },
+      rest: {
+        type: "METHOD_REFERENCE",
+        reference: {
+          type: "IDENTIFIER",
+          value: "C"
+        },
+        name: {
+          type: "IDENTIFIER",
+          value: "A"
+        },
+        typeArguments: undefined
       }
     });
   });
+
+  it("identifier.identifier", () => {
+    expect(Parser.parse("A.B", parser => parser.expression())).toEqual({
+      type: "QUALIFIED_EXPRESSION",
+      expression: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
+      rest: {
+        type: "IDENTIFIER",
+        value: "B"
+      }
+    });
+  });
+
+  it("identifier.class", () => {
+    expect(Parser.parse("A.class", parser => parser.expression())).toEqual({
+      type: "QUALIFIED_EXPRESSION",
+      expression: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
+      rest: {
+        type: "CLASS"
+      }
+    });
+  });
+
+  it("identifier.class with annotation", () => {
+    expect(
+      Parser.parse("@Bean A.class", parser => parser.expression())
+    ).toEqual({
+      type: "QUALIFIED_EXPRESSION",
+      expression: {
+        type: "TYPE_TYPE",
+        modifiers: [
+          {
+            hasBraces: false,
+            name: {
+              name: [
+                {
+                  type: "IDENTIFIER",
+                  value: "Bean"
+                }
+              ],
+              type: "QUALIFIED_NAME"
+            },
+            type: "ANNOTATION",
+            value: undefined
+          }
+        ],
+        value: {
+          type: "IDENTIFIER",
+          value: "A"
+        },
+        cntSquares: 0
+      },
+      rest: { type: "CLASS" }
+    });
+  });
+
+  // it("identifier.identifier.class", () => {
+  //   expect(Parser.parse("A.B.class", parser => parser.expression())).toEqual({
+  //     type: "CLASS_OR_INTERFACE_TYPE",
+  //     elements: [
+  //       {
+  //         type: "IDENTIFIER",
+  //         value: "A"
+  //       },
+  //       {
+  //         type: "IDENTIFIER",
+  //         value: "B.class"
+  //       }
+  //     ]
+  //   });
+  // });
 });

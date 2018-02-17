@@ -21,7 +21,7 @@ describe("interfaceBodyDeclaration", () => {
         },
         parameters: {
           type: "FORMAL_PARAMETERS",
-          parameters: undefined
+          parameters: []
         },
         cntSquares: 0,
         throws: undefined,
@@ -69,7 +69,7 @@ describe("interfaceBodyDeclaration", () => {
         },
         parameters: {
           type: "FORMAL_PARAMETERS",
-          parameters: undefined
+          parameters: []
         },
         cntSquares: 0,
         throws: undefined,
@@ -121,7 +121,7 @@ describe("interfaceBodyDeclaration", () => {
         },
         parameters: {
           type: "FORMAL_PARAMETERS",
-          parameters: undefined
+          parameters: []
         },
         cntSquares: 0,
         throws: undefined,

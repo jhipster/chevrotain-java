@@ -8,28 +8,25 @@ describe("formalParameterList", () => {
   it("one formalParameter", () => {
     expect(
       Parser.parse("boolean a", parser => parser.formalParameterList())
-    ).toEqual({
-      type: "FORMAL_PARAMETER_LIST",
-      formalParameters: [
-        {
-          type: "FORMAL_PARAMETER",
-          modifiers: [],
-          typeType: {
-            type: "PRIMITIVE_TYPE",
-            value: "boolean"
-          },
-          dotDotDot: false,
+    ).toEqual([
+      {
+        type: "FORMAL_PARAMETER",
+        modifiers: [],
+        typeType: {
+          type: "PRIMITIVE_TYPE",
+          value: "boolean"
+        },
+        dotDotDot: false,
+        id: {
+          type: "VARIABLE_DECLARATOR_ID",
           id: {
-            type: "VARIABLE_DECLARATOR_ID",
-            id: {
-              type: "IDENTIFIER",
-              value: "a"
-            },
-            cntSquares: 0
-          }
+            type: "IDENTIFIER",
+            value: "a"
+          },
+          cntSquares: 0
         }
-      ]
-    });
+      }
+    ]);
   });
 
   it("multiple formalParameters", () => {
@@ -37,45 +34,42 @@ describe("formalParameterList", () => {
       Parser.parse("boolean a, boolean b", parser =>
         parser.formalParameterList()
       )
-    ).toEqual({
-      type: "FORMAL_PARAMETER_LIST",
-      formalParameters: [
-        {
-          type: "FORMAL_PARAMETER",
-          modifiers: [],
-          typeType: {
-            type: "PRIMITIVE_TYPE",
-            value: "boolean"
-          },
-          dotDotDot: false,
-          id: {
-            type: "VARIABLE_DECLARATOR_ID",
-            id: {
-              type: "IDENTIFIER",
-              value: "a"
-            },
-            cntSquares: 0
-          }
+    ).toEqual([
+      {
+        type: "FORMAL_PARAMETER",
+        modifiers: [],
+        typeType: {
+          type: "PRIMITIVE_TYPE",
+          value: "boolean"
         },
-        {
-          type: "FORMAL_PARAMETER",
-          modifiers: [],
-          typeType: {
-            type: "PRIMITIVE_TYPE",
-            value: "boolean"
-          },
-          dotDotDot: false,
+        dotDotDot: false,
+        id: {
+          type: "VARIABLE_DECLARATOR_ID",
           id: {
-            type: "VARIABLE_DECLARATOR_ID",
-            id: {
-              type: "IDENTIFIER",
-              value: "b"
-            },
-            cntSquares: 0
-          }
+            type: "IDENTIFIER",
+            value: "a"
+          },
+          cntSquares: 0
         }
-      ]
-    });
+      },
+      {
+        type: "FORMAL_PARAMETER",
+        modifiers: [],
+        typeType: {
+          type: "PRIMITIVE_TYPE",
+          value: "boolean"
+        },
+        dotDotDot: false,
+        id: {
+          type: "VARIABLE_DECLARATOR_ID",
+          id: {
+            type: "IDENTIFIER",
+            value: "b"
+          },
+          cntSquares: 0
+        }
+      }
+    ]);
   });
 
   it("last is dotDotDot", () => {
@@ -83,45 +77,42 @@ describe("formalParameterList", () => {
       Parser.parse("boolean a, boolean... b", parser =>
         parser.formalParameterList()
       )
-    ).toEqual({
-      type: "FORMAL_PARAMETER_LIST",
-      formalParameters: [
-        {
-          type: "FORMAL_PARAMETER",
-          modifiers: [],
-          typeType: {
-            type: "PRIMITIVE_TYPE",
-            value: "boolean"
-          },
-          dotDotDot: false,
-          id: {
-            type: "VARIABLE_DECLARATOR_ID",
-            id: {
-              type: "IDENTIFIER",
-              value: "a"
-            },
-            cntSquares: 0
-          }
+    ).toEqual([
+      {
+        type: "FORMAL_PARAMETER",
+        modifiers: [],
+        typeType: {
+          type: "PRIMITIVE_TYPE",
+          value: "boolean"
         },
-        {
-          type: "FORMAL_PARAMETER",
-          modifiers: [],
-          typeType: {
-            type: "PRIMITIVE_TYPE",
-            value: "boolean"
-          },
-          dotDotDot: true,
+        dotDotDot: false,
+        id: {
+          type: "VARIABLE_DECLARATOR_ID",
           id: {
-            type: "VARIABLE_DECLARATOR_ID",
-            id: {
-              type: "IDENTIFIER",
-              value: "b"
-            },
-            cntSquares: 0
-          }
+            type: "IDENTIFIER",
+            value: "a"
+          },
+          cntSquares: 0
         }
-      ]
-    });
+      },
+      {
+        type: "FORMAL_PARAMETER",
+        modifiers: [],
+        typeType: {
+          type: "PRIMITIVE_TYPE",
+          value: "boolean"
+        },
+        dotDotDot: true,
+        id: {
+          type: "VARIABLE_DECLARATOR_ID",
+          id: {
+            type: "IDENTIFIER",
+            value: "b"
+          },
+          cntSquares: 0
+        }
+      }
+    ]);
   });
 
   it("not last is dotDotDot -> excpect error", () => {

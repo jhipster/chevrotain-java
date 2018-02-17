@@ -9,7 +9,7 @@ describe("methodCall", () => {
         type: "IDENTIFIER",
         value: "a"
       },
-      parameters: undefined
+      parameters: []
     });
   });
 

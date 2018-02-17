@@ -12,7 +12,7 @@ describe("interfaceDeclaration", () => {
         value: "A"
       },
       typeParameters: undefined,
-      typeList: undefined,
+      extends: undefined,
       body: {
         type: "INTERFACE_BODY",
         declarations: []
@@ -43,7 +43,7 @@ describe("interfaceDeclaration", () => {
           }
         ]
       },
-      typeList: undefined,
+      extends: undefined,
       body: {
         type: "INTERFACE_BODY",
         declarations: []
@@ -63,7 +63,7 @@ describe("interfaceDeclaration", () => {
         value: "A"
       },
       typeParameters: undefined,
-      typeList: {
+      extends: {
         type: "TYPE_LIST",
         list: [
           {

@@ -115,7 +115,7 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
       type: "CAST_EXPRESSION",
       castType: {
         type: "TYPE_TYPE",
-        annotations: [
+        modifiers: [
           {
             type: "ANNOTATION",
             name: {
@@ -150,7 +150,7 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
       type: "CAST_EXPRESSION",
       castType: {
         type: "TYPE_TYPE",
-        annotations: [],
+        modifiers: [],
         value: {
           type: "PRIMITIVE_TYPE",
           value: "boolean"
@@ -172,7 +172,7 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
       type: "CAST_EXPRESSION",
       castType: {
         type: "TYPE_TYPE",
-        annotations: [],
+        modifiers: [],
         value: {
           type: "PRIMITIVE_TYPE",
           value: "boolean"
@@ -276,28 +276,25 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
       type: "LAMBDA_EXPRESSION",
       parameters: {
         type: "FORMAL_PARAMETERS",
-        parameters: {
-          type: "FORMAL_PARAMETER_LIST",
-          formalParameters: [
-            {
-              modifiers: [],
-              type: "FORMAL_PARAMETER",
-              typeType: {
-                type: "PRIMITIVE_TYPE",
-                value: "boolean"
-              },
+        parameters: [
+          {
+            modifiers: [],
+            type: "FORMAL_PARAMETER",
+            typeType: {
+              type: "PRIMITIVE_TYPE",
+              value: "boolean"
+            },
+            id: {
+              type: "VARIABLE_DECLARATOR_ID",
               id: {
-                type: "VARIABLE_DECLARATOR_ID",
-                id: {
-                  type: "IDENTIFIER",
-                  value: "a"
-                },
-                cntSquares: 0
+                type: "IDENTIFIER",
+                value: "a"
               },
-              dotDotDot: false
-            }
-          ]
-        }
+              cntSquares: 0
+            },
+            dotDotDot: false
+          }
+        ]
       },
       body: {
         type: "BLOCK",
@@ -315,45 +312,42 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
       type: "LAMBDA_EXPRESSION",
       parameters: {
         type: "FORMAL_PARAMETERS",
-        parameters: {
-          type: "FORMAL_PARAMETER_LIST",
-          formalParameters: [
-            {
-              modifiers: [],
-              type: "FORMAL_PARAMETER",
-              typeType: {
-                type: "PRIMITIVE_TYPE",
-                value: "boolean"
-              },
-              id: {
-                type: "VARIABLE_DECLARATOR_ID",
-                id: {
-                  type: "IDENTIFIER",
-                  value: "a"
-                },
-                cntSquares: 0
-              },
-              dotDotDot: false
+        parameters: [
+          {
+            modifiers: [],
+            type: "FORMAL_PARAMETER",
+            typeType: {
+              type: "PRIMITIVE_TYPE",
+              value: "boolean"
             },
-            {
-              modifiers: [],
-              type: "FORMAL_PARAMETER",
-              typeType: {
-                type: "PRIMITIVE_TYPE",
-                value: "double"
-              },
+            id: {
+              type: "VARIABLE_DECLARATOR_ID",
               id: {
-                type: "VARIABLE_DECLARATOR_ID",
-                id: {
-                  type: "IDENTIFIER",
-                  value: "b"
-                },
-                cntSquares: 0
+                type: "IDENTIFIER",
+                value: "a"
               },
-              dotDotDot: false
-            }
-          ]
-        }
+              cntSquares: 0
+            },
+            dotDotDot: false
+          },
+          {
+            modifiers: [],
+            type: "FORMAL_PARAMETER",
+            typeType: {
+              type: "PRIMITIVE_TYPE",
+              value: "double"
+            },
+            id: {
+              type: "VARIABLE_DECLARATOR_ID",
+              id: {
+                type: "IDENTIFIER",
+                value: "b"
+              },
+              cntSquares: 0
+            },
+            dotDotDot: false
+          }
+        ]
       },
       body: {
         type: "BLOCK",
@@ -379,33 +373,30 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
       type: "LAMBDA_EXPRESSION",
       parameters: {
         type: "FORMAL_PARAMETERS",
-        parameters: {
-          type: "FORMAL_PARAMETER_LIST",
-          formalParameters: [
-            {
-              modifiers: [
-                {
-                  type: "MODIFIER",
-                  value: "final"
-                }
-              ],
-              type: "FORMAL_PARAMETER",
-              typeType: {
-                type: "PRIMITIVE_TYPE",
-                value: "boolean"
-              },
+        parameters: [
+          {
+            modifiers: [
+              {
+                type: "MODIFIER",
+                value: "final"
+              }
+            ],
+            type: "FORMAL_PARAMETER",
+            typeType: {
+              type: "PRIMITIVE_TYPE",
+              value: "boolean"
+            },
+            id: {
+              type: "VARIABLE_DECLARATOR_ID",
               id: {
-                type: "VARIABLE_DECLARATOR_ID",
-                id: {
-                  type: "IDENTIFIER",
-                  value: "a"
-                },
-                cntSquares: 0
+                type: "IDENTIFIER",
+                value: "a"
               },
-              dotDotDot: false
-            }
-          ]
-        }
+              cntSquares: 0
+            },
+            dotDotDot: false
+          }
+        ]
       },
       body: {
         type: "BLOCK",
@@ -423,50 +414,47 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
       type: "LAMBDA_EXPRESSION",
       parameters: {
         type: "FORMAL_PARAMETERS",
-        parameters: {
-          type: "FORMAL_PARAMETER_LIST",
-          formalParameters: [
-            {
-              modifiers: [],
-              type: "FORMAL_PARAMETER",
-              typeType: {
-                type: "PRIMITIVE_TYPE",
-                value: "boolean"
-              },
-              id: {
-                type: "VARIABLE_DECLARATOR_ID",
-                id: {
-                  type: "IDENTIFIER",
-                  value: "a"
-                },
-                cntSquares: 0
-              },
-              dotDotDot: false
+        parameters: [
+          {
+            modifiers: [],
+            type: "FORMAL_PARAMETER",
+            typeType: {
+              type: "PRIMITIVE_TYPE",
+              value: "boolean"
             },
-            {
-              modifiers: [
-                {
-                  type: "MODIFIER",
-                  value: "final"
-                }
-              ],
-              type: "FORMAL_PARAMETER",
-              typeType: {
-                type: "PRIMITIVE_TYPE",
-                value: "double"
-              },
+            id: {
+              type: "VARIABLE_DECLARATOR_ID",
               id: {
-                type: "VARIABLE_DECLARATOR_ID",
-                id: {
-                  type: "IDENTIFIER",
-                  value: "b"
-                },
-                cntSquares: 0
+                type: "IDENTIFIER",
+                value: "a"
               },
-              dotDotDot: false
-            }
-          ]
-        }
+              cntSquares: 0
+            },
+            dotDotDot: false
+          },
+          {
+            modifiers: [
+              {
+                type: "MODIFIER",
+                value: "final"
+              }
+            ],
+            type: "FORMAL_PARAMETER",
+            typeType: {
+              type: "PRIMITIVE_TYPE",
+              value: "double"
+            },
+            id: {
+              type: "VARIABLE_DECLARATOR_ID",
+              id: {
+                type: "IDENTIFIER",
+                value: "b"
+              },
+              cntSquares: 0
+            },
+            dotDotDot: false
+          }
+        ]
       },
       body: {
         type: "BLOCK",
