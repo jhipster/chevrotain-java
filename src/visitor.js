@@ -2712,13 +2712,8 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       };
     }
 
-    if (ctx.StringLiteral.length > 0) {
-      const value = ctx.StringLiteral[0].image;
-
-      return {
-        type: "STRING_LITERAL",
-        value: value
-      };
+    if (ctx.stringLiteral.length > 0) {
+      return this.visit(ctx.stringLiteral);
     }
 
     if (ctx.booleanLiteral.length > 0) {
@@ -2730,6 +2725,15 @@ class SQLToAstVisitor extends BaseSQLVisitor {
         type: "NULL"
       };
     }
+  }
+
+  stringLiteral(ctx) {
+    const value = ctx.StringLiteral[0].image;
+
+    return {
+      type: "STRING_LITERAL",
+      value: value
+    };
   }
 
   booleanLiteral(ctx) {

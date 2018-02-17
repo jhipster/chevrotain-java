@@ -2486,10 +2486,15 @@ class SelectParser extends chevrotain.Parser {
         { ALT: () => $.SUBRULE($.integerLiteral) },
         { ALT: () => $.SUBRULE($.floatLiteral) },
         { ALT: () => $.CONSUME(tokens.CharLiteral) },
-        { ALT: () => $.CONSUME(tokens.StringLiteral) },
+        { ALT: () => $.SUBRULE($.stringLiteral) },
         { ALT: () => $.SUBRULE($.booleanLiteral) },
         { ALT: () => $.CONSUME(tokens.Null) }
       ]);
+    });
+
+    // stringLiteral
+    $.RULE("stringLiteral", () => {
+      $.CONSUME(tokens.StringLiteral);
     });
 
     // booleanLiteral

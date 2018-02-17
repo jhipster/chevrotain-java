@@ -687,7 +687,7 @@ const StringLiteral = createToken({
   name: "StringLiteral",
   pattern: MAKE_PATTERN(
     // TODO: fix with better implementation
-    '"[0-9a-zA-Z]*"'
+    '"[^\n\r]*"'
   ),
   label: "'StringLiteral'"
 });

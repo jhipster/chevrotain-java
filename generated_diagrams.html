@@ -6932,11 +6932,9 @@
             "type": "Flat",
             "definition": [
               {
-                "type": "Terminal",
-                "name": "StringLiteral",
-                "label": "'StringLiteral'",
-                "occurrenceInParent": 1,
-                "pattern": "\"[0-9a-zA-Z]*\""
+                "type": "NonTerminal",
+                "name": "stringLiteral",
+                "occurrenceInParent": 1
               }
             ]
           },
@@ -6963,6 +6961,19 @@
             ]
           }
         ]
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "stringLiteral",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "StringLiteral",
+        "label": "'StringLiteral'",
+        "occurrenceInParent": 1,
+        "pattern": "\"[^\n\r]*\""
       }
     ]
   },
