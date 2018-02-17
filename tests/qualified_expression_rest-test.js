@@ -2,11 +2,11 @@
 const Parser = require("../src/index");
 
 describe("qualifiedExpressionRest", () => {
-  it("methodCall", () => {
+  it("methodInvocation", () => {
     expect(
       Parser.parse(".a()", parser => parser.qualifiedExpressionRest())
     ).toEqual({
-      type: "METHOD_CALL",
+      type: "METHOD_INVOCATION",
       name: {
         type: "IDENTIFIER",
         value: "a"
@@ -15,13 +15,13 @@ describe("qualifiedExpressionRest", () => {
     });
   });
 
-  it("multiple methodCalls", () => {
+  it("multiple methodInvocations", () => {
     expect(
       Parser.parse(".a().b()", parser => parser.qualifiedExpressionRest())
     ).toEqual({
       type: "QUALIFIED_EXPRESSION",
       expression: {
-        type: "METHOD_CALL",
+        type: "METHOD_INVOCATION",
         name: {
           type: "IDENTIFIER",
           value: "a"
@@ -29,7 +29,7 @@ describe("qualifiedExpressionRest", () => {
         parameters: []
       },
       rest: {
-        type: "METHOD_CALL",
+        type: "METHOD_INVOCATION",
         name: {
           type: "IDENTIFIER",
           value: "b"

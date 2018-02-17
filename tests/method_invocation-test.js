@@ -1,10 +1,10 @@
 "use strict";
 const Parser = require("../src/index");
 
-describe("methodCall", () => {
+describe("methodInvocation", () => {
   it("empty parameters", () => {
-    expect(Parser.parse("a()", parser => parser.methodCall())).toEqual({
-      type: "METHOD_CALL",
+    expect(Parser.parse("a()", parser => parser.methodInvocation())).toEqual({
+      type: "METHOD_INVOCATION",
       name: {
         type: "IDENTIFIER",
         value: "a"
@@ -14,8 +14,10 @@ describe("methodCall", () => {
   });
 
   it("with parameters", () => {
-    expect(Parser.parse("a(this)", parser => parser.methodCall())).toEqual({
-      type: "METHOD_CALL",
+    expect(
+      Parser.parse("a(this)", parser => parser.methodInvocation())
+    ).toEqual({
+      type: "METHOD_INVOCATION",
       name: {
         type: "IDENTIFIER",
         value: "a"

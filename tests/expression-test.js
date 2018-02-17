@@ -76,7 +76,7 @@ describe("expression", () => {
         type: "THIS"
       },
       rest: {
-        type: "METHOD_CALL",
+        type: "METHOD_INVOCATION",
         name: {
           type: "IDENTIFIER",
           value: "a"
@@ -94,7 +94,7 @@ describe("expression", () => {
         value: "a"
       },
       rest: {
-        type: "METHOD_CALL",
+        type: "METHOD_INVOCATION",
         name: {
           type: "IDENTIFIER",
           value: "b"

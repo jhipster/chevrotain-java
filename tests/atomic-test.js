@@ -34,9 +34,9 @@ describe("atomic", () => {
     });
   });
 
-  it("methodCall", () => {
+  it("methodInvocation", () => {
     expect(Parser.parse("a()", parser => parser.atomic())).toEqual({
-      type: "METHOD_CALL",
+      type: "METHOD_INVOCATION",
       name: {
         type: "IDENTIFIER",
         value: "a"
