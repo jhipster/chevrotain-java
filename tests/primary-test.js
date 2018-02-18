@@ -8,9 +8,29 @@ describe("primary", () => {
     });
   });
 
+  it("this invocation", () => {
+    expect(Parser.parse("this()", parser => parser.primary())).toEqual({
+      type: "THIS",
+      arguments: {
+        type: "EXPRESSION_LIST",
+        list: []
+      }
+    });
+  });
+
   it("super", () => {
     expect(Parser.parse("super", parser => parser.primary())).toEqual({
       type: "SUPER"
+    });
+  });
+
+  it("super invocation", () => {
+    expect(Parser.parse("super()", parser => parser.primary())).toEqual({
+      type: "SUPER",
+      arguments: {
+        type: "EXPRESSION_LIST",
+        list: []
+      }
     });
   });
 
@@ -76,7 +96,7 @@ describe("primary", () => {
         }
       },
       arguments: {
-        type: "THIS_ARGUMENTS",
+        type: "THIS",
         arguments: {
           type: "EXPRESSION_LIST",
           list: []

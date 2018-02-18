@@ -118,7 +118,7 @@ describe("qualifiedExpressionRest", () => {
       },
       invocation: {
         type: "SUPER",
-        value: {
+        arguments: {
           type: "EXPRESSION_LIST",
           list: []
         }

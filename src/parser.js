@@ -2406,8 +2406,11 @@ class SelectParser extends chevrotain.Parser {
     // | nonWildcardTypeArguments (explicitGenericInvocationSuffix | THIS arguments)
     $.RULE("primary", () => {
       $.OR([
-        { ALT: () => $.CONSUME(tokens.This) },
-        { ALT: () => $.CONSUME(tokens.Super) },
+        {
+          ALT: () => {
+            $.SUBRULE($.thisOrSuper);
+          }
+        },
         { ALT: () => $.SUBRULE($.literal) },
         {
           ALT: () => {
@@ -2415,12 +2418,12 @@ class SelectParser extends chevrotain.Parser {
               {
                 ALT: () => {
                   $.SUBRULE($.annotation);
-                  $.OPTION(() => {
+                  $.OPTION2(() => {
                     $.OR3([
                       {
                         ALT: () => {
                           $.CONSUME(tokens.Identifier);
-                          $.OPTION2(() => {
+                          $.OPTION3(() => {
                             $.SUBRULE($.typeArguments);
                           });
                         }
@@ -2440,7 +2443,7 @@ class SelectParser extends chevrotain.Parser {
                     {
                       ALT: () => {
                         $.CONSUME2(tokens.Identifier);
-                        $.OPTION3(() => {
+                        $.OPTION4(() => {
                           $.SUBRULE2($.typeArguments);
                         });
                       }
@@ -2465,13 +2468,35 @@ class SelectParser extends chevrotain.Parser {
               {
                 ALT: () => {
                   $.CONSUME2(tokens.This);
-                  $.SUBRULE($.arguments);
+                  $.SUBRULE2($.arguments);
                 }
               }
             ]);
           }
         }
       ]);
+    });
+
+    // thisOrSuper
+    // : (
+    //     THIS
+    //     | SUPER
+    //   )
+    //   arguments?
+    $.RULE("thisOrSuper", () => {
+      $.OR([
+        {
+          ALT: () => {
+            $.CONSUME(tokens.This);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Super);
+          }
+        }
+      ]);
+      $.OPTION(() => $.SUBRULE($.arguments));
     });
 
     // literal

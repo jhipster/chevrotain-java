@@ -9,7 +9,7 @@ describe("explicitGenericInvocationSuffix", () => {
       )
     ).toEqual({
       type: "SUPER",
-      value: {
+      arguments: {
         type: "EXPRESSION_LIST",
         list: []
       }

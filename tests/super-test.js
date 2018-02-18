@@ -5,7 +5,7 @@ describe("super", () => {
   it("simple", () => {
     expect(Parser.parse("super ()", parser => parser.super())).toEqual({
       type: "SUPER",
-      value: {
+      arguments: {
         type: "EXPRESSION_LIST",
         list: []
       }

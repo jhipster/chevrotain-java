@@ -1760,7 +1760,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
     return {
       type: "SUPER",
-      value: value
+      arguments: value
     };
   }
 
@@ -2621,7 +2621,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       }
       if (ctx.arguments.length > 0) {
         args = {
-          type: "THIS_ARGUMENTS",
+          type: "THIS",
           arguments: this.visit(ctx.arguments)
         };
       }
@@ -2633,16 +2633,8 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       };
     }
 
-    if (ctx.This.length > 0) {
-      return {
-        type: "THIS"
-      };
-    }
-
-    if (ctx.Super.length > 0) {
-      return {
-        type: "SUPER"
-      };
+    if (ctx.thisOrSuper.length > 0) {
+      return this.visit(ctx.thisOrSuper);
     }
 
     if (ctx.literal.length > 0) {
@@ -2696,6 +2688,32 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       value: value,
       cntSquares: cntSquares
     };
+  }
+
+  thisOrSuper(ctx) {
+    if (ctx.This.length > 0) {
+      if (ctx.arguments.length > 0) {
+        return {
+          type: "THIS",
+          arguments: this.visit(ctx.arguments)
+        };
+      }
+      return {
+        type: "THIS"
+      };
+    }
+
+    if (ctx.Super.length > 0) {
+      if (ctx.arguments.length > 0) {
+        return {
+          type: "SUPER",
+          arguments: this.visit(ctx.arguments)
+        };
+      }
+      return {
+        type: "SUPER"
+      };
+    }
   }
 
   literal(ctx) {
