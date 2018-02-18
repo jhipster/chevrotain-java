@@ -24,7 +24,8 @@ describe("explicitGenericInvocation", () => {
       invocation: {
         type: "SUPER",
         value: {
-          type: "ARGUMENTS"
+          type: "EXPRESSION_LIST",
+          list: []
         }
       }
     });

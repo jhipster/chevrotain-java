@@ -1641,9 +1641,9 @@ class SelectParser extends chevrotain.Parser {
     // : '(' expressionList? ')'
     $.RULE("arguments", () => {
       $.CONSUME(tokens.LBrace);
-      // $.OPTION(() => {
-      //   $.SUBRULE($.expressionList);
-      // });
+      $.OPTION(() => {
+        $.SUBRULE($.expressionList);
+      });
       $.CONSUME(tokens.RBrace);
     });
 

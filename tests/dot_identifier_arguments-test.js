@@ -25,7 +25,8 @@ describe("dotIdentifierArguments", () => {
         value: "a"
       },
       arguments: {
-        type: "ARGUMENTS"
+        type: "EXPRESSION_LIST",
+        list: []
       }
     });
   });

@@ -10,7 +10,8 @@ describe("explicitGenericInvocationSuffix", () => {
     ).toEqual({
       type: "SUPER",
       value: {
-        type: "ARGUMENTS"
+        type: "EXPRESSION_LIST",
+        list: []
       }
     });
   });
@@ -25,7 +26,8 @@ describe("explicitGenericInvocationSuffix", () => {
         value: "a"
       },
       arguments: {
-        type: "ARGUMENTS"
+        type: "EXPRESSION_LIST",
+        list: []
       }
     });
   });

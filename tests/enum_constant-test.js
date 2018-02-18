@@ -96,7 +96,8 @@ describe("enumConstant", () => {
         value: "A"
       },
       arguments: {
-        type: "ARGUMENTS"
+        type: "EXPRESSION_LIST",
+        list: []
       },
       body: undefined
     });

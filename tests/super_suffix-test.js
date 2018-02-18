@@ -4,7 +4,8 @@ const Parser = require("../src/index");
 describe("superSuffix", () => {
   it("arguments", () => {
     expect(Parser.parse("()", parser => parser.superSuffix())).toEqual({
-      type: "ARGUMENTS"
+      type: "EXPRESSION_LIST",
+      list: []
     });
   });
 

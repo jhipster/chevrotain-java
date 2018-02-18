@@ -1773,9 +1773,13 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     }
   }
 
-  arguments(/*ctx*/) {
+  arguments(ctx) {
+    if (ctx.expressionList.length > 0) {
+      return this.visit(ctx.expressionList);
+    }
     return {
-      type: "ARGUMENTS"
+      type: "EXPRESSION_LIST",
+      list: []
     };
   }
 

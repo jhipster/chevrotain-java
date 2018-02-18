@@ -27,7 +27,8 @@ describe("atomic", () => {
       rest: {
         type: "CLASS_CREATOR_REST",
         arguments: {
-          type: "ARGUMENTS"
+          type: "EXPRESSION_LIST",
+          list: []
         },
         body: undefined
       }

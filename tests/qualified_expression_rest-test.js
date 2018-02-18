@@ -88,7 +88,8 @@ describe("qualifiedExpressionRest", () => {
         rest: {
           type: "CLASS_CREATOR_REST",
           arguments: {
-            type: "ARGUMENTS"
+            type: "EXPRESSION_LIST",
+            list: []
           },
           body: undefined
         }
@@ -118,7 +119,8 @@ describe("qualifiedExpressionRest", () => {
       invocation: {
         type: "SUPER",
         value: {
-          type: "ARGUMENTS"
+          type: "EXPRESSION_LIST",
+          list: []
         }
       }
     });

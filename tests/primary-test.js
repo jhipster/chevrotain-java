@@ -78,7 +78,8 @@ describe("primary", () => {
       arguments: {
         type: "THIS_ARGUMENTS",
         arguments: {
-          type: "ARGUMENTS"
+          type: "EXPRESSION_LIST",
+          list: []
         }
       }
     });

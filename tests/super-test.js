@@ -6,7 +6,8 @@ describe("super", () => {
     expect(Parser.parse("super ()", parser => parser.super())).toEqual({
       type: "SUPER",
       value: {
-        type: "ARGUMENTS"
+        type: "EXPRESSION_LIST",
+        list: []
       }
     });
   });
