@@ -94,4 +94,177 @@ describe("block", () => {
       ]
     });
   });
+
+  it("this()", () => {
+    expect(Parser.parse("{ this(); }", parser => parser.block())).toEqual({
+      type: "BLOCK",
+      statements: [
+        {
+          type: "EXPRESSION_STATEMENT",
+          expression: {
+            type: "THIS",
+            arguments: {
+              type: "EXPRESSION_LIST",
+              list: []
+            }
+          }
+        }
+      ]
+    });
+  });
+
+  it('System.out.println("please work")', () => {
+    expect(
+      Parser.parse('{ System.out.println("please work"); }', parser =>
+        parser.block()
+      )
+    ).toEqual({
+      type: "BLOCK",
+      statements: [
+        {
+          type: "EXPRESSION_STATEMENT",
+          expression: {
+            type: "QUALIFIED_EXPRESSION",
+            expression: {
+              type: "IDENTIFIER",
+              value: "System"
+            },
+            rest: {
+              type: "QUALIFIED_EXPRESSION",
+              expression: {
+                type: "IDENTIFIER",
+                value: "out"
+              },
+              rest: {
+                type: "METHOD_INVOCATION",
+                name: {
+                  type: "IDENTIFIER",
+                  value: "println"
+                },
+                parameters: {
+                  type: "EXPRESSION_LIST",
+                  list: [
+                    {
+                      type: "STRING_LITERAL",
+                      value: '"please work"'
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    });
+  });
+
+  it('System.out.println("please work"); this();', () => {
+    expect(
+      Parser.parse('{ System.out.println("please work"); this(); }', parser =>
+        parser.block()
+      )
+    ).toEqual({
+      type: "BLOCK",
+      statements: [
+        {
+          type: "EXPRESSION_STATEMENT",
+          expression: {
+            type: "QUALIFIED_EXPRESSION",
+            expression: {
+              type: "IDENTIFIER",
+              value: "System"
+            },
+            rest: {
+              type: "QUALIFIED_EXPRESSION",
+              expression: {
+                type: "IDENTIFIER",
+                value: "out"
+              },
+              rest: {
+                type: "METHOD_INVOCATION",
+                name: {
+                  type: "IDENTIFIER",
+                  value: "println"
+                },
+                parameters: {
+                  type: "EXPRESSION_LIST",
+                  list: [
+                    {
+                      type: "STRING_LITERAL",
+                      value: '"please work"'
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          type: "EXPRESSION_STATEMENT",
+          expression: {
+            type: "THIS",
+            arguments: {
+              type: "EXPRESSION_LIST",
+              list: []
+            }
+          }
+        }
+      ]
+    });
+  });
+
+  it('this(); System.out.println("please work")', () => {
+    expect(
+      Parser.parse('{ this(); System.out.println("please work"); }', parser =>
+        parser.block()
+      )
+    ).toEqual({
+      type: "BLOCK",
+      statements: [
+        {
+          type: "EXPRESSION_STATEMENT",
+          expression: {
+            type: "THIS",
+            arguments: {
+              type: "EXPRESSION_LIST",
+              list: []
+            }
+          }
+        },
+        {
+          type: "EXPRESSION_STATEMENT",
+          expression: {
+            type: "QUALIFIED_EXPRESSION",
+            expression: {
+              type: "IDENTIFIER",
+              value: "System"
+            },
+            rest: {
+              type: "QUALIFIED_EXPRESSION",
+              expression: {
+                type: "IDENTIFIER",
+                value: "out"
+              },
+              rest: {
+                type: "METHOD_INVOCATION",
+                name: {
+                  type: "IDENTIFIER",
+                  value: "println"
+                },
+                parameters: {
+                  type: "EXPRESSION_LIST",
+                  list: [
+                    {
+                      type: "STRING_LITERAL",
+                      value: '"please work"'
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    });
+  });
 });

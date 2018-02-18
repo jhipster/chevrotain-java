@@ -1135,6 +1135,7 @@ class SelectParser extends chevrotain.Parser {
     // | identifierStatement
     // | expressionStatement
     $.RULE("blockStatement", () => {
+      let hasSemiColon = false;
       $.MANY(() => {
         $.SUBRULE($.classOrInterfaceModifier);
       });
@@ -1157,7 +1158,10 @@ class SelectParser extends chevrotain.Parser {
                     },
                     {
                       // expressionStatement
-                      ALT: () => $.CONSUME(tokens.SemiColon)
+                      ALT: () => {
+                        $.CONSUME(tokens.SemiColon);
+                        hasSemiColon = true;
+                      }
                     },
                     {
                       ALT: () => {
@@ -1177,14 +1181,17 @@ class SelectParser extends chevrotain.Parser {
                 }
               }
             ]);
-            $.OPTION2(() => {
-              // if not identifier statement
-              $.MANY3(() => {
-                $.CONSUME(tokens.LSquare);
-                $.CONSUME(tokens.RSquare);
-              });
-              $.SUBRULE($.variableDeclarators);
-              $.CONSUME2(tokens.SemiColon);
+            $.OPTION2({
+              GATE: () => !hasSemiColon,
+              DEF: () => {
+                // if not identifier statement
+                $.MANY3(() => {
+                  $.CONSUME(tokens.LSquare);
+                  $.CONSUME(tokens.RSquare);
+                });
+                $.SUBRULE($.variableDeclarators);
+                $.CONSUME2(tokens.SemiColon);
+              }
             });
           }
         },
