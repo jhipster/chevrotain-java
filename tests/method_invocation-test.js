@@ -9,7 +9,7 @@ describe("methodInvocation", () => {
         type: "IDENTIFIER",
         value: "a"
       },
-      parameters: []
+      parameters: undefined
     });
   });
 

@@ -11,7 +11,7 @@ describe("qualifiedExpressionRest", () => {
         type: "IDENTIFIER",
         value: "a"
       },
-      parameters: []
+      parameters: undefined
     });
   });
 
@@ -26,7 +26,7 @@ describe("qualifiedExpressionRest", () => {
           type: "IDENTIFIER",
           value: "a"
         },
-        parameters: []
+        parameters: undefined
       },
       rest: {
         type: "METHOD_INVOCATION",
@@ -34,7 +34,7 @@ describe("qualifiedExpressionRest", () => {
           type: "IDENTIFIER",
           value: "b"
         },
-        parameters: []
+        parameters: undefined
       }
     });
   });

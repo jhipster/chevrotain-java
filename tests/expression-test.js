@@ -81,7 +81,7 @@ describe("expression", () => {
           type: "IDENTIFIER",
           value: "a"
         },
-        parameters: []
+        parameters: undefined
       }
     });
   });
@@ -99,7 +99,7 @@ describe("expression", () => {
           type: "IDENTIFIER",
           value: "b"
         },
-        parameters: []
+        parameters: undefined
       }
     });
   });

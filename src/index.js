@@ -16,9 +16,14 @@ function parse(inputText, entryPoint = parser => parser.compilationUnit()) {
   // Automatic CST created when parsing
   const cst = entryPoint(parser);
   if (parser.errors.length > 0) {
-    // console.log(parser.errors[0].context);
+    const error = parser.errors[0];
     throw Error(
-      "Sad sad panda, parsing errors detected!\n" + parser.errors[0].message
+      "Sad sad panda, parsing errors detected in line: " +
+        error.token.startLine +
+        ", column: " +
+        error.token.startColumn +
+        "!\n" +
+        error.message
     );
   }
 
