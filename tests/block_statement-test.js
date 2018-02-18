@@ -321,4 +321,15 @@ describe("blockStatement", () => {
       }
     });
   });
+
+  it("return ", () => {
+    expect(
+      Parser.parse("return this;", parser => parser.blockStatement())
+    ).toEqual({
+      type: "RETURN_STATEMENT",
+      expression: {
+        type: "THIS"
+      }
+    });
+  });
 });

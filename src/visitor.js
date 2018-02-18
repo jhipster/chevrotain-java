@@ -1252,6 +1252,10 @@ class SQLToAstVisitor extends BaseSQLVisitor {
         declaration: declaration
       };
     }
+
+    if (ctx.statementWithStartingToken.length > 0) {
+      return this.visit(ctx.statementWithStartingToken);
+    }
   }
 
   statement(ctx) {
