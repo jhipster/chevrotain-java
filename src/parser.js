@@ -2451,7 +2451,16 @@ class SelectParser extends chevrotain.Parser {
                       ALT: () => {
                         $.CONSUME2(tokens.Identifier);
                         $.OPTION4(() => {
-                          $.SUBRULE2($.typeArguments);
+                          $.CONSUME(tokens.Less);
+                          $.AT_LEAST_ONE_SEP({
+                            SEP: tokens.Comma,
+                            DEF: () => {
+                              $.SUBRULE($.typeArgument);
+                            }
+                          });
+                          $.OPTION5(() => {
+                            $.CONSUME(tokens.Greater);
+                          });
                         });
                       }
                     },

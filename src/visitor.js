@@ -2665,7 +2665,29 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       }
     } else if (ctx.Identifier && ctx.Identifier.length > 0) {
       const name = this.identifier(ctx.Identifier[0]);
-      const typeArguments = this.visit(ctx.typeArguments);
+      let typeArguments = this.visit(ctx.typeArguments);
+      if (ctx.Less.length > 0) {
+        // found typeArguments
+        const args = ctx.typeArgument.map(typeArgument =>
+          this.visit(typeArgument)
+        );
+
+        if (ctx.Greater.length > 0) {
+          // found typeArguments
+          typeArguments = {
+            type: "TYPE_ARGUMENTS",
+            arguments: args
+          };
+        } else {
+          // found operator expression with operator "<"
+          return {
+            type: "OPERATOR_EXPRESSION",
+            left: name,
+            operator: "<",
+            right: args[0]
+          };
+        }
+      }
 
       if (!typeArguments) {
         value = name;

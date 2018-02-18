@@ -194,6 +194,36 @@ describe("forControl", () => {
     });
   });
 
+  it("basicForStatement: optionalExpression operatorExpression", () => {
+    expect(
+      Parser.parse("; i < array.length;", parser => parser.forControl())
+    ).toEqual({
+      type: "BASIC_FOR_STATEMENT",
+      forInit: undefined,
+      expression: {
+        type: "OPERATOR_EXPRESSION",
+        left: {
+          type: "IDENTIFIER",
+          value: "i"
+        },
+        operator: "<",
+        right: {
+          argument: {
+            elements: [
+              { type: "IDENTIFIER", value: "array" },
+              { type: "IDENTIFIER", value: "length" }
+            ],
+            type: "CLASS_OR_INTERFACE_TYPE"
+          },
+          extends: undefined,
+          super: undefined,
+          type: "TYPE_ARGUMENT"
+        }
+      },
+      expressionList: undefined
+    });
+  });
+
   it("basicForStatement: optionalExpression", () => {
     expect(Parser.parse(";this;", parser => parser.forControl())).toEqual({
       type: "BASIC_FOR_STATEMENT",

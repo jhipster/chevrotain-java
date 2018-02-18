@@ -117,6 +117,31 @@ describe("expression", () => {
     });
   });
 
+  it("operatorExpression Less", () => {
+    expect(
+      Parser.parse("i < array.length", parser => parser.expression())
+    ).toEqual({
+      type: "OPERATOR_EXPRESSION",
+      left: {
+        type: "IDENTIFIER",
+        value: "i"
+      },
+      operator: "<",
+      right: {
+        argument: {
+          elements: [
+            { type: "IDENTIFIER", value: "array" },
+            { type: "IDENTIFIER", value: "length" }
+          ],
+          type: "CLASS_OR_INTERFACE_TYPE"
+        },
+        extends: undefined,
+        super: undefined,
+        type: "TYPE_ARGUMENT"
+      }
+    });
+  });
+
   it("multiple operatorExpressions", () => {
     expect(
       Parser.parse("this*super+null", parser => parser.expression())
@@ -284,19 +309,21 @@ describe("expression", () => {
     });
   });
 
-  // it("identifier.identifier.class", () => {
-  //   expect(Parser.parse("A.B.class", parser => parser.expression())).toEqual({
-  //     type: "CLASS_OR_INTERFACE_TYPE",
-  //     elements: [
-  //       {
-  //         type: "IDENTIFIER",
-  //         value: "A"
-  //       },
-  //       {
-  //         type: "IDENTIFIER",
-  //         value: "B.class"
-  //       }
-  //     ]
-  //   });
-  // });
+  it("identifier.identifier.class", () => {
+    expect(Parser.parse("A.B.class", parser => parser.expression())).toEqual({
+      type: "QUALIFIED_EXPRESSION",
+      expression: {
+        type: "IDENTIFIER",
+        value: "A"
+      },
+      rest: {
+        type: "QUALIFIED_EXPRESSION",
+        expression: {
+          type: "IDENTIFIER",
+          value: "B"
+        },
+        rest: { type: "CLASS" }
+      }
+    });
+  });
 });
