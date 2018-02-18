@@ -1823,7 +1823,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     return {
       type: "METHOD_INVOCATION",
       name: name,
-      parameters: expressionList ? expressionList : []
+      parameters: expressionList
     };
   }
 
