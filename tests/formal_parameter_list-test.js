@@ -23,7 +23,7 @@ describe("formalParameterList", () => {
             type: "IDENTIFIER",
             value: "a"
           },
-          cntSquares: 0
+          dimensions: []
         }
       }
     ]);
@@ -49,7 +49,7 @@ describe("formalParameterList", () => {
             type: "IDENTIFIER",
             value: "a"
           },
-          cntSquares: 0
+          dimensions: []
         }
       },
       {
@@ -66,7 +66,7 @@ describe("formalParameterList", () => {
             type: "IDENTIFIER",
             value: "b"
           },
-          cntSquares: 0
+          dimensions: []
         }
       }
     ]);
@@ -92,7 +92,7 @@ describe("formalParameterList", () => {
             type: "IDENTIFIER",
             value: "a"
           },
-          cntSquares: 0
+          dimensions: []
         }
       },
       {
@@ -109,7 +109,7 @@ describe("formalParameterList", () => {
             type: "IDENTIFIER",
             value: "b"
           },
-          cntSquares: 0
+          dimensions: []
         }
       }
     ]);

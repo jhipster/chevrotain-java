@@ -130,7 +130,7 @@ describe("enum", () => {
                 type: "FORMAL_PARAMETERS",
                 parameters: []
               },
-              cntSquares: 0,
+              dimensions: [],
               throws: undefined,
               body: {
                 type: "BLOCK",
@@ -189,7 +189,7 @@ describe("enum", () => {
                 type: "FORMAL_PARAMETERS",
                 parameters: []
               },
-              cntSquares: 0,
+              dimensions: [],
               throws: undefined,
               body: {
                 type: "BLOCK",

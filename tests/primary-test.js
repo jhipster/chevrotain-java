@@ -63,7 +63,7 @@ describe("primary", () => {
       },
       typeArguments: {
         type: "TYPE_ARGUMENTS",
-        arguments: [
+        list: [
           {
             type: "TYPE_ARGUMENT",
             argument: {
@@ -128,7 +128,7 @@ describe("primary", () => {
         type: "IDENTIFIER",
         value: "A"
       },
-      cntSquares: 0
+      dimensions: []
     });
   });
 });

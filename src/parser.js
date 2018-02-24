@@ -2467,8 +2467,7 @@ class SelectParser extends chevrotain.Parser {
                     { ALT: () => $.SUBRULE2($.primitiveType) }
                   ]);
                   $.MANY2(() => {
-                    $.CONSUME2(tokens.LSquare);
-                    $.CONSUME2(tokens.RSquare);
+                    $.SUBRULE($.dimension);
                   });
                 }
               }
@@ -2491,6 +2490,14 @@ class SelectParser extends chevrotain.Parser {
           }
         }
       ]);
+    });
+
+    // dimension
+    // : '[' expression? ']'
+    $.RULE("dimension", () => {
+      $.CONSUME(tokens.LSquare);
+      $.OPTION(() => $.SUBRULE($.expression));
+      $.CONSUME(tokens.RSquare);
     });
 
     // thisOrSuper

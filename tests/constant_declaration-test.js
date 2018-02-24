@@ -18,7 +18,7 @@ describe("constantDeclaration", () => {
             type: "IDENTIFIER",
             value: "A"
           },
-          cntSquares: 0,
+          dimensions: [],
           init: {
             type: "THIS"
           }
@@ -45,7 +45,7 @@ describe("constantDeclaration", () => {
             type: "IDENTIFIER",
             value: "A"
           },
-          cntSquares: 0,
+          dimensions: [],
           init: {
             type: "THIS"
           }
@@ -56,7 +56,7 @@ describe("constantDeclaration", () => {
             type: "IDENTIFIER",
             value: "B"
           },
-          cntSquares: 0,
+          dimensions: [],
           init: {
             type: "SUPER"
           }

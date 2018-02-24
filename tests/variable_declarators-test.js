@@ -14,7 +14,7 @@ describe("variableDeclarators", () => {
               type: "IDENTIFIER",
               value: "A"
             },
-            cntSquares: 0
+            dimensions: []
           },
           init: undefined
         }
@@ -36,7 +36,7 @@ describe("variableDeclarators", () => {
               type: "IDENTIFIER",
               value: "A"
             },
-            cntSquares: 0
+            dimensions: []
           },
           init: undefined
         },
@@ -48,7 +48,7 @@ describe("variableDeclarators", () => {
               type: "IDENTIFIER",
               value: "B"
             },
-            cntSquares: 0
+            dimensions: []
           },
           init: undefined
         }

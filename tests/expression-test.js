@@ -303,7 +303,7 @@ describe("expression", () => {
           type: "IDENTIFIER",
           value: "A"
         },
-        cntSquares: 0
+        dimensions: []
       },
       rest: { type: "CLASS" }
     });
@@ -324,6 +324,26 @@ describe("expression", () => {
         },
         rest: { type: "CLASS" }
       }
+    });
+  });
+
+  it("array[i]", () => {
+    expect(Parser.parse("array[i]", parser => parser.expression())).toEqual({
+      type: "TYPE_TYPE",
+      modifiers: [],
+      value: {
+        type: "IDENTIFIER",
+        value: "array"
+      },
+      dimensions: [
+        {
+          expression: {
+            type: "IDENTIFIER",
+            value: "i"
+          },
+          type: "DIMENSION"
+        }
+      ]
     });
   });
 });

@@ -16,7 +16,7 @@ describe("annotationConstantRest", () => {
               type: "IDENTIFIER",
               value: "A"
             },
-            cntSquares: 0
+            dimensions: []
           },
           init: undefined
         }

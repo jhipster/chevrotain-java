@@ -31,7 +31,7 @@ describe("block", () => {
                     type: "IDENTIFIER",
                     value: "A"
                   },
-                  cntSquares: 0
+                  dimensions: []
                 },
                 init: undefined
               }
@@ -66,7 +66,7 @@ describe("block", () => {
                     type: "IDENTIFIER",
                     value: "A"
                   },
-                  cntSquares: 0
+                  dimensions: []
                 },
                 init: undefined
               }

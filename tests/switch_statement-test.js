@@ -55,7 +55,7 @@ describe("switchStatement", () => {
                         type: "IDENTIFIER",
                         value: "A"
                       },
-                      cntSquares: 0
+                      dimensions: []
                     },
                     init: undefined
                   }
@@ -110,7 +110,7 @@ describe("switchStatement", () => {
                         type: "IDENTIFIER",
                         value: "A"
                       },
-                      cntSquares: 0
+                      dimensions: []
                     },
                     init: undefined
                   }
@@ -149,7 +149,7 @@ describe("switchStatement", () => {
                         type: "IDENTIFIER",
                         value: "B"
                       },
-                      cntSquares: 0
+                      dimensions: []
                     },
                     init: undefined
                   }
@@ -203,7 +203,7 @@ describe("switchStatement", () => {
                         type: "IDENTIFIER",
                         value: "A"
                       },
-                      cntSquares: 0
+                      dimensions: []
                     },
                     init: undefined
                   }

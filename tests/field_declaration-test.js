@@ -22,7 +22,7 @@ describe("fieldDeclaration", () => {
                 type: "IDENTIFIER",
                 value: "def"
               },
-              cntSquares: 0
+              dimensions: []
             },
             init: undefined
           }

@@ -25,7 +25,7 @@ describe("resource", () => {
           type: "IDENTIFIER",
           value: "a"
         },
-        cntSquares: 0
+        dimensions: []
       },
       expression: {
         type: "THIS"
@@ -58,7 +58,7 @@ describe("resource", () => {
           type: "IDENTIFIER",
           value: "a"
         },
-        cntSquares: 0
+        dimensions: []
       },
       expression: {
         type: "THIS"
@@ -107,7 +107,7 @@ describe("resource", () => {
           type: "IDENTIFIER",
           value: "a"
         },
-        cntSquares: 0
+        dimensions: []
       },
       expression: {
         type: "THIS"

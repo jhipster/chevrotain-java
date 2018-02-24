@@ -36,7 +36,7 @@ describe("classOrInterfaceType", () => {
           },
           typeArguments: {
             type: "TYPE_ARGUMENTS",
-            arguments: [
+            list: [
               {
                 type: "TYPE_ARGUMENT",
                 argument: {
@@ -57,7 +57,7 @@ describe("classOrInterfaceType", () => {
           },
           typeArguments: {
             type: "TYPE_ARGUMENTS",
-            arguments: [
+            list: [
               {
                 type: "TYPE_ARGUMENT",
                 argument: {

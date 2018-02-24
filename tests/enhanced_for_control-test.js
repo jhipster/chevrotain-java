@@ -18,7 +18,7 @@ describe("enhancedForControl", () => {
           type: "IDENTIFIER",
           value: "a"
         },
-        cntSquares: 0
+        dimensions: []
       },
       iterator: {
         type: "THIS"
@@ -58,7 +58,7 @@ describe("enhancedForControl", () => {
           type: "IDENTIFIER",
           value: "a"
         },
-        cntSquares: 0
+        dimensions: []
       },
       iterator: {
         type: "THIS"
@@ -102,7 +102,7 @@ describe("enhancedForControl", () => {
           type: "IDENTIFIER",
           value: "a"
         },
-        cntSquares: 0
+        dimensions: []
       },
       iterator: {
         type: "THIS"

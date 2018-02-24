@@ -32,7 +32,7 @@ describe("resourceSpecification", () => {
                 type: "IDENTIFIER",
                 value: "a"
               },
-              cntSquares: 0
+              dimensions: []
             },
             expression: {
               type: "THIS"
@@ -75,7 +75,7 @@ describe("resourceSpecification", () => {
                 type: "IDENTIFIER",
                 value: "a"
               },
-              cntSquares: 0
+              dimensions: []
             },
             expression: {
               type: "THIS"
@@ -103,7 +103,7 @@ describe("resourceSpecification", () => {
                 type: "IDENTIFIER",
                 value: "b"
               },
-              cntSquares: 0
+              dimensions: []
             },
             expression: {
               type: "THIS"
@@ -146,7 +146,7 @@ describe("resourceSpecification", () => {
                 type: "IDENTIFIER",
                 value: "a"
               },
-              cntSquares: 0
+              dimensions: []
             },
             expression: {
               type: "THIS"
@@ -174,7 +174,7 @@ describe("resourceSpecification", () => {
                 type: "IDENTIFIER",
                 value: "b"
               },
-              cntSquares: 0
+              dimensions: []
             },
             expression: {
               type: "THIS"

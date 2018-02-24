@@ -8,7 +8,17 @@ describe("arrayCreatorRest", () => {
     ).toEqual({
       type: "ARRAY_CREATOR_REST",
       expressions: [],
-      cntSquares: 3,
+      dimensions: [
+        {
+          type: "DIMENSION"
+        },
+        {
+          type: "DIMENSION"
+        },
+        {
+          type: "DIMENSION"
+        }
+      ],
       arrayInitializer: { type: "ARRAY_INITIALIZER", variableInitializers: [] }
     });
   });
@@ -26,7 +36,11 @@ describe("arrayCreatorRest", () => {
           type: "SUPER"
         }
       ],
-      cntSquares: 1,
+      dimensions: [
+        {
+          type: "DIMENSION"
+        }
+      ],
       arrayInitializer: undefined
     });
   });

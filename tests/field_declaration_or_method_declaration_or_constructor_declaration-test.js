@@ -20,7 +20,7 @@ describe("memberDeclaration", () => {
         type: "FORMAL_PARAMETERS",
         parameters: []
       },
-      cntSquares: 0,
+      dimensions: [],
       throws: undefined,
       body: {
         type: "BLOCK",
@@ -48,7 +48,7 @@ describe("memberDeclaration", () => {
         type: "FORMAL_PARAMETERS",
         parameters: []
       },
-      cntSquares: 0,
+      dimensions: [],
       throws: undefined,
       body: {
         type: "BLOCK",
@@ -71,7 +71,11 @@ describe("memberDeclaration", () => {
           type: "IDENTIFIER",
           value: "A"
         },
-        cntSquares: 1
+        dimensions: [
+          {
+            type: "DIMENSION"
+          }
+        ]
       },
       name: {
         type: "IDENTIFIER",
@@ -81,7 +85,7 @@ describe("memberDeclaration", () => {
         type: "FORMAL_PARAMETERS",
         parameters: []
       },
-      cntSquares: 0,
+      dimensions: [],
       throws: undefined,
       body: {
         type: "BLOCK",
@@ -105,7 +109,7 @@ describe("memberDeclaration", () => {
         },
         typeArguments: {
           type: "TYPE_ARGUMENTS",
-          arguments: [
+          list: [
             {
               type: "TYPE_ARGUMENT",
               argument: {
@@ -126,7 +130,7 @@ describe("memberDeclaration", () => {
         type: "FORMAL_PARAMETERS",
         parameters: []
       },
-      cntSquares: 0,
+      dimensions: [],
       throws: undefined,
       body: {
         type: "BLOCK",
@@ -154,7 +158,7 @@ describe("memberDeclaration", () => {
         type: "FORMAL_PARAMETERS",
         parameters: []
       },
-      cntSquares: 0,
+      dimensions: [],
       throws: undefined,
       body: {
         type: "BLOCK",
@@ -181,7 +185,11 @@ describe("memberDeclaration", () => {
         type: "FORMAL_PARAMETERS",
         parameters: []
       },
-      cntSquares: 1,
+      dimensions: [
+        {
+          type: "DIMENSION"
+        }
+      ],
       throws: undefined,
       body: {
         type: "BLOCK",
@@ -208,7 +216,14 @@ describe("memberDeclaration", () => {
         type: "FORMAL_PARAMETERS",
         parameters: []
       },
-      cntSquares: 2,
+      dimensions: [
+        {
+          type: "DIMENSION"
+        },
+        {
+          type: "DIMENSION"
+        }
+      ],
       throws: undefined,
       body: {
         type: "BLOCK",
@@ -235,7 +250,7 @@ describe("memberDeclaration", () => {
         type: "FORMAL_PARAMETERS",
         parameters: []
       },
-      cntSquares: 0,
+      dimensions: [],
       throws: {
         type: "QUALIFIED_NAME_LIST",
         list: [
@@ -338,7 +353,7 @@ describe("memberDeclaration", () => {
                 type: "IDENTIFIER",
                 value: "def"
               },
-              cntSquares: 0
+              dimensions: []
             },
             init: undefined
           }

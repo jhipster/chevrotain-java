@@ -357,10 +357,12 @@ class SQLToAstVisitor extends BaseSQLVisitor {
         const annotations = ctx.annotation.map(annotation =>
           this.visit(annotation)
         );
-        let cntSquares = 0;
+        const dimensions = [];
         ctx.LSquare.map(lSquare => {
           if (lSquare.isTypeType) {
-            cntSquares++;
+            dimensions.push({
+              type: "DIMENSION"
+            });
           }
         });
 
@@ -368,7 +370,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
         if (ctx.primitiveType.length > 0) {
           value = this.visit(ctx.primitiveType);
           // if empty typeType return child
-          if (annotations.length === 0 && cntSquares === 0) {
+          if (annotations.length === 0 && dimensions.length === 0) {
             typeType = value;
           }
         } else if (ctx.Identifier.length > 0) {
@@ -399,12 +401,12 @@ class SQLToAstVisitor extends BaseSQLVisitor {
             };
           }
 
-          if (annotations.length !== 0 || cntSquares !== 0) {
+          if (annotations.length !== 0 || dimensions.length !== 0) {
             typeType = {
               type: "TYPE_TYPE",
               modifiers: annotations,
               value: typeType,
-              cntSquares: cntSquares
+              dimensions: dimensions
             };
           }
         }
@@ -420,10 +422,12 @@ class SQLToAstVisitor extends BaseSQLVisitor {
           ctx.Identifier[ctx.Identifier[0].isMethodDeclaration ? 1 : 0]
         );
         const parameters = this.visit(ctx.formalParameters);
-        let cntSquares = 0;
+        const dimensions = [];
         ctx.LSquare.map(lSquare => {
           if (!lSquare.isTypeType) {
-            cntSquares++;
+            dimensions.push({
+              type: "DIMENSION"
+            });
           }
         });
         const throws = this.visit(ctx.qualifiedNameList);
@@ -434,7 +438,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
           typeType: typeType,
           name: name,
           parameters: parameters,
-          cntSquares: cntSquares,
+          dimensions: dimensions,
           throws: throws,
           body: body
         };
@@ -442,11 +446,15 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
       if (ctx.Identifier[0].isFieldDeclaration) {
         const id = this.identifier(ctx.Identifier[1]);
-        const cntSquares = ctx.LSquare.length;
+        const dimensions = ctx.LSquare.map(() => {
+          return {
+            type: "DIMENSION"
+          };
+        });
         const variableDeclaratorId = {
           type: "VARIABLE_DECLARATOR_ID",
           id: id,
-          cntSquares: cntSquares
+          dimensions: dimensions
         };
 
         const init = this.visit(ctx.variableInitializer);
@@ -479,7 +487,11 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     const typeType = this.visit(ctx.typeTypeOrVoid);
     const name = this.identifier(ctx.Identifier[0]);
     const parameters = this.visit(ctx.formalParameters);
-    const cntSquares = ctx.LSquare.length;
+    const dimensions = ctx.LSquare.map(() => {
+      return {
+        type: "DIMENSION"
+      };
+    });
     const throws = this.visit(ctx.qualifiedNameList);
     const body = this.visit(ctx.methodBody);
 
@@ -488,7 +500,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       typeType: typeType,
       name: name,
       parameters: parameters,
-      cntSquares: cntSquares,
+      dimensions: dimensions,
       throws: throws,
       body: body
     };
@@ -683,7 +695,11 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       }
       const name = this.identifier(ctx.Identifier[0]);
       const parameters = this.visit(ctx.formalParameters);
-      const cntSquares = ctx.LSquare.length;
+      const dimensions = ctx.LSquare.map(() => {
+        return {
+          type: "DIMENSION"
+        };
+      });
       const throws = this.visit(ctx.qualifiedNameList);
       const body = this.visit(ctx.methodBody);
 
@@ -694,7 +710,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
         typeType: typeType,
         name: name,
         parameters: parameters,
-        cntSquares: cntSquares,
+        dimensions: dimensions,
         throws: throws,
         body: body
       };
@@ -716,13 +732,17 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
   constantDeclarator(ctx) {
     const name = this.identifier(ctx.Identifier[0]);
-    const cntSquares = ctx.LSquare.length;
+    const dimensions = ctx.LSquare.map(() => {
+      return {
+        type: "DIMENSION"
+      };
+    });
     const init = this.visit(ctx.variableInitializer);
 
     return {
       type: "CONSTANT_DECLARATOR",
       name: name,
-      cntSquares: cntSquares,
+      dimensions: dimensions,
       init: init
     };
   }
@@ -735,7 +755,11 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     const typeType = this.visit(ctx.typeTypeOrVoid);
     const name = this.identifier(ctx.Identifier[0]);
     const parameters = this.visit(ctx.formalParameters);
-    const cntSquares = ctx.LSquare.length;
+    const dimensions = ctx.LSquare.map(() => {
+      return {
+        type: "DIMENSION"
+      };
+    });
     const throws = this.visit(ctx.qualifiedNameList);
     const body = this.visit(ctx.methodBody);
 
@@ -746,7 +770,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       typeType: typeType,
       name: name,
       parameters: parameters,
-      cntSquares: cntSquares,
+      dimensions: dimensions,
       throws: throws,
       body: body
     };
@@ -800,11 +824,15 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
   variableDeclaratorId(ctx) {
     const id = this.identifier(ctx.Identifier[0]);
-    const cntSquares = ctx.LSquare.length;
+    const dimensions = ctx.LSquare.map(() => {
+      return {
+        type: "DIMENSION"
+      };
+    });
     return {
       type: "VARIABLE_DECLARATOR_ID",
       id: id,
-      cntSquares: cntSquares
+      dimensions: dimensions
     };
   }
 
@@ -933,19 +961,23 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     const annotations = ctx.annotation.map(annotation =>
       this.visit(annotation)
     );
-    const cntSquares = ctx.LSquare.length;
+    const dimensions = ctx.LSquare.map(() => {
+      return {
+        type: "DIMENSION"
+      };
+    });
 
     let value = undefined;
     if (ctx.primitiveType.length > 0) {
       value = this.visit(ctx.primitiveType);
       // if empty typeType return child
-      if (annotations.length === 0 && cntSquares === 0) {
+      if (annotations.length === 0 && dimensions.length === 0) {
         return value;
       }
     } else if (ctx.classOrInterfaceType.length > 0) {
       value = this.visit(ctx.classOrInterfaceType);
       // if empty typeType return child
-      if (annotations.length === 0 && cntSquares === 0) {
+      if (annotations.length === 0 && dimensions.length === 0) {
         return value;
       }
     }
@@ -958,7 +990,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       type: "TYPE_TYPE",
       modifiers: annotations,
       value: value,
-      cntSquares: cntSquares
+      dimensions: dimensions
     };
   }
 
@@ -1005,7 +1037,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
     return {
       type: "TYPE_ARGUMENTS",
-      arguments: args
+      list: args
     };
   }
 
@@ -1604,14 +1636,14 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     return {
       type: "FOR_STATEMENT",
       forControl: forControl,
-      statement: statement
+      body: statement
     };
   }
 
   forControl(ctx) {
     if (ctx.Colon.length > 0) {
       const enhancedForStatement = {
-        type: "ENHANCED_FOR_STATEMENT",
+        type: "ENHANCED_FOR_CONTROL",
         declaration: undefined,
         expression: undefined
       };
@@ -1652,7 +1684,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
     if (ctx.SemiColon.length == 2) {
       const basicForStatement = {
-        type: "BASIC_FOR_STATEMENT",
+        type: "BASIC_FOR_CONTROL",
         forInit: undefined,
         expression: undefined,
         expressionList: undefined
@@ -2541,13 +2573,18 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     const expressions = ctx.expression.map(expression =>
       this.visit(expression)
     );
-    const cntSquares = ctx.LSquare.length - expressions.length;
+    const dimensions = [];
+    for (let i = 0; i < ctx.LSquare.length - expressions.length; i++) {
+      dimensions.push({
+        type: "DIMENSION"
+      });
+    }
     const arrayInitializer = this.visit(ctx.arrayInitializer);
 
     return {
       type: "ARRAY_CREATOR_REST",
       expressions: expressions,
-      cntSquares: cntSquares,
+      dimensions: dimensions,
       arrayInitializer: arrayInitializer
     };
   }
@@ -2654,13 +2691,13 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     const annotations = ctx.annotation.map(annotation =>
       this.visit(annotation)
     );
-    const cntSquares = ctx.LSquare.length;
+    const dimensions = ctx.dimension.map(dimension => this.visit(dimension));
 
     let value = undefined;
     if (ctx.primitiveType.length > 0) {
       value = this.visit(ctx.primitiveType);
       // if empty typeType return child
-      if (annotations.length === 0 && cntSquares === 0) {
+      if (annotations.length === 0 && dimensions.length === 0) {
         return value;
       }
     } else if (ctx.Identifier && ctx.Identifier.length > 0) {
@@ -2676,7 +2713,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
           // found typeArguments
           typeArguments = {
             type: "TYPE_ARGUMENTS",
-            arguments: args
+            list: args
           };
         } else {
           // found operator expression with operator "<"
@@ -2704,7 +2741,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       return annotations[0];
     }
 
-    if (annotations.length === 0 && cntSquares === 0) {
+    if (annotations.length === 0 && dimensions.length === 0) {
       return value;
     }
 
@@ -2712,7 +2749,22 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       type: "TYPE_TYPE",
       modifiers: annotations,
       value: value,
-      cntSquares: cntSquares
+      dimensions: dimensions
+    };
+  }
+
+  dimension(ctx) {
+    if (ctx.expression.length > 0) {
+      const expression = this.visit(ctx.expression);
+
+      return {
+        type: "DIMENSION",
+        expression: expression
+      };
+    }
+
+    return {
+      type: "DIMENSION"
     };
   }
 

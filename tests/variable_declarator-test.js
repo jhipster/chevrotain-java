@@ -11,7 +11,7 @@ describe("variableDeclarator", () => {
           type: "IDENTIFIER",
           value: "A"
         },
-        cntSquares: 0
+        dimensions: []
       },
       init: undefined
     });
@@ -28,7 +28,7 @@ describe("variableDeclarator", () => {
           type: "IDENTIFIER",
           value: "A"
         },
-        cntSquares: 0
+        dimensions: []
       },
       init: {
         type: "THIS"

@@ -6,7 +6,7 @@ describe("typeArguments", () => {
     expect(Parser.parse("<boolean>", parser => parser.typeArguments())).toEqual(
       {
         type: "TYPE_ARGUMENTS",
-        arguments: [
+        list: [
           {
             type: "TYPE_ARGUMENT",
             argument: {
@@ -26,7 +26,7 @@ describe("typeArguments", () => {
       Parser.parse("<boolean, char>", parser => parser.typeArguments())
     ).toEqual({
       type: "TYPE_ARGUMENTS",
-      arguments: [
+      list: [
         {
           type: "TYPE_ARGUMENT",
           argument: {

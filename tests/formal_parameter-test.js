@@ -19,7 +19,7 @@ describe("formalParameter", () => {
           type: "IDENTIFIER",
           value: "a"
         },
-        cntSquares: 0
+        dimensions: []
       }
     });
   });
@@ -41,7 +41,7 @@ describe("formalParameter", () => {
           type: "IDENTIFIER",
           value: "a"
         },
-        cntSquares: 0
+        dimensions: []
       }
     });
   });
@@ -79,7 +79,7 @@ describe("formalParameter", () => {
           type: "IDENTIFIER",
           value: "a"
         },
-        cntSquares: 0
+        dimensions: []
       }
     });
   });
@@ -101,7 +101,7 @@ describe("formalParameter", () => {
           type: "IDENTIFIER",
           value: "a"
         },
-        cntSquares: 0
+        dimensions: []
       }
     });
   });

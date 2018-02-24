@@ -22,7 +22,7 @@ describe("classOrInterfaceTypeElement", () => {
       },
       typeArguments: {
         type: "TYPE_ARGUMENTS",
-        arguments: [
+        list: [
           {
             type: "TYPE_ARGUMENT",
             argument: {

@@ -28,7 +28,7 @@ describe("empty", () => {
               type: "IDENTIFIER",
               value: "a"
             },
-            cntSquares: 0
+            dimensions: []
           },
           dotDotDot: false
         }

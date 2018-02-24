@@ -4,7 +4,7 @@ const Parser = require("../src/index");
 describe("forControl", () => {
   it("basicForStatement: empty", () => {
     expect(Parser.parse(";;", parser => parser.forControl())).toEqual({
-      type: "BASIC_FOR_STATEMENT",
+      type: "BASIC_FOR_CONTROL",
       forInit: undefined,
       expression: undefined,
       expressionList: undefined
@@ -13,7 +13,7 @@ describe("forControl", () => {
 
   it("basicForStatement: expressionList: one", () => {
     expect(Parser.parse("this;;", parser => parser.forControl())).toEqual({
-      type: "BASIC_FOR_STATEMENT",
+      type: "BASIC_FOR_CONTROL",
       forInit: {
         type: "EXPRESSION_LIST",
         list: [
@@ -31,7 +31,7 @@ describe("forControl", () => {
     expect(
       Parser.parse("this, super;;", parser => parser.forControl())
     ).toEqual({
-      type: "BASIC_FOR_STATEMENT",
+      type: "BASIC_FOR_CONTROL",
       forInit: {
         type: "EXPRESSION_LIST",
         list: [
@@ -50,7 +50,7 @@ describe("forControl", () => {
 
   it("basicForStatement: variableDeclaration: simple", () => {
     expect(Parser.parse("int i = 0;;", parser => parser.forControl())).toEqual({
-      type: "BASIC_FOR_STATEMENT",
+      type: "BASIC_FOR_CONTROL",
       forInit: {
         type: "LOCAL_VARIABLE_DECLARATION",
         modifiers: [],
@@ -69,7 +69,7 @@ describe("forControl", () => {
                   type: "IDENTIFIER",
                   value: "i"
                 },
-                cntSquares: 0
+                dimensions: []
               },
               init: {
                 type: "DECIMAL_LITERAL",
@@ -88,7 +88,7 @@ describe("forControl", () => {
     expect(
       Parser.parse("int i = 0, j = 0;;", parser => parser.forControl())
     ).toEqual({
-      type: "BASIC_FOR_STATEMENT",
+      type: "BASIC_FOR_CONTROL",
       forInit: {
         type: "LOCAL_VARIABLE_DECLARATION",
         modifiers: [],
@@ -107,7 +107,7 @@ describe("forControl", () => {
                   type: "IDENTIFIER",
                   value: "i"
                 },
-                cntSquares: 0
+                dimensions: []
               },
               init: {
                 type: "DECIMAL_LITERAL",
@@ -122,7 +122,7 @@ describe("forControl", () => {
                   type: "IDENTIFIER",
                   value: "j"
                 },
-                cntSquares: 0
+                dimensions: []
               },
               init: {
                 type: "DECIMAL_LITERAL",
@@ -141,7 +141,7 @@ describe("forControl", () => {
     expect(
       Parser.parse("@Bean final int i = 0;;", parser => parser.forControl())
     ).toEqual({
-      type: "BASIC_FOR_STATEMENT",
+      type: "BASIC_FOR_CONTROL",
       forInit: {
         type: "LOCAL_VARIABLE_DECLARATION",
         modifiers: [
@@ -179,7 +179,7 @@ describe("forControl", () => {
                   type: "IDENTIFIER",
                   value: "i"
                 },
-                cntSquares: 0
+                dimensions: []
               },
               init: {
                 type: "DECIMAL_LITERAL",
@@ -198,7 +198,7 @@ describe("forControl", () => {
     expect(
       Parser.parse("; i < array.length;", parser => parser.forControl())
     ).toEqual({
-      type: "BASIC_FOR_STATEMENT",
+      type: "BASIC_FOR_CONTROL",
       forInit: undefined,
       expression: {
         type: "OPERATOR_EXPRESSION",
@@ -226,7 +226,7 @@ describe("forControl", () => {
 
   it("basicForStatement: optionalExpression", () => {
     expect(Parser.parse(";this;", parser => parser.forControl())).toEqual({
-      type: "BASIC_FOR_STATEMENT",
+      type: "BASIC_FOR_CONTROL",
       forInit: undefined,
       expression: {
         type: "THIS"
@@ -237,7 +237,7 @@ describe("forControl", () => {
 
   it("basicForStatement: optionalExpressionList", () => {
     expect(Parser.parse(";;this", parser => parser.forControl())).toEqual({
-      type: "BASIC_FOR_STATEMENT",
+      type: "BASIC_FOR_CONTROL",
       forInit: undefined,
       expression: undefined,
       expressionList: {
@@ -255,7 +255,7 @@ describe("forControl", () => {
     expect(
       Parser.parse("Bean bean : Beans", parser => parser.forControl())
     ).toEqual({
-      type: "ENHANCED_FOR_STATEMENT",
+      type: "ENHANCED_FOR_CONTROL",
       declaration: {
         type: "LOCAL_VARIABLE_DECLARATION",
         modifiers: [],
@@ -274,7 +274,7 @@ describe("forControl", () => {
                   type: "IDENTIFIER",
                   value: "bean"
                 },
-                cntSquares: 0
+                dimensions: []
               },
               init: undefined
             }
@@ -294,7 +294,7 @@ describe("forControl", () => {
         parser.forControl()
       )
     ).toEqual({
-      type: "ENHANCED_FOR_STATEMENT",
+      type: "ENHANCED_FOR_CONTROL",
       declaration: {
         type: "LOCAL_VARIABLE_DECLARATION",
         modifiers: [
@@ -332,7 +332,7 @@ describe("forControl", () => {
                   type: "IDENTIFIER",
                   value: "bean"
                 },
-                cntSquares: 0
+                dimensions: []
               },
               init: undefined
             }

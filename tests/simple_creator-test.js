@@ -48,7 +48,11 @@ describe("simpleCreator", () => {
       rest: {
         type: "ARRAY_CREATOR_REST",
         expressions: [],
-        cntSquares: 1,
+        dimensions: [
+          {
+            type: "DIMENSION"
+          }
+        ],
         arrayInitializer: {
           type: "ARRAY_INITIALIZER",
           variableInitializers: []

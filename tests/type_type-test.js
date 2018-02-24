@@ -38,7 +38,7 @@ describe("typeType", () => {
         type: "PRIMITIVE_TYPE",
         value: "boolean"
       },
-      cntSquares: 0
+      dimensions: []
     });
   });
 
@@ -50,7 +50,11 @@ describe("typeType", () => {
         type: "PRIMITIVE_TYPE",
         value: "boolean"
       },
-      cntSquares: 1
+      dimensions: [
+        {
+          type: "DIMENSION"
+        }
+      ]
     });
   });
 
@@ -62,7 +66,14 @@ describe("typeType", () => {
         type: "PRIMITIVE_TYPE",
         value: "boolean"
       },
-      cntSquares: 2
+      dimensions: [
+        {
+          type: "DIMENSION"
+        },
+        {
+          type: "DIMENSION"
+        }
+      ]
     });
   });
 

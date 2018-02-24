@@ -50,12 +50,12 @@ describe("statementWithStartingToken", () => {
     ).toEqual({
       type: "FOR_STATEMENT",
       forControl: {
-        type: "BASIC_FOR_STATEMENT",
+        type: "BASIC_FOR_CONTROL",
         forInit: undefined,
         expression: undefined,
         expressionList: undefined
       },
-      statement: {
+      body: {
         type: "BLOCK",
         statements: []
       }

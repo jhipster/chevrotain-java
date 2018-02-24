@@ -6782,9 +6782,40 @@
                                 "type": "Option",
                                 "definition": [
                                   {
-                                    "type": "NonTerminal",
-                                    "name": "typeArguments",
-                                    "occurrenceInParent": 2
+                                    "type": "Terminal",
+                                    "name": "Less",
+                                    "label": "'<'",
+                                    "occurrenceInParent": 1,
+                                    "pattern": "<"
+                                  },
+                                  {
+                                    "type": "RepetitionMandatoryWithSeparator",
+                                    "separator": {
+                                      "type": "Terminal",
+                                      "name": "Comma",
+                                      "label": "','",
+                                      "occurrenceInParent": 1,
+                                      "pattern": ","
+                                    },
+                                    "definition": [
+                                      {
+                                        "type": "NonTerminal",
+                                        "name": "typeArgument",
+                                        "occurrenceInParent": 1
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "Option",
+                                    "definition": [
+                                      {
+                                        "type": "Terminal",
+                                        "name": "Greater",
+                                        "label": "'>'",
+                                        "occurrenceInParent": 1,
+                                        "pattern": ">"
+                                      }
+                                    ]
                                   }
                                 ]
                               }
@@ -6806,18 +6837,9 @@
                         "type": "Repetition",
                         "definition": [
                           {
-                            "type": "Terminal",
-                            "name": "LSquare",
-                            "label": "'['",
-                            "occurrenceInParent": 2,
-                            "pattern": "\\["
-                          },
-                          {
-                            "type": "Terminal",
-                            "name": "RSquare",
-                            "label": "']'",
-                            "occurrenceInParent": 2,
-                            "pattern": "]"
+                            "type": "NonTerminal",
+                            "name": "dimension",
+                            "occurrenceInParent": 1
                           }
                         ]
                       }
@@ -6882,6 +6904,36 @@
             ]
           }
         ]
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "dimension",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "LSquare",
+        "label": "'['",
+        "occurrenceInParent": 1,
+        "pattern": "\\["
+      },
+      {
+        "type": "Option",
+        "definition": [
+          {
+            "type": "NonTerminal",
+            "name": "expression",
+            "occurrenceInParent": 1
+          }
+        ]
+      },
+      {
+        "type": "Terminal",
+        "name": "RSquare",
+        "label": "']'",
+        "occurrenceInParent": 1,
+        "pattern": "]"
       }
     ]
   },

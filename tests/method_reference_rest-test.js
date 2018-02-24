@@ -34,7 +34,7 @@ describe("methodReferenceRest", () => {
       type: "METHOD_REFERENCE_REST",
       typeArguments: {
         type: "TYPE_ARGUMENTS",
-        arguments: [
+        list: [
           {
             type: "TYPE_ARGUMENT",
             argument: {

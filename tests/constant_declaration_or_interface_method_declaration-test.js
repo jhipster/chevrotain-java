@@ -22,7 +22,7 @@ describe("constantDeclarationOrInterfaceMethodDeclaration", () => {
         type: "FORMAL_PARAMETERS",
         parameters: []
       },
-      cntSquares: 0,
+      dimensions: [],
       throws: undefined,
       body: {
         type: "BLOCK",
@@ -51,7 +51,7 @@ describe("constantDeclarationOrInterfaceMethodDeclaration", () => {
         type: "FORMAL_PARAMETERS",
         parameters: []
       },
-      cntSquares: 0,
+      dimensions: [],
       throws: undefined,
       body: {
         type: "BLOCK",
@@ -83,7 +83,7 @@ describe("constantDeclarationOrInterfaceMethodDeclaration", () => {
         type: "FORMAL_PARAMETERS",
         parameters: []
       },
-      cntSquares: 0,
+      dimensions: [],
       throws: undefined,
       body: {
         type: "BLOCK",
@@ -125,7 +125,7 @@ describe("constantDeclarationOrInterfaceMethodDeclaration", () => {
         type: "FORMAL_PARAMETERS",
         parameters: []
       },
-      cntSquares: 0,
+      dimensions: [],
       throws: undefined,
       body: {
         type: "BLOCK",
@@ -154,7 +154,11 @@ describe("constantDeclarationOrInterfaceMethodDeclaration", () => {
         type: "FORMAL_PARAMETERS",
         parameters: []
       },
-      cntSquares: 1,
+      dimensions: [
+        {
+          type: "DIMENSION"
+        }
+      ],
       throws: undefined,
       body: {
         type: "BLOCK",
@@ -183,7 +187,14 @@ describe("constantDeclarationOrInterfaceMethodDeclaration", () => {
         type: "FORMAL_PARAMETERS",
         parameters: []
       },
-      cntSquares: 2,
+      dimensions: [
+        {
+          type: "DIMENSION"
+        },
+        {
+          type: "DIMENSION"
+        }
+      ],
       throws: undefined,
       body: {
         type: "BLOCK",
@@ -212,7 +223,7 @@ describe("constantDeclarationOrInterfaceMethodDeclaration", () => {
         type: "FORMAL_PARAMETERS",
         parameters: []
       },
-      cntSquares: 0,
+      dimensions: [],
       throws: {
         type: "QUALIFIED_NAME_LIST",
         list: [
@@ -267,7 +278,7 @@ describe("constantDeclarationOrInterfaceMethodDeclaration", () => {
         type: "FORMAL_PARAMETERS",
         parameters: []
       },
-      cntSquares: 0,
+      dimensions: [],
       throws: undefined,
       body: {
         type: "BLOCK",
@@ -294,7 +305,7 @@ describe("constantDeclarationOrInterfaceMethodDeclaration", () => {
             type: "IDENTIFIER",
             value: "A"
           },
-          cntSquares: 0,
+          dimensions: [],
           init: {
             type: "THIS"
           }
@@ -321,7 +332,7 @@ describe("constantDeclarationOrInterfaceMethodDeclaration", () => {
             type: "IDENTIFIER",
             value: "A"
           },
-          cntSquares: 0,
+          dimensions: [],
           init: {
             type: "THIS"
           }
@@ -332,7 +343,7 @@ describe("constantDeclarationOrInterfaceMethodDeclaration", () => {
             type: "IDENTIFIER",
             value: "B"
           },
-          cntSquares: 0,
+          dimensions: [],
           init: {
             type: "SUPER"
           }

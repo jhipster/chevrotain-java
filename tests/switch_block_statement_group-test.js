@@ -37,7 +37,7 @@ describe("switchBlockStatementGroup", () => {
                     type: "IDENTIFIER",
                     value: "A"
                   },
-                  cntSquares: 0
+                  dimensions: []
                 },
                 init: undefined
               }
@@ -93,7 +93,7 @@ describe("switchBlockStatementGroup", () => {
                     type: "IDENTIFIER",
                     value: "A"
                   },
-                  cntSquares: 0
+                  dimensions: []
                 },
                 init: undefined
               }

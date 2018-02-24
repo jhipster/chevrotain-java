@@ -26,7 +26,7 @@ describe("blockStatement", () => {
                 type: "IDENTIFIER",
                 value: "A"
               },
-              cntSquares: 0
+              dimensions: []
             },
             init: undefined
           }
@@ -71,7 +71,7 @@ describe("blockStatement", () => {
                 type: "IDENTIFIER",
                 value: "A"
               },
-              cntSquares: 0
+              dimensions: []
             },
             init: undefined
           }

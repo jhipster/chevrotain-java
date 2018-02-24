@@ -36,7 +36,7 @@ describe("lambdaParameters", () => {
               type: "IDENTIFIER",
               value: "a"
             },
-            cntSquares: 0
+            dimensions: []
           }
         }
       ]

@@ -89,7 +89,7 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
         },
         typeArguments: {
           type: "TYPE_ARGUMENTS",
-          arguments: [
+          list: [
             {
               type: "TYPE_ARGUMENT",
               argument: {
@@ -131,7 +131,7 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
             value: undefined
           }
         ],
-        cntSquares: 0,
+        dimensions: [],
         value: {
           type: "IDENTIFIER",
           value: "A"
@@ -155,7 +155,11 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
           type: "PRIMITIVE_TYPE",
           value: "boolean"
         },
-        cntSquares: 1
+        dimensions: [
+          {
+            type: "DIMENSION"
+          }
+        ]
       },
       expression: {
         type: "THIS"
@@ -177,7 +181,14 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
           type: "PRIMITIVE_TYPE",
           value: "boolean"
         },
-        cntSquares: 2
+        dimensions: [
+          {
+            type: "DIMENSION"
+          },
+          {
+            type: "DIMENSION"
+          }
+        ]
       },
       expression: {
         type: "THIS"
@@ -290,7 +301,7 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
                 type: "IDENTIFIER",
                 value: "a"
               },
-              cntSquares: 0
+              dimensions: []
             },
             dotDotDot: false
           }
@@ -326,7 +337,7 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
                 type: "IDENTIFIER",
                 value: "a"
               },
-              cntSquares: 0
+              dimensions: []
             },
             dotDotDot: false
           },
@@ -343,7 +354,7 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
                 type: "IDENTIFIER",
                 value: "b"
               },
-              cntSquares: 0
+              dimensions: []
             },
             dotDotDot: false
           }
@@ -392,7 +403,7 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
                 type: "IDENTIFIER",
                 value: "a"
               },
-              cntSquares: 0
+              dimensions: []
             },
             dotDotDot: false
           }
@@ -428,7 +439,7 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
                 type: "IDENTIFIER",
                 value: "a"
               },
-              cntSquares: 0
+              dimensions: []
             },
             dotDotDot: false
           },
@@ -450,7 +461,7 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
                 type: "IDENTIFIER",
                 value: "b"
               },
-              cntSquares: 0
+              dimensions: []
             },
             dotDotDot: false
           }

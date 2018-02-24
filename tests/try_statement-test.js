@@ -148,7 +148,7 @@ describe("tryStatement", () => {
                   type: "IDENTIFIER",
                   value: "a"
                 },
-                cntSquares: 0
+                dimensions: []
               },
               expression: {
                 type: "THIS"

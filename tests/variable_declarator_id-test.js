@@ -9,7 +9,7 @@ describe("variableDeclaratorId", () => {
         type: "IDENTIFIER",
         value: "A"
       },
-      cntSquares: 0
+      dimensions: []
     });
   });
 
@@ -22,7 +22,11 @@ describe("variableDeclaratorId", () => {
         type: "IDENTIFIER",
         value: "A"
       },
-      cntSquares: 1
+      dimensions: [
+        {
+          type: "DIMENSION"
+        }
+      ]
     });
   });
 
@@ -35,7 +39,14 @@ describe("variableDeclaratorId", () => {
         type: "IDENTIFIER",
         value: "A"
       },
-      cntSquares: 2
+      dimensions: [
+        {
+          type: "DIMENSION"
+        },
+        {
+          type: "DIMENSION"
+        }
+      ]
     });
   });
 });

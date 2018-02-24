@@ -18,7 +18,7 @@ describe("methodDeclaration", () => {
         type: "FORMAL_PARAMETERS",
         parameters: []
       },
-      cntSquares: 0,
+      dimensions: [],
       throws: undefined,
       body: {
         type: "BLOCK",
@@ -44,7 +44,7 @@ describe("methodDeclaration", () => {
         type: "FORMAL_PARAMETERS",
         parameters: []
       },
-      cntSquares: 0,
+      dimensions: [],
       throws: undefined,
       body: {
         type: "BLOCK",
@@ -69,7 +69,11 @@ describe("methodDeclaration", () => {
         type: "FORMAL_PARAMETERS",
         parameters: []
       },
-      cntSquares: 1,
+      dimensions: [
+        {
+          type: "DIMENSION"
+        }
+      ],
       throws: undefined,
       body: {
         type: "BLOCK",
@@ -94,7 +98,14 @@ describe("methodDeclaration", () => {
         type: "FORMAL_PARAMETERS",
         parameters: []
       },
-      cntSquares: 2,
+      dimensions: [
+        {
+          type: "DIMENSION"
+        },
+        {
+          type: "DIMENSION"
+        }
+      ],
       throws: undefined,
       body: {
         type: "BLOCK",
@@ -121,7 +132,7 @@ describe("methodDeclaration", () => {
         type: "FORMAL_PARAMETERS",
         parameters: []
       },
-      cntSquares: 0,
+      dimensions: [],
       throws: {
         type: "QUALIFIED_NAME_LIST",
         list: [

@@ -7,7 +7,7 @@ describe("typeArgumentsOrDiamond", () => {
       Parser.parse("<boolean>", parser => parser.typeArgumentsOrDiamond())
     ).toEqual({
       type: "TYPE_ARGUMENTS",
-      arguments: [
+      list: [
         {
           type: "TYPE_ARGUMENT",
           argument: {
