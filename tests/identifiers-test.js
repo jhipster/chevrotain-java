@@ -14,7 +14,7 @@ describe("identifiers", () => {
       type: "IDENTIFIERS",
       identifiers: {
         type: "IDENTIFIER_LIST",
-        identifiers: ["a"]
+        list: ["a"]
       }
     });
   });

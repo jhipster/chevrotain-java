@@ -233,7 +233,7 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
         type: "IDENTIFIERS",
         identifiers: {
           type: "IDENTIFIER_LIST",
-          identifiers: [
+          list: [
             {
               type: "IDENTIFIER",
               value: "a"
@@ -259,7 +259,7 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
         type: "IDENTIFIERS",
         identifiers: {
           type: "IDENTIFIER_LIST",
-          identifiers: [
+          list: [
             {
               type: "IDENTIFIER",
               value: "a"

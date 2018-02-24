@@ -1102,7 +1102,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
     return {
       type: "IDENTIFIER_LIST",
-      identifiers: identifiers
+      list: identifiers
     };
   }
 
@@ -1956,7 +1956,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
             type: "IDENTIFIERS",
             identifiers: {
               type: "IDENTIFIER_LIST",
-              identifiers: [atomic]
+              list: [atomic]
             }
           },
           body: body
@@ -2278,22 +2278,20 @@ class SQLToAstVisitor extends BaseSQLVisitor {
         } else {
           parameters.identifiers = {
             type: "IDENTIFIER_LIST",
-            identifiers: []
+            list: []
           };
 
-          parameters.identifiers.identifiers = ctx.expression.map(
-            expression => {
-              const identifier = this.visit(expression);
-              if (identifier.type !== "IDENTIFIER") {
-                throw new MismatchedTokenException(
-                  "Found lambda expression but left side is not an identifier",
-                  undefined
-                );
-              }
-
-              return identifier;
+          parameters.identifiers.list = ctx.expression.map(expression => {
+            const identifier = this.visit(expression);
+            if (identifier.type !== "IDENTIFIER") {
+              throw new MismatchedTokenException(
+                "Found lambda expression but left side is not an identifier",
+                undefined
+              );
             }
-          );
+
+            return identifier;
+          });
         }
       }
 

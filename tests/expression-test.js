@@ -223,7 +223,7 @@ describe("expression", () => {
         type: "IDENTIFIERS",
         identifiers: {
           type: "IDENTIFIER_LIST",
-          identifiers: [
+          list: [
             {
               type: "IDENTIFIER",
               value: "a"
@@ -245,7 +245,7 @@ describe("expression", () => {
         type: "IDENTIFIERS",
         identifiers: {
           type: "IDENTIFIER_LIST",
-          identifiers: [
+          list: [
             {
               type: "IDENTIFIER",
               value: "a"

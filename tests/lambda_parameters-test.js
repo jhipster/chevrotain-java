@@ -48,7 +48,7 @@ describe("lambdaParameters", () => {
       type: "IDENTIFIERS",
       identifiers: {
         type: "IDENTIFIER_LIST",
-        identifiers: ["a"]
+        list: ["a"]
       }
     });
   });
