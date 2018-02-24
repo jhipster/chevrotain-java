@@ -119,10 +119,10 @@ describe("memberDeclaration", () => {
       type: "GENERIC_METHOD_DECLARATION",
       typeParameters: {
         type: "TYPE_PARAMETERS",
-        parameters: [
+        list: [
           {
             type: "TYPE_PARAMETER",
-            annotations: [],
+            modifiers: [],
             name: {
               type: "IDENTIFIER",
               value: "A"

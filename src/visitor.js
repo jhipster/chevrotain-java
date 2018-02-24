@@ -234,7 +234,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
     return {
       type: "TYPE_PARAMETERS",
-      parameters: parameters
+      list: parameters
     };
   }
 
@@ -247,7 +247,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
     return {
       type: "TYPE_PARAMETER",
-      annotations: annotations,
+      modifiers: annotations,
       name: name,
       typeBound: typeBound
     };
@@ -1909,11 +1909,24 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       if (ctx.qualifiedExpressionRest.length > 0) {
         const rest = this.visit(ctx.qualifiedExpressionRest);
 
-        return {
+        const qualifiedExpression = {
           type: "QUALIFIED_EXPRESSION",
           expression: atomic,
           rest: rest
         };
+
+        if (ctx.operatorExpressionRest.length > 0) {
+          const operatorExpressionRest = this.visit(ctx.operatorExpressionRest);
+
+          return {
+            type: "OPERATOR_EXPRESSION",
+            left: qualifiedExpression,
+            operator: operatorExpressionRest.operator,
+            right: operatorExpressionRest.expression
+          };
+        }
+
+        return qualifiedExpression;
       }
 
       if (ctx.operatorExpressionRest.length > 0) {

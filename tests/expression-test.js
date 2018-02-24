@@ -104,6 +104,39 @@ describe("expression", () => {
     });
   });
 
+  it("qualifiedExpression and operator", () => {
+    expect(Parser.parse("a.b() < c.d", parser => parser.expression())).toEqual({
+      type: "OPERATOR_EXPRESSION",
+      left: {
+        type: "QUALIFIED_EXPRESSION",
+        expression: {
+          type: "IDENTIFIER",
+          value: "a"
+        },
+        rest: {
+          type: "METHOD_INVOCATION",
+          name: {
+            type: "IDENTIFIER",
+            value: "b"
+          },
+          parameters: undefined
+        }
+      },
+      operator: "<",
+      right: {
+        type: "QUALIFIED_EXPRESSION",
+        expression: {
+          type: "IDENTIFIER",
+          value: "c"
+        },
+        rest: {
+          type: "IDENTIFIER",
+          value: "d"
+        }
+      }
+    });
+  });
+
   it("operatorExpression Star", () => {
     expect(Parser.parse("this*super", parser => parser.expression())).toEqual({
       type: "OPERATOR_EXPRESSION",

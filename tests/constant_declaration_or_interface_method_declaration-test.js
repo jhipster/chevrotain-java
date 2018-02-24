@@ -102,10 +102,10 @@ describe("constantDeclarationOrInterfaceMethodDeclaration", () => {
       modifiers: [],
       typeParameters: {
         type: "TYPE_PARAMETERS",
-        parameters: [
+        list: [
           {
             type: "TYPE_PARAMETER",
-            annotations: [],
+            modifiers: [],
             name: {
               type: "IDENTIFIER",
               value: "Abc"
@@ -255,10 +255,10 @@ describe("constantDeclarationOrInterfaceMethodDeclaration", () => {
       modifiers: [],
       typeParameters: {
         type: "TYPE_PARAMETERS",
-        parameters: [
+        list: [
           {
             type: "TYPE_PARAMETER",
-            annotations: [],
+            modifiers: [],
             name: {
               type: "IDENTIFIER",
               value: "A"

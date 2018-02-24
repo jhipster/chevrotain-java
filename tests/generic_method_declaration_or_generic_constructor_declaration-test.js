@@ -11,10 +11,10 @@ describe("genericMethodDeclarationOrGenericConstructorDeclaration", () => {
       type: "GENERIC_METHOD_DECLARATION",
       typeParameters: {
         type: "TYPE_PARAMETERS",
-        parameters: [
+        list: [
           {
             type: "TYPE_PARAMETER",
-            annotations: [],
+            modifiers: [],
             name: {
               type: "IDENTIFIER",
               value: "A"
@@ -55,10 +55,10 @@ describe("genericMethodDeclarationOrGenericConstructorDeclaration", () => {
       type: "GENERIC_CONSTRUCTOR_DECLARATION",
       typeParameters: {
         type: "TYPE_PARAMETERS",
-        parameters: [
+        list: [
           {
             type: "TYPE_PARAMETER",
-            annotations: [],
+            modifiers: [],
             name: {
               type: "IDENTIFIER",
               value: "A"

@@ -5,7 +5,7 @@ describe("typeParameter", () => {
   it("identifier", () => {
     expect(Parser.parse("A", parser => parser.typeParameter())).toEqual({
       type: "TYPE_PARAMETER",
-      annotations: [],
+      modifiers: [],
       name: {
         type: "IDENTIFIER",
         value: "A"
@@ -17,7 +17,7 @@ describe("typeParameter", () => {
   it("annotations", () => {
     expect(Parser.parse("@Bean A", parser => parser.typeParameter())).toEqual({
       type: "TYPE_PARAMETER",
-      annotations: [
+      modifiers: [
         {
           type: "ANNOTATION",
           name: {
@@ -46,7 +46,7 @@ describe("typeParameter", () => {
       Parser.parse("A extends boolean", parser => parser.typeParameter())
     ).toEqual({
       type: "TYPE_PARAMETER",
-      annotations: [],
+      modifiers: [],
       name: {
         type: "IDENTIFIER",
         value: "A"

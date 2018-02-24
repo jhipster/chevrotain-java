@@ -5,10 +5,10 @@ describe("typeParameters", () => {
   it("single", () => {
     expect(Parser.parse("<A>", parser => parser.typeParameters())).toEqual({
       type: "TYPE_PARAMETERS",
-      parameters: [
+      list: [
         {
           type: "TYPE_PARAMETER",
-          annotations: [],
+          modifiers: [],
           name: {
             type: "IDENTIFIER",
             value: "A"
@@ -22,10 +22,10 @@ describe("typeParameters", () => {
   it("multiple", () => {
     expect(Parser.parse("<A, B>", parser => parser.typeParameters())).toEqual({
       type: "TYPE_PARAMETERS",
-      parameters: [
+      list: [
         {
           type: "TYPE_PARAMETER",
-          annotations: [],
+          modifiers: [],
           name: {
             type: "IDENTIFIER",
             value: "A"
@@ -34,7 +34,7 @@ describe("typeParameters", () => {
         },
         {
           type: "TYPE_PARAMETER",
-          annotations: [],
+          modifiers: [],
           name: {
             type: "IDENTIFIER",
             value: "B"

@@ -31,10 +31,10 @@ describe("interfaceDeclaration", () => {
       },
       typeParameters: {
         type: "TYPE_PARAMETERS",
-        parameters: [
+        list: [
           {
             type: "TYPE_PARAMETER",
-            annotations: [],
+            modifiers: [],
             name: {
               type: "IDENTIFIER",
               value: "B"
