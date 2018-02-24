@@ -2252,13 +2252,6 @@ class SQLToAstVisitor extends BaseSQLVisitor {
               ctx.variableDeclaratorId[i]
             );
 
-            if (typeType.type !== "PRIMITIVE_TYPE") {
-              throw new MismatchedTokenException(
-                "Found lambda expression but left side is not a primitive type",
-                undefined
-              );
-            }
-
             const modifiers = [];
             if (ctx.Final.find(final => final.cnt === i) !== undefined) {
               modifiers.push({
