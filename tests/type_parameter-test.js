@@ -53,7 +53,7 @@ describe("typeParameter", () => {
       },
       typeBound: {
         type: "TYPE_BOUND",
-        bounds: [
+        list: [
           {
             type: "PRIMITIVE_TYPE",
             value: "boolean"

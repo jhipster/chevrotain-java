@@ -2021,23 +2021,13 @@ class SelectParser extends chevrotain.Parser {
             $.CONSUME(tokens.Minus);
           }
         },
-        // ('<<' | '>>>' | '>>')
+        // ('<<')
         {
           ALT: () => {
             $.CONSUME(tokens.LessLess);
           }
         },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.GreaterGreaterGreater);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.GreaterGreater);
-          }
-        },
-        // ('<=' | '>=' | '>' | '<')
+        // ('<=' | '>=' | '>' | '>>' | '>>>' | '<')
         {
           ALT: () => {
             $.CONSUME(tokens.LessEquals);
@@ -2051,6 +2041,12 @@ class SelectParser extends chevrotain.Parser {
         {
           ALT: () => {
             $.CONSUME(tokens.Greater);
+            $.OPTION(() => {
+              $.CONSUME2(tokens.Greater);
+              $.OPTION2(() => {
+                $.CONSUME3(tokens.Greater);
+              });
+            });
           }
         },
         {

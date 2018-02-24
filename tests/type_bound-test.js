@@ -5,7 +5,7 @@ describe("typeBound", () => {
   it("single", () => {
     expect(Parser.parse("boolean", parser => parser.typeBound())).toEqual({
       type: "TYPE_BOUND",
-      bounds: [
+      list: [
         {
           type: "PRIMITIVE_TYPE",
           value: "boolean"
@@ -19,7 +19,7 @@ describe("typeBound", () => {
       Parser.parse("boolean & char", parser => parser.typeBound())
     ).toEqual({
       type: "TYPE_BOUND",
-      bounds: [
+      list: [
         {
           type: "PRIMITIVE_TYPE",
           value: "boolean"

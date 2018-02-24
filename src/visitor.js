@@ -258,7 +258,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
     return {
       type: "TYPE_BOUND",
-      bounds: bounds
+      list: bounds
     };
   }
 
@@ -2069,10 +2069,10 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     if (ctx.LessLess.length > 0) {
       operator = "<<";
     }
-    if (ctx.GreaterGreater.length > 0) {
+    if (ctx.Greater.length === 2) {
       operator = ">>";
     }
-    if (ctx.GreaterGreaterGreater.length > 0) {
+    if (ctx.Greater.length === 3) {
       operator = ">>>";
     }
     // ('<=' | '>=' | '>' | '<')
@@ -2082,7 +2082,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     if (ctx.GreaterEquals.length > 0) {
       operator = ">=";
     }
-    if (ctx.Greater.length > 0) {
+    if (ctx.Greater.length === 1) {
       operator = ">";
     }
     if (ctx.Less.length > 0) {

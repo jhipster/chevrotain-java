@@ -412,22 +412,10 @@ const GreaterEquals = createToken({
   label: "'>='"
 });
 
-const GreaterGreater = createToken({
-  name: "GreaterGreater",
-  pattern: />>/,
-  label: "'>>'"
-});
-
 const GreaterGreaterEquals = createToken({
   name: "GreaterGreaterEquals",
   pattern: />>=/,
   label: "'>>='"
-});
-
-const GreaterGreaterGreater = createToken({
-  name: "GreaterGreaterGreater",
-  pattern: />>>/,
-  label: "'>>>'"
 });
 
 const GreaterGreaterGreaterEquals = createToken({
@@ -806,8 +794,6 @@ const allTokens = [
   Less,
   GreaterGreaterEquals,
   GreaterGreaterGreaterEquals,
-  GreaterGreaterGreater,
-  GreaterGreater,
   GreaterEquals,
   Greater,
   At,
@@ -922,8 +908,6 @@ module.exports = {
     Less,
     GreaterGreaterEquals,
     GreaterGreaterGreaterEquals,
-    GreaterGreaterGreater,
-    GreaterGreater,
     GreaterEquals,
     Greater,
     At,

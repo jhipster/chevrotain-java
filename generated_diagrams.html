@@ -5657,30 +5657,6 @@
             "definition": [
               {
                 "type": "Terminal",
-                "name": "GreaterGreaterGreater",
-                "label": "'>>>'",
-                "occurrenceInParent": 1,
-                "pattern": ">>>"
-              }
-            ]
-          },
-          {
-            "type": "Flat",
-            "definition": [
-              {
-                "type": "Terminal",
-                "name": "GreaterGreater",
-                "label": "'>>'",
-                "occurrenceInParent": 1,
-                "pattern": ">>"
-              }
-            ]
-          },
-          {
-            "type": "Flat",
-            "definition": [
-              {
-                "type": "Terminal",
                 "name": "LessEquals",
                 "label": "'<='",
                 "occurrenceInParent": 1,
@@ -5709,6 +5685,30 @@
                 "label": "'>'",
                 "occurrenceInParent": 1,
                 "pattern": ">"
+              },
+              {
+                "type": "Option",
+                "definition": [
+                  {
+                    "type": "Terminal",
+                    "name": "Greater",
+                    "label": "'>'",
+                    "occurrenceInParent": 2,
+                    "pattern": ">"
+                  },
+                  {
+                    "type": "Option",
+                    "definition": [
+                      {
+                        "type": "Terminal",
+                        "name": "Greater",
+                        "label": "'>'",
+                        "occurrenceInParent": 3,
+                        "pattern": ">"
+                      }
+                    ]
+                  }
+                ]
               }
             ]
           },
