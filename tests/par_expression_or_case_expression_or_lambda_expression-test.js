@@ -367,14 +367,6 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
     });
   });
 
-  it("lambdaExpression: one annotation", () => {
-    expect(() =>
-      Parser.parse("(@Bean boolean a) -> {}", parser =>
-        parser.parExpressionOrCastExpressionOrLambdaExpression()
-      )
-    ).toThrow(MismatchedTokenException);
-  });
-
   it("lambdaExpression: final modifier", () => {
     expect(
       Parser.parse("(final boolean a) -> {}", parser =>
