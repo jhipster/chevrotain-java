@@ -5,7 +5,7 @@ describe("catchType", () => {
   it("single", () => {
     expect(Parser.parse("pkg", parser => parser.catchType())).toEqual({
       type: "CATCH_TYPE",
-      types: [
+      list: [
         {
           type: "QUALIFIED_NAME",
           name: [
@@ -22,7 +22,7 @@ describe("catchType", () => {
   it("multiple", () => {
     expect(Parser.parse("pkg | abc", parser => parser.catchType())).toEqual({
       type: "CATCH_TYPE",
-      types: [
+      list: [
         {
           type: "QUALIFIED_NAME",
           name: [

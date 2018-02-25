@@ -1541,7 +1541,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
     return {
       type: "CATCH_TYPE",
-      types: types
+      list: types
     };
   }
 

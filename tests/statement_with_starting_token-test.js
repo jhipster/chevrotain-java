@@ -115,7 +115,7 @@ describe("statementWithStartingToken", () => {
           modifiers: [],
           catchType: {
             type: "CATCH_TYPE",
-            types: [
+            list: [
               {
                 type: "QUALIFIED_NAME",
                 name: [

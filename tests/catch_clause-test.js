@@ -10,7 +10,7 @@ describe("catchClause", () => {
       modifiers: [],
       catchType: {
         type: "CATCH_TYPE",
-        types: [
+        list: [
           {
             type: "QUALIFIED_NAME",
             name: [
@@ -55,7 +55,7 @@ describe("catchClause", () => {
       ],
       catchType: {
         type: "CATCH_TYPE",
-        types: [
+        list: [
           {
             type: "QUALIFIED_NAME",
             name: [
@@ -104,7 +104,7 @@ describe("catchClause", () => {
       ],
       catchType: {
         type: "CATCH_TYPE",
-        types: [
+        list: [
           {
             type: "QUALIFIED_NAME",
             name: [
