@@ -14,28 +14,31 @@ describe("block", () => {
       type: "BLOCK",
       statements: [
         {
-          type: "LOCAL_VARIABLE_DECLARATION",
-          modifiers: [],
-          typeType: {
-            type: "PRIMITIVE_TYPE",
-            value: "boolean"
-          },
-          declarators: {
-            type: "VARIABLE_DECLARATORS",
-            list: [
-              {
-                type: "VARIABLE_DECLARATOR",
-                id: {
-                  type: "VARIABLE_DECLARATOR_ID",
+          type: "EXPRESSION_STATEMENT",
+          expression: {
+            type: "LOCAL_VARIABLE_DECLARATION",
+            modifiers: [],
+            typeType: {
+              type: "PRIMITIVE_TYPE",
+              value: "boolean"
+            },
+            declarators: {
+              type: "VARIABLE_DECLARATORS",
+              list: [
+                {
+                  type: "VARIABLE_DECLARATOR",
                   id: {
-                    type: "IDENTIFIER",
-                    value: "A"
+                    type: "VARIABLE_DECLARATOR_ID",
+                    id: {
+                      type: "IDENTIFIER",
+                      value: "A"
+                    },
+                    dimensions: []
                   },
-                  dimensions: []
-                },
-                init: undefined
-              }
-            ]
+                  init: undefined
+                }
+              ]
+            }
           }
         }
       ]
@@ -49,28 +52,31 @@ describe("block", () => {
       type: "BLOCK",
       statements: [
         {
-          type: "LOCAL_VARIABLE_DECLARATION",
-          modifiers: [],
-          typeType: {
-            type: "PRIMITIVE_TYPE",
-            value: "boolean"
-          },
-          declarators: {
-            type: "VARIABLE_DECLARATORS",
-            list: [
-              {
-                type: "VARIABLE_DECLARATOR",
-                id: {
-                  type: "VARIABLE_DECLARATOR_ID",
+          type: "EXPRESSION_STATEMENT",
+          expression: {
+            type: "LOCAL_VARIABLE_DECLARATION",
+            modifiers: [],
+            typeType: {
+              type: "PRIMITIVE_TYPE",
+              value: "boolean"
+            },
+            declarators: {
+              type: "VARIABLE_DECLARATORS",
+              list: [
+                {
+                  type: "VARIABLE_DECLARATOR",
                   id: {
-                    type: "IDENTIFIER",
-                    value: "A"
+                    type: "VARIABLE_DECLARATOR_ID",
+                    id: {
+                      type: "IDENTIFIER",
+                      value: "A"
+                    },
+                    dimensions: []
                   },
-                  dimensions: []
-                },
-                init: undefined
-              }
-            ]
+                  init: undefined
+                }
+              ]
+            }
           }
         },
         {

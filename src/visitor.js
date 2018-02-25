@@ -1194,7 +1194,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       }
 
       // identifier statement
-      if (expression.type === "IDENTIFIER" || ctx.Colon.length > 0) {
+      if (expression.type === "IDENTIFIER" && ctx.Colon.length > 0) {
         if (ctx.classOrInterfaceModifier.length > 0) {
           throw new MismatchedTokenException(
             "Identifier statement is not allowed to have annotations or modifiers.",
@@ -1243,10 +1243,13 @@ class SQLToAstVisitor extends BaseSQLVisitor {
         const declarators = this.visit(ctx.variableDeclarators);
 
         return {
-          type: "LOCAL_VARIABLE_DECLARATION",
-          modifiers: modifiers,
-          typeType: expression,
-          declarators: declarators
+          type: "EXPRESSION_STATEMENT",
+          expression: {
+            type: "LOCAL_VARIABLE_DECLARATION",
+            modifiers: modifiers,
+            typeType: expression,
+            declarators: declarators
+          }
         };
       }
 

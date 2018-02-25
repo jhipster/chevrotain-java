@@ -9,28 +9,61 @@ describe("blockStatement", () => {
     expect(
       Parser.parse("boolean A;", parser => parser.blockStatement())
     ).toEqual({
-      type: "LOCAL_VARIABLE_DECLARATION",
-      modifiers: [],
-      typeType: {
-        type: "PRIMITIVE_TYPE",
-        value: "boolean"
-      },
-      declarators: {
-        type: "VARIABLE_DECLARATORS",
-        list: [
-          {
-            type: "VARIABLE_DECLARATOR",
-            id: {
-              type: "VARIABLE_DECLARATOR_ID",
+      type: "EXPRESSION_STATEMENT",
+      expression: {
+        type: "LOCAL_VARIABLE_DECLARATION",
+        modifiers: [],
+        typeType: {
+          type: "PRIMITIVE_TYPE",
+          value: "boolean"
+        },
+        declarators: {
+          type: "VARIABLE_DECLARATORS",
+          list: [
+            {
+              type: "VARIABLE_DECLARATOR",
               id: {
-                type: "IDENTIFIER",
-                value: "A"
+                type: "VARIABLE_DECLARATOR_ID",
+                id: {
+                  type: "IDENTIFIER",
+                  value: "A"
+                },
+                dimensions: []
               },
-              dimensions: []
-            },
-            init: undefined
-          }
-        ]
+              init: undefined
+            }
+          ]
+        }
+      }
+    });
+  });
+
+  it("localVariableDeclaration: complex", () => {
+    expect(
+      Parser.parse("Byte byteVariable;", parser => parser.blockStatement())
+    ).toEqual({
+      type: "EXPRESSION_STATEMENT",
+      expression: {
+        type: "LOCAL_VARIABLE_DECLARATION",
+        modifiers: [],
+        typeType: { type: "IDENTIFIER", value: "Byte" },
+        declarators: {
+          type: "VARIABLE_DECLARATORS",
+          list: [
+            {
+              type: "VARIABLE_DECLARATOR",
+              id: {
+                dimensions: [],
+                id: {
+                  type: "IDENTIFIER",
+                  value: "byteVariable"
+                },
+                type: "VARIABLE_DECLARATOR_ID"
+              },
+              init: undefined
+            }
+          ]
+        }
       }
     });
   });
@@ -39,43 +72,46 @@ describe("blockStatement", () => {
     expect(
       Parser.parse("@Bean boolean A;", parser => parser.blockStatement())
     ).toEqual({
-      type: "LOCAL_VARIABLE_DECLARATION",
-      modifiers: [
-        {
-          type: "ANNOTATION",
-          name: {
-            type: "QUALIFIED_NAME",
-            name: [
-              {
-                type: "IDENTIFIER",
-                value: "Bean"
-              }
-            ]
-          },
-          hasBraces: false,
-          values: undefined
-        }
-      ],
-      typeType: {
-        type: "PRIMITIVE_TYPE",
-        value: "boolean"
-      },
-      declarators: {
-        type: "VARIABLE_DECLARATORS",
-        list: [
+      type: "EXPRESSION_STATEMENT",
+      expression: {
+        type: "LOCAL_VARIABLE_DECLARATION",
+        modifiers: [
           {
-            type: "VARIABLE_DECLARATOR",
-            id: {
-              type: "VARIABLE_DECLARATOR_ID",
-              id: {
-                type: "IDENTIFIER",
-                value: "A"
-              },
-              dimensions: []
+            type: "ANNOTATION",
+            name: {
+              type: "QUALIFIED_NAME",
+              name: [
+                {
+                  type: "IDENTIFIER",
+                  value: "Bean"
+                }
+              ]
             },
-            init: undefined
+            hasBraces: false,
+            values: undefined
           }
-        ]
+        ],
+        typeType: {
+          type: "PRIMITIVE_TYPE",
+          value: "boolean"
+        },
+        declarators: {
+          type: "VARIABLE_DECLARATORS",
+          list: [
+            {
+              type: "VARIABLE_DECLARATOR",
+              id: {
+                type: "VARIABLE_DECLARATOR_ID",
+                id: {
+                  type: "IDENTIFIER",
+                  value: "A"
+                },
+                dimensions: []
+              },
+              init: undefined
+            }
+          ]
+        }
       }
     });
   });
