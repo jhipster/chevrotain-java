@@ -121,7 +121,7 @@ describe("primary", () => {
             ]
           },
           hasBraces: false,
-          value: undefined
+          values: undefined
         }
       ],
       value: {

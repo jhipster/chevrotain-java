@@ -53,7 +53,7 @@ describe("interfaceBodyDeclaration", () => {
             ]
           },
           hasBraces: false,
-          value: undefined
+          values: undefined
         }
       ],
       declaration: {
@@ -101,7 +101,7 @@ describe("interfaceBodyDeclaration", () => {
             ]
           },
           hasBraces: false,
-          value: undefined
+          values: undefined
         },
         {
           type: "MODIFIER",

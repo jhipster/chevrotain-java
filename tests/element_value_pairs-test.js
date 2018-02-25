@@ -26,7 +26,7 @@ describe("elementValuePairs", () => {
               ]
             },
             hasBraces: false,
-            value: undefined
+            values: undefined
           }
         }
       ]
@@ -59,7 +59,7 @@ describe("elementValuePairs", () => {
               ]
             },
             hasBraces: false,
-            value: undefined
+            values: undefined
           }
         },
         {
@@ -80,7 +80,7 @@ describe("elementValuePairs", () => {
               ]
             },
             hasBraces: false,
-            value: undefined
+            values: undefined
           }
         }
       ]

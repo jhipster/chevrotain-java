@@ -22,7 +22,7 @@ describe("elementValueArrayInitializer", () => {
             ]
           },
           hasBraces: false,
-          value: undefined
+          values: undefined
         }
       ]
     });
@@ -48,7 +48,7 @@ describe("elementValueArrayInitializer", () => {
             ]
           },
           hasBraces: false,
-          value: undefined
+          values: undefined
         },
         {
           type: "ANNOTATION",
@@ -62,7 +62,7 @@ describe("elementValueArrayInitializer", () => {
             ]
           },
           hasBraces: false,
-          value: undefined
+          values: undefined
         }
       ]
     });
@@ -87,7 +87,7 @@ describe("elementValueArrayInitializer", () => {
             ]
           },
           hasBraces: false,
-          value: undefined
+          values: undefined
         }
       ]
     });

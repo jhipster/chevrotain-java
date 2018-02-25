@@ -31,7 +31,7 @@ describe("annotation", () => {
         ]
       },
       hasBraces: true,
-      value: undefined
+      values: undefined
     });
   });
 
@@ -50,20 +50,22 @@ describe("annotation", () => {
         ]
       },
       hasBraces: true,
-      value: {
-        type: "ANNOTATION",
-        name: {
-          type: "QUALIFIED_NAME",
-          name: [
-            {
-              type: "IDENTIFIER",
-              value: "Something"
-            }
-          ]
-        },
-        hasBraces: false,
-        value: undefined
-      }
+      values: [
+        {
+          type: "ANNOTATION",
+          name: {
+            type: "QUALIFIED_NAME",
+            name: [
+              {
+                type: "IDENTIFIER",
+                value: "Something"
+              }
+            ]
+          },
+          hasBraces: false,
+          values: undefined
+        }
+      ]
     });
   });
 
@@ -82,25 +84,27 @@ describe("annotation", () => {
         ]
       },
       hasBraces: true,
-      value: {
-        type: "ELEMENT_VALUE_ARRAY_INITIALIZER",
-        values: [
-          {
-            type: "ANNOTATION",
-            name: {
-              type: "QUALIFIED_NAME",
-              name: [
-                {
-                  type: "IDENTIFIER",
-                  value: "Something"
-                }
-              ]
-            },
-            hasBraces: false,
-            value: undefined
-          }
-        ]
-      }
+      values: [
+        {
+          type: "ELEMENT_VALUE_ARRAY_INITIALIZER",
+          values: [
+            {
+              type: "ANNOTATION",
+              name: {
+                type: "QUALIFIED_NAME",
+                name: [
+                  {
+                    type: "IDENTIFIER",
+                    value: "Something"
+                  }
+                ]
+              },
+              hasBraces: false,
+              values: undefined
+            }
+          ]
+        }
+      ]
     });
   });
 
@@ -119,28 +123,30 @@ describe("annotation", () => {
         ]
       },
       hasBraces: true,
-      value: {
-        type: "OPERATOR_EXPRESSION",
-        left: {
-          type: "IDENTIFIER",
-          value: "key"
-        },
-        operator: "=",
-        right: {
-          type: "ANNOTATION",
-          name: {
-            type: "QUALIFIED_NAME",
-            name: [
-              {
-                type: "IDENTIFIER",
-                value: "Value"
-              }
-            ]
+      values: [
+        {
+          type: "OPERATOR_EXPRESSION",
+          left: {
+            type: "IDENTIFIER",
+            value: "key"
           },
-          hasBraces: false,
-          value: undefined
+          operator: "=",
+          right: {
+            type: "ANNOTATION",
+            name: {
+              type: "QUALIFIED_NAME",
+              name: [
+                {
+                  type: "IDENTIFIER",
+                  value: "Value"
+                }
+              ]
+            },
+            hasBraces: false,
+            values: undefined
+          }
         }
-      }
+      ]
     });
   });
 });

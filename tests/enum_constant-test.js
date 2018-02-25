@@ -31,7 +31,7 @@ describe("enumConstant", () => {
             ]
           },
           hasBraces: false,
-          value: undefined
+          values: undefined
         }
       ],
       name: {
@@ -61,7 +61,7 @@ describe("enumConstant", () => {
             ]
           },
           hasBraces: false,
-          value: undefined
+          values: undefined
         },
         {
           type: "ANNOTATION",
@@ -75,7 +75,7 @@ describe("enumConstant", () => {
             ]
           },
           hasBraces: false,
-          value: undefined
+          values: undefined
         }
       ],
       name: {

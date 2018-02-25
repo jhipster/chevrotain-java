@@ -329,7 +329,7 @@ describe("expression", () => {
               type: "QUALIFIED_NAME"
             },
             type: "ANNOTATION",
-            value: undefined
+            values: undefined
           }
         ],
         value: {

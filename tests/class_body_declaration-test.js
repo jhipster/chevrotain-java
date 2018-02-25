@@ -75,7 +75,7 @@ describe("classBodyDeclaration", () => {
             ]
           },
           hasBraces: false,
-          value: undefined
+          values: undefined
         }
       ],
       declaration: {
@@ -121,7 +121,7 @@ describe("classBodyDeclaration", () => {
             ]
           },
           hasBraces: false,
-          value: undefined
+          values: undefined
         },
         {
           type: "MODIFIER",

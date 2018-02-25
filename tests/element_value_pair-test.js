@@ -23,7 +23,7 @@ describe("elementValuePair", () => {
           ]
         },
         hasBraces: false,
-        value: undefined
+        values: undefined
       }
     });
   });

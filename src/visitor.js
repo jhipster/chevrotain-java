@@ -150,13 +150,10 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   annotation(ctx) {
     const name = this.visit(ctx.qualifiedName);
     const hasBraces = ctx.LBrace.length > 0;
-    let value = undefined;
+    let values = undefined;
     if (hasBraces) {
       if (ctx.elementValue.length > 0) {
-        value = ctx.elementValue.map(elementValue => this.visit(elementValue));
-        if (value.length === 1) {
-          value = value[0];
-        }
+        values = ctx.elementValue.map(elementValue => this.visit(elementValue));
       }
     }
 
@@ -164,7 +161,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       type: "ANNOTATION",
       name: name,
       hasBraces: hasBraces,
-      value: value
+      values: values
     };
   }
 

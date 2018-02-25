@@ -128,7 +128,7 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
               ]
             },
             hasBraces: false,
-            value: undefined
+            values: undefined
           }
         ],
         dimensions: [],

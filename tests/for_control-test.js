@@ -157,7 +157,7 @@ describe("forControl", () => {
               ]
             },
             hasBraces: false,
-            value: undefined
+            values: undefined
           },
           {
             type: "MODIFIER",
@@ -310,7 +310,7 @@ describe("forControl", () => {
               ]
             },
             hasBraces: false,
-            value: undefined
+            values: undefined
           },
           {
             type: "MODIFIER",

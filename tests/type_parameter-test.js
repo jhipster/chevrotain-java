@@ -30,7 +30,7 @@ describe("typeParameter", () => {
             ]
           },
           hasBraces: false,
-          value: undefined
+          values: undefined
         }
       ],
       name: {

@@ -53,7 +53,7 @@ describe("blockStatement", () => {
             ]
           },
           hasBraces: false,
-          value: undefined
+          values: undefined
         }
       ],
       typeType: {

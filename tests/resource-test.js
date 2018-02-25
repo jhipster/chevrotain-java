@@ -84,7 +84,7 @@ describe("resource", () => {
             ]
           },
           hasBraces: false,
-          value: undefined
+          values: undefined
         },
         { type: "MODIFIER", value: "final" }
       ],

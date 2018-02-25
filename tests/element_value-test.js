@@ -15,7 +15,7 @@ describe("elementValue", () => {
         ]
       },
       hasBraces: false,
-      value: undefined
+      values: undefined
     });
   });
 
@@ -43,7 +43,7 @@ describe("elementValue", () => {
             ]
           },
           hasBraces: false,
-          value: undefined
+          values: undefined
         }
       ]
     });
