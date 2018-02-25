@@ -306,7 +306,7 @@ class SelectParser extends chevrotain.Parser {
         let isFieldDeclaration = true;
         let isMethodDeclaration = true;
         let isConstructorDeclaration = true;
-        let firstIdentifier = undefined;
+        let firstType = undefined;
         // typeTypeOrVoid
         $.OR([
           {
@@ -319,7 +319,7 @@ class SelectParser extends chevrotain.Parser {
               $.OR2([
                 {
                   ALT: () => {
-                    firstIdentifier = $.CONSUME(tokens.Identifier);
+                    firstType = $.CONSUME(tokens.Identifier);
 
                     $.OR3([
                       {
@@ -334,7 +334,7 @@ class SelectParser extends chevrotain.Parser {
                           $.SUBRULE($.methodBody);
                           isFieldDeclaration = false;
                           isMethodDeclaration = false;
-                          firstIdentifier.isConstructorDeclaration = true;
+                          firstType.isConstructorDeclaration = true;
                         }
                       },
                       {
@@ -355,7 +355,12 @@ class SelectParser extends chevrotain.Parser {
                     ]);
                   }
                 },
-                { ALT: () => $.SUBRULE($.primitiveType) }
+                {
+                  ALT: () => {
+                    firstType = $.SUBRULE($.primitiveType);
+                    isConstructorDeclaration = false;
+                  }
+                }
               ]);
               $.MANY2({
                 GATE: () => !isConstructorDeclaration,
@@ -370,7 +375,7 @@ class SelectParser extends chevrotain.Parser {
           {
             // Void
             ALT: () => {
-              $.CONSUME(tokens.Void);
+              firstType = $.CONSUME(tokens.Void);
               isConstructorDeclaration = false;
               isFieldDeclaration = false;
             }
@@ -399,7 +404,9 @@ class SelectParser extends chevrotain.Parser {
                       $.SUBRULE($.variableDeclarator);
                     });
                     $.CONSUME(tokens.SemiColon);
-                    firstIdentifier.isFieldDeclaration = true;
+                    if (firstType) {
+                      firstType.isFieldDeclaration = true;
+                    }
                   }
                 },
                 {
@@ -415,8 +422,8 @@ class SelectParser extends chevrotain.Parser {
                       $.SUBRULE2($.qualifiedNameList);
                     });
                     $.SUBRULE2($.methodBody);
-                    if (firstIdentifier) {
-                      firstIdentifier.isMethodDeclaration = true;
+                    if (firstType) {
+                      firstType.isMethodDeclaration = true;
                     }
                   }
                 }
@@ -2452,19 +2459,9 @@ class SelectParser extends chevrotain.Parser {
                   $.OR4([
                     {
                       ALT: () => {
-                        $.CONSUME2(tokens.Identifier);
-                        $.OPTION4(() => {
-                          $.CONSUME(tokens.Less);
-                          $.AT_LEAST_ONE_SEP({
-                            SEP: tokens.Comma,
-                            DEF: () => {
-                              $.SUBRULE($.typeArgument);
-                            }
-                          });
-                          $.OPTION5(() => {
-                            $.CONSUME(tokens.Greater);
-                          });
-                        });
+                        $.SUBRULE(
+                          $.identifierOrIdentifierWithTypeArgumentsOrOperatorExpression
+                        );
                       }
                     },
                     { ALT: () => $.SUBRULE2($.primitiveType) }
@@ -2494,6 +2491,33 @@ class SelectParser extends chevrotain.Parser {
         }
       ]);
     });
+
+    // identifierOrIdentifierWithTypeArgumentsOrOperatorExpression
+    $.RULE(
+      "identifierOrIdentifierWithTypeArgumentsOrOperatorExpression",
+      () => {
+        $.CONSUME(tokens.Identifier);
+        $.OPTION(() => {
+          $.CONSUME(tokens.Less);
+          $.OR([
+            {
+              ALT: () => {
+                $.AT_LEAST_ONE_SEP({
+                  SEP: tokens.Comma,
+                  DEF: () => {
+                    $.SUBRULE($.typeArgument);
+                  }
+                });
+                $.OPTION2(() => {
+                  $.CONSUME(tokens.Greater);
+                });
+              }
+            },
+            { ALT: () => $.SUBRULE($.literal) }
+          ]);
+        });
+      }
+    );
 
     // dimension
     // : '[' expression? ']'

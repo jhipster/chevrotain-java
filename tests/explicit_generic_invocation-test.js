@@ -10,16 +10,13 @@ describe("explicitGenericInvocation", () => {
     ).toEqual({
       type: "EXPLICIT_GENERIC_INVOCATION",
       typeArguments: {
-        type: "NON_WILDCARD_TYPE_ARGUMENTS",
-        typeList: {
-          type: "TYPE_LIST",
-          list: [
-            {
-              type: "PRIMITIVE_TYPE",
-              value: "boolean"
-            }
-          ]
-        }
+        type: "TYPE_LIST",
+        list: [
+          {
+            type: "PRIMITIVE_TYPE",
+            value: "boolean"
+          }
+        ]
       },
       invocation: {
         type: "SUPER",

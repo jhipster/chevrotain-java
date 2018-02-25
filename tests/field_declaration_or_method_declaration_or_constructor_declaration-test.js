@@ -361,4 +361,38 @@ describe("memberDeclaration", () => {
       }
     });
   });
+
+  it("fieldDeclaration: with modifiers", () => {
+    expect(
+      Parser.parse("int STATIC_VARIABLE = 123;", parser =>
+        parser.fieldDeclarationOrMethodDeclarationOrConstructorDeclaration()
+      )
+    ).toEqual({
+      type: "FIELD_DECLARATION",
+      typeType: {
+        type: "PRIMITIVE_TYPE",
+        value: "int"
+      },
+      variableDeclarators: {
+        type: "VARIABLE_DECLARATORS",
+        list: [
+          {
+            type: "VARIABLE_DECLARATOR",
+            id: {
+              type: "VARIABLE_DECLARATOR_ID",
+              id: {
+                type: "IDENTIFIER",
+                value: "STATIC_VARIABLE"
+              },
+              dimensions: []
+            },
+            init: {
+              type: "DECIMAL_LITERAL",
+              value: "123"
+            }
+          }
+        ]
+      }
+    });
+  });
 });

@@ -7,7 +7,6 @@ describe("arrayCreatorRest", () => {
       Parser.parse("[][][]{}", parser => parser.arrayCreatorRest())
     ).toEqual({
       type: "ARRAY_CREATOR_REST",
-      expressions: [],
       dimensions: [
         {
           type: "DIMENSION"
@@ -28,15 +27,19 @@ describe("arrayCreatorRest", () => {
       Parser.parse("[this][super][]", parser => parser.arrayCreatorRest())
     ).toEqual({
       type: "ARRAY_CREATOR_REST",
-      expressions: [
+      dimensions: [
         {
-          type: "THIS"
+          type: "DIMENSION",
+          expression: {
+            type: "THIS"
+          }
         },
         {
-          type: "SUPER"
-        }
-      ],
-      dimensions: [
+          type: "DIMENSION",
+          expression: {
+            type: "SUPER"
+          }
+        },
         {
           type: "DIMENSION"
         }

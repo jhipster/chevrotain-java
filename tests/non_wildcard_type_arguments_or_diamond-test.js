@@ -8,16 +8,13 @@ describe("nonWildcardTypeArgumentsOrDiamond", () => {
         parser.nonWildcardTypeArgumentsOrDiamond()
       )
     ).toEqual({
-      type: "NON_WILDCARD_TYPE_ARGUMENTS",
-      typeList: {
-        type: "TYPE_LIST",
-        list: [
-          {
-            type: "PRIMITIVE_TYPE",
-            value: "boolean"
-          }
-        ]
-      }
+      type: "TYPE_LIST",
+      list: [
+        {
+          type: "PRIMITIVE_TYPE",
+          value: "boolean"
+        }
+      ]
     });
   });
 

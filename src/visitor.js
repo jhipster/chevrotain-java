@@ -410,9 +410,10 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       }
 
       if (
-        ctx.primitiveType.length > 0 ||
-        ctx.Void.length > 0 ||
-        ctx.Identifier[0].isMethodDeclaration
+        (ctx.primitiveType.length > 0 &&
+          ctx.primitiveType[0].isMethodDeclaration) ||
+        (ctx.Void.length > 0 && ctx.Void[0].isMethodDeclaration) ||
+        (ctx.Identifier.length > 0 && ctx.Identifier[0].isMethodDeclaration)
       ) {
         // methodDeclaration
         const name = this.identifier(
@@ -441,8 +442,14 @@ class SQLToAstVisitor extends BaseSQLVisitor {
         };
       }
 
-      if (ctx.Identifier[0].isFieldDeclaration) {
-        const id = this.identifier(ctx.Identifier[1]);
+      if (
+        (ctx.primitiveType.length > 0 &&
+          ctx.primitiveType[0].isFieldDeclaration) ||
+        (ctx.Identifier.length > 0 && ctx.Identifier[0].isFieldDeclaration)
+      ) {
+        const id = this.identifier(
+          ctx.Identifier[ctx.primitiveType.length > 0 ? 0 : 1]
+        );
         const dimensions = ctx.LSquare.map(() => {
           return {
             type: "DIMENSION"
@@ -2574,10 +2581,13 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   arrayCreatorRest(ctx) {
-    const expressions = ctx.expression.map(expression =>
-      this.visit(expression)
-    );
     const dimensions = [];
+    const expressions = ctx.expression.map(expression => {
+      return dimensions.push({
+        type: "DIMENSION",
+        expression: this.visit(expression)
+      });
+    });
     for (let i = 0; i < ctx.LSquare.length - expressions.length; i++) {
       dimensions.push({
         type: "DIMENSION"
@@ -2587,7 +2597,6 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
     return {
       type: "ARRAY_CREATOR_REST",
-      expressions: expressions,
       dimensions: dimensions,
       arrayInitializer: arrayInitializer
     };
@@ -2642,11 +2651,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   nonWildcardTypeArguments(ctx) {
-    const typeList = this.visit(ctx.typeList);
-    return {
-      type: "NON_WILDCARD_TYPE_ARGUMENTS",
-      typeList: typeList
-    };
+    return this.visit(ctx.typeList);
   }
 
   qualifiedName(ctx) {
@@ -2706,7 +2711,48 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       }
     } else if (ctx.Identifier && ctx.Identifier.length > 0) {
       const name = this.identifier(ctx.Identifier[0]);
-      let typeArguments = this.visit(ctx.typeArguments);
+      const typeArguments = this.visit(ctx.typeArguments);
+
+      if (!typeArguments) {
+        value = name;
+      } else {
+        value = {
+          type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
+          name: name,
+          typeArguments: typeArguments
+        };
+      }
+    } else if (
+      ctx.identifierOrIdentifierWithTypeArgumentsOrOperatorExpression &&
+      ctx.identifierOrIdentifierWithTypeArgumentsOrOperatorExpression.length > 0
+    ) {
+      value = this.visit(
+        ctx.identifierOrIdentifierWithTypeArgumentsOrOperatorExpression
+      );
+    }
+
+    if (!value) {
+      return annotations[0];
+    }
+
+    if (annotations.length === 0 && dimensions.length === 0) {
+      return value;
+    }
+
+    return {
+      type: "TYPE_TYPE",
+      modifiers: annotations,
+      value: value,
+      dimensions: dimensions
+    };
+  }
+
+  identifierOrIdentifierWithTypeArgumentsOrOperatorExpression(ctx) {
+    const name = this.identifier(ctx.Identifier[0]);
+    let value = undefined;
+
+    if (ctx.typeArgument.length > 0) {
+      let typeArguments = this.visit(ctx.typeArgument);
       if (ctx.Less.length > 0) {
         // found typeArguments
         const args = ctx.typeArgument.map(typeArgument =>
@@ -2739,22 +2785,21 @@ class SQLToAstVisitor extends BaseSQLVisitor {
           typeArguments: typeArguments
         };
       }
-    }
 
-    if (!value) {
-      return annotations[0];
-    }
-
-    if (annotations.length === 0 && dimensions.length === 0) {
       return value;
     }
 
-    return {
-      type: "TYPE_TYPE",
-      modifiers: annotations,
-      value: value,
-      dimensions: dimensions
-    };
+    if (ctx.literal.length > 0) {
+      const literal = this.visit(ctx.literal);
+      return {
+        type: "OPERATOR_EXPRESSION",
+        left: name,
+        operator: "<",
+        right: literal
+      };
+    }
+
+    return name;
   }
 
   dimension(ctx) {

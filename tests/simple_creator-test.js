@@ -47,7 +47,6 @@ describe("simpleCreator", () => {
       },
       rest: {
         type: "ARRAY_CREATOR_REST",
-        expressions: [],
         dimensions: [
           {
             type: "DIMENSION"
