@@ -686,6 +686,24 @@ const StringLiteral = createToken({
   label: "'StringLiteral'"
 });
 
+const EndOfLineComment = createToken({
+  name: "EndOfLineComment",
+  pattern: /\/\/[^\n\r]*/,
+  group: chevrotain.Lexer.SKIPPED
+});
+
+const JavaDocComment = createToken({
+  name: "JavaDocComment",
+  pattern: /\/\*\*([^*]|\*(?!\/))*\*\//,
+  group: chevrotain.Lexer.SKIPPED
+});
+
+const TraditionalComment = createToken({
+  name: "TraditionalComment",
+  pattern: /\/\*([^*]|\*(?!\/))*\*\//,
+  group: chevrotain.Lexer.SKIPPED
+});
+
 const WhiteSpace = createToken({
   name: "WhiteSpace",
   pattern: /\s+/,
@@ -704,6 +722,9 @@ const WhiteSpace = createToken({
 // note we are placing WhiteSpace first as it is very common thus it will speed up the lexer.
 const allTokens = [
   WhiteSpace,
+  EndOfLineComment,
+  JavaDocComment,
+  TraditionalComment,
   // "keywords" appear before the Identifier
   Boolean,
   Char,
@@ -821,6 +842,9 @@ module.exports = {
   allTokens,
   tokens: {
     WhiteSpace,
+    EndOfLineComment,
+    JavaDocComment,
+    TraditionalComment,
     Boolean,
     Char,
     Byte,
