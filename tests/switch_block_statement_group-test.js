@@ -45,7 +45,8 @@ describe("switchBlockStatementGroup", () => {
                 }
               ]
             }
-          }
+          },
+          followedEmptyLine: false
         }
       ]
     });
@@ -104,7 +105,8 @@ describe("switchBlockStatementGroup", () => {
                 }
               ]
             }
-          }
+          },
+          followedEmptyLine: false
         },
         {
           type: "IDENTIFIER_STATEMENT",
@@ -116,7 +118,8 @@ describe("switchBlockStatementGroup", () => {
             type: "EXPRESSION_STATEMENT",
             expression: {
               type: "THIS"
-            }
+            },
+            followedEmptyLine: false
           }
         }
       ]

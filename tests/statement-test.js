@@ -199,7 +199,8 @@ describe("statement", () => {
       type: "EXPRESSION_STATEMENT",
       expression: {
         type: "THIS"
-      }
+      },
+      followedEmptyLine: false
     });
   });
 
@@ -214,7 +215,8 @@ describe("statement", () => {
         type: "EXPRESSION_STATEMENT",
         expression: {
           type: "THIS"
-        }
+        },
+        followedEmptyLine: false
       }
     });
   });

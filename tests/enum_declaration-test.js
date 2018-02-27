@@ -136,7 +136,8 @@ describe("enum", () => {
                 type: "BLOCK",
                 statements: []
               }
-            }
+            },
+            followedEmptyLine: false
           }
         ]
       }
@@ -195,7 +196,8 @@ describe("enum", () => {
                 type: "BLOCK",
                 statements: []
               }
-            }
+            },
+            followedEmptyLine: false
           }
         ]
       }

@@ -285,11 +285,13 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     if (ctx.memberDeclaration.length > 0) {
       const modifiers = ctx.modifier.map(modifier => this.visit(modifier));
       const declaration = this.visit(ctx.memberDeclaration);
+      const followedEmptyLine = declaration.followedEmptyLine || false;
 
       return {
         type: "CLASS_BODY_MEMBER_DECLARATION",
         modifiers: modifiers,
-        declaration: declaration
+        declaration: declaration,
+        followedEmptyLine: followedEmptyLine
       };
     }
   }
@@ -478,10 +480,12 @@ class SQLToAstVisitor extends BaseSQLVisitor {
           list: declarators
         };
 
+        const followedEmptyLine = this.visit(ctx.semiColon).followedEmptyLine;
         return {
           type: "FIELD_DECLARATION",
           typeType: typeType,
-          variableDeclarators: variableDeclarators
+          variableDeclarators: variableDeclarators,
+          followedEmptyLine: followedEmptyLine
         };
       }
     }
@@ -552,11 +556,13 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   fieldDeclaration(ctx) {
     const typeType = this.visit(ctx.typeType);
     const variableDeclarators = this.visit(ctx.variableDeclarators);
+    const followedEmptyLine = this.visit(ctx.semiColon).followedEmptyLine;
 
     return {
       type: "FIELD_DECLARATION",
       typeType: typeType,
-      variableDeclarators: variableDeclarators
+      variableDeclarators: variableDeclarators,
+      followedEmptyLine: followedEmptyLine
     };
   }
 
@@ -564,7 +570,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     if (ctx.block.length > 0) {
       return this.visit(ctx.block);
     }
-    if (ctx.SemiColon.length > 0) {
+    if (ctx.semiColon.length > 0) {
       return undefined;
     }
   }
@@ -669,7 +675,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   constantDeclarationOrInterfaceMethodDeclaration(ctx) {
-    if (ctx.SemiColon.length > 0) {
+    if (ctx.semiColon.length > 0) {
       // constantDeclaration
       const typeType = this.visit(ctx.typeType);
       const declarators = ctx.constantDeclarator.map(declarator =>
@@ -1223,6 +1229,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
         };
       }
 
+      const followedEmptyLine = this.visit(ctx.semiColon).followedEmptyLine;
       if (
         expression.type === "IDENTIFIER" ||
         expression.type === "PRIMITIVE_TYPE"
@@ -1256,15 +1263,17 @@ class SQLToAstVisitor extends BaseSQLVisitor {
             modifiers: modifiers,
             typeType: expression,
             declarators: declarators
-          }
+          },
+          followedEmptyLine: followedEmptyLine
         };
       }
 
-      if (expression.type === "IDENTIFIER" || ctx.SemiColon.length > 0) {
+      if (expression.type === "IDENTIFIER" || ctx.semiColon.length > 0) {
         // expressionStatement
         return {
           type: "EXPRESSION_STATEMENT",
-          expression: expression
+          expression: expression,
+          followedEmptyLine: followedEmptyLine
         };
       }
     }
@@ -1509,10 +1518,12 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
   expressionStatement(ctx) {
     const expression = this.visit(ctx.expression);
+    const followedEmptyLine = this.visit(ctx.semiColon).followedEmptyLine;
 
     return {
       type: "EXPRESSION_STATEMENT",
-      expression: expression
+      expression: expression,
+      followedEmptyLine: followedEmptyLine
     };
   }
 
@@ -1689,7 +1700,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       return enhancedForStatement;
     }
 
-    if (ctx.SemiColon.length == 2) {
+    if (ctx.semiColon.length == 2) {
       const basicForStatement = {
         type: "BASIC_FOR_CONTROL",
         forInit: undefined,
@@ -2991,6 +3002,14 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     return {
       type: "PRIMITIVE_TYPE",
       value: value
+    };
+  }
+
+  semiColon(ctx) {
+    const followedEmptyLine = ctx.SemiColonWithFollowEmptyLine.length > 0;
+    return {
+      type: "SEMI_COLON",
+      followedEmptyLine: followedEmptyLine
     };
   }
 

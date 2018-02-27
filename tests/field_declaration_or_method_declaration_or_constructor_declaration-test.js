@@ -358,7 +358,8 @@ describe("memberDeclaration", () => {
             init: undefined
           }
         ]
-      }
+      },
+      followedEmptyLine: false
     });
   });
 
@@ -392,7 +393,8 @@ describe("memberDeclaration", () => {
             }
           }
         ]
-      }
+      },
+      followedEmptyLine: false
     });
   });
 });

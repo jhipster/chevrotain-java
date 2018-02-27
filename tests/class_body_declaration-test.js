@@ -53,7 +53,8 @@ describe("classBodyDeclaration", () => {
           type: "BLOCK",
           statements: []
         }
-      }
+      },
+      followedEmptyLine: false
     });
   });
 
@@ -97,7 +98,8 @@ describe("classBodyDeclaration", () => {
           type: "BLOCK",
           statements: []
         }
-      }
+      },
+      followedEmptyLine: false
     });
   });
 
@@ -147,7 +149,8 @@ describe("classBodyDeclaration", () => {
           type: "BLOCK",
           statements: []
         }
-      }
+      },
+      followedEmptyLine: false
     });
   });
 });

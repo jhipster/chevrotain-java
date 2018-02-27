@@ -179,7 +179,8 @@ describe("memberDeclaration", () => {
             init: undefined
           }
         ]
-      }
+      },
+      followedEmptyLine: false
     });
   });
 });

@@ -34,7 +34,8 @@ describe("blockStatement", () => {
             }
           ]
         }
-      }
+      },
+      followedEmptyLine: false
     });
   });
 
@@ -64,7 +65,8 @@ describe("blockStatement", () => {
             }
           ]
         }
-      }
+      },
+      followedEmptyLine: false
     });
   });
 
@@ -112,7 +114,8 @@ describe("blockStatement", () => {
             }
           ]
         }
-      }
+      },
+      followedEmptyLine: false
     });
   });
 
@@ -291,7 +294,8 @@ describe("blockStatement", () => {
         type: "EXPRESSION_STATEMENT",
         expression: {
           type: "THIS"
-        }
+        },
+        followedEmptyLine: false
       }
     });
   });
@@ -301,7 +305,8 @@ describe("blockStatement", () => {
       type: "EXPRESSION_STATEMENT",
       expression: {
         type: "THIS"
-      }
+      },
+      followedEmptyLine: false
     });
   });
 
@@ -314,7 +319,8 @@ describe("blockStatement", () => {
           type: "EXPRESSION_LIST",
           list: []
         }
-      }
+      },
+      followedEmptyLine: false
     });
   });
 
@@ -354,7 +360,8 @@ describe("blockStatement", () => {
             }
           }
         }
-      }
+      },
+      followedEmptyLine: false
     });
   });
 

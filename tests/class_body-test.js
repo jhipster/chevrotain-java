@@ -37,7 +37,8 @@ describe("classBody", () => {
               type: "BLOCK",
               statements: []
             }
-          }
+          },
+          followedEmptyLine: false
         }
       ]
     });
@@ -71,7 +72,8 @@ describe("classBody", () => {
               type: "BLOCK",
               statements: []
             }
-          }
+          },
+          followedEmptyLine: false
         },
         {
           type: "CLASS_BODY_BLOCK",

@@ -27,7 +27,8 @@ describe("fieldDeclaration", () => {
             init: undefined
           }
         ]
-      }
+      },
+      followedEmptyLine: false
     });
   });
 });

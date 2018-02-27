@@ -63,7 +63,8 @@ describe("switchStatement", () => {
                     }
                   ]
                 }
-              }
+              },
+              followedEmptyLine: false
             }
           ]
         }
@@ -121,7 +122,8 @@ describe("switchStatement", () => {
                     }
                   ]
                 }
-              }
+              },
+              followedEmptyLine: false
             }
           ]
         },
@@ -163,7 +165,8 @@ describe("switchStatement", () => {
                     }
                   ]
                 }
-              }
+              },
+              followedEmptyLine: false
             }
           ]
         }
@@ -220,7 +223,8 @@ describe("switchStatement", () => {
                     }
                   ]
                 }
-              }
+              },
+              followedEmptyLine: false
             }
           ]
         },

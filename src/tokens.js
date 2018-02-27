@@ -442,6 +442,12 @@ const Comma = createToken({
   label: "','"
 });
 
+const SemiColonWithFollowEmptyLine = createToken({
+  name: "SemiColonWithFollowEmptyLine",
+  pattern: /;[ \t]*(\r\n|\r[^\n]|\n)[ \t]*(\r\n|\r|\n)/,
+  label: "';\n\n'"
+});
+
 const SemiColon = createToken({
   name: "SemiColon",
   pattern: /;/,
@@ -763,6 +769,7 @@ const allTokens = [
   DotDotDot,
   Dot,
   Comma,
+  SemiColonWithFollowEmptyLine,
   SemiColon,
   ColonColon,
   Colon,
@@ -877,6 +884,7 @@ module.exports = {
     DotDotDot,
     Dot,
     Comma,
+    SemiColonWithFollowEmptyLine,
     SemiColon,
     ColonColon,
     Colon,

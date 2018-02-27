@@ -39,7 +39,8 @@ describe("block", () => {
                 }
               ]
             }
-          }
+          },
+          followedEmptyLine: false
         }
       ]
     });
@@ -77,7 +78,8 @@ describe("block", () => {
                 }
               ]
             }
-          }
+          },
+          followedEmptyLine: false
         },
         {
           type: "LOCAL_TYPE_DECLARATION",
@@ -113,7 +115,8 @@ describe("block", () => {
               type: "EXPRESSION_LIST",
               list: []
             }
-          }
+          },
+          followedEmptyLine: false
         }
       ]
     });
@@ -158,7 +161,8 @@ describe("block", () => {
                 }
               }
             }
-          }
+          },
+          followedEmptyLine: false
         }
       ]
     });
@@ -203,7 +207,8 @@ describe("block", () => {
                 }
               }
             }
-          }
+          },
+          followedEmptyLine: false
         },
         {
           type: "EXPRESSION_STATEMENT",
@@ -213,7 +218,8 @@ describe("block", () => {
               type: "EXPRESSION_LIST",
               list: []
             }
-          }
+          },
+          followedEmptyLine: false
         }
       ]
     });
@@ -235,7 +241,8 @@ describe("block", () => {
               type: "EXPRESSION_LIST",
               list: []
             }
-          }
+          },
+          followedEmptyLine: false
         },
         {
           type: "EXPRESSION_STATEMENT",
@@ -268,7 +275,8 @@ describe("block", () => {
                 }
               }
             }
-          }
+          },
+          followedEmptyLine: false
         }
       ]
     });

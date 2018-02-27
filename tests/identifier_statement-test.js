@@ -15,7 +15,8 @@ describe("identifierStatement", () => {
         type: "EXPRESSION_STATEMENT",
         expression: {
           type: "THIS"
-        }
+        },
+        followedEmptyLine: false
       }
     });
   });
