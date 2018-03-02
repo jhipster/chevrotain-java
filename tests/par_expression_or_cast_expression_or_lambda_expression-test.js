@@ -468,4 +468,36 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
       }
     });
   });
+
+  it("parExpression with following operator expression", () => {
+    expect(
+      Parser.parse("(a - (b * c)) < d", parser =>
+        parser.parExpressionOrCastExpressionOrLambdaExpression()
+      )
+    ).toEqual({
+      type: "OPERATOR_EXPRESSION",
+      left: {
+        type: "OPERATOR_EXPRESSION",
+        left: {
+          type: "IDENTIFIER",
+          value: "a"
+        },
+        operator: "-",
+        right: {
+          type: "PAR_EXPRESSION",
+          expression: {
+            type: "OPERATOR_EXPRESSION",
+            left: {
+              type: "IDENTIFIER",
+              value: "b"
+            },
+            operator: "*",
+            right: { type: "IDENTIFIER", value: "c" }
+          }
+        }
+      },
+      operator: "<",
+      right: { type: "IDENTIFIER", value: "d" }
+    });
+  });
 });

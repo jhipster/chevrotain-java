@@ -2266,6 +2266,35 @@
                 "type": "NonTerminal",
                 "name": "expression",
                 "occurrenceInParent": 1
+              },
+              {
+                "type": "Option",
+                "definition": [
+                  {
+                    "type": "Terminal",
+                    "name": "Questionmark",
+                    "label": "'?'",
+                    "occurrenceInParent": 1,
+                    "pattern": "\\?"
+                  },
+                  {
+                    "type": "NonTerminal",
+                    "name": "expression",
+                    "occurrenceInParent": 2
+                  },
+                  {
+                    "type": "Terminal",
+                    "name": "Colon",
+                    "label": "':'",
+                    "occurrenceInParent": 1,
+                    "pattern": ":"
+                  },
+                  {
+                    "type": "NonTerminal",
+                    "name": "expression",
+                    "occurrenceInParent": 3
+                  }
+                ]
               }
             ]
           }
@@ -5504,12 +5533,21 @@
                         "definition": [
                           {
                             "type": "NonTerminal",
-                            "name": "expression",
-                            "occurrenceInParent": 3
+                            "name": "operator",
+                            "occurrenceInParent": 1
                           }
                         ]
+                      },
+                      {
+                        "type": "NonTerminal",
+                        "name": "expression",
+                        "occurrenceInParent": 3
                       }
                     ]
+                  },
+                  {
+                    "type": "Flat",
+                    "definition": []
                   }
                 ]
               }
@@ -5521,7 +5559,7 @@
   },
   {
     "type": "Rule",
-    "name": "operatorExpressionRest",
+    "name": "operator",
     "definition": [
       {
         "type": "Alternation",
@@ -5899,11 +5937,22 @@
             ]
           }
         ]
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "operatorExpressionRest",
+    "definition": [
+      {
+        "type": "NonTerminal",
+        "name": "operator",
+        "occurrenceInParent": 1
       },
       {
         "type": "NonTerminal",
         "name": "expression",
-        "occurrenceInParent": 4
+        "occurrenceInParent": 1
       }
     ]
   },
@@ -7318,7 +7367,7 @@
               {
                 "type": "Terminal",
                 "name": "SemiColonWithFollowEmptyLine",
-                "label": "';\n\n'",
+                "label": "';'",
                 "occurrenceInParent": 1,
                 "pattern": ";[ \\t]*(\\r\\n|\\r[^\\n]|\\n)[ \\t]*(\\r\\n|\\r|\\n)"
               }

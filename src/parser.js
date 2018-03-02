@@ -802,7 +802,17 @@ class SelectParser extends chevrotain.Parser {
     $.RULE("variableInitializer", () => {
       $.OR([
         { ALT: () => $.SUBRULE($.arrayInitializer) },
-        { ALT: () => $.SUBRULE($.expression) }
+        {
+          ALT: () => {
+            $.SUBRULE($.expression);
+            $.OPTION(() => {
+              $.CONSUME(tokens.Questionmark);
+              $.SUBRULE2($.expression);
+              $.CONSUME(tokens.Colon);
+              $.SUBRULE3($.expression);
+            });
+          }
+        }
       ]);
     });
 
@@ -1950,7 +1960,7 @@ class SelectParser extends chevrotain.Parser {
 
             $.CONSUME2(tokens.RBrace);
             $.OR2([
-              // ('*'|'/'|'%')
+              // lambda expression
               {
                 ALT: () => {
                   $.CONSUME2(tokens.Pointer);
@@ -1961,11 +1971,16 @@ class SelectParser extends chevrotain.Parser {
                 GATE: () => !formalParameters,
                 ALT: () => {
                   // for potentielle cast expression
-                  // if the first expression is not an identifier, second expression should be empty
+                  // or operator expression
                   $.OPTION4(() => {
-                    $.SUBRULE3($.expression);
+                    $.SUBRULE($.operator);
                   });
+                  $.SUBRULE3($.expression);
                 }
+              },
+              {
+                // if the first expression is not an identifier, second expression should be empty
+                ALT: () => {}
               }
             ]);
           }
@@ -1973,7 +1988,7 @@ class SelectParser extends chevrotain.Parser {
       ]);
     });
 
-    // operatorExpressionRest
+    // operator
     // : ('*'|'/'|'%')
     //   | ('+'|'-')
     //   | ('<<' | '>>>' | '>>')
@@ -1985,8 +2000,7 @@ class SelectParser extends chevrotain.Parser {
     //   | '&&'
     //   | '||'
     //   | ('=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^=' | '>>=' | '>>>=' | '<<=' | '%=')
-    //   expression
-    $.RULE("operatorExpressionRest", () => {
+    $.RULE("operator", () => {
       $.OR([
         // ('*'|'/'|'%')
         {
@@ -2151,7 +2165,13 @@ class SelectParser extends chevrotain.Parser {
           }
         }
       ]);
-      $.SUBRULE4($.expression);
+    });
+
+    // operatorExpressionRest
+    // : operator expression
+    $.RULE("operatorExpressionRest", () => {
+      $.SUBRULE($.operator);
+      $.SUBRULE($.expression);
     });
 
     // methodReferenceRest // Java 8

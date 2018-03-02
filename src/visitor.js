@@ -853,6 +853,19 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   variableInitializer(ctx) {
+    if (ctx.Questionmark.length > 0) {
+      const condition = this.visit(ctx.expression[0]);
+      const ifExpression = this.visit(ctx.expression[1]);
+      const elseExpression = this.visit(ctx.expression[2]);
+
+      return {
+        type: "IF_ELSE_EXPRESSION",
+        condition: condition,
+        if: ifExpression,
+        else: elseExpression
+      };
+    }
+
     if (ctx.expression.length > 0) {
       return this.visit(ctx.expression);
     }
@@ -2073,7 +2086,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     };
   }
 
-  operatorExpressionRest(ctx) {
+  operator(ctx) {
     let operator = undefined;
     // ('*'|'/'|'%')
     if (ctx.Star.length > 0) {
@@ -2179,6 +2192,12 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     if (ctx.PercentageEquals.length > 0) {
       operator = "%=";
     }
+
+    return operator;
+  }
+
+  operatorExpressionRest(ctx) {
+    const operator = this.visit(ctx.operator);
 
     const right = this.visit(ctx.expression);
 
@@ -2330,10 +2349,21 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     }
 
     if (ctx.expression.length >= 2) {
-      // We have a cast expression
-
       const value = this.visit(ctx.expression[0]);
       const expression = this.visit(ctx.expression[1]);
+
+      if (ctx.operator.length > 0) {
+        // we have a operator expression
+        const operator = this.visit(ctx.operator);
+
+        return {
+          type: "OPERATOR_EXPRESSION",
+          left: value,
+          operator: operator,
+          right: expression
+        };
+      }
+      // We have a cast expression
 
       // if identifier is not an identifier throw error
       if (

@@ -445,7 +445,7 @@ const Comma = createToken({
 const SemiColonWithFollowEmptyLine = createToken({
   name: "SemiColonWithFollowEmptyLine",
   pattern: /;[ \t]*(\r\n|\r[^\n]|\n)[ \t]*(\r\n|\r|\n)/,
-  label: "';\n\n'"
+  label: "';'"
 });
 
 const SemiColon = createToken({
