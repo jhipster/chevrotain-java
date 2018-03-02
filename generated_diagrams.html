@@ -5547,6 +5547,26 @@
                   },
                   {
                     "type": "Flat",
+                    "definition": [
+                      {
+                        "type": "NonTerminal",
+                        "name": "qualifiedExpressionRest",
+                        "occurrenceInParent": 1
+                      },
+                      {
+                        "type": "Repetition",
+                        "definition": [
+                          {
+                            "type": "NonTerminal",
+                            "name": "operatorExpressionRest",
+                            "occurrenceInParent": 1
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Flat",
                     "definition": []
                   }
                 ]

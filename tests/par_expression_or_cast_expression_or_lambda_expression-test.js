@@ -199,6 +199,51 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
     });
   });
 
+  it("castExpression: followed by qualifiedExpressionRest and operatorExpressionRest", () => {
+    expect(
+      Parser.parse(
+        "((LazyObject) obj).getIdentifier() == getIdentifier()",
+        parser => parser.parExpressionOrCastExpressionOrLambdaExpression()
+      )
+    ).toEqual({
+      type: "OPERATOR_EXPRESSION",
+      left: {
+        type: "QUALIFIED_EXPRESSION",
+        expression: {
+          type: "PAR_EXPRESSION",
+          expression: {
+            type: "CAST_EXPRESSION",
+            castType: {
+              type: "IDENTIFIER",
+              value: "LazyObject"
+            },
+            expression: {
+              type: "IDENTIFIER",
+              value: "obj"
+            }
+          }
+        },
+        rest: {
+          type: "METHOD_INVOCATION",
+          name: {
+            type: "IDENTIFIER",
+            value: "getIdentifier"
+          },
+          parameters: undefined
+        }
+      },
+      operator: "==",
+      right: {
+        type: "METHOD_INVOCATION",
+        name: {
+          type: "IDENTIFIER",
+          value: "getIdentifier"
+        },
+        parameters: undefined
+      }
+    });
+  });
+
   it("error castExpression: cast expression is not an identifier", () => {
     expect(() =>
       Parser.parse("(1+1) this", parser =>

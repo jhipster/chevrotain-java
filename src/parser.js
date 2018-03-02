@@ -1979,7 +1979,18 @@ class SelectParser extends chevrotain.Parser {
                 }
               },
               {
+                GATE: () => !formalParameters,
+                ALT: () => {
+                  // Cast expression with following method or variable
+                  $.SUBRULE($.qualifiedExpressionRest);
+                  $.MANY2(() => {
+                    $.SUBRULE($.operatorExpressionRest);
+                  });
+                }
+              },
+              {
                 // if the first expression is not an identifier, second expression should be empty
+                GATE: () => !formalParameters,
                 ALT: () => {}
               }
             ]);

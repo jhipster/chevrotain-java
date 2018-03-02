@@ -2408,10 +2408,33 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
     const expression = this.visit(ctx.expression);
 
-    return {
+    const parExpression = {
       type: "PAR_EXPRESSION",
       expression: expression
     };
+
+    if (ctx.qualifiedExpressionRest.length > 0) {
+      const rest = this.visit(ctx.qualifiedExpressionRest);
+
+      const qualifiedExpression = {
+        type: "QUALIFIED_EXPRESSION",
+        expression: parExpression,
+        rest: rest
+      };
+
+      if (ctx.operatorExpressionRest.length > 0) {
+        const operatorExpressionRest = this.visit(ctx.operatorExpressionRest);
+
+        return {
+          type: "OPERATOR_EXPRESSION",
+          left: qualifiedExpression,
+          operator: operatorExpressionRest.operator,
+          right: operatorExpressionRest.expression
+        };
+      }
+    }
+
+    return parExpression;
   }
 
   creatorOptionalNonWildcardInnerCreator(ctx) {
