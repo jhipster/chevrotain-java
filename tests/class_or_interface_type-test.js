@@ -36,17 +36,20 @@ describe("classOrInterfaceType", () => {
           },
           typeArguments: {
             type: "TYPE_ARGUMENTS",
-            list: [
-              {
-                type: "TYPE_ARGUMENT",
-                argument: {
-                  type: "PRIMITIVE_TYPE",
-                  value: "boolean"
-                },
-                super: undefined,
-                extends: undefined
-              }
-            ]
+            value: {
+              type: "TYPE_LIST",
+              list: [
+                {
+                  type: "TYPE_ARGUMENT",
+                  argument: {
+                    type: "PRIMITIVE_TYPE",
+                    value: "boolean"
+                  },
+                  super: undefined,
+                  extends: undefined
+                }
+              ]
+            }
           }
         },
         {
@@ -57,17 +60,20 @@ describe("classOrInterfaceType", () => {
           },
           typeArguments: {
             type: "TYPE_ARGUMENTS",
-            list: [
-              {
-                type: "TYPE_ARGUMENT",
-                argument: {
-                  type: "PRIMITIVE_TYPE",
-                  value: "char"
-                },
-                super: undefined,
-                extends: undefined
-              }
-            ]
+            value: {
+              type: "TYPE_LIST",
+              list: [
+                {
+                  type: "TYPE_ARGUMENT",
+                  argument: {
+                    type: "PRIMITIVE_TYPE",
+                    value: "char"
+                  },
+                  super: undefined,
+                  extends: undefined
+                }
+              ]
+            }
           }
         }
       ]

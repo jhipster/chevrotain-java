@@ -310,7 +310,8 @@ describe("constantDeclarationOrInterfaceMethodDeclaration", () => {
             type: "THIS"
           }
         }
-      ]
+      ],
+      followedEmptyLine: false
     });
   });
 
@@ -348,7 +349,8 @@ describe("constantDeclarationOrInterfaceMethodDeclaration", () => {
             type: "SUPER"
           }
         }
-      ]
+      ],
+      followedEmptyLine: false
     });
   });
 });

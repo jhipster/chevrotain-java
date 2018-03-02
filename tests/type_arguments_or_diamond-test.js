@@ -7,17 +7,20 @@ describe("typeArgumentsOrDiamond", () => {
       Parser.parse("<boolean>", parser => parser.typeArgumentsOrDiamond())
     ).toEqual({
       type: "TYPE_ARGUMENTS",
-      list: [
-        {
-          type: "TYPE_ARGUMENT",
-          argument: {
-            type: "PRIMITIVE_TYPE",
-            value: "boolean"
-          },
-          super: undefined,
-          extends: undefined
-        }
-      ]
+      value: {
+        type: "TYPE_LIST",
+        list: [
+          {
+            type: "TYPE_ARGUMENT",
+            argument: {
+              type: "PRIMITIVE_TYPE",
+              value: "boolean"
+            },
+            super: undefined,
+            extends: undefined
+          }
+        ]
+      }
     });
   });
 
@@ -25,7 +28,8 @@ describe("typeArgumentsOrDiamond", () => {
     expect(
       Parser.parse("<>", parser => parser.typeArgumentsOrDiamond())
     ).toEqual({
-      type: "EMPTY_DIAMOND"
+      type: "TYPE_ARGUMENTS",
+      value: undefined
     });
   });
 });

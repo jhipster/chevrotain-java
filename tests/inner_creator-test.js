@@ -29,7 +29,8 @@ describe("innerCreator", () => {
         value: "a"
       },
       typeArguments: {
-        type: "EMPTY_DIAMOND"
+        type: "TYPE_ARGUMENTS",
+        value: undefined
       },
       rest: {
         type: "CLASS_CREATOR_REST",

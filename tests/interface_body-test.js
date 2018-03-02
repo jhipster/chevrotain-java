@@ -38,7 +38,8 @@ describe("interfaceBody", () => {
               type: "BLOCK",
               statements: []
             }
-          }
+          },
+          followedEmptyLine: false
         }
       ]
     });
@@ -75,7 +76,8 @@ describe("interfaceBody", () => {
               type: "BLOCK",
               statements: []
             }
-          }
+          },
+          followedEmptyLine: false
         },
         {
           type: "INTERFACE_BODY_DECLARATION",
@@ -100,7 +102,8 @@ describe("interfaceBody", () => {
               type: "BLOCK",
               statements: []
             }
-          }
+          },
+          followedEmptyLine: false
         }
       ]
     });

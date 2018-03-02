@@ -654,11 +654,13 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   interfaceBodyDeclaration(ctx) {
     const modifiers = ctx.modifier.map(modifier => this.visit(modifier));
     const declaration = this.visit(ctx.interfaceMemberDeclaration);
+    const followedEmptyLine = declaration.followedEmptyLine || false;
 
     return {
       type: "INTERFACE_BODY_DECLARATION",
       modifiers: modifiers,
-      declaration: declaration
+      declaration: declaration,
+      followedEmptyLine: followedEmptyLine
     };
   }
 
@@ -682,10 +684,12 @@ class SQLToAstVisitor extends BaseSQLVisitor {
         this.visit(declarator)
       );
 
+      const followedEmptyLine = this.visit(ctx.semiColon).followedEmptyLine;
       return {
         type: "CONSTANT_DECLARATION",
         typeType: typeType,
-        declarators: declarators
+        declarators: declarators,
+        followedEmptyLine: followedEmptyLine
       };
     }
 
@@ -733,10 +737,12 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       this.visit(declarator)
     );
 
+    const followedEmptyLine = this.visit(ctx.semiColon).followedEmptyLine;
     return {
       type: "CONSTANT_DECLARATION",
       typeType: typeType,
-      declarators: declarators
+      declarators: declarators,
+      followedEmptyLine: followedEmptyLine
     };
   }
 
@@ -1047,7 +1053,10 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
     return {
       type: "TYPE_ARGUMENTS",
-      list: args
+      value: {
+        type: "TYPE_LIST",
+        list: args
+      }
     };
   }
 
@@ -2637,7 +2646,10 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
   typeArgumentsOrDiamond(ctx) {
     if (ctx.emptyDiamond.length > 0) {
-      return this.visit(ctx.emptyDiamond);
+      return {
+        type: "TYPE_ARGUMENTS",
+        value: undefined
+      };
     }
 
     if (ctx.typeArguments.length > 0) {
@@ -2647,7 +2659,10 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
   nonWildcardTypeArgumentsOrDiamond(ctx) {
     if (ctx.emptyDiamond.length > 0) {
-      return this.visit(ctx.emptyDiamond);
+      return {
+        type: "TYPE_ARGUMENTS",
+        value: undefined
+      };
     }
 
     if (ctx.nonWildcardTypeArguments.length > 0) {
@@ -2656,13 +2671,14 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   emptyDiamond() {
-    return {
-      type: "EMPTY_DIAMOND"
-    };
+    // do nothing
   }
 
   nonWildcardTypeArguments(ctx) {
-    return this.visit(ctx.typeList);
+    return {
+      type: "TYPE_ARGUMENTS",
+      value: this.visit(ctx.typeList)
+    };
   }
 
   qualifiedName(ctx) {
@@ -2773,7 +2789,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
         if (ctx.Greater.length > 0) {
           // found typeArguments
           typeArguments = {
-            type: "TYPE_ARGUMENTS",
+            type: "TYPE_LIST",
             list: args
           };
         } else {
@@ -2793,7 +2809,10 @@ class SQLToAstVisitor extends BaseSQLVisitor {
         value = {
           type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
           name: name,
-          typeArguments: typeArguments
+          typeArguments: {
+            type: "TYPE_ARGUMENTS",
+            value: typeArguments
+          }
         };
       }
 

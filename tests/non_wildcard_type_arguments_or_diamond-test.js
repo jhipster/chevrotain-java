@@ -8,13 +8,16 @@ describe("nonWildcardTypeArgumentsOrDiamond", () => {
         parser.nonWildcardTypeArgumentsOrDiamond()
       )
     ).toEqual({
-      type: "TYPE_LIST",
-      list: [
-        {
-          type: "PRIMITIVE_TYPE",
-          value: "boolean"
-        }
-      ]
+      type: "TYPE_ARGUMENTS",
+      value: {
+        type: "TYPE_LIST",
+        list: [
+          {
+            type: "PRIMITIVE_TYPE",
+            value: "boolean"
+          }
+        ]
+      }
     });
   });
 
@@ -22,7 +25,8 @@ describe("nonWildcardTypeArgumentsOrDiamond", () => {
     expect(
       Parser.parse("<>", parser => parser.nonWildcardTypeArgumentsOrDiamond())
     ).toEqual({
-      type: "EMPTY_DIAMOND"
+      type: "TYPE_ARGUMENTS",
+      value: undefined
     });
   });
 });

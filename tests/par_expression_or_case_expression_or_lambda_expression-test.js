@@ -89,17 +89,20 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
         },
         typeArguments: {
           type: "TYPE_ARGUMENTS",
-          list: [
-            {
-              type: "TYPE_ARGUMENT",
-              argument: {
-                type: "IDENTIFIER",
-                value: "B"
-              },
-              extends: undefined,
-              super: undefined
-            }
-          ]
+          value: {
+            type: "TYPE_LIST",
+            list: [
+              {
+                type: "TYPE_ARGUMENT",
+                argument: {
+                  type: "IDENTIFIER",
+                  value: "B"
+                },
+                extends: undefined,
+                super: undefined
+              }
+            ]
+          }
         }
       },
       expression: { type: "THIS" }

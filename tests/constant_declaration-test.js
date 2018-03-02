@@ -23,7 +23,8 @@ describe("constantDeclaration", () => {
             type: "THIS"
           }
         }
-      ]
+      ],
+      followedEmptyLine: false
     });
   });
 
@@ -61,7 +62,8 @@ describe("constantDeclaration", () => {
             type: "SUPER"
           }
         }
-      ]
+      ],
+      followedEmptyLine: false
     });
   });
 });

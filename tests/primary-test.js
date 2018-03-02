@@ -63,17 +63,20 @@ describe("primary", () => {
       },
       typeArguments: {
         type: "TYPE_ARGUMENTS",
-        list: [
-          {
-            type: "TYPE_ARGUMENT",
-            argument: {
-              type: "IDENTIFIER",
-              value: "B"
-            },
-            extends: undefined,
-            super: undefined
-          }
-        ]
+        value: {
+          type: "TYPE_LIST",
+          list: [
+            {
+              type: "TYPE_ARGUMENT",
+              argument: {
+                type: "IDENTIFIER",
+                value: "B"
+              },
+              extends: undefined,
+              super: undefined
+            }
+          ]
+        }
       }
     });
   });
@@ -84,13 +87,16 @@ describe("primary", () => {
     ).toEqual({
       type: "GENERIC_INVOCATION",
       typeArguments: {
-        type: "TYPE_LIST",
-        list: [
-          {
-            type: "PRIMITIVE_TYPE",
-            value: "boolean"
-          }
-        ]
+        type: "TYPE_ARGUMENTS",
+        value: {
+          type: "TYPE_LIST",
+          list: [
+            {
+              type: "PRIMITIVE_TYPE",
+              value: "boolean"
+            }
+          ]
+        }
       },
       arguments: {
         type: "THIS",

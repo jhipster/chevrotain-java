@@ -37,13 +37,16 @@ describe("creatorOptionalNonWildcardInnerCreator", () => {
     ).toEqual({
       type: "CREATOR_OPTIONAL_NON_WILDCARD_INNER_CREATOR",
       typeArguments: {
-        type: "TYPE_LIST",
-        list: [
-          {
-            type: "PRIMITIVE_TYPE",
-            value: "boolean"
-          }
-        ]
+        type: "TYPE_ARGUMENTS",
+        value: {
+          type: "TYPE_LIST",
+          list: [
+            {
+              type: "PRIMITIVE_TYPE",
+              value: "boolean"
+            }
+          ]
+        }
       },
       innerCreator: {
         type: "INNER_CREATOR",

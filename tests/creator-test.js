@@ -8,13 +8,16 @@ describe("creator", () => {
     ).toEqual({
       type: "NON_WILDCARD_CREATOR",
       typeArguments: {
-        type: "TYPE_LIST",
-        list: [
-          {
-            type: "PRIMITIVE_TYPE",
-            value: "boolean"
-          }
-        ]
+        type: "TYPE_ARGUMENTS",
+        value: {
+          type: "TYPE_LIST",
+          list: [
+            {
+              type: "PRIMITIVE_TYPE",
+              value: "boolean"
+            }
+          ]
+        }
       },
       name: {
         type: "IDENTIFIER_NAME",

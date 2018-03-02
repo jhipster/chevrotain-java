@@ -6,17 +6,20 @@ describe("typeArguments", () => {
     expect(Parser.parse("<boolean>", parser => parser.typeArguments())).toEqual(
       {
         type: "TYPE_ARGUMENTS",
-        list: [
-          {
-            type: "TYPE_ARGUMENT",
-            argument: {
-              type: "PRIMITIVE_TYPE",
-              value: "boolean"
-            },
-            super: undefined,
-            extends: undefined
-          }
-        ]
+        value: {
+          type: "TYPE_LIST",
+          list: [
+            {
+              type: "TYPE_ARGUMENT",
+              argument: {
+                type: "PRIMITIVE_TYPE",
+                value: "boolean"
+              },
+              super: undefined,
+              extends: undefined
+            }
+          ]
+        }
       }
     );
   });
@@ -26,26 +29,29 @@ describe("typeArguments", () => {
       Parser.parse("<boolean, char>", parser => parser.typeArguments())
     ).toEqual({
       type: "TYPE_ARGUMENTS",
-      list: [
-        {
-          type: "TYPE_ARGUMENT",
-          argument: {
-            type: "PRIMITIVE_TYPE",
-            value: "boolean"
+      value: {
+        type: "TYPE_LIST",
+        list: [
+          {
+            type: "TYPE_ARGUMENT",
+            argument: {
+              type: "PRIMITIVE_TYPE",
+              value: "boolean"
+            },
+            super: undefined,
+            extends: undefined
           },
-          super: undefined,
-          extends: undefined
-        },
-        {
-          type: "TYPE_ARGUMENT",
-          argument: {
-            type: "PRIMITIVE_TYPE",
-            value: "char"
-          },
-          super: undefined,
-          extends: undefined
-        }
-      ]
+          {
+            type: "TYPE_ARGUMENT",
+            argument: {
+              type: "PRIMITIVE_TYPE",
+              value: "char"
+            },
+            super: undefined,
+            extends: undefined
+          }
+        ]
+      }
     });
   });
 });

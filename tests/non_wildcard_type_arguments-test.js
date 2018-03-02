@@ -6,13 +6,16 @@ describe("nonWildcardTypeArguments", () => {
     expect(
       Parser.parse("<boolean>", parser => parser.nonWildcardTypeArguments())
     ).toEqual({
-      type: "TYPE_LIST",
-      list: [
-        {
-          type: "PRIMITIVE_TYPE",
-          value: "boolean"
-        }
-      ]
+      type: "TYPE_ARGUMENTS",
+      value: {
+        type: "TYPE_LIST",
+        list: [
+          {
+            type: "PRIMITIVE_TYPE",
+            value: "boolean"
+          }
+        ]
+      }
     });
   });
 });

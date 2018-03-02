@@ -25,7 +25,8 @@ describe("identifierNameElement", () => {
         value: "a"
       },
       typeArguments: {
-        type: "EMPTY_DIAMOND"
+        type: "TYPE_ARGUMENTS",
+        value: undefined
       }
     });
   });
