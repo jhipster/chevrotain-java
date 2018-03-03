@@ -1728,7 +1728,11 @@ class SelectParser extends chevrotain.Parser {
               { ALT: () => $.SUBRULE($.instanceofExpressionRest) },
               { ALT: () => $.SUBRULE($.squareExpressionRest) },
               { ALT: () => $.SUBRULE($.postfixExpressionRest) },
-              { ALT: () => $.SUBRULE($.ifElseExpressionRest) },
+              {
+                ALT: () => {
+                  $.SUBRULE($.ifElseExpressionRest);
+                }
+              },
               {
                 ALT: () => {
                   $.SUBRULE($.qualifiedExpressionRest);
@@ -2001,6 +2005,10 @@ class SelectParser extends chevrotain.Parser {
                   $.SUBRULE($.qualifiedExpressionRest);
                   $.MANY2(() => {
                     $.SUBRULE($.operatorExpressionRest);
+                  });
+                  // followed by a short if else
+                  $.OPTION5(() => {
+                    $.SUBRULE($.ifElseExpressionRest);
                   });
                 }
               },

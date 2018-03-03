@@ -577,4 +577,98 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
       }
     });
   });
+
+  it("parExpression with following method call followed by short if else", () => {
+    expect(
+      Parser.parse('((Cast) obj).call() ? "a" : "b"', parser =>
+        parser.parExpressionOrCastExpressionOrLambdaExpression()
+      )
+    ).toEqual({
+      type: "IF_ELSE_EXPRESSION",
+      condition: {
+        type: "QUALIFIED_EXPRESSION",
+        expression: {
+          type: "PAR_EXPRESSION",
+          expression: {
+            type: "CAST_EXPRESSION",
+            castType: {
+              type: "IDENTIFIER",
+              value: "Cast"
+            },
+            expression: {
+              type: "IDENTIFIER",
+              value: "obj"
+            }
+          }
+        },
+        rest: {
+          type: "METHOD_INVOCATION",
+          name: {
+            type: "IDENTIFIER",
+            value: "call"
+          },
+          parameters: undefined
+        }
+      },
+      if: {
+        type: "STRING_LITERAL",
+        value: '"a"'
+      },
+      else: {
+        type: "STRING_LITERAL",
+        value: '"b"'
+      }
+    });
+  });
+
+  it("parExpression with qualifiedExpression following operatorExpression followed by short if else", () => {
+    expect(
+      Parser.parse('((Cast) obj).call() && true ? "a" : "b"', parser =>
+        parser.parExpressionOrCastExpressionOrLambdaExpression()
+      )
+    ).toEqual({
+      type: "OPERATOR_EXPRESSION",
+      left: {
+        type: "QUALIFIED_EXPRESSION",
+        expression: {
+          expression: {
+            type: "CAST_EXPRESSION",
+            castType: {
+              type: "IDENTIFIER",
+              value: "Cast"
+            },
+            expression: {
+              type: "IDENTIFIER",
+              value: "obj"
+            }
+          },
+          type: "PAR_EXPRESSION"
+        },
+        rest: {
+          type: "METHOD_INVOCATION",
+          name: {
+            type: "IDENTIFIER",
+            value: "call"
+          },
+          parameters: undefined
+        }
+      },
+      operator: "&&",
+      right: {
+        type: "IF_ELSE_EXPRESSION",
+        condition: {
+          type: "BOOLEAN_LITERAL",
+          value: "true"
+        },
+        else: {
+          type: "STRING_LITERAL",
+          value: '"b"'
+        },
+        if: {
+          type: "STRING_LITERAL",
+          value: '"a"'
+        }
+      }
+    });
+  });
 });

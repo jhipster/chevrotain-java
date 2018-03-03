@@ -2470,6 +2470,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       };
 
       if (ctx.operatorExpressionRest.length > 0) {
+        // we have a operator expression
         const operatorExpressionRest = this.visit(ctx.operatorExpressionRest);
 
         return {
@@ -2478,6 +2479,46 @@ class SQLToAstVisitor extends BaseSQLVisitor {
           operator: operatorExpressionRest.operator,
           right: operatorExpressionRest.expression
         };
+      }
+
+      if (ctx.operator.length > 0 || ctx.ifElseExpressionRest.length > 0) {
+        let operatorExpression = undefined;
+        if (ctx.operator.length > 0) {
+          // we have a operator expression
+          const operator = this.visit(ctx.operator);
+
+          operatorExpression = {
+            type: "OPERATOR_EXPRESSION",
+            left: qualifiedExpression,
+            operator: operator,
+            right: expression
+          };
+        }
+
+        let ifElseExpressionRest = undefined;
+        if (ctx.ifElseExpressionRest.length > 0) {
+          ifElseExpressionRest = this.visit(ctx.ifElseExpressionRest);
+        }
+
+        if (operatorExpression && ifElseExpressionRest) {
+          return {
+            type: "IF_ELSE_EXPRESSION",
+            condition: operatorExpression,
+            if: ifElseExpressionRest.if,
+            else: ifElseExpressionRest.else
+          };
+        }
+        if (operatorExpression) {
+          return operatorExpression;
+        }
+        if (ifElseExpressionRest) {
+          return {
+            type: "IF_ELSE_EXPRESSION",
+            condition: qualifiedExpression,
+            if: ifElseExpressionRest.if,
+            else: ifElseExpressionRest.else
+          };
+        }
       }
 
       return qualifiedExpression;
