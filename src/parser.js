@@ -1791,6 +1791,9 @@ class SelectParser extends chevrotain.Parser {
     $.RULE("instanceofExpressionRest", () => {
       $.CONSUME(tokens.Instanceof);
       $.SUBRULE($.typeType);
+      $.MANY(() => {
+        $.SUBRULE($.operatorExpressionRest);
+      });
     });
 
     // squareExpressionRest

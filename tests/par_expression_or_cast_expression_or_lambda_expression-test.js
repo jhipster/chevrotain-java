@@ -545,4 +545,36 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
       right: { type: "IDENTIFIER", value: "d" }
     });
   });
+
+  it("parExpression with following method call", () => {
+    expect(
+      Parser.parse("((Cast) obj).call()", parser =>
+        parser.parExpressionOrCastExpressionOrLambdaExpression()
+      )
+    ).toEqual({
+      type: "QUALIFIED_EXPRESSION",
+      expression: {
+        type: "PAR_EXPRESSION",
+        expression: {
+          type: "CAST_EXPRESSION",
+          castType: {
+            type: "IDENTIFIER",
+            value: "Cast"
+          },
+          expression: {
+            type: "IDENTIFIER",
+            value: "obj"
+          }
+        }
+      },
+      rest: {
+        type: "METHOD_INVOCATION",
+        name: {
+          type: "IDENTIFIER",
+          value: "call"
+        },
+        parameters: undefined
+      }
+    });
+  });
 });

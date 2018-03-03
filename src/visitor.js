@@ -1954,11 +1954,23 @@ class SQLToAstVisitor extends BaseSQLVisitor {
             ctx.instanceofExpressionRest
           );
 
-          return {
+          const instanceOfExpression = {
             type: "INSTANCEOF_EXPRESSION",
             expression: qualifiedExpression,
             instanceof: instanceofExpressionRest.typeType
           };
+
+          if (instanceofExpressionRest.operatorExpressionRest) {
+            return {
+              type: "OPERATOR_EXPRESSION",
+              left: instanceOfExpression,
+              operator:
+                instanceofExpressionRest.operatorExpressionRest.operator,
+              right: instanceofExpressionRest.operatorExpressionRest.expression
+            };
+          }
+
+          return instanceOfExpression;
         }
 
         if (ctx.operatorExpressionRest.length > 0) {
@@ -1980,11 +1992,22 @@ class SQLToAstVisitor extends BaseSQLVisitor {
           ctx.instanceofExpressionRest
         );
 
-        return {
+        const instanceOfExpression = {
           type: "INSTANCEOF_EXPRESSION",
           expression: atomic,
           instanceof: instanceofExpressionRest.typeType
         };
+
+        if (instanceofExpressionRest.operatorExpressionRest) {
+          return {
+            type: "OPERATOR_EXPRESSION",
+            left: instanceOfExpression,
+            operator: instanceofExpressionRest.operatorExpressionRest.operator,
+            right: instanceofExpressionRest.operatorExpressionRest.expression
+          };
+        }
+
+        return instanceOfExpression;
       }
 
       if (ctx.operatorExpressionRest.length > 0) {
@@ -2061,9 +2084,15 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   instanceofExpressionRest(ctx) {
     const typeType = this.visit(ctx.typeType);
 
+    let operatorExpressionRest = undefined;
+    if (ctx.operatorExpressionRest.length > 0) {
+      operatorExpressionRest = this.visit(ctx.operatorExpressionRest);
+    }
+
     return {
       type: "INSTANCEOF_EXPRESSION_REST",
-      typeType: typeType
+      typeType: typeType,
+      operatorExpressionRest: operatorExpressionRest
     };
   }
 
@@ -2450,6 +2479,8 @@ class SQLToAstVisitor extends BaseSQLVisitor {
           right: operatorExpressionRest.expression
         };
       }
+
+      return qualifiedExpression;
     }
 
     return parExpression;

@@ -30,6 +30,31 @@ describe("expression", () => {
     });
   });
 
+  it("instanceofExpression and operatorExpression", () => {
+    expect(
+      Parser.parse("this instanceof boolean && true", parser =>
+        parser.expression()
+      )
+    ).toEqual({
+      type: "OPERATOR_EXPRESSION",
+      left: {
+        type: "INSTANCEOF_EXPRESSION",
+        expression: {
+          type: "THIS"
+        },
+        instanceof: {
+          type: "PRIMITIVE_TYPE",
+          value: "boolean"
+        }
+      },
+      operator: "&&",
+      right: {
+        type: "BOOLEAN_LITERAL",
+        value: "true"
+      }
+    });
+  });
+
   it("squareExpression", () => {
     expect(Parser.parse("this[super]", parser => parser.expression())).toEqual({
       type: "SQUARE_EXPRESSION",
