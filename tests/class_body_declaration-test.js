@@ -153,4 +153,10 @@ describe("classBodyDeclaration", () => {
       followedEmptyLine: false
     });
   });
+
+  it("semiColon", () => {
+    expect(Parser.parse(";", parser => parser.classBodyDeclaration())).toEqual({
+      type: "SEMI_COLON_STATEMENT"
+    });
+  });
 });

@@ -294,6 +294,12 @@ class SQLToAstVisitor extends BaseSQLVisitor {
         followedEmptyLine: followedEmptyLine
       };
     }
+
+    if (ctx.semiColon) {
+      return {
+        type: "SEMI_COLON_STATEMENT"
+      };
+    }
   }
 
   memberDeclaration(ctx) {
@@ -1903,18 +1909,6 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     if (ctx.atomic.length > 0) {
       const atomic = this.visit(ctx.atomic);
 
-      if (ctx.instanceofExpressionRest.length > 0) {
-        const instanceofExpressionRest = this.visit(
-          ctx.instanceofExpressionRest
-        );
-
-        return {
-          type: "INSTANCEOF_EXPRESSION",
-          expression: atomic,
-          instanceof: instanceofExpressionRest.typeType
-        };
-      }
-
       if (ctx.squareExpressionRest.length > 0) {
         const squareExpressionRest = this.visit(ctx.squareExpressionRest);
 
@@ -1955,6 +1949,18 @@ class SQLToAstVisitor extends BaseSQLVisitor {
           rest: rest
         };
 
+        if (ctx.instanceofExpressionRest.length > 0) {
+          const instanceofExpressionRest = this.visit(
+            ctx.instanceofExpressionRest
+          );
+
+          return {
+            type: "INSTANCEOF_EXPRESSION",
+            expression: qualifiedExpression,
+            instanceof: instanceofExpressionRest.typeType
+          };
+        }
+
         if (ctx.operatorExpressionRest.length > 0) {
           const operatorExpressionRest = this.visit(ctx.operatorExpressionRest);
 
@@ -1967,6 +1973,18 @@ class SQLToAstVisitor extends BaseSQLVisitor {
         }
 
         return qualifiedExpression;
+      }
+
+      if (ctx.instanceofExpressionRest.length > 0) {
+        const instanceofExpressionRest = this.visit(
+          ctx.instanceofExpressionRest
+        );
+
+        return {
+          type: "INSTANCEOF_EXPRESSION",
+          expression: atomic,
+          instanceof: instanceofExpressionRest.typeType
+        };
       }
 
       if (ctx.operatorExpressionRest.length > 0) {

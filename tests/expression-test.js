@@ -137,6 +137,28 @@ describe("expression", () => {
     });
   });
 
+  it("instanceofExpression with qualifiedExpression", () => {
+    expect(
+      Parser.parse("this.b instanceof Boolean", parser => parser.expression())
+    ).toEqual({
+      type: "INSTANCEOF_EXPRESSION",
+      expression: {
+        type: "QUALIFIED_EXPRESSION",
+        expression: {
+          type: "THIS"
+        },
+        rest: {
+          type: "IDENTIFIER",
+          value: "b"
+        }
+      },
+      instanceof: {
+        type: "IDENTIFIER",
+        value: "Boolean"
+      }
+    });
+  });
+
   it("operatorExpression Star", () => {
     expect(Parser.parse("this*super", parser => parser.expression())).toEqual({
       type: "OPERATOR_EXPRESSION",

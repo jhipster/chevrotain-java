@@ -850,6 +850,16 @@
                 "occurrenceInParent": 1
               }
             ]
+          },
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "NonTerminal",
+                "name": "semiColon",
+                "occurrenceInParent": 1
+              }
+            ]
           }
         ]
       }
@@ -4910,12 +4920,32 @@
                         "occurrenceInParent": 1
                       },
                       {
-                        "type": "Repetition",
+                        "type": "Alternation",
                         "definition": [
                           {
-                            "type": "NonTerminal",
-                            "name": "operatorExpressionRest",
-                            "occurrenceInParent": 1
+                            "type": "Flat",
+                            "definition": [
+                              {
+                                "type": "NonTerminal",
+                                "name": "instanceofExpressionRest",
+                                "occurrenceInParent": 2
+                              }
+                            ]
+                          },
+                          {
+                            "type": "Flat",
+                            "definition": [
+                              {
+                                "type": "Repetition",
+                                "definition": [
+                                  {
+                                    "type": "NonTerminal",
+                                    "name": "operatorExpressionRest",
+                                    "occurrenceInParent": 1
+                                  }
+                                ]
+                              }
+                            ]
                           }
                         ]
                       }

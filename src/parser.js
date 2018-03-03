@@ -247,6 +247,7 @@ class SelectParser extends chevrotain.Parser {
     // classBodyDeclaration
     // : STATIC? block
     // | modifier* memberDeclaration
+    // | ';'
     $.RULE("classBodyDeclaration", () => {
       $.OR([
         {
@@ -265,6 +266,12 @@ class SelectParser extends chevrotain.Parser {
               $.SUBRULE($.modifier);
             });
             $.SUBRULE($.memberDeclaration);
+          }
+        },
+        {
+          // semiColon
+          ALT: () => {
+            $.SUBRULE($.semiColon);
           }
         }
       ]);
@@ -1725,9 +1732,15 @@ class SelectParser extends chevrotain.Parser {
               {
                 ALT: () => {
                   $.SUBRULE($.qualifiedExpressionRest);
-                  $.MANY(() => {
-                    $.SUBRULE($.operatorExpressionRest);
-                  });
+                  $.OR3([
+                    { ALT: () => $.SUBRULE2($.instanceofExpressionRest) },
+                    {
+                      ALT: () =>
+                        $.MANY(() => {
+                          $.SUBRULE($.operatorExpressionRest);
+                        })
+                    }
+                  ]);
                 }
               },
               {
