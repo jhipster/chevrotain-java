@@ -2531,7 +2531,14 @@ class SelectParser extends chevrotain.Parser {
                 });
               }
             },
-            { ALT: () => $.SUBRULE($.literal) }
+            { ALT: () => $.SUBRULE($.literal) },
+            {
+              ALT: () => {
+                $.CONSUME(tokens.LBrace);
+                $.SUBRULE($.expression);
+                $.CONSUME(tokens.RBrace);
+              }
+            }
           ]);
         });
       }

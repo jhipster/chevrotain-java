@@ -2882,6 +2882,19 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       };
     }
 
+    if (ctx.expression.length > 0) {
+      const expression = this.visit(ctx.expression);
+      return {
+        type: "OPERATOR_EXPRESSION",
+        left: name,
+        operator: "<",
+        right: {
+          type: "PAR_EXPRESSION",
+          expression: expression
+        }
+      };
+    }
+
     return name;
   }
 

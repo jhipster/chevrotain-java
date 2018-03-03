@@ -150,6 +150,32 @@ describe("expression", () => {
     });
   });
 
+  it("operatorExpression with right side in parExpression", () => {
+    expect(Parser.parse("a < (b - c)", parser => parser.expression())).toEqual({
+      type: "OPERATOR_EXPRESSION",
+      left: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
+      operator: "<",
+      right: {
+        type: "PAR_EXPRESSION",
+        expression: {
+          type: "OPERATOR_EXPRESSION",
+          left: {
+            type: "IDENTIFIER",
+            value: "b"
+          },
+          operator: "-",
+          right: {
+            type: "IDENTIFIER",
+            value: "c"
+          }
+        }
+      }
+    });
+  });
+
   it("operatorExpression Less", () => {
     expect(
       Parser.parse("i < array.length", parser => parser.expression())
