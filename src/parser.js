@@ -1759,6 +1759,9 @@ class SelectParser extends chevrotain.Parser {
                 ALT: () => {
                   $.MANY2(() => {
                     $.SUBRULE2($.operatorExpressionRest);
+                    $.OPTION(() => {
+                      $.SUBRULE2($.ifElseExpressionRest);
+                    });
                   });
                 }
               }

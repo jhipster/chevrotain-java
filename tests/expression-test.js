@@ -197,6 +197,42 @@ describe("expression", () => {
     });
   });
 
+  it("operatorExpression with qualifiedNameExpressiona and if else statement", () => {
+    expect(
+      Parser.parse('a = some.call() ? "a" : "b"', parser => parser.expression())
+    ).toEqual({
+      type: "IF_ELSE_EXPRESSION",
+      condition: {
+        type: "OPERATOR_EXPRESSION",
+        left: { type: "IDENTIFIER", value: "a" },
+        operator: "=",
+        right: {
+          type: "QUALIFIED_EXPRESSION",
+          expression: {
+            type: "IDENTIFIER",
+            value: "some"
+          },
+          rest: {
+            type: "METHOD_INVOCATION",
+            name: {
+              type: "IDENTIFIER",
+              value: "call"
+            },
+            parameters: undefined
+          }
+        }
+      },
+      if: {
+        type: "STRING_LITERAL",
+        value: '"a"'
+      },
+      else: {
+        type: "STRING_LITERAL",
+        value: '"b"'
+      }
+    });
+  });
+
   it("operatorExpression with right side in parExpression", () => {
     expect(Parser.parse("a < (b - c)", parser => parser.expression())).toEqual({
       type: "OPERATOR_EXPRESSION",

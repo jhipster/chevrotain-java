@@ -1929,7 +1929,10 @@ class SQLToAstVisitor extends BaseSQLVisitor {
         };
       }
 
-      if (ctx.ifElseExpressionRest.length > 0) {
+      if (
+        ctx.ifElseExpressionRest.length > 0 &&
+        ctx.operatorExpressionRest.length === 0
+      ) {
         const ifElseExpressionRest = this.visit(ctx.ifElseExpressionRest);
 
         return {
@@ -2013,12 +2016,25 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       if (ctx.operatorExpressionRest.length > 0) {
         const operatorExpressionRest = this.visit(ctx.operatorExpressionRest);
 
-        return {
+        const operatorExpression = {
           type: "OPERATOR_EXPRESSION",
           left: atomic,
           operator: operatorExpressionRest.operator,
           right: operatorExpressionRest.expression
         };
+
+        if (ctx.ifElseExpressionRest.length > 0) {
+          const ifElseExpressionRest = this.visit(ctx.ifElseExpressionRest);
+
+          return {
+            type: "IF_ELSE_EXPRESSION",
+            condition: operatorExpression,
+            if: ifElseExpressionRest.if,
+            else: ifElseExpressionRest.else
+          };
+        }
+
+        return operatorExpression;
       }
 
       if (ctx.Pointer.length > 0) {
