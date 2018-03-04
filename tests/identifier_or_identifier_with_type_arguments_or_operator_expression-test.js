@@ -40,6 +40,58 @@ describe("identifierOrIdentifierWithTypeArgumentsOrOperatorExpression", () => {
     });
   });
 
+  it("operatorExpression Less with typeArgument as method", () => {
+    expect(
+      Parser.parse("i < size()", parser =>
+        parser.identifierOrIdentifierWithTypeArgumentsOrOperatorExpression()
+      )
+    ).toEqual({
+      type: "OPERATOR_EXPRESSION",
+      left: {
+        type: "IDENTIFIER",
+        value: "i"
+      },
+      operator: "<",
+      right: {
+        type: "METHOD_INVOCATION",
+        name: {
+          type: "IDENTIFIER",
+          value: "size"
+        }
+      }
+    });
+  });
+
+  it("operatorExpression Less with qualifiedNameExpression as method", () => {
+    expect(
+      Parser.parse("i < list.size()", parser =>
+        parser.identifierOrIdentifierWithTypeArgumentsOrOperatorExpression()
+      )
+    ).toEqual({
+      type: "OPERATOR_EXPRESSION",
+      left: {
+        type: "IDENTIFIER",
+        value: "i"
+      },
+      operator: "<",
+      right: {
+        type: "QUALIFIED_EXPRESSION",
+        expression: {
+          type: "IDENTIFIER",
+          value: "list"
+        },
+        rest: {
+          type: "METHOD_INVOCATION",
+          name: {
+            type: "IDENTIFIER",
+            value: "size"
+          },
+          parameters: undefined
+        }
+      }
+    });
+  });
+
   it("operatorExpression Less with number", () => {
     expect(
       Parser.parse("i < 3", parser =>

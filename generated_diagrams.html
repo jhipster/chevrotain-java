@@ -6977,19 +6977,53 @@
                 "type": "Flat",
                 "definition": [
                   {
-                    "type": "RepetitionMandatoryWithSeparator",
-                    "separator": {
-                      "type": "Terminal",
-                      "name": "Comma",
-                      "label": "','",
-                      "occurrenceInParent": 1,
-                      "pattern": ","
-                    },
+                    "type": "NonTerminal",
+                    "name": "typeArgument",
+                    "occurrenceInParent": 1
+                  },
+                  {
+                    "type": "Repetition",
                     "definition": [
+                      {
+                        "type": "Terminal",
+                        "name": "Comma",
+                        "label": "','",
+                        "occurrenceInParent": 1,
+                        "pattern": ","
+                      },
                       {
                         "type": "NonTerminal",
                         "name": "typeArgument",
-                        "occurrenceInParent": 1
+                        "occurrenceInParent": 2
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Option",
+                    "definition": [
+                      {
+                        "type": "Terminal",
+                        "name": "LBrace",
+                        "label": "'('",
+                        "occurrenceInParent": 1,
+                        "pattern": "\\("
+                      },
+                      {
+                        "type": "Option",
+                        "definition": [
+                          {
+                            "type": "NonTerminal",
+                            "name": "expressionList",
+                            "occurrenceInParent": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "Terminal",
+                        "name": "RBrace",
+                        "label": "')'",
+                        "occurrenceInParent": 1,
+                        "pattern": "\\)"
                       }
                     ]
                   },
@@ -7024,19 +7058,19 @@
                     "type": "Terminal",
                     "name": "LBrace",
                     "label": "'('",
-                    "occurrenceInParent": 1,
+                    "occurrenceInParent": 2,
                     "pattern": "\\("
                   },
                   {
                     "type": "NonTerminal",
                     "name": "expression",
-                    "occurrenceInParent": 1
+                    "occurrenceInParent": 2
                   },
                   {
                     "type": "Terminal",
                     "name": "RBrace",
                     "label": "')'",
-                    "occurrenceInParent": 1,
+                    "occurrenceInParent": 2,
                     "pattern": "\\)"
                   }
                 ]

@@ -2547,23 +2547,39 @@ class SelectParser extends chevrotain.Parser {
           $.OR([
             {
               ALT: () => {
-                $.AT_LEAST_ONE_SEP({
-                  SEP: tokens.Comma,
+                let canBeOperatorExpression = true;
+                $.SUBRULE($.typeArgument);
+                $.MANY(() => {
+                  $.CONSUME(tokens.Comma);
+                  $.SUBRULE2($.typeArgument);
+                  canBeOperatorExpression = false;
+                });
+                let isOperatorExpression = false;
+                $.OPTION3({
+                  GATE: () => canBeOperatorExpression,
                   DEF: () => {
-                    $.SUBRULE($.typeArgument);
+                    $.CONSUME(tokens.LBrace);
+                    $.OPTION4(() => {
+                      $.SUBRULE($.expressionList);
+                    });
+                    $.CONSUME(tokens.RBrace);
+                    isOperatorExpression = true;
                   }
                 });
-                $.OPTION2(() => {
-                  $.CONSUME(tokens.Greater);
+                $.OPTION5({
+                  GATE: () => !isOperatorExpression,
+                  DEF: () => {
+                    $.CONSUME(tokens.Greater);
+                  }
                 });
               }
             },
             { ALT: () => $.SUBRULE($.literal) },
             {
               ALT: () => {
-                $.CONSUME(tokens.LBrace);
-                $.SUBRULE($.expression);
-                $.CONSUME(tokens.RBrace);
+                $.CONSUME2(tokens.LBrace);
+                $.SUBRULE2($.expression);
+                $.CONSUME2(tokens.RBrace);
               }
             }
           ]);

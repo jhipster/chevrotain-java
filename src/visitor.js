@@ -2953,11 +2953,66 @@ class SQLToAstVisitor extends BaseSQLVisitor {
           };
         } else {
           // found operator expression with operator "<"
+
+          let right = args[0];
+          if (ctx.LBrace.length > 0) {
+            const parameters = undefined;
+
+            if (right.argument.type === "IDENTIFIER") {
+              right = {
+                type: "METHOD_INVOCATION",
+                name: right.argument,
+                parameters: parameters
+              };
+            } else if (right.argument.type === "CLASS_OR_INTERFACE_TYPE") {
+              let first = undefined;
+              let temp = undefined;
+              for (let i = 0; i < right.argument.elements.length; i++) {
+                if (i !== right.argument.elements.length - 1) {
+                  const current = {
+                    type: "QUALIFIED_EXPRESSION",
+                    expression: right.argument.elements[i],
+                    rest: undefined
+                  };
+                  if (i === 0) {
+                    first = current;
+                    temp = current;
+                  } else {
+                    temp.rest = current;
+                    temp = current;
+                  }
+                } else {
+                  temp.rest = {
+                    type: "METHOD_INVOCATION",
+                    name: right.argument.elements[i],
+                    parameters: parameters
+                  };
+                }
+              }
+              right = first;
+            }
+            // {
+            //   type: "QUALIFIED_EXPRESSION",
+            //   expression: {
+            //     type: "IDENTIFIER",
+            //     value: "some"
+            //   },
+            //   rest: {
+            //     type: "METHOD_INVOCATION",
+            //     name: {
+            //       type: "IDENTIFIER",
+            //       value: "call"
+            //     },
+            //     parameters: undefined
+            //   }
+            // }
+          }
+
           return {
             type: "OPERATOR_EXPRESSION",
             left: name,
             operator: "<",
-            right: args[0]
+            right: right
           };
         }
       }
