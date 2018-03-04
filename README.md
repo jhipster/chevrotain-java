@@ -2,7 +2,7 @@
 
 # chevrotain java parser
 
-A javascript based java parser based on [Chevrotain](http://sap.github.io/chevrotain). Mainly developed to be used in [prettier-java](https://github.com/thorbenvh8/prettier-java).
+A javascript based java parser based on [Chevrotain](https://github.com/SAP/chevrotain). Mainly developed to be used in [prettier-java](https://github.com/thorbenvh8/prettier-java).
 
 # grammar diagram
 
