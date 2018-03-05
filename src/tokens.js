@@ -672,7 +672,7 @@ const CharLiteral = createToken({
   name: "CharLiteral",
   pattern: MAKE_PATTERN(
     // TODO: fix with better implementation
-    "'[0-9a-zA-Z]'"
+    "'[^']*'"
   ),
   label: "'CharLiteral'"
 });
