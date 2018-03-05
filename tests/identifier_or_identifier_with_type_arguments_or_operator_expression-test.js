@@ -26,16 +26,22 @@ describe("identifierOrIdentifierWithTypeArgumentsOrOperatorExpression", () => {
       },
       operator: "<",
       right: {
+        type: "TYPE_ARGUMENT",
         argument: {
+          type: "CLASS_OR_INTERFACE_TYPE",
           elements: [
-            { type: "IDENTIFIER", value: "array" },
-            { type: "IDENTIFIER", value: "length" }
-          ],
-          type: "CLASS_OR_INTERFACE_TYPE"
+            {
+              type: "IDENTIFIER",
+              value: "array"
+            },
+            {
+              type: "IDENTIFIER",
+              value: "length"
+            }
+          ]
         },
         extends: undefined,
-        super: undefined,
-        type: "TYPE_ARGUMENT"
+        super: undefined
       }
     });
   });
@@ -57,7 +63,72 @@ describe("identifierOrIdentifierWithTypeArgumentsOrOperatorExpression", () => {
         name: {
           type: "IDENTIFIER",
           value: "size"
-        }
+        },
+        parameters: undefined,
+        dimensions: []
+      }
+    });
+  });
+
+  it("operatorExpression Less with typeArgument as method and dimensions", () => {
+    expect(
+      Parser.parse("i < size()[0]", parser =>
+        parser.identifierOrIdentifierWithTypeArgumentsOrOperatorExpression()
+      )
+    ).toEqual({
+      type: "OPERATOR_EXPRESSION",
+      left: {
+        type: "IDENTIFIER",
+        value: "i"
+      },
+      operator: "<",
+      right: {
+        type: "METHOD_INVOCATION",
+        name: {
+          type: "IDENTIFIER",
+          value: "size"
+        },
+        parameters: undefined,
+        dimensions: [
+          {
+            type: "DIMENSION",
+            expression: {
+              type: "DECIMAL_LITERAL",
+              value: "0"
+            }
+          }
+        ]
+      }
+    });
+  });
+
+  it("operatorExpression Less with typeArgument as method and parameters", () => {
+    expect(
+      Parser.parse("i < size(this)", parser =>
+        parser.identifierOrIdentifierWithTypeArgumentsOrOperatorExpression()
+      )
+    ).toEqual({
+      type: "OPERATOR_EXPRESSION",
+      left: {
+        type: "IDENTIFIER",
+        value: "i"
+      },
+      operator: "<",
+      right: {
+        type: "METHOD_INVOCATION",
+        name: {
+          type: "IDENTIFIER",
+          value: "size"
+        },
+        parameters: {
+          list: [
+            {
+              type: "THIS"
+            }
+          ],
+          type: "EXPRESSION_LIST"
+        },
+        dimensions: []
       }
     });
   });
@@ -86,7 +157,8 @@ describe("identifierOrIdentifierWithTypeArgumentsOrOperatorExpression", () => {
             type: "IDENTIFIER",
             value: "size"
           },
-          parameters: undefined
+          parameters: undefined,
+          dimensions: []
         }
       }
     });

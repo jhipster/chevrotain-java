@@ -1897,11 +1897,14 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   methodInvocation(ctx) {
     const name = this.identifier(ctx.Identifier[0]);
     const expressionList = this.visit(ctx.expressionList);
+    const dimensions = [];
+    ctx.dimension.map(dimension => dimensions.push(this.visit(dimension)));
 
     return {
       type: "METHOD_INVOCATION",
       name: name,
-      parameters: expressionList
+      parameters: expressionList,
+      dimensions: dimensions
     };
   }
 
@@ -2956,13 +2959,22 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
           let right = args[0];
           if (ctx.LBrace.length > 0) {
-            const parameters = undefined;
+            let parameters = undefined;
+            if (ctx.expressionList.length > 0) {
+              parameters = this.visit(ctx.expressionList);
+            }
+
+            const dimensions = [];
+            ctx.dimension.map(dimension =>
+              dimensions.push(this.visit(dimension))
+            );
 
             if (right.argument.type === "IDENTIFIER") {
               right = {
                 type: "METHOD_INVOCATION",
                 name: right.argument,
-                parameters: parameters
+                parameters: parameters,
+                dimensions: dimensions
               };
             } else if (right.argument.type === "CLASS_OR_INTERFACE_TYPE") {
               let first = undefined;
@@ -2985,7 +2997,8 @@ class SQLToAstVisitor extends BaseSQLVisitor {
                   temp.rest = {
                     type: "METHOD_INVOCATION",
                     name: right.argument.elements[i],
-                    parameters: parameters
+                    parameters: parameters,
+                    dimensions: dimensions
                   };
                 }
               }

@@ -1703,6 +1703,9 @@ class SelectParser extends chevrotain.Parser {
         $.SUBRULE($.expressionList);
       });
       $.CONSUME(tokens.RBrace);
+      $.MANY(() => {
+        $.SUBRULE($.dimension);
+      });
     });
 
     // expression
@@ -2563,6 +2566,9 @@ class SelectParser extends chevrotain.Parser {
                       $.SUBRULE($.expressionList);
                     });
                     $.CONSUME(tokens.RBrace);
+                    $.MANY2(() => {
+                      $.SUBRULE($.dimension);
+                    });
                     isOperatorExpression = true;
                   }
                 });

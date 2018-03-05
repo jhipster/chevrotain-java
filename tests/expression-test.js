@@ -106,7 +106,8 @@ describe("expression", () => {
           type: "IDENTIFIER",
           value: "a"
         },
-        parameters: undefined
+        parameters: undefined,
+        dimensions: []
       }
     });
   });
@@ -124,7 +125,8 @@ describe("expression", () => {
           type: "IDENTIFIER",
           value: "b"
         },
-        parameters: undefined
+        parameters: undefined,
+        dimensions: []
       }
     });
   });
@@ -144,7 +146,8 @@ describe("expression", () => {
             type: "IDENTIFIER",
             value: "b"
           },
-          parameters: undefined
+          parameters: undefined,
+          dimensions: []
         }
       },
       operator: "<",
@@ -218,7 +221,8 @@ describe("expression", () => {
               type: "IDENTIFIER",
               value: "call"
             },
-            parameters: undefined
+            parameters: undefined,
+            dimensions: []
           }
         }
       },

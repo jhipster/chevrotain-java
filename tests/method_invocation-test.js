@@ -9,7 +9,8 @@ describe("methodInvocation", () => {
         type: "IDENTIFIER",
         value: "a"
       },
-      parameters: undefined
+      parameters: undefined,
+      dimensions: []
     });
   });
 
@@ -29,7 +30,30 @@ describe("methodInvocation", () => {
             type: "THIS"
           }
         ]
-      }
+      },
+      dimensions: []
     });
+  });
+
+  it("with dimensions", () => {
+    expect(Parser.parse("a()[0]", parser => parser.methodInvocation())).toEqual(
+      {
+        type: "METHOD_INVOCATION",
+        name: {
+          type: "IDENTIFIER",
+          value: "a"
+        },
+        parameters: undefined,
+        dimensions: [
+          {
+            type: "DIMENSION",
+            expression: {
+              type: "DECIMAL_LITERAL",
+              value: "0"
+            }
+          }
+        ]
+      }
+    );
   });
 });

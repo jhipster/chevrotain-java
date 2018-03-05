@@ -357,7 +357,8 @@ describe("blockStatement", () => {
                   value: '"please work"'
                 }
               ]
-            }
+            },
+            dimensions: []
           }
         }
       },

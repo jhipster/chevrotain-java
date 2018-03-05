@@ -158,7 +158,8 @@ describe("block", () => {
                       value: '"please work"'
                     }
                   ]
-                }
+                },
+                dimensions: []
               }
             }
           },
@@ -204,7 +205,8 @@ describe("block", () => {
                       value: '"please work"'
                     }
                   ]
-                }
+                },
+                dimensions: []
               }
             }
           },
@@ -272,7 +274,8 @@ describe("block", () => {
                       value: '"please work"'
                     }
                   ]
-                }
+                },
+                dimensions: []
               }
             }
           },

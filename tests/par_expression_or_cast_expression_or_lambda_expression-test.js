@@ -229,7 +229,8 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
             type: "IDENTIFIER",
             value: "getIdentifier"
           },
-          parameters: undefined
+          parameters: undefined,
+          dimensions: []
         }
       },
       operator: "==",
@@ -239,7 +240,8 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
           type: "IDENTIFIER",
           value: "getIdentifier"
         },
-        parameters: undefined
+        parameters: undefined,
+        dimensions: []
       }
     });
   });
@@ -573,7 +575,8 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
           type: "IDENTIFIER",
           value: "call"
         },
-        parameters: undefined
+        parameters: undefined,
+        dimensions: []
       }
     });
   });
@@ -607,7 +610,8 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
             type: "IDENTIFIER",
             value: "call"
           },
-          parameters: undefined
+          parameters: undefined,
+          dimensions: []
         }
       },
       if: {
@@ -650,7 +654,8 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
             type: "IDENTIFIER",
             value: "call"
           },
-          parameters: undefined
+          parameters: undefined,
+          dimensions: []
         }
       },
       operator: "&&",
