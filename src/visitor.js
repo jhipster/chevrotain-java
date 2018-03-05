@@ -2492,12 +2492,37 @@ class SQLToAstVisitor extends BaseSQLVisitor {
         // we have a operator expression
         const operatorExpressionRest = this.visit(ctx.operatorExpressionRest);
 
-        return {
+        const operatorExpression = {
           type: "OPERATOR_EXPRESSION",
           left: qualifiedExpression,
           operator: operatorExpressionRest.operator,
           right: operatorExpressionRest.expression
         };
+
+        let ifElseExpressionRest = undefined;
+        if (ctx.ifElseExpressionRest.length > 0) {
+          ifElseExpressionRest = this.visit(ctx.ifElseExpressionRest);
+        }
+
+        if (operatorExpression && ifElseExpressionRest) {
+          return {
+            type: "IF_ELSE_EXPRESSION",
+            condition: operatorExpression,
+            if: ifElseExpressionRest.if,
+            else: ifElseExpressionRest.else
+          };
+        }
+        if (operatorExpression) {
+          return operatorExpression;
+        }
+        if (ifElseExpressionRest) {
+          return {
+            type: "IF_ELSE_EXPRESSION",
+            condition: qualifiedExpression,
+            if: ifElseExpressionRest.if,
+            else: ifElseExpressionRest.else
+          };
+        }
       }
 
       if (ctx.operator.length > 0 || ctx.ifElseExpressionRest.length > 0) {
@@ -2541,6 +2566,17 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       }
 
       return qualifiedExpression;
+    }
+
+    if (ctx.ifElseExpressionRest.length > 0) {
+      const ifElseExpressionRest = this.visit(ctx.ifElseExpressionRest);
+
+      return {
+        type: "IF_ELSE_EXPRESSION",
+        condition: parExpression,
+        if: ifElseExpressionRest.if,
+        else: ifElseExpressionRest.else
+      };
     }
 
     return parExpression;
@@ -3004,21 +3040,6 @@ class SQLToAstVisitor extends BaseSQLVisitor {
               }
               right = first;
             }
-            // {
-            //   type: "QUALIFIED_EXPRESSION",
-            //   expression: {
-            //     type: "IDENTIFIER",
-            //     value: "some"
-            //   },
-            //   rest: {
-            //     type: "METHOD_INVOCATION",
-            //     name: {
-            //       type: "IDENTIFIER",
-            //       value: "call"
-            //     },
-            //     parameters: undefined
-            //   }
-            // }
           }
 
           return {

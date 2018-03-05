@@ -1998,10 +1998,24 @@ class SelectParser extends chevrotain.Parser {
                 ALT: () => {
                   // for potentielle cast expression
                   // or operator expression
+                  let isOperatorExpression = false;
                   $.OPTION4(() => {
                     $.SUBRULE($.operator);
+                    isOperatorExpression = true;
                   });
                   $.SUBRULE3($.expression);
+                  $.MANY2({
+                    GATE: () => isOperatorExpression,
+                    DEF: () => {
+                      $.SUBRULE($.operatorExpressionRest);
+                    }
+                  });
+                  $.OPTION5({
+                    GATE: () => isOperatorExpression,
+                    DEF: () => {
+                      $.SUBRULE($.ifElseExpressionRest);
+                    }
+                  });
                 }
               },
               {
@@ -2009,13 +2023,21 @@ class SelectParser extends chevrotain.Parser {
                 ALT: () => {
                   // Cast expression with following method or variable
                   $.SUBRULE($.qualifiedExpressionRest);
-                  $.MANY2(() => {
-                    $.SUBRULE($.operatorExpressionRest);
+                  $.MANY3(() => {
+                    $.SUBRULE2($.operatorExpressionRest);
                   });
                   // followed by a short if else
-                  $.OPTION5(() => {
-                    $.SUBRULE($.ifElseExpressionRest);
-                  });
+                  $.OR3([
+                    { ALT: () => $.SUBRULE2($.ifElseExpressionRest) },
+                    { ALT: () => {} }
+                  ]);
+                }
+              },
+              {
+                GATE: () => !formalParameters,
+                ALT: () => {
+                  // followed by a short if else
+                  $.SUBRULE3($.ifElseExpressionRest);
                 }
               },
               {

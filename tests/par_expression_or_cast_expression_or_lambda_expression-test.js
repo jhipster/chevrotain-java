@@ -676,4 +676,29 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
       }
     });
   });
+
+  it("parExpression followed by short if else", () => {
+    expect(
+      Parser.parse('(true) ? "a" : "b"', parser =>
+        parser.parExpressionOrCastExpressionOrLambdaExpression()
+      )
+    ).toEqual({
+      type: "IF_ELSE_EXPRESSION",
+      condition: {
+        type: "PAR_EXPRESSION",
+        expression: {
+          type: "BOOLEAN_LITERAL",
+          value: "true"
+        }
+      },
+      else: {
+        type: "STRING_LITERAL",
+        value: '"b"'
+      },
+      if: {
+        type: "STRING_LITERAL",
+        value: '"a"'
+      }
+    });
+  });
 });
