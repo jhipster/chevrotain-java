@@ -1867,9 +1867,7 @@ class SelectParser extends chevrotain.Parser {
           ALT: () => {
             $.CONSUME(tokens.Identifier);
             $.OPTION(() => {
-              $.SUBRULE(
-                $.identifierOrIdentifierWithTypeArgumentsOrOperatorExpression
-              );
+              $.SUBRULE($.typeArguments);
             });
           }
         },
