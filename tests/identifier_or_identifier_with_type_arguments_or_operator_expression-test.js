@@ -182,4 +182,40 @@ describe("identifierOrIdentifierWithTypeArgumentsOrOperatorExpression", () => {
       }
     });
   });
+
+  it("operatorExpression Less with this", () => {
+    expect(
+      Parser.parse("i < this", parser =>
+        parser.identifierOrIdentifierWithTypeArgumentsOrOperatorExpression()
+      )
+    ).toEqual({
+      type: "OPERATOR_EXPRESSION",
+      left: {
+        type: "IDENTIFIER",
+        value: "i"
+      },
+      operator: "<",
+      right: {
+        type: "THIS"
+      }
+    });
+  });
+
+  it("operatorExpression Less with super", () => {
+    expect(
+      Parser.parse("i < super", parser =>
+        parser.identifierOrIdentifierWithTypeArgumentsOrOperatorExpression()
+      )
+    ).toEqual({
+      type: "OPERATOR_EXPRESSION",
+      left: {
+        type: "IDENTIFIER",
+        value: "i"
+      },
+      operator: "<",
+      right: {
+        type: "SUPER"
+      }
+    });
+  });
 });

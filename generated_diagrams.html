@@ -5269,7 +5269,7 @@
                 "definition": [
                   {
                     "type": "NonTerminal",
-                    "name": "typeArguments",
+                    "name": "identifierOrIdentifierWithTypeArgumentsOrOperatorExpression",
                     "occurrenceInParent": 1
                   }
                 ]
@@ -7052,6 +7052,30 @@
           {
             "type": "Alternation",
             "definition": [
+              {
+                "type": "Flat",
+                "definition": [
+                  {
+                    "type": "Terminal",
+                    "name": "This",
+                    "label": "'this'",
+                    "occurrenceInParent": 1,
+                    "pattern": "this"
+                  }
+                ]
+              },
+              {
+                "type": "Flat",
+                "definition": [
+                  {
+                    "type": "Terminal",
+                    "name": "Super",
+                    "label": "'super'",
+                    "occurrenceInParent": 1,
+                    "pattern": "super"
+                  }
+                ]
+              },
               {
                 "type": "Flat",
                 "definition": [

@@ -3009,6 +3009,28 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     const name = this.identifier(ctx.Identifier[0]);
     let value = undefined;
 
+    if (ctx.This.length > 0) {
+      return {
+        type: "OPERATOR_EXPRESSION",
+        left: name,
+        operator: "<",
+        right: {
+          type: "THIS"
+        }
+      };
+    }
+
+    if (ctx.Super.length > 0) {
+      return {
+        type: "OPERATOR_EXPRESSION",
+        left: name,
+        operator: "<",
+        right: {
+          type: "SUPER"
+        }
+      };
+    }
+
     if (ctx.typeArgument.length > 0) {
       let typeArguments = this.visit(ctx.typeArgument);
       if (ctx.Less.length > 0) {

@@ -1867,7 +1867,9 @@ class SelectParser extends chevrotain.Parser {
           ALT: () => {
             $.CONSUME(tokens.Identifier);
             $.OPTION(() => {
-              $.SUBRULE($.typeArguments);
+              $.SUBRULE(
+                $.identifierOrIdentifierWithTypeArgumentsOrOperatorExpression
+              );
             });
           }
         },
@@ -2579,6 +2581,8 @@ class SelectParser extends chevrotain.Parser {
         $.OPTION(() => {
           $.CONSUME(tokens.Less);
           $.OR([
+            { ALT: () => $.CONSUME(tokens.This) },
+            { ALT: () => $.CONSUME(tokens.Super) },
             {
               ALT: () => {
                 let canBeOperatorExpression = true;
@@ -2588,6 +2592,7 @@ class SelectParser extends chevrotain.Parser {
                   $.SUBRULE2($.typeArgument);
                   canBeOperatorExpression = false;
                 });
+
                 let isOperatorExpression = false;
                 $.OPTION3({
                   GATE: () => canBeOperatorExpression,
