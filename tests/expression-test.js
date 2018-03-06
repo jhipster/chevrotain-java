@@ -112,6 +112,23 @@ describe("expression", () => {
     });
   });
 
+  it("qualifiedExpression with postfixExpression", () => {
+    expect(Parser.parse("this.a++", parser => parser.expression())).toEqual({
+      type: "POSTFIX_EXPRESSION",
+      postfix: "++",
+      expression: {
+        type: "QUALIFIED_EXPRESSION",
+        expression: {
+          type: "THIS"
+        },
+        rest: {
+          type: "IDENTIFIER",
+          value: "a"
+        }
+      }
+    });
+  });
+
   it("qualifiedExpression with starting identifier", () => {
     expect(Parser.parse("a.b()", parser => parser.expression())).toEqual({
       type: "QUALIFIED_EXPRESSION",

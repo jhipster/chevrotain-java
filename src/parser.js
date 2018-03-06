@@ -1739,15 +1739,24 @@ class SelectParser extends chevrotain.Parser {
                 ALT: () => {
                   $.SUBRULE($.qualifiedExpressionRest);
                   $.OR3([
-                    { ALT: () => $.SUBRULE2($.instanceofExpressionRest) },
                     {
-                      ALT: () =>
-                        $.MANY(() => {
-                          $.SUBRULE($.operatorExpressionRest);
-                        })
+                      ALT: () => $.SUBRULE2($.postfixExpressionRest)
+                    },
+                    {
+                      ALT: () => {
+                        $.OR4([
+                          { ALT: () => $.SUBRULE2($.instanceofExpressionRest) },
+                          {
+                            ALT: () =>
+                              $.MANY(() => {
+                                $.SUBRULE($.operatorExpressionRest);
+                              })
+                          }
+                        ]);
+                        $.OPTION(() => $.SUBRULE2($.ifElseExpressionRest));
+                      }
                     }
                   ]);
-                  $.OPTION(() => $.SUBRULE2($.ifElseExpressionRest));
                 }
               },
               {

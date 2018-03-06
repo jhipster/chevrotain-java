@@ -1935,16 +1935,6 @@ class SQLToAstVisitor extends BaseSQLVisitor {
         };
       }
 
-      if (ctx.postfixExpressionRest.length > 0) {
-        const postfixExpressionRest = this.visit(ctx.postfixExpressionRest);
-
-        return {
-          type: "POSTFIX_EXPRESSION",
-          postfix: postfixExpressionRest.value,
-          expression: atomic
-        };
-      }
-
       if (
         ctx.ifElseExpressionRest.length > 0 &&
         ctx.operatorExpressionRest.length === 0 &&
@@ -1991,6 +1981,16 @@ class SQLToAstVisitor extends BaseSQLVisitor {
           }
         }
 
+        if (ctx.postfixExpressionRest.length > 0) {
+          const postfixExpressionRest = this.visit(ctx.postfixExpressionRest);
+
+          expression = {
+            type: "POSTFIX_EXPRESSION",
+            postfix: postfixExpressionRest.value,
+            expression: expression
+          };
+        }
+
         if (ctx.operatorExpressionRest.length > 0) {
           const operatorExpressionRest = this.visit(ctx.operatorExpressionRest);
 
@@ -2014,6 +2014,16 @@ class SQLToAstVisitor extends BaseSQLVisitor {
         }
 
         return expression;
+      }
+
+      if (ctx.postfixExpressionRest.length > 0) {
+        const postfixExpressionRest = this.visit(ctx.postfixExpressionRest);
+
+        return {
+          type: "POSTFIX_EXPRESSION",
+          postfix: postfixExpressionRest.value,
+          expression: atomic
+        };
       }
 
       if (ctx.instanceofExpressionRest.length > 0) {
