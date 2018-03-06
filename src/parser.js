@@ -1747,6 +1747,7 @@ class SelectParser extends chevrotain.Parser {
                         })
                     }
                   ]);
+                  $.OPTION(() => $.SUBRULE2($.ifElseExpressionRest));
                 }
               },
               {
@@ -1761,8 +1762,8 @@ class SelectParser extends chevrotain.Parser {
                 ALT: () => {
                   $.MANY2(() => {
                     $.SUBRULE2($.operatorExpressionRest);
-                    $.OPTION(() => {
-                      $.SUBRULE2($.ifElseExpressionRest);
+                    $.OPTION2(() => {
+                      $.SUBRULE3($.ifElseExpressionRest);
                     });
                   });
                 }

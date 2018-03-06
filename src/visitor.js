@@ -1940,7 +1940,8 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
       if (
         ctx.ifElseExpressionRest.length > 0 &&
-        ctx.operatorExpressionRest.length === 0
+        ctx.operatorExpressionRest.length === 0 &&
+        ctx.qualifiedExpressionRest.length === 0
       ) {
         const ifElseExpressionRest = this.visit(ctx.ifElseExpressionRest);
 
@@ -1955,7 +1956,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       if (ctx.qualifiedExpressionRest.length > 0) {
         const rest = this.visit(ctx.qualifiedExpressionRest);
 
-        const qualifiedExpression = {
+        let expression = {
           type: "QUALIFIED_EXPRESSION",
           expression: atomic,
           rest: rest
@@ -1966,37 +1967,46 @@ class SQLToAstVisitor extends BaseSQLVisitor {
             ctx.instanceofExpressionRest
           );
 
-          const instanceOfExpression = {
+          expression = {
             type: "INSTANCEOF_EXPRESSION",
-            expression: qualifiedExpression,
+            expression: expression,
             instanceof: instanceofExpressionRest.typeType
           };
 
           if (instanceofExpressionRest.operatorExpressionRest) {
-            return {
+            expression = {
               type: "OPERATOR_EXPRESSION",
-              left: instanceOfExpression,
+              left: expression,
               operator:
                 instanceofExpressionRest.operatorExpressionRest.operator,
               right: instanceofExpressionRest.operatorExpressionRest.expression
             };
           }
-
-          return instanceOfExpression;
         }
 
         if (ctx.operatorExpressionRest.length > 0) {
           const operatorExpressionRest = this.visit(ctx.operatorExpressionRest);
 
-          return {
+          expression = {
             type: "OPERATOR_EXPRESSION",
-            left: qualifiedExpression,
+            left: expression,
             operator: operatorExpressionRest.operator,
             right: operatorExpressionRest.expression
           };
         }
 
-        return qualifiedExpression;
+        if (ctx.ifElseExpressionRest.length > 0) {
+          const ifElseExpressionRest = this.visit(ctx.ifElseExpressionRest);
+
+          return {
+            type: "IF_ELSE_EXPRESSION",
+            condition: expression,
+            if: ifElseExpressionRest.if,
+            else: ifElseExpressionRest.else
+          };
+        }
+
+        return expression;
       }
 
       if (ctx.instanceofExpressionRest.length > 0) {

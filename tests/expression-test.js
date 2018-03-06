@@ -165,6 +165,127 @@ describe("expression", () => {
     });
   });
 
+  it("qualifiedExpression and operatorExpression and if else", () => {
+    expect(
+      Parser.parse('this.list.isEmpty() && true ? "a" : "b"', parser =>
+        parser.expression()
+      )
+    ).toEqual({
+      type: "OPERATOR_EXPRESSION",
+      left: {
+        type: "QUALIFIED_EXPRESSION",
+        expression: { type: "THIS" },
+        rest: {
+          type: "QUALIFIED_EXPRESSION",
+          expression: { type: "IDENTIFIER", value: "list" },
+          rest: {
+            type: "METHOD_INVOCATION",
+            name: {
+              type: "IDENTIFIER",
+              value: "isEmpty"
+            },
+            parameters: undefined,
+            dimensions: []
+          }
+        }
+      },
+      operator: "&&",
+      right: {
+        type: "IF_ELSE_EXPRESSION",
+        condition: {
+          type: "BOOLEAN_LITERAL",
+          value: "true"
+        },
+        if: {
+          type: "STRING_LITERAL",
+          value: '"a"'
+        },
+        else: {
+          type: "STRING_LITERAL",
+          value: '"b"'
+        }
+      }
+    });
+  });
+
+  it("qualifiedExpression and operatorExpression Less and if else", () => {
+    expect(
+      Parser.parse('this.list.isEmpty() < true ? "a" : "b"', parser =>
+        parser.expression()
+      )
+    ).toEqual({
+      type: "OPERATOR_EXPRESSION",
+      left: {
+        type: "QUALIFIED_EXPRESSION",
+        expression: { type: "THIS" },
+        rest: {
+          type: "QUALIFIED_EXPRESSION",
+          expression: { type: "IDENTIFIER", value: "list" },
+          rest: {
+            type: "METHOD_INVOCATION",
+            name: {
+              type: "IDENTIFIER",
+              value: "isEmpty"
+            },
+            parameters: undefined,
+            dimensions: []
+          }
+        }
+      },
+      operator: "<",
+      right: {
+        type: "IF_ELSE_EXPRESSION",
+        condition: {
+          type: "BOOLEAN_LITERAL",
+          value: "true"
+        },
+        if: {
+          type: "STRING_LITERAL",
+          value: '"a"'
+        },
+        else: {
+          type: "STRING_LITERAL",
+          value: '"b"'
+        }
+      }
+    });
+  });
+
+  it("qualifiedExpression and if else", () => {
+    expect(
+      Parser.parse('this.list.isEmpty() ? "a" : "b"', parser =>
+        parser.expression()
+      )
+    ).toEqual({
+      type: "IF_ELSE_EXPRESSION",
+      condition: {
+        type: "QUALIFIED_EXPRESSION",
+        expression: { type: "THIS" },
+        rest: {
+          type: "QUALIFIED_EXPRESSION",
+          expression: { type: "IDENTIFIER", value: "list" },
+          rest: {
+            type: "METHOD_INVOCATION",
+            name: {
+              type: "IDENTIFIER",
+              value: "isEmpty"
+            },
+            parameters: undefined,
+            dimensions: []
+          }
+        }
+      },
+      if: {
+        type: "STRING_LITERAL",
+        value: '"a"'
+      },
+      else: {
+        type: "STRING_LITERAL",
+        value: '"b"'
+      }
+    });
+  });
+
   it("instanceofExpression with qualifiedExpression", () => {
     expect(
       Parser.parse("this.b instanceof Boolean", parser => parser.expression())
@@ -204,12 +325,15 @@ describe("expression", () => {
     expect(
       Parser.parse('a = some.call() ? "a" : "b"', parser => parser.expression())
     ).toEqual({
-      type: "IF_ELSE_EXPRESSION",
-      condition: {
-        type: "OPERATOR_EXPRESSION",
-        left: { type: "IDENTIFIER", value: "a" },
-        operator: "=",
-        right: {
+      type: "OPERATOR_EXPRESSION",
+      left: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
+      operator: "=",
+      right: {
+        type: "IF_ELSE_EXPRESSION",
+        condition: {
           type: "QUALIFIED_EXPRESSION",
           expression: {
             type: "IDENTIFIER",
@@ -224,15 +348,15 @@ describe("expression", () => {
             parameters: undefined,
             dimensions: []
           }
+        },
+        else: {
+          type: "STRING_LITERAL",
+          value: '"b"'
+        },
+        if: {
+          type: "STRING_LITERAL",
+          value: '"a"'
         }
-      },
-      if: {
-        type: "STRING_LITERAL",
-        value: '"a"'
-      },
-      else: {
-        type: "STRING_LITERAL",
-        value: '"b"'
       }
     });
   });
