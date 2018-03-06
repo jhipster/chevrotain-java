@@ -249,13 +249,12 @@ class SelectParser extends chevrotain.Parser {
     // | modifier* memberDeclaration
     // | ';'
     $.RULE("classBodyDeclaration", () => {
+      $.OPTION(() => {
+        $.CONSUME(tokens.Static);
+      });
       $.OR([
         {
-          // classBodyBlock
           ALT: () => {
-            $.OPTION(() => {
-              $.CONSUME(tokens.Static);
-            });
             $.SUBRULE($.block);
           }
         },

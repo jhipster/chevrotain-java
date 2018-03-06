@@ -154,6 +154,43 @@ describe("classBodyDeclaration", () => {
     });
   });
 
+  it("classBodyMemberDeclaration - static modifier", () => {
+    expect(
+      Parser.parse("static void a() {}", parser =>
+        parser.classBodyDeclaration()
+      )
+    ).toEqual({
+      type: "CLASS_BODY_MEMBER_DECLARATION",
+      modifiers: [
+        {
+          type: "MODIFIER",
+          value: "static"
+        }
+      ],
+      declaration: {
+        type: "METHOD_DECLARATION",
+        typeType: {
+          type: "VOID"
+        },
+        name: {
+          type: "IDENTIFIER",
+          value: "a"
+        },
+        parameters: {
+          type: "FORMAL_PARAMETERS",
+          parameters: []
+        },
+        dimensions: [],
+        throws: undefined,
+        body: {
+          type: "BLOCK",
+          statements: []
+        }
+      },
+      followedEmptyLine: false
+    });
+  });
+
   it("semiColon", () => {
     expect(Parser.parse(";", parser => parser.classBodyDeclaration())).toEqual({
       type: "SEMI_COLON_STATEMENT"

@@ -284,6 +284,12 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
     if (ctx.memberDeclaration.length > 0) {
       const modifiers = ctx.modifier.map(modifier => this.visit(modifier));
+      if (ctx.Static.length > 0) {
+        modifiers.unshift({
+          type: "MODIFIER",
+          value: "static"
+        });
+      }
       const declaration = this.visit(ctx.memberDeclaration);
       const followedEmptyLine = declaration.followedEmptyLine || false;
 

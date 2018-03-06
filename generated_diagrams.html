@@ -807,23 +807,23 @@
     "name": "classBodyDeclaration",
     "definition": [
       {
+        "type": "Option",
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "Static",
+            "label": "'static'",
+            "occurrenceInParent": 1,
+            "pattern": "static"
+          }
+        ]
+      },
+      {
         "type": "Alternation",
         "definition": [
           {
             "type": "Flat",
             "definition": [
-              {
-                "type": "Option",
-                "definition": [
-                  {
-                    "type": "Terminal",
-                    "name": "Static",
-                    "label": "'static'",
-                    "occurrenceInParent": 1,
-                    "pattern": "static"
-                  }
-                ]
-              },
               {
                 "type": "NonTerminal",
                 "name": "block",
