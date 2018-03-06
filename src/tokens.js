@@ -679,9 +679,7 @@ const CharLiteral = createToken({
 
 const StringLiteral = createToken({
   name: "StringLiteral",
-  pattern: MAKE_PATTERN(
-    '"[^"\\\\]*(\\\\.[^"\\\\]*)*"'
-  ),
+  pattern: MAKE_PATTERN('"[^"\\\\]*(\\\\.[^"\\\\]*)*"'),
   label: "'StringLiteral'"
 });
 
