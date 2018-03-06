@@ -400,4 +400,49 @@ describe("memberDeclaration", () => {
       followedEmptyLine: false
     });
   });
+
+  it("fieldDeclaration array", () => {
+    expect(
+      Parser.parse("int[] expandRatios;", parser =>
+        parser.fieldDeclarationOrMethodDeclarationOrConstructorDeclaration()
+      )
+    ).toEqual({
+      type: "FIELD_DECLARATION",
+      typeType: {
+        dimensions: [
+          {
+            type: "DIMENSION"
+          }
+        ],
+        modifiers: [],
+        type: "TYPE_TYPE",
+        value: {
+          type: "PRIMITIVE_TYPE",
+          value: "int"
+        }
+      },
+      variableDeclarators: {
+        type: "VARIABLE_DECLARATORS",
+        list: [
+          {
+            type: "VARIABLE_DECLARATOR",
+            id: {
+              type: "VARIABLE_DECLARATOR_ID",
+              dimensions: [
+                {
+                  type: "DIMENSION"
+                }
+              ],
+              id: {
+                type: "IDENTIFIER",
+                value: "expandRatios"
+              }
+            },
+            init: undefined
+          }
+        ]
+      },
+      followedEmptyLine: false
+    });
+  });
 });

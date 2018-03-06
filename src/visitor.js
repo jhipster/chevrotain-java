@@ -383,6 +383,13 @@ class SQLToAstVisitor extends BaseSQLVisitor {
           // if empty typeType return child
           if (annotations.length === 0 && dimensions.length === 0) {
             typeType = value;
+          } else {
+            typeType = {
+              type: "TYPE_TYPE",
+              modifiers: annotations,
+              value: value,
+              dimensions: dimensions
+            };
           }
         } else if (ctx.Identifier.length > 0) {
           const name = this.identifier(ctx.Identifier[0]);
