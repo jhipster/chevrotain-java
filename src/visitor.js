@@ -3040,7 +3040,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     const invocation = this.visit(ctx.explicitGenericInvocationSuffix);
 
     return {
-      type: "EXPLICIT_GENERIC_INVOCATION",
+      type: "GENERIC_INVOCATION",
       typeArguments: typeArguments,
       invocation: invocation
     };
@@ -3108,7 +3108,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       return {
         type: "GENERIC_INVOCATION",
         typeArguments: typeArguments,
-        arguments: args
+        invocation: args
       };
     }
 

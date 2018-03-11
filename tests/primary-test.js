@@ -98,7 +98,7 @@ describe("primary", () => {
           ]
         }
       },
-      arguments: {
+      invocation: {
         type: "THIS",
         arguments: {
           type: "EXPRESSION_LIST",

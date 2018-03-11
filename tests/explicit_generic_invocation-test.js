@@ -8,7 +8,7 @@ describe("explicitGenericInvocation", () => {
         parser.explicitGenericInvocation()
       )
     ).toEqual({
-      type: "EXPLICIT_GENERIC_INVOCATION",
+      type: "GENERIC_INVOCATION",
       typeArguments: {
         type: "TYPE_ARGUMENTS",
         value: {
