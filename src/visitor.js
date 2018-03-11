@@ -1092,6 +1092,129 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     };
   }
 
+  typeArgumentsOrOperatorExpressionRest(ctx) {
+    if (ctx.This.length > 0) {
+      return {
+        type: "OPERATOR_EXPRESSION_REST",
+        operator: "<",
+        expression: {
+          type: "THIS"
+        }
+      };
+    }
+
+    if (ctx.Super.length > 0) {
+      return {
+        type: "OPERATOR_EXPRESSION_REST",
+        operator: "<",
+        expression: {
+          type: "SUPER"
+        }
+      };
+    }
+
+    if (ctx.typeArgument.length > 0) {
+      let typeArguments = this.visit(ctx.typeArgument);
+      if (ctx.Less.length > 0) {
+        // found typeArguments
+        const args = ctx.typeArgument.map(typeArgument =>
+          this.visit(typeArgument)
+        );
+
+        if (ctx.Greater.length > 0) {
+          // found typeArguments
+          typeArguments = {
+            type: "TYPE_LIST",
+            list: args
+          };
+        } else {
+          // found operator expression with operator "<"
+
+          let right = args[0];
+          if (ctx.LBrace.length > 0) {
+            let parameters = undefined;
+            if (ctx.expressionList.length > 0) {
+              parameters = this.visit(ctx.expressionList);
+            }
+
+            const dimensions = [];
+            ctx.dimension.map(dimension =>
+              dimensions.push(this.visit(dimension))
+            );
+
+            if (right.argument.type === "IDENTIFIER") {
+              right = {
+                type: "METHOD_INVOCATION",
+                name: right.argument,
+                parameters: parameters,
+                dimensions: dimensions
+              };
+            } else if (right.argument.type === "CLASS_OR_INTERFACE_TYPE") {
+              let first = undefined;
+              let temp = undefined;
+              for (let i = 0; i < right.argument.elements.length; i++) {
+                if (i !== right.argument.elements.length - 1) {
+                  const current = {
+                    type: "QUALIFIED_EXPRESSION",
+                    expression: right.argument.elements[i],
+                    rest: undefined
+                  };
+                  if (i === 0) {
+                    first = current;
+                    temp = current;
+                  } else {
+                    temp.rest = current;
+                    temp = current;
+                  }
+                } else {
+                  temp.rest = {
+                    type: "METHOD_INVOCATION",
+                    name: right.argument.elements[i],
+                    parameters: parameters,
+                    dimensions: dimensions
+                  };
+                }
+              }
+              right = first;
+            }
+          }
+
+          return {
+            type: "OPERATOR_EXPRESSION_REST",
+            operator: "<",
+            expression: right
+          };
+        }
+      }
+
+      return {
+        type: "TYPE_ARGUMENTS",
+        value: typeArguments
+      };
+    }
+
+    if (ctx.literal.length > 0) {
+      const literal = this.visit(ctx.literal);
+      return {
+        type: "OPERATOR_EXPRESSION_REST",
+        operator: "<",
+        expression: literal
+      };
+    }
+
+    if (ctx.expression.length > 0) {
+      const expression = this.visit(ctx.expression);
+      return {
+        type: "OPERATOR_EXPRESSION_REST",
+        operator: "<",
+        expression: {
+          type: "PAR_EXPRESSION",
+          expression: expression
+        }
+      };
+    }
+  }
+
   typeArgument(ctx) {
     const isQuestionmark = ctx.Questionmark.length > 0;
 
@@ -2314,6 +2437,30 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
     if (ctx.Identifier.length > 0) {
       expression = this.identifier(ctx.Identifier[0]);
+
+      if (ctx.typeArgumentsOrOperatorExpressionRest.length > 0) {
+        const typeArgumentsOrOperatorExpressionRest = this.visit(
+          ctx.typeArgumentsOrOperatorExpressionRest
+        );
+
+        if (
+          typeArgumentsOrOperatorExpressionRest.type ===
+          "OPERATOR_EXPRESSION_REST"
+        ) {
+          expression = {
+            type: "OPERATOR_EXPRESSION",
+            left: expression,
+            operator: typeArgumentsOrOperatorExpressionRest.operator,
+            right: typeArgumentsOrOperatorExpressionRest.expression
+          };
+        } else {
+          expression = {
+            type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
+            name: expression,
+            typeArguments: typeArgumentsOrOperatorExpressionRest
+          };
+        }
+      }
     }
 
     if (ctx.methodInvocation.length > 0) {
@@ -3007,141 +3154,28 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
   identifierOrIdentifierWithTypeArgumentsOrOperatorExpression(ctx) {
     const name = this.identifier(ctx.Identifier[0]);
-    let value = undefined;
 
-    if (ctx.This.length > 0) {
-      return {
-        type: "OPERATOR_EXPRESSION",
-        left: name,
-        operator: "<",
-        right: {
-          type: "THIS"
-        }
-      };
-    }
+    if (ctx.typeArgumentsOrOperatorExpressionRest.length > 0) {
+      const typeArgumentsOrOperatorExpressionRest = this.visit(
+        ctx.typeArgumentsOrOperatorExpressionRest
+      );
 
-    if (ctx.Super.length > 0) {
-      return {
-        type: "OPERATOR_EXPRESSION",
-        left: name,
-        operator: "<",
-        right: {
-          type: "SUPER"
-        }
-      };
-    }
-
-    if (ctx.typeArgument.length > 0) {
-      let typeArguments = this.visit(ctx.typeArgument);
-      if (ctx.Less.length > 0) {
-        // found typeArguments
-        const args = ctx.typeArgument.map(typeArgument =>
-          this.visit(typeArgument)
-        );
-
-        if (ctx.Greater.length > 0) {
-          // found typeArguments
-          typeArguments = {
-            type: "TYPE_LIST",
-            list: args
-          };
-        } else {
-          // found operator expression with operator "<"
-
-          let right = args[0];
-          if (ctx.LBrace.length > 0) {
-            let parameters = undefined;
-            if (ctx.expressionList.length > 0) {
-              parameters = this.visit(ctx.expressionList);
-            }
-
-            const dimensions = [];
-            ctx.dimension.map(dimension =>
-              dimensions.push(this.visit(dimension))
-            );
-
-            if (right.argument.type === "IDENTIFIER") {
-              right = {
-                type: "METHOD_INVOCATION",
-                name: right.argument,
-                parameters: parameters,
-                dimensions: dimensions
-              };
-            } else if (right.argument.type === "CLASS_OR_INTERFACE_TYPE") {
-              let first = undefined;
-              let temp = undefined;
-              for (let i = 0; i < right.argument.elements.length; i++) {
-                if (i !== right.argument.elements.length - 1) {
-                  const current = {
-                    type: "QUALIFIED_EXPRESSION",
-                    expression: right.argument.elements[i],
-                    rest: undefined
-                  };
-                  if (i === 0) {
-                    first = current;
-                    temp = current;
-                  } else {
-                    temp.rest = current;
-                    temp = current;
-                  }
-                } else {
-                  temp.rest = {
-                    type: "METHOD_INVOCATION",
-                    name: right.argument.elements[i],
-                    parameters: parameters,
-                    dimensions: dimensions
-                  };
-                }
-              }
-              right = first;
-            }
-          }
-
-          return {
-            type: "OPERATOR_EXPRESSION",
-            left: name,
-            operator: "<",
-            right: right
-          };
-        }
-      }
-
-      if (!typeArguments) {
-        value = name;
-      } else {
-        value = {
-          type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
-          name: name,
-          typeArguments: {
-            type: "TYPE_ARGUMENTS",
-            value: typeArguments
-          }
+      if (
+        typeArgumentsOrOperatorExpressionRest.type ===
+        "OPERATOR_EXPRESSION_REST"
+      ) {
+        return {
+          type: "OPERATOR_EXPRESSION",
+          left: name,
+          operator: typeArgumentsOrOperatorExpressionRest.operator,
+          right: typeArgumentsOrOperatorExpressionRest.expression
         };
       }
 
-      return value;
-    }
-
-    if (ctx.literal.length > 0) {
-      const literal = this.visit(ctx.literal);
       return {
-        type: "OPERATOR_EXPRESSION",
-        left: name,
-        operator: "<",
-        right: literal
-      };
-    }
-
-    if (ctx.expression.length > 0) {
-      const expression = this.visit(ctx.expression);
-      return {
-        type: "OPERATOR_EXPRESSION",
-        left: name,
-        operator: "<",
-        right: {
-          type: "PAR_EXPRESSION",
-          expression: expression
-        }
+        type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
+        name: name,
+        typeArguments: typeArgumentsOrOperatorExpressionRest
       };
     }
 

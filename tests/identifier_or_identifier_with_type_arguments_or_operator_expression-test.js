@@ -13,6 +13,37 @@ describe("identifierOrIdentifierWithTypeArgumentsOrOperatorExpression", () => {
     });
   });
 
+  it("identifier with typeArguments", () => {
+    expect(
+      Parser.parse("i<boolean>", parser =>
+        parser.identifierOrIdentifierWithTypeArgumentsOrOperatorExpression()
+      )
+    ).toEqual({
+      type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
+      name: {
+        type: "IDENTIFIER",
+        value: "i"
+      },
+      typeArguments: {
+        type: "TYPE_ARGUMENTS",
+        value: {
+          type: "TYPE_LIST",
+          list: [
+            {
+              type: "TYPE_ARGUMENT",
+              argument: {
+                type: "PRIMITIVE_TYPE",
+                value: "boolean"
+              },
+              extends: undefined,
+              super: undefined
+            }
+          ]
+        }
+      }
+    });
+  });
+
   it("operatorExpression Less", () => {
     expect(
       Parser.parse("i < array.length", parser =>
@@ -42,179 +73,6 @@ describe("identifierOrIdentifierWithTypeArgumentsOrOperatorExpression", () => {
         },
         extends: undefined,
         super: undefined
-      }
-    });
-  });
-
-  it("operatorExpression Less with typeArgument as method", () => {
-    expect(
-      Parser.parse("i < size()", parser =>
-        parser.identifierOrIdentifierWithTypeArgumentsOrOperatorExpression()
-      )
-    ).toEqual({
-      type: "OPERATOR_EXPRESSION",
-      left: {
-        type: "IDENTIFIER",
-        value: "i"
-      },
-      operator: "<",
-      right: {
-        type: "METHOD_INVOCATION",
-        name: {
-          type: "IDENTIFIER",
-          value: "size"
-        },
-        parameters: undefined,
-        dimensions: []
-      }
-    });
-  });
-
-  it("operatorExpression Less with typeArgument as method and dimensions", () => {
-    expect(
-      Parser.parse("i < size()[0]", parser =>
-        parser.identifierOrIdentifierWithTypeArgumentsOrOperatorExpression()
-      )
-    ).toEqual({
-      type: "OPERATOR_EXPRESSION",
-      left: {
-        type: "IDENTIFIER",
-        value: "i"
-      },
-      operator: "<",
-      right: {
-        type: "METHOD_INVOCATION",
-        name: {
-          type: "IDENTIFIER",
-          value: "size"
-        },
-        parameters: undefined,
-        dimensions: [
-          {
-            type: "DIMENSION",
-            expression: {
-              type: "DECIMAL_LITERAL",
-              value: "0"
-            }
-          }
-        ]
-      }
-    });
-  });
-
-  it("operatorExpression Less with typeArgument as method and parameters", () => {
-    expect(
-      Parser.parse("i < size(this)", parser =>
-        parser.identifierOrIdentifierWithTypeArgumentsOrOperatorExpression()
-      )
-    ).toEqual({
-      type: "OPERATOR_EXPRESSION",
-      left: {
-        type: "IDENTIFIER",
-        value: "i"
-      },
-      operator: "<",
-      right: {
-        type: "METHOD_INVOCATION",
-        name: {
-          type: "IDENTIFIER",
-          value: "size"
-        },
-        parameters: {
-          list: [
-            {
-              type: "THIS"
-            }
-          ],
-          type: "EXPRESSION_LIST"
-        },
-        dimensions: []
-      }
-    });
-  });
-
-  it("operatorExpression Less with qualifiedNameExpression as method", () => {
-    expect(
-      Parser.parse("i < list.size()", parser =>
-        parser.identifierOrIdentifierWithTypeArgumentsOrOperatorExpression()
-      )
-    ).toEqual({
-      type: "OPERATOR_EXPRESSION",
-      left: {
-        type: "IDENTIFIER",
-        value: "i"
-      },
-      operator: "<",
-      right: {
-        type: "QUALIFIED_EXPRESSION",
-        expression: {
-          type: "IDENTIFIER",
-          value: "list"
-        },
-        rest: {
-          type: "METHOD_INVOCATION",
-          name: {
-            type: "IDENTIFIER",
-            value: "size"
-          },
-          parameters: undefined,
-          dimensions: []
-        }
-      }
-    });
-  });
-
-  it("operatorExpression Less with number", () => {
-    expect(
-      Parser.parse("i < 3", parser =>
-        parser.identifierOrIdentifierWithTypeArgumentsOrOperatorExpression()
-      )
-    ).toEqual({
-      type: "OPERATOR_EXPRESSION",
-      left: {
-        type: "IDENTIFIER",
-        value: "i"
-      },
-      operator: "<",
-      right: {
-        type: "DECIMAL_LITERAL",
-        value: "3"
-      }
-    });
-  });
-
-  it("operatorExpression Less with this", () => {
-    expect(
-      Parser.parse("i < this", parser =>
-        parser.identifierOrIdentifierWithTypeArgumentsOrOperatorExpression()
-      )
-    ).toEqual({
-      type: "OPERATOR_EXPRESSION",
-      left: {
-        type: "IDENTIFIER",
-        value: "i"
-      },
-      operator: "<",
-      right: {
-        type: "THIS"
-      }
-    });
-  });
-
-  it("operatorExpression Less with super", () => {
-    expect(
-      Parser.parse("i < super", parser =>
-        parser.identifierOrIdentifierWithTypeArgumentsOrOperatorExpression()
-      )
-    ).toEqual({
-      type: "OPERATOR_EXPRESSION",
-      left: {
-        type: "IDENTIFIER",
-        value: "i"
-      },
-      operator: "<",
-      right: {
-        type: "SUPER"
       }
     });
   });

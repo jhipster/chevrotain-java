@@ -1034,7 +1034,6 @@ class SelectParser extends chevrotain.Parser {
 
     // typeArguments
     // : '<' typeArgument (',' typeArgument)* '>'
-    // ;
     $.RULE("typeArguments", () => {
       $.CONSUME(tokens.Less);
       $.AT_LEAST_ONE_SEP({
@@ -1044,6 +1043,64 @@ class SelectParser extends chevrotain.Parser {
         }
       });
       $.CONSUME(tokens.Greater);
+    });
+
+    // typeArgumentsOrOperatorExpressionRest
+    // : '<'
+    //   (
+    //     'this'
+    //     | 'super'
+    //     | literal
+    //     | typeArgument (',' typeArgument)* ( '(' expressionList ')' dimension* )? '>'?
+    //     | '(' expression ')'
+    //   )
+    $.RULE("typeArgumentsOrOperatorExpressionRest", () => {
+      $.CONSUME(tokens.Less);
+      $.OR([
+        { ALT: () => $.CONSUME(tokens.This) },
+        { ALT: () => $.CONSUME(tokens.Super) },
+        { ALT: () => $.SUBRULE($.literal) },
+        {
+          ALT: () => {
+            let canBeOperatorExpression = true;
+            $.SUBRULE($.typeArgument);
+            $.MANY(() => {
+              $.CONSUME(tokens.Comma);
+              $.SUBRULE2($.typeArgument);
+              canBeOperatorExpression = false;
+            });
+
+            let isOperatorExpression = false;
+            $.OPTION3({
+              GATE: () => canBeOperatorExpression,
+              DEF: () => {
+                $.CONSUME(tokens.LBrace);
+                $.OPTION4(() => {
+                  $.SUBRULE($.expressionList);
+                });
+                $.CONSUME(tokens.RBrace);
+                $.MANY2(() => {
+                  $.SUBRULE($.dimension);
+                });
+                isOperatorExpression = true;
+              }
+            });
+            $.OPTION5({
+              GATE: () => !isOperatorExpression,
+              DEF: () => {
+                $.CONSUME(tokens.Greater);
+              }
+            });
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME2(tokens.LBrace);
+            $.SUBRULE2($.expression);
+            $.CONSUME2(tokens.RBrace);
+          }
+        }
+      ]);
     });
 
     // typeArgument
@@ -1867,7 +1924,7 @@ class SelectParser extends chevrotain.Parser {
           ALT: () => {
             $.CONSUME(tokens.Identifier);
             $.OPTION(() => {
-              $.SUBRULE($.typeArguments);
+              $.SUBRULE($.typeArgumentsOrOperatorExpressionRest);
             });
           }
         },
@@ -2577,52 +2634,7 @@ class SelectParser extends chevrotain.Parser {
       () => {
         $.CONSUME(tokens.Identifier);
         $.OPTION(() => {
-          $.CONSUME(tokens.Less);
-          $.OR([
-            { ALT: () => $.CONSUME(tokens.This) },
-            { ALT: () => $.CONSUME(tokens.Super) },
-            {
-              ALT: () => {
-                let canBeOperatorExpression = true;
-                $.SUBRULE($.typeArgument);
-                $.MANY(() => {
-                  $.CONSUME(tokens.Comma);
-                  $.SUBRULE2($.typeArgument);
-                  canBeOperatorExpression = false;
-                });
-
-                let isOperatorExpression = false;
-                $.OPTION3({
-                  GATE: () => canBeOperatorExpression,
-                  DEF: () => {
-                    $.CONSUME(tokens.LBrace);
-                    $.OPTION4(() => {
-                      $.SUBRULE($.expressionList);
-                    });
-                    $.CONSUME(tokens.RBrace);
-                    $.MANY2(() => {
-                      $.SUBRULE($.dimension);
-                    });
-                    isOperatorExpression = true;
-                  }
-                });
-                $.OPTION5({
-                  GATE: () => !isOperatorExpression,
-                  DEF: () => {
-                    $.CONSUME(tokens.Greater);
-                  }
-                });
-              }
-            },
-            { ALT: () => $.SUBRULE($.literal) },
-            {
-              ALT: () => {
-                $.CONSUME2(tokens.LBrace);
-                $.SUBRULE2($.expression);
-                $.CONSUME2(tokens.RBrace);
-              }
-            }
-          ]);
+          $.SUBRULE($.typeArgumentsOrOperatorExpressionRest);
         });
       }
     );
