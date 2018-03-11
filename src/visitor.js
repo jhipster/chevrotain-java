@@ -152,9 +152,28 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     const hasBraces = ctx.LBrace.length > 0;
     let values = undefined;
     if (hasBraces) {
-      if (ctx.elementValue.length > 0) {
-        values = ctx.elementValue.map(elementValue => this.visit(elementValue));
+      if (ctx.expression.length > 0) {
+        values = [];
+        let expression = this.visit(ctx.expression);
+        if (expression.type === "OPERATOR_EXPRESSION") {
+          expression = {
+            type: "ELEMENT_VALUE_PAIR",
+            key: expression.left,
+            value: expression.right
+          }
+        }
+        values.push(expression);
+      } else if (ctx.elementValueArrayInitializer.length > 0) {
+        values = [];
+        const elementValueArrayInitializer = this.visit(
+          ctx.elementValueArrayInitializer
+        );
+        values.push(elementValueArrayInitializer);
       }
+
+      ctx.elementValuePair.map(elementValuePair =>
+        values.push(this.visit(elementValuePair))
+      );
     }
 
     return {
@@ -2421,7 +2440,12 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   operatorExpressionRest(ctx) {
     const operator = this.visit(ctx.operator);
 
-    const right = this.visit(ctx.expression);
+    let right = undefined;
+    if (ctx.expression.length > 0) {
+      right = this.visit(ctx.expression);
+    } else if (ctx.elementValueArrayInitializer.length > 0) {
+      right = this.visit(ctx.elementValueArrayInitializer);
+    }
 
     if (operator) {
       return {

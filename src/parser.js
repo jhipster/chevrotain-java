@@ -111,17 +111,24 @@ class SelectParser extends chevrotain.Parser {
     });
 
     // annotation
-    // : '@' qualifiedName ('(' ( elementValuePairs | elementValue )? ')')?
+    // : '@' qualifiedName ('(' ( elementValuePairs* | elementValue )? ')')?
     $.RULE("annotation", () => {
       $.CONSUME(tokens.At);
       $.SUBRULE($.qualifiedName);
       $.OPTION(() => {
         $.CONSUME(tokens.LBrace);
         $.OPTION2(() => {
-          $.SUBRULE($.elementValue);
+          $.OR([
+            {
+              ALT: () => {
+                $.SUBRULE($.expression);
+              }
+            },
+            { ALT: () => $.SUBRULE($.elementValueArrayInitializer) }
+          ]);
           $.MANY(() => {
             $.CONSUME(tokens.Comma);
-            $.SUBRULE2($.elementValue);
+            $.SUBRULE2($.elementValuePair);
           });
         });
         $.CONSUME(tokens.RBrace);
@@ -2299,8 +2306,14 @@ class SelectParser extends chevrotain.Parser {
     // operatorExpressionRest
     // : operator expression
     $.RULE("operatorExpressionRest", () => {
-      $.SUBRULE($.operator);
-      $.SUBRULE($.expression);
+      const operator = $.SUBRULE($.operator);
+      $.OR([
+        { ALT: () => $.SUBRULE($.expression) },
+        {
+          GATE: () => operator.children.Equals.length > 0,
+          ALT: () => $.SUBRULE($.elementValueArrayInitializer)
+        }
+      ]);
     });
 
     // methodReferenceRest // Java 8

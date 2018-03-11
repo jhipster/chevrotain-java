@@ -125,13 +125,12 @@ describe("annotation", () => {
       hasBraces: true,
       values: [
         {
-          type: "OPERATOR_EXPRESSION",
-          left: {
+          type: "ELEMENT_VALUE_PAIR",
+          key: {
             type: "IDENTIFIER",
             value: "key"
           },
-          operator: "=",
-          right: {
+          value: {
             type: "ANNOTATION",
             name: {
               type: "QUALIFIED_NAME",
@@ -144,6 +143,96 @@ describe("annotation", () => {
             },
             hasBraces: false,
             values: undefined
+          }
+        }
+      ]
+    });
+  });
+
+  it("annotation with element value pair with array initialization", () => {
+    expect(
+      Parser.parse('@Bean(key={"Abc"})', parser => parser.annotation())
+    ).toEqual({
+      type: "ANNOTATION",
+      name: {
+        type: "QUALIFIED_NAME",
+        name: [
+          {
+            type: "IDENTIFIER",
+            value: "Bean"
+          }
+        ]
+      },
+      hasBraces: true,
+      values: [
+        {
+          type: "ELEMENT_VALUE_PAIR",
+          key: {
+            type: "IDENTIFIER",
+            value: "key"
+          },
+          value: {
+            type: "ELEMENT_VALUE_ARRAY_INITIALIZER",
+            values: [
+              {
+                type: "STRING_LITERAL",
+                value: '"Abc"'
+              }
+            ]
+          }
+        }
+      ]
+    });
+  });
+
+  it("annotation with element value pairs with array initializations", () => {
+    expect(
+      Parser.parse('@Bean(key={"Abc"}, key2={"Def"})', parser =>
+        parser.annotation()
+      )
+    ).toEqual({
+      type: "ANNOTATION",
+      name: {
+        type: "QUALIFIED_NAME",
+        name: [
+          {
+            type: "IDENTIFIER",
+            value: "Bean"
+          }
+        ]
+      },
+      hasBraces: true,
+      values: [
+        {
+          type: "ELEMENT_VALUE_PAIR",
+          key: {
+            type: "IDENTIFIER",
+            value: "key"
+          },
+          value: {
+            type: "ELEMENT_VALUE_ARRAY_INITIALIZER",
+            values: [
+              {
+                type: "STRING_LITERAL",
+                value: '"Abc"'
+              }
+            ]
+          }
+        },
+        {
+          type: "ELEMENT_VALUE_PAIR",
+          key: {
+            type: "IDENTIFIER",
+            value: "key2"
+          },
+          value: {
+            type: "ELEMENT_VALUE_ARRAY_INITIALIZER",
+            values: [
+              {
+                type: "STRING_LITERAL",
+                value: '"Def"'
+              }
+            ]
           }
         }
       ]
