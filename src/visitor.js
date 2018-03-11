@@ -160,7 +160,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
             type: "ELEMENT_VALUE_PAIR",
             key: expression.left,
             value: expression.right
-          }
+          };
         }
         values.push(expression);
       } else if (ctx.elementValueArrayInitializer.length > 0) {

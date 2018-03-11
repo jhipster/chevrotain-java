@@ -198,13 +198,12 @@ describe("classOrInterfaceModifier", () => {
       hasBraces: true,
       values: [
         {
-          type: "OPERATOR_EXPRESSION",
-          left: {
+          type: "ELEMENT_VALUE_PAIR",
+          key: {
             type: "IDENTIFIER",
             value: "key"
           },
-          operator: "=",
-          right: {
+          value: {
             type: "ANNOTATION",
             name: {
               type: "QUALIFIED_NAME",
