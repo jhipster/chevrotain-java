@@ -1355,7 +1355,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
   blockStatement(ctx) {
     if (ctx.expression.length > 0) {
-      const expression = this.visit(ctx.expression);
+      let expression = this.visit(ctx.expression);
 
       if (expression.type === "PRIMITIVE_TYPE") {
         // if expression is only a primitiveType nothing else is allowed with it
@@ -1453,6 +1453,38 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
       if (expression.type === "IDENTIFIER" || ctx.semiColon.length > 0) {
         // expressionStatement
+        if (ctx.variableDeclarators.length > 0) {
+          const variableDeclarators = this.visit(ctx.variableDeclarators);
+
+          if (
+            ctx.classOrInterfaceModifier.length > 0 ||
+            ctx.LSquare.length > 0
+          ) {
+            const annotations = ctx.classOrInterfaceModifier.map(annotation =>
+              this.visit(annotation)
+            );
+            const dimensions = [];
+            ctx.LSquare.map(() =>
+              dimensions.push({
+                type: "DIMENSION"
+              })
+            );
+            expression = {
+              type: "TYPE_TYPE",
+              modifiers: annotations,
+              value: expression,
+              dimensions: dimensions
+            };
+          }
+
+          const followedEmptyLine = this.visit(ctx.semiColon).followedEmptyLine;
+          return {
+            type: "FIELD_DECLARATION",
+            typeType: expression,
+            variableDeclarators: variableDeclarators,
+            followedEmptyLine: followedEmptyLine
+          };
+        }
         return {
           type: "EXPRESSION_STATEMENT",
           expression: expression,
@@ -1702,7 +1734,6 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   expressionStatement(ctx) {
     const expression = this.visit(ctx.expression);
     const followedEmptyLine = this.visit(ctx.semiColon).followedEmptyLine;
-
     return {
       type: "EXPRESSION_STATEMENT",
       expression: expression,
@@ -2483,6 +2514,21 @@ class SQLToAstVisitor extends BaseSQLVisitor {
             name: expression,
             typeArguments: typeArgumentsOrOperatorExpressionRest
           };
+        }
+      }
+
+      if (ctx.dimension.length > 0) {
+        const dimensions = ctx.dimension.map(dimension =>
+          this.visit(dimension)
+        );
+        if (expression.type === "IDENTIFIER") {
+          expression = {
+            type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
+            name: expression,
+            dimensions: dimensions
+          };
+        } else if (expression.type === "CLASS_OR_INTERFACE_TYPE_ELEMENT") {
+          expression.dimensions = dimensions;
         }
       }
     }

@@ -376,4 +376,90 @@ describe("blockStatement", () => {
       }
     });
   });
+
+  it("variableDeclaration", () => {
+    expect(
+      Parser.parse(
+        "final List<Filter> filterList = new ArrayList<>();",
+        parser => parser.blockStatement()
+      )
+    ).toEqual({
+      type: "FIELD_DECLARATION",
+      typeType: {
+        type: "TYPE_TYPE",
+        modifiers: [
+          {
+            type: "MODIFIER",
+            value: "final"
+          }
+        ],
+        value: {
+          type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
+          name: {
+            type: "IDENTIFIER",
+            value: "List"
+          },
+          typeArguments: {
+            type: "TYPE_ARGUMENTS",
+            value: {
+              type: "TYPE_LIST",
+              list: [
+                {
+                  type: "TYPE_ARGUMENT",
+                  argument: {
+                    type: "IDENTIFIER",
+                    value: "Filter"
+                  },
+                  extends: undefined,
+                  super: undefined
+                }
+              ]
+            }
+          }
+        },
+        dimensions: []
+      },
+      variableDeclarators: {
+        type: "VARIABLE_DECLARATORS",
+        list: [
+          {
+            type: "VARIABLE_DECLARATOR",
+            id: {
+              type: "VARIABLE_DECLARATOR_ID",
+              id: { type: "IDENTIFIER", value: "filterList" },
+              dimensions: []
+            },
+            init: {
+              type: "SIMPLE_CREATOR",
+              name: {
+                type: "IDENTIFIER_NAME",
+                elements: [
+                  {
+                    type: "IDENTIFIER_NAME_ELEMENT",
+                    id: {
+                      type: "IDENTIFIER",
+                      value: "ArrayList"
+                    },
+                    typeArguments: {
+                      type: "TYPE_ARGUMENTS",
+                      value: undefined
+                    }
+                  }
+                ]
+              },
+              rest: {
+                type: "CLASS_CREATOR_REST",
+                arguments: {
+                  type: "EXPRESSION_LIST",
+                  list: []
+                },
+                body: undefined
+              }
+            }
+          }
+        ]
+      },
+      followedEmptyLine: false
+    });
+  });
 });

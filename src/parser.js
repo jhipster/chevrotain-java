@@ -1933,6 +1933,9 @@ class SelectParser extends chevrotain.Parser {
             $.OPTION(() => {
               $.SUBRULE($.typeArgumentsOrOperatorExpressionRest);
             });
+            $.MANY(() => {
+              $.SUBRULE($.dimension);
+            });
           }
         },
         { ALT: () => $.CONSUME(tokens.Class) },
