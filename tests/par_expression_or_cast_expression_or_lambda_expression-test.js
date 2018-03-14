@@ -1,8 +1,7 @@
 "use strict";
 const Parser = require("../src/index");
 
-const MismatchedTokenException = require("chevrotain").exceptions
-  .MismatchedTokenException;
+const MismatchedTokenException = require("chevrotain").MismatchedTokenException;
 
 describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
   it("parExpression", () => {

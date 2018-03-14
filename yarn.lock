@@ -468,9 +468,9 @@ chardet@^0.4.0:
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.4.2.tgz#b5473b33dc97c424e5d98dc87d55d4d8a29c8bf2"
 
-chevrotain@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/chevrotain/-/chevrotain-1.0.1.tgz#14819c7fcf598d54069c88d3d12b18de8a4c94ee"
+chevrotain@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/chevrotain/-/chevrotain-3.0.1.tgz#4259e8ea707273e88b8d70c9f1e3fe108d9c2446"
 
 ci-info@^1.0.0:
   version "1.1.2"
