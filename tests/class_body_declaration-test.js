@@ -196,4 +196,13 @@ describe("classBodyDeclaration", () => {
       type: "SEMI_COLON_STATEMENT"
     });
   });
+
+  it("line comment standalone", () => {
+    expect(
+      Parser.parse("// comment\n\n", parser => parser.classBodyDeclaration())
+    ).toEqual({
+      type: "LINE_COMMENT_STANDALONE",
+      value: "// comment"
+    });
+  });
 });

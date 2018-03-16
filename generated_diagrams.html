@@ -827,47 +827,67 @@
     "name": "classBodyDeclaration",
     "definition": [
       {
-        "type": "Option",
-        "definition": [
-          {
-            "type": "Terminal",
-            "name": "Static",
-            "label": "'static'",
-            "idx": 0,
-            "pattern": "static"
-          }
-        ]
-      },
-      {
         "type": "Alternation",
         "definition": [
           {
             "type": "Flat",
             "definition": [
               {
-                "type": "NonTerminal",
-                "name": "block",
-                "idx": 0
-              }
-            ]
-          },
-          {
-            "type": "Flat",
-            "definition": [
-              {
-                "type": "Repetition",
+                "type": "Option",
                 "definition": [
                   {
-                    "type": "NonTerminal",
-                    "name": "modifier",
-                    "idx": 0
+                    "type": "Terminal",
+                    "name": "Static",
+                    "label": "'static'",
+                    "idx": 0,
+                    "pattern": "static"
                   }
                 ]
               },
               {
-                "type": "NonTerminal",
-                "name": "memberDeclaration",
-                "idx": 0
+                "type": "Alternation",
+                "definition": [
+                  {
+                    "type": "Flat",
+                    "definition": [
+                      {
+                        "type": "NonTerminal",
+                        "name": "block",
+                        "idx": 0
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Flat",
+                    "definition": [
+                      {
+                        "type": "Repetition",
+                        "definition": [
+                          {
+                            "type": "NonTerminal",
+                            "name": "modifier",
+                            "idx": 0
+                          }
+                        ]
+                      },
+                      {
+                        "type": "NonTerminal",
+                        "name": "memberDeclaration",
+                        "idx": 0
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Flat",
+                    "definition": [
+                      {
+                        "type": "NonTerminal",
+                        "name": "semiColon",
+                        "idx": 0
+                      }
+                    ]
+                  }
+                ]
               }
             ]
           },
@@ -875,9 +895,11 @@
             "type": "Flat",
             "definition": [
               {
-                "type": "NonTerminal",
-                "name": "semiColon",
-                "idx": 0
+                "type": "Terminal",
+                "name": "LineCommentStandalone",
+                "label": "LineCommentStandalone",
+                "idx": 0,
+                "pattern": "\\/\\/[^\n\r]*[\n\r]{2,}"
               }
             ]
           }

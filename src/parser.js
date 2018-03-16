@@ -256,28 +256,39 @@ class SelectParser extends chevrotain.Parser {
     // | modifier* memberDeclaration
     // | ';'
     $.RULE("classBodyDeclaration", () => {
-      $.OPTION(() => {
-        $.CONSUME(tokens.Static);
-      });
       $.OR([
         {
           ALT: () => {
-            $.SUBRULE($.block);
-          }
-        },
-        {
-          // classBodyMemberDeclaration
-          ALT: () => {
-            $.MANY(() => {
-              $.SUBRULE($.modifier);
+            $.OPTION(() => {
+              $.CONSUME(tokens.Static);
             });
-            $.SUBRULE($.memberDeclaration);
+            $.OR2([
+              {
+                ALT: () => {
+                  $.SUBRULE($.block);
+                }
+              },
+              {
+                // classBodyMemberDeclaration
+                ALT: () => {
+                  $.MANY(() => {
+                    $.SUBRULE($.modifier);
+                  });
+                  $.SUBRULE($.memberDeclaration);
+                }
+              },
+              {
+                // semiColon
+                ALT: () => {
+                  $.SUBRULE($.semiColon);
+                }
+              }
+            ]);
           }
         },
         {
-          // semiColon
           ALT: () => {
-            $.SUBRULE($.semiColon);
+            $.CONSUME(tokens.LineCommentStandalone);
           }
         }
       ]);
@@ -2775,6 +2786,84 @@ class SelectParser extends chevrotain.Parser {
     });
 
     Parser.performSelfAnalysis(this);
+  }
+
+  LA(howMuch) {
+    let token = super.LA(howMuch);
+    while (chevrotain.tokenMatcher(token, tokens.LineComment)) {
+      const comment = token;
+      super.consumeToken();
+      token = super.LA(howMuch);
+      if (comment.image.replace(/[\s]*/g, "") !== "//") {
+        if (
+          this.lastToken &&
+          this.lastToken.startLine !== comment.startLine &&
+          chevrotain.tokenMatcher(token, tokens.RCurly)
+        ) {
+          if (
+            !this.CST_STACK[this.CST_STACK.length - 1].children
+              .classBodyDeclaration
+          ) {
+            this.CST_STACK[
+              this.CST_STACK.length - 1
+            ].children.classBodyDeclaration = [];
+          }
+          this.CST_STACK[
+            this.CST_STACK.length - 1
+          ].children.classBodyDeclaration.push({
+            name: "LineCommentStandalone",
+            children: { image: comment.image }
+          });
+          comment.added = true;
+        }
+      }
+    }
+    this.lastToken = token;
+    return token;
+  }
+
+  cstPostTerminal(key, consumedToken) {
+    super.cstPostTerminal(key, consumedToken);
+
+    const lastElement = this.CST_STACK[this.CST_STACK.length - 1];
+    if (lastElement.name === "semiColon") {
+      const nextToken = super.LA(1);
+      // After every Token (terminal) is successfully consumed
+      // We will add all the comment that appeared after it on the same line
+      // to the CST (Parse Tree)
+      if (
+        chevrotain.tokenMatcher(nextToken, tokens.LineComment) &&
+        !nextToken.added &&
+        ((lastElement.children.SemiColon &&
+          nextToken.startLine ===
+            lastElement.children.SemiColon[0].startLine) ||
+          (lastElement.children.SemiColonWithFollowEmptyLine &&
+            nextToken.startLine ===
+              lastElement.children.SemiColonWithFollowEmptyLine[0].startLine))
+      ) {
+        nextToken.trailing = true;
+        nextToken.added = true;
+        this.CST_STACK[this.CST_STACK.length - 2].children[
+          tokens.LineComment.tokenName
+        ] = [nextToken];
+      }
+    } else {
+      let lookBehindIdx = -1;
+      let prevToken = super.LA(lookBehindIdx);
+
+      // After every Token (terminal) is successfully consumed
+      // We will add all the comment that appeared before it to the CST (Parse Tree)
+      while (
+        chevrotain.tokenMatcher(prevToken, tokens.LineComment) &&
+        !prevToken.added
+      ) {
+        if (prevToken.image.replace(/[\s]*/g, "") !== "//") {
+          super.cstPostTerminal(tokens.LineComment.tokenName, prevToken);
+        }
+        lookBehindIdx--;
+        prevToken = super.LA(lookBehindIdx);
+      }
+    }
   }
 }
 

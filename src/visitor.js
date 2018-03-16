@@ -318,6 +318,10 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   classBodyDeclaration(ctx) {
+    if (ctx.LineCommentStandalone) {
+      return this.LineCommentStandalone(ctx.LineCommentStandalone[0]);
+    }
+
     if (ctx.block) {
       const isStatic = !!ctx.Static;
       const block = this.visit(ctx.block);
@@ -356,6 +360,13 @@ class SQLToAstVisitor extends BaseSQLVisitor {
         type: "SEMI_COLON_STATEMENT"
       };
     }
+  }
+
+  LineCommentStandalone(ctx) {
+    return {
+      type: "LINE_COMMENT_STANDALONE",
+      value: ctx.image.replace(/[\n\r]*/g, "")
+    };
   }
 
   memberDeclaration(ctx) {
@@ -3663,6 +3674,49 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     return {
       type: "IDENTIFIER",
       value: value.image
+    };
+  }
+
+  visit(node) {
+    const astResult = super.visit(node);
+
+    this.addCommentsToAst(node, astResult);
+
+    return astResult;
+  }
+
+  addCommentsToAst(node, astResult) {
+    if (node) {
+      if (node.constructor === Array) {
+        node.map(n => this.addComment(n, astResult));
+      } else {
+        this.addComment(node, astResult);
+      }
+    }
+  }
+
+  addComment(node, astResult) {
+    if (!astResult || !node.children.LineComment) {
+      return;
+    }
+
+    if (!astResult.comment && node.children.LineComment) {
+      astResult.comments = [];
+    }
+
+    if (node.children.LineComment) {
+      node.children.LineComment.map(lineComment =>
+        astResult.comments.unshift(this.getLineComment(lineComment))
+      );
+    }
+  }
+
+  getLineComment(endOfLineComment) {
+    return {
+      ast_type: "comment",
+      value: endOfLineComment.image,
+      leading: !endOfLineComment.trailing,
+      trailing: !!endOfLineComment.trailing
     };
   }
 }
