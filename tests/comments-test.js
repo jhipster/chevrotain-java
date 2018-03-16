@@ -356,6 +356,55 @@ describe("comment", () => {
     });
   });
 
+  it("breaks, but why?", () => {
+    expect(
+      Parser.parse("package abc;\n\n// ABC\nclass A {}", parser =>
+        parser.compilationUnit()
+      )
+    ).toEqual({
+      type: "COMPILATION_UNIT",
+      imports: [],
+      package: {
+        type: "PACKAGE_DECLARATION",
+        name: {
+          type: "QUALIFIED_NAME",
+          name: [
+            {
+              type: "IDENTIFIER",
+              value: "abc"
+            }
+          ]
+        }
+      },
+      types: [
+        {
+          type: "TYPE_DECLARATION",
+          modifiers: [],
+
+          declaration: {
+            type: "CLASS_DECLARATION",
+            name: { type: "IDENTIFIER", value: "A" },
+            typeParameters: undefined,
+            body: {
+              type: "CLASS_BODY",
+              declarations: []
+            },
+            extends: undefined,
+            implements: undefined,
+            comments: [
+              {
+                ast_type: "comment",
+                leading: true,
+                trailing: false,
+                value: "// ABC"
+              }
+            ]
+          }
+        }
+      ]
+    });
+  });
+
   // it("javadoc comment", () => {
   //   expect(
   //     Parser.parse("/**\n *\n */", parser => parser.compilationUnit())
