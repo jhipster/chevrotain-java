@@ -2569,7 +2569,10 @@ class SelectParser extends chevrotain.Parser {
       $.MANY({
         // The gate condition is in addition to basic grammar lookahead, so this.LA(1) === dot
         // is always checked
-        GATE: () => this.LA(2).tokenType === tokens.Identifier,
+        GATE: () => {
+          console.log("this.LA inside", this.LA);
+          this.LA(2).tokenType === tokens.Identifier;
+        },
         DEF: () => {
           $.CONSUME(tokens.Dot);
           $.CONSUME2(tokens.Identifier);
@@ -2789,37 +2792,70 @@ class SelectParser extends chevrotain.Parser {
   }
 
   LA(howMuch) {
-    let token = super.LA(howMuch);
-    while (chevrotain.tokenMatcher(token, tokens.LineComment)) {
-      const comment = token;
-      super.consumeToken();
-      token = super.LA(howMuch);
-      if (comment.image.replace(/[\s]*/g, "") !== "//") {
-        if (
-          this.lastToken &&
-          this.lastToken.startLine !== comment.startLine &&
-          chevrotain.tokenMatcher(token, tokens.RCurly)
-        ) {
+    console.log("this.LA", this.LA);
+    console.log("howMuch", howMuch);
+    if (howMuch === 1) {
+      let token = super.LA(howMuch);
+      while (chevrotain.tokenMatcher(token, tokens.LineComment)) {
+        const comment = token;
+        super.consumeToken();
+        token = super.LA(howMuch);
+        if (comment.image.replace(/[\s]*/g, "") !== "//") {
           if (
-            !this.CST_STACK[this.CST_STACK.length - 1].children
-              .classBodyDeclaration
+            this.lastToken &&
+            this.lastToken.startLine !== comment.startLine &&
+            chevrotain.tokenMatcher(token, tokens.RCurly)
           ) {
+            if (
+              !this.CST_STACK[this.CST_STACK.length - 1].children
+                .classBodyDeclaration
+            ) {
+              this.CST_STACK[
+                this.CST_STACK.length - 1
+              ].children.classBodyDeclaration = [];
+            }
             this.CST_STACK[
               this.CST_STACK.length - 1
-            ].children.classBodyDeclaration = [];
+            ].children.classBodyDeclaration.push({
+              name: "LineCommentStandalone",
+              children: { image: comment.image }
+            });
+            comment.added = true;
           }
-          this.CST_STACK[
-            this.CST_STACK.length - 1
-          ].children.classBodyDeclaration.push({
-            name: "LineCommentStandalone",
-            children: { image: comment.image }
-          });
-          comment.added = true;
         }
       }
+      this.lastToken = token;
+      console.log("token1", token);
+      return token;
     }
-    this.lastToken = token;
-    return token;
+
+    let nextSearchIdx = this.currIdx;
+    console.log("nextSearchIdx", nextSearchIdx);
+    for (var i = 0; i < howMuch; i++) {
+      nextSearchIdx = this.skipComments(nextSearchIdx);
+      nextSearchIdx++; // skip one real token
+    }
+    console.log("nextSearchIdx", nextSearchIdx);
+    if (!this.input[nextSearchIdx]) {
+      console.log("END_OF_FILE");
+      return chevrotain.END_OF_FILE;
+    }
+    const token = this.input[nextSearchIdx];
+    console.log("token2+", token);
+    return this.input[nextSearchIdx];
+  }
+
+  skipComments(nextSearchIdx) {
+    let token = this.input[nextSearchIdx];
+    while (
+      token &&
+      (chevrotain.tokenMatcher(token, tokens.LineComment) ||
+        chevrotain.tokenMatcher(token, tokens.LineCommentStandalone))
+    ) {
+      nextSearchIdx++;
+      token = this.input[nextSearchIdx];
+    }
+    return nextSearchIdx;
   }
 
   cstPostTerminal(key, consumedToken) {
