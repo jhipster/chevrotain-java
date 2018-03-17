@@ -318,8 +318,8 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   classBodyDeclaration(ctx) {
-    if (ctx.LineCommentStandalone) {
-      return this.LineCommentStandalone(ctx.LineCommentStandalone[0]);
+    if (ctx.commentStandalone) {
+      return this.visit(ctx.commentStandalone);
     }
 
     if (ctx.block) {
@@ -364,8 +364,15 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
   LineCommentStandalone(ctx) {
     return {
-      type: "LINE_COMMENT_STANDALONE",
+      type: "COMMENT_STANDALONE",
       value: ctx.image.replace(/[\n\r]*/g, "")
+    };
+  }
+
+  JavaDocTraditionalCommentStandalone(ctx) {
+    return {
+      type: "COMMENT_STANDALONE",
+      value: ctx.image.replace(/\*\/[\n\r]*/g, "*/")
     };
   }
 
@@ -753,8 +760,8 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   interfaceBodyDeclaration(ctx) {
-    if (ctx.LineCommentStandalone) {
-      return this.LineCommentStandalone(ctx.LineCommentStandalone[0]);
+    if (ctx.commentStandalone) {
+      return this.visit(ctx.commentStandalone);
     }
 
     const modifiers = [];
@@ -1495,8 +1502,8 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   blockStatement(ctx) {
-    if (ctx.LineCommentStandalone) {
-      return this.LineCommentStandalone(ctx.LineCommentStandalone[0]);
+    if (ctx.commentStandalone) {
+      return this.visit(ctx.commentStandalone);
     }
 
     if (ctx.expression) {
@@ -3683,6 +3690,24 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       type: "IDENTIFIER",
       value: value.image
     };
+  }
+
+  commentStandalone(ctx) {
+    if (ctx.LineCommentStandalone) {
+      return this.LineCommentStandalone(ctx.LineCommentStandalone[0]);
+    }
+
+    if (ctx.JavaDocCommentStandalone) {
+      return this.JavaDocTraditionalCommentStandalone(
+        ctx.JavaDocCommentStandalone[0]
+      );
+    }
+
+    if (ctx.TraditionalCommentStandalone) {
+      return this.JavaDocTraditionalCommentStandalone(
+        ctx.TraditionalCommentStandalone[0]
+      );
+    }
   }
 
   visit(node) {

@@ -701,9 +701,21 @@ const JavaDocComment = createToken({
   line_breaks: true
 });
 
+const JavaDocCommentStandalone = createToken({
+  name: "JavaDocCommentStandalone",
+  pattern: /\/\*\*([^*]|\*(?!\/))*\*\/((\n)|([\r][^\n])|(\r\n)){2,}/,
+  line_breaks: true
+});
+
 const TraditionalComment = createToken({
   name: "TraditionalComment",
   pattern: /\/\*([^*]|\*(?!\/))*\*\//,
+  line_breaks: true
+});
+
+const TraditionalCommentStandalone = createToken({
+  name: "TraditionalCommentStandalone",
+  pattern: /\/\*([^*]|\*(?!\/))*\*\/((\n)|([\r][^\n])|(\r\n)){2,}/,
   line_breaks: true
 });
 
@@ -727,7 +739,9 @@ const allTokens = [
   WhiteSpace,
   LineCommentStandalone,
   LineComment,
+  JavaDocCommentStandalone,
   JavaDocComment,
+  TraditionalCommentStandalone,
   TraditionalComment,
   // "keywords" appear before the Identifier
   Boolean,
@@ -848,7 +862,9 @@ module.exports = {
     WhiteSpace,
     LineCommentStandalone,
     LineComment,
+    JavaDocCommentStandalone,
     JavaDocComment,
+    TraditionalCommentStandalone,
     TraditionalComment,
     Boolean,
     Char,

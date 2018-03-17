@@ -466,7 +466,7 @@ describe("blockStatement", () => {
     expect(
       Parser.parse("// comment\n\n", parser => parser.blockStatement())
     ).toEqual({
-      type: "LINE_COMMENT_STANDALONE",
+      type: "COMMENT_STANDALONE",
       value: "// comment"
     });
   });

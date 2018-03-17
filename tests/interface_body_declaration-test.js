@@ -142,7 +142,7 @@ describe("interfaceBodyDeclaration", () => {
         parser.interfaceBodyDeclaration()
       )
     ).toEqual({
-      type: "LINE_COMMENT_STANDALONE",
+      type: "COMMENT_STANDALONE",
       value: "// comment"
     });
   });

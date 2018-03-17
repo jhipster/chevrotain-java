@@ -305,15 +305,15 @@ describe("comment", () => {
               type: "CLASS_BODY",
               declarations: [
                 {
-                  type: "LINE_COMMENT_STANDALONE",
+                  type: "COMMENT_STANDALONE",
                   value: "// Abc"
                 },
                 {
-                  type: "LINE_COMMENT_STANDALONE",
+                  type: "COMMENT_STANDALONE",
                   value: "// XYZ"
                 },
                 {
-                  type: "LINE_COMMENT_STANDALONE",
+                  type: "COMMENT_STANDALONE",
                   value: "// Something"
                 }
               ]
@@ -348,15 +348,15 @@ describe("comment", () => {
               type: "INTERFACE_BODY",
               declarations: [
                 {
-                  type: "LINE_COMMENT_STANDALONE",
+                  type: "COMMENT_STANDALONE",
                   value: "// Abc"
                 },
                 {
-                  type: "LINE_COMMENT_STANDALONE",
+                  type: "COMMENT_STANDALONE",
                   value: "// XYZ"
                 },
                 {
-                  type: "LINE_COMMENT_STANDALONE",
+                  type: "COMMENT_STANDALONE",
                   value: "// Something"
                 }
               ]
@@ -715,7 +715,7 @@ describe("comment", () => {
                       type: "BLOCK",
                       statements: [
                         {
-                          type: "LINE_COMMENT_STANDALONE",
+                          type: "COMMENT_STANDALONE",
                           value: "// comment"
                         }
                       ]

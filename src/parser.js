@@ -291,7 +291,7 @@ class SelectParser extends chevrotain.Parser {
         },
         {
           ALT: () => {
-            $.CONSUME(tokens.LineCommentStandalone);
+            $.SUBRULE($.commentStandalone);
           }
         }
       ]);
@@ -628,7 +628,7 @@ class SelectParser extends chevrotain.Parser {
         },
         {
           ALT: () => {
-            $.CONSUME(tokens.LineCommentStandalone);
+            $.SUBRULE($.commentStandalone);
           }
         }
       ]);
@@ -1308,7 +1308,7 @@ class SelectParser extends chevrotain.Parser {
         },
         {
           ALT: () => {
-            $.CONSUME(tokens.LineCommentStandalone);
+            $.SUBRULE($.commentStandalone);
           }
         }
       ]);
@@ -2808,6 +2808,15 @@ class SelectParser extends chevrotain.Parser {
       $.OR([
         { ALT: () => $.CONSUME(tokens.SemiColon) },
         { ALT: () => $.CONSUME(tokens.SemiColonWithFollowEmptyLine) }
+      ]);
+    });
+
+    // standaloneComment (any comment with two or more line breaks afterwards)
+    $.RULE("commentStandalone", () => {
+      $.OR([
+        { ALT: () => $.CONSUME(tokens.LineCommentStandalone) },
+        { ALT: () => $.CONSUME(tokens.JavaDocCommentStandalone) },
+        { ALT: () => $.CONSUME(tokens.TraditionalCommentStandalone) }
       ]);
     });
 

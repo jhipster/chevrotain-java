@@ -895,11 +895,9 @@
             "type": "Flat",
             "definition": [
               {
-                "type": "Terminal",
-                "name": "LineCommentStandalone",
-                "label": "LineCommentStandalone",
-                "idx": 0,
-                "pattern": "\\/\\/[^\n\r]*((\n)|([\r][^\n])|(\r\n)){2,}"
+                "type": "NonTerminal",
+                "name": "commentStandalone",
+                "idx": 0
               }
             ]
           }
@@ -1751,11 +1749,9 @@
             "type": "Flat",
             "definition": [
               {
-                "type": "Terminal",
-                "name": "LineCommentStandalone",
-                "label": "LineCommentStandalone",
-                "idx": 0,
-                "pattern": "\\/\\/[^\n\r]*((\n)|([\r][^\n])|(\r\n)){2,}"
+                "type": "NonTerminal",
+                "name": "commentStandalone",
+                "idx": 0
               }
             ]
           }
@@ -3593,11 +3589,9 @@
             "type": "Flat",
             "definition": [
               {
-                "type": "Terminal",
-                "name": "LineCommentStandalone",
-                "label": "LineCommentStandalone",
-                "idx": 0,
-                "pattern": "\\/\\/[^\n\r]*((\n)|([\r][^\n])|(\r\n)){2,}"
+                "type": "NonTerminal",
+                "name": "commentStandalone",
+                "idx": 0
               }
             ]
           }
@@ -7748,6 +7742,53 @@
                 "label": "';'",
                 "idx": 0,
                 "pattern": ";[ \\t]*(\\r\\n|\\r[^\\n]|\\n)[ \\t]*(\\r\\n|\\r|\\n)"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "commentStandalone",
+    "definition": [
+      {
+        "type": "Alternation",
+        "definition": [
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "Terminal",
+                "name": "LineCommentStandalone",
+                "label": "LineCommentStandalone",
+                "idx": 0,
+                "pattern": "\\/\\/[^\n\r]*((\n)|([\r][^\n])|(\r\n)){2,}"
+              }
+            ]
+          },
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "Terminal",
+                "name": "JavaDocCommentStandalone",
+                "label": "JavaDocCommentStandalone",
+                "idx": 0,
+                "pattern": "\\/\\*\\*([^*]|\\*(?!\\/))*\\*\\/((\\n)|([\\r][^\\n])|(\\r\\n)){2,}"
+              }
+            ]
+          },
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "Terminal",
+                "name": "TraditionalCommentStandalone",
+                "label": "TraditionalCommentStandalone",
+                "idx": 0,
+                "pattern": "\\/\\*([^*]|\\*(?!\\/))*\\*\\/((\\n)|([\\r][^\\n])|(\\r\\n)){2,}"
               }
             ]
           }
