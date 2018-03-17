@@ -2796,6 +2796,7 @@ class SelectParser extends chevrotain.Parser {
       let token = super.LA(howMuch);
       while (
         chevrotain.tokenMatcher(token, tokens.LineComment) ||
+        chevrotain.tokenMatcher(token, tokens.JavaDocComment) ||
         chevrotain.tokenMatcher(token, tokens.TraditionalComment)
       ) {
         const comment = token;
@@ -2851,7 +2852,12 @@ class SelectParser extends chevrotain.Parser {
 
   skipComments(nextSearchIdx) {
     let token = this.input[nextSearchIdx];
-    while (token && chevrotain.tokenMatcher(token, tokens.LineComment)) {
+    while (
+      token &&
+      (chevrotain.tokenMatcher(token, tokens.LineComment) ||
+        chevrotain.tokenMatcher(token, tokens.JavaDocComment) ||
+        chevrotain.tokenMatcher(token, tokens.TraditionalComment))
+    ) {
       nextSearchIdx++;
       token = this.input[nextSearchIdx];
     }
@@ -2892,7 +2898,8 @@ class SelectParser extends chevrotain.Parser {
       while (
         (chevrotain.tokenMatcher(prevToken, tokens.LineComment) &&
           !prevToken.added) ||
-        chevrotain.tokenMatcher(prevToken, tokens.TraditionalComment)
+        chevrotain.tokenMatcher(prevToken, tokens.TraditionalComment) ||
+        chevrotain.tokenMatcher(prevToken, tokens.JavaDocComment)
       ) {
         // TODO replace with faster method instead of replace
         if (!this.isEmptyComment(prevToken)) {
@@ -2908,8 +2915,10 @@ class SelectParser extends chevrotain.Parser {
     return (
       (chevrotain.tokenMatcher(comment, tokens.LineComment) &&
         comment.image.replace(/[\s]*/g, "") === "//") ||
+      (chevrotain.tokenMatcher(comment, tokens.JavaDocComment) &&
+        comment.image.replace(/[\s\n\r*]*/g, "") === "//") ||
       (chevrotain.tokenMatcher(comment, tokens.TraditionalComment) &&
-        comment.image.replace(/[\s\n\r]*/g, "") === "/**/")
+        comment.image.replace(/[\s\n\r*]*/g, "") === "//")
     );
   }
 }
