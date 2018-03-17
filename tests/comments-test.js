@@ -283,7 +283,7 @@ describe("comment", () => {
     });
   });
 
-  it("line comments standalone", () => {
+  it("line comments standalone in class body", () => {
     expect(
       Parser.parse("class A {\n// Abc\n\n// XYZ\n\n// Something\n}", parser =>
         parser.compilationUnit()
@@ -320,6 +320,48 @@ describe("comment", () => {
             },
             extends: undefined,
             implements: undefined
+          }
+        }
+      ]
+    });
+  });
+
+  it("line comments standalone in interface body", () => {
+    expect(
+      Parser.parse(
+        "interface A {\n// Abc\n\n// XYZ\n\n// Something\n}",
+        parser => parser.compilationUnit()
+      )
+    ).toEqual({
+      type: "COMPILATION_UNIT",
+      imports: [],
+      package: undefined,
+      types: [
+        {
+          type: "TYPE_DECLARATION",
+          modifiers: [],
+          declaration: {
+            type: "INTERFACE_DECLARATION",
+            name: { type: "IDENTIFIER", value: "A" },
+            typeParameters: undefined,
+            body: {
+              type: "INTERFACE_BODY",
+              declarations: [
+                {
+                  type: "LINE_COMMENT_STANDALONE",
+                  value: "// Abc"
+                },
+                {
+                  type: "LINE_COMMENT_STANDALONE",
+                  value: "// XYZ"
+                },
+                {
+                  type: "LINE_COMMENT_STANDALONE",
+                  value: "// Something"
+                }
+              ]
+            },
+            extends: undefined
           }
         }
       ]

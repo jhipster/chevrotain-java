@@ -2834,21 +2834,20 @@ class SelectParser extends chevrotain.Parser {
             this.lastToken.startLine !== comment.startLine &&
             chevrotain.tokenMatcher(token, tokens.RCurly)
           ) {
-            if (
-              !this.CST_STACK[this.CST_STACK.length - 1].children
-                .classBodyDeclaration
-            ) {
-              this.CST_STACK[
-                this.CST_STACK.length - 1
-              ].children.classBodyDeclaration = [];
+            const prevToken = this.CST_STACK[this.CST_STACK.length - 1];
+            if (prevToken.name === "classBody") {
+              this.addCommentStandAlone(
+                prevToken,
+                "classBodyDeclaration",
+                comment
+              );
+            } else if (prevToken.name === "interfaceBody") {
+              this.addCommentStandAlone(
+                prevToken,
+                "interfaceBodyDeclaration",
+                comment
+              );
             }
-            this.CST_STACK[
-              this.CST_STACK.length - 1
-            ].children.classBodyDeclaration.push({
-              name: "LineCommentStandalone",
-              children: { image: comment.image }
-            });
-            comment.added = true;
           }
         }
       }
@@ -2860,6 +2859,17 @@ class SelectParser extends chevrotain.Parser {
     if (howMuch > 1) {
       return this.LAgreater1(howMuch);
     }
+  }
+
+  addCommentStandAlone(prevToken, declaration, comment) {
+    if (!prevToken.children[declaration]) {
+      prevToken.children[declaration] = [];
+    }
+    prevToken.children[declaration].push({
+      name: "LineCommentStandalone",
+      children: { image: comment.image }
+    });
+    comment.added = true;
   }
 
   LAgreater1(howMuch) {
