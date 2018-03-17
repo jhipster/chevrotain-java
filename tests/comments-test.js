@@ -195,7 +195,7 @@ describe("comment", () => {
     });
   });
 
-  it("comlex line comment", () => {
+  it("complex line comment", () => {
     expect(
       Parser.parse("// ABC\nclass A {\n// DEF\nint i = 0; // GHI\n}", parser =>
         parser.compilationUnit()
@@ -356,7 +356,7 @@ describe("comment", () => {
     });
   });
 
-  it("breaks, but why?", () => {
+  it("line comment between package and class", () => {
     expect(
       Parser.parse("package abc;\n\n// ABC\nclass A {}", parser =>
         parser.compilationUnit()
@@ -416,14 +416,73 @@ describe("comment", () => {
   //   });
   // });
 
-  // it("traditional comment", () => {
-  //   expect(
-  //     Parser.parse("/* comment \n\r */", parser => parser.compilationUnit())
-  //   ).toEqual({
-  //     type: "COMPILATION_UNIT",
-  //     package: undefined,
-  //     imports: [],
-  //     types: []
-  //   });
-  // });
+  it("traditional comment before class", () => {
+    expect(
+      Parser.parse("/* comment \n comment \n */\nclass A {}", parser =>
+        parser.compilationUnit()
+      )
+    ).toEqual({
+      type: "COMPILATION_UNIT",
+      package: undefined,
+      imports: [],
+      types: [
+        {
+          type: "TYPE_DECLARATION",
+          modifiers: [],
+          declaration: {
+            type: "CLASS_DECLARATION",
+            name: {
+              type: "IDENTIFIER",
+              value: "A"
+            },
+            typeParameters: undefined,
+            body: {
+              type: "CLASS_BODY",
+              declarations: []
+            },
+            extends: undefined,
+            implements: undefined,
+            comments: [
+              {
+                ast_type: "comment",
+                leading: true,
+                trailing: false,
+                value: "/* comment \n comment \n */"
+              }
+            ]
+          }
+        }
+      ]
+    });
+  });
+
+  it("traditional comment empty", () => {
+    expect(
+      Parser.parse("class A {\n/*     \n   \r     */\n}", parser =>
+        parser.compilationUnit()
+      )
+    ).toEqual({
+      type: "COMPILATION_UNIT",
+      imports: [],
+      package: undefined,
+      types: [
+        {
+          type: "TYPE_DECLARATION",
+          modifiers: [],
+
+          declaration: {
+            type: "CLASS_DECLARATION",
+            name: { type: "IDENTIFIER", value: "A" },
+            typeParameters: undefined,
+            body: {
+              type: "CLASS_BODY",
+              declarations: []
+            },
+            extends: undefined,
+            implements: undefined
+          }
+        }
+      ]
+    });
+  });
 });

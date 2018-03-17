@@ -2794,11 +2794,14 @@ class SelectParser extends chevrotain.Parser {
   LA(howMuch) {
     if (howMuch === 1) {
       let token = super.LA(howMuch);
-      while (chevrotain.tokenMatcher(token, tokens.LineComment)) {
+      while (
+        chevrotain.tokenMatcher(token, tokens.LineComment) ||
+        chevrotain.tokenMatcher(token, tokens.TraditionalComment)
+      ) {
         const comment = token;
         super.consumeToken();
         token = super.LA(howMuch);
-        if (comment.image.replace(/[\s]*/g, "") !== "//") {
+        if (!this.isEmptyComment(comment)) {
           if (
             this.lastToken &&
             this.lastToken.startLine !== comment.startLine &&
@@ -2848,11 +2851,7 @@ class SelectParser extends chevrotain.Parser {
 
   skipComments(nextSearchIdx) {
     let token = this.input[nextSearchIdx];
-    while (
-      token &&
-      (chevrotain.tokenMatcher(token, tokens.LineComment) ||
-        chevrotain.tokenMatcher(token, tokens.LineCommentStandalone))
-    ) {
+    while (token && chevrotain.tokenMatcher(token, tokens.LineComment)) {
       nextSearchIdx++;
       token = this.input[nextSearchIdx];
     }
@@ -2891,16 +2890,27 @@ class SelectParser extends chevrotain.Parser {
       // After every Token (terminal) is successfully consumed
       // We will add all the comment that appeared before it to the CST (Parse Tree)
       while (
-        chevrotain.tokenMatcher(prevToken, tokens.LineComment) &&
-        !prevToken.added
+        (chevrotain.tokenMatcher(prevToken, tokens.LineComment) &&
+          !prevToken.added) ||
+        chevrotain.tokenMatcher(prevToken, tokens.TraditionalComment)
       ) {
-        if (prevToken.image.replace(/[\s]*/g, "") !== "//") {
+        // TODO replace with faster method instead of replace
+        if (!this.isEmptyComment(prevToken)) {
           super.cstPostTerminal(tokens.LineComment.tokenName, prevToken);
         }
         lookBehindIdx--;
         prevToken = super.LA(lookBehindIdx);
       }
     }
+  }
+
+  isEmptyComment(comment) {
+    return (
+      (chevrotain.tokenMatcher(comment, tokens.LineComment) &&
+        comment.image.replace(/[\s]*/g, "") === "//") ||
+      (chevrotain.tokenMatcher(comment, tokens.TraditionalComment) &&
+        comment.image.replace(/[\s\n\r]*/g, "") === "/**/")
+    );
   }
 }
 
