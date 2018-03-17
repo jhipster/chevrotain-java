@@ -691,4 +691,95 @@ describe("comment", () => {
       ]
     });
   });
+
+  it("comment between variable declaration and annotation", () => {
+    expect(
+      Parser.parse(
+        "class A {\n@Annotation\n// comment\r\nprivate String str;\n}",
+        parser => parser.compilationUnit()
+      )
+    ).toEqual({
+      type: "COMPILATION_UNIT",
+      package: undefined,
+      imports: [],
+      types: [
+        {
+          type: "TYPE_DECLARATION",
+          modifiers: [],
+          declaration: {
+            type: "CLASS_DECLARATION",
+            name: {
+              type: "IDENTIFIER",
+              value: "A"
+            },
+            typeParameters: undefined,
+            body: {
+              type: "CLASS_BODY",
+              declarations: [
+                {
+                  type: "CLASS_BODY_MEMBER_DECLARATION",
+                  modifiers: [
+                    {
+                      type: "ANNOTATION",
+                      name: {
+                        name: [
+                          {
+                            type: "IDENTIFIER",
+                            value: "Annotation"
+                          }
+                        ],
+                        type: "QUALIFIED_NAME"
+                      },
+                      values: undefined,
+                      hasBraces: false
+                    },
+                    {
+                      type: "MODIFIER",
+                      value: "private",
+                      comments: [
+                        {
+                          ast_type: "comment",
+                          leading: true,
+                          trailing: false,
+                          value: "// comment"
+                        }
+                      ]
+                    }
+                  ],
+                  declaration: {
+                    type: "FIELD_DECLARATION",
+                    typeType: {
+                      type: "IDENTIFIER",
+                      value: "String"
+                    },
+                    variableDeclarators: {
+                      type: "VARIABLE_DECLARATORS",
+                      list: [
+                        {
+                          type: "VARIABLE_DECLARATOR",
+                          id: {
+                            type: "VARIABLE_DECLARATOR_ID",
+                            id: {
+                              type: "IDENTIFIER",
+                              value: "str"
+                            },
+                            dimensions: []
+                          },
+                          init: undefined
+                        }
+                      ]
+                    },
+                    followedEmptyLine: false
+                  },
+                  followedEmptyLine: false
+                }
+              ]
+            },
+            extends: undefined,
+            implements: undefined
+          }
+        }
+      ]
+    });
+  });
 });

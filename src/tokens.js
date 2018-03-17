@@ -691,7 +691,7 @@ const LineComment = createToken({
 
 const LineCommentStandalone = createToken({
   name: "LineCommentStandalone",
-  pattern: MAKE_PATTERN("//[^\n\r]*[\n\r]{2,}"),
+  pattern: MAKE_PATTERN("//[^\n\r]*((\n)|([\r][^\n])|(\r\n)){2,}"),
   line_breaks: true
 });
 
