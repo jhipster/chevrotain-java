@@ -2792,8 +2792,10 @@ class SelectParser extends chevrotain.Parser {
   }
 
   LA(howMuch) {
+    //console.error("howMuch", howMuch);
     if (howMuch === 1) {
       let token = super.LA(howMuch);
+      //console.error("firstToken", token.tokenType.tokenName);
       while (
         chevrotain.tokenMatcher(token, tokens.LineComment) ||
         chevrotain.tokenMatcher(token, tokens.JavaDocComment) ||
@@ -2802,6 +2804,7 @@ class SelectParser extends chevrotain.Parser {
         const comment = token;
         super.consumeToken();
         token = super.LA(howMuch);
+        //console.error("nextToken", token.tokenType.tokenName);
         if (!this.isEmptyComment(comment)) {
           if (
             this.lastToken &&
@@ -2827,6 +2830,7 @@ class SelectParser extends chevrotain.Parser {
         }
       }
       this.lastToken = token;
+      //console.error("returnToken", token.tokenType.tokenName);
       return token;
     }
 
@@ -2837,16 +2841,22 @@ class SelectParser extends chevrotain.Parser {
 
   LAgreater1(howMuch) {
     let nextSearchIdx = this.currIdx;
+    //console.error("nextSearchIdx: begin", nextSearchIdx)
     for (let i = 0; i < howMuch; i++) {
-      nextSearchIdx = this.skipComments(nextSearchIdx);
-      nextSearchIdx++; // skip one real token
+      // nextSearchIdx++; // skip one real token
+      //console.error("nextSearchIdx: before", nextSearchIdx)
+      nextSearchIdx = this.skipComments(nextSearchIdx + 1);
+      //console.error("nextSearchIdx: after", nextSearchIdx)
     }
 
+    //console.error("nextSearchIdx: end", nextSearchIdx)
+    //console.error("nextSearchIdx: result", nextSearchIdx)
     const token = this.input[nextSearchIdx];
     if (!token) {
+      //console.error("END_OF_FILE");
       return END_OF_FILE;
     }
-
+    //console.error("nextGreaterToken", token.tokenType.tokenName);
     return token;
   }
 
