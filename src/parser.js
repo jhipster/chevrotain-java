@@ -1223,71 +1223,83 @@ class SelectParser extends chevrotain.Parser {
     // | identifierStatement
     // | expressionStatement
     $.RULE("blockStatement", () => {
-      let hasSemiColon = false;
-      $.MANY(() => {
-        $.SUBRULE($.classOrInterfaceModifier);
-      });
       $.OR([
         {
-          // localeVariableDeclaration
           ALT: () => {
+            let hasSemiColon = false;
+            $.MANY(() => {
+              $.SUBRULE($.classOrInterfaceModifier);
+            });
             $.OR2([
               {
+                // localeVariableDeclaration
                 ALT: () => {
-                  $.SUBRULE($.expression);
-
                   $.OR3([
                     {
-                      // identifierStatement
                       ALT: () => {
-                        $.CONSUME(tokens.Colon);
-                        $.SUBRULE($.statement);
-                      }
-                    },
-                    {
-                      // expressionStatement
-                      ALT: () => {
-                        $.SUBRULE($.semiColon);
-                        hasSemiColon = true;
-                      }
-                    },
-                    {
-                      ALT: () => {
-                        $.OPTION(() => {
-                          $.SUBRULE($.typeArguments);
-                        });
-                        $.MANY2({
-                          GATE: () => this.LA(2).tokenType !== tokens.Class,
-                          DEF: () => {
-                            $.CONSUME(tokens.Dot);
-                            $.SUBRULE2($.classOrInterfaceTypeElement);
+                        $.SUBRULE($.expression);
+
+                        $.OR4([
+                          {
+                            // identifierStatement
+                            ALT: () => {
+                              $.CONSUME(tokens.Colon);
+                              $.SUBRULE($.statement);
+                            }
+                          },
+                          {
+                            // expressionStatement
+                            ALT: () => {
+                              $.SUBRULE($.semiColon);
+                              hasSemiColon = true;
+                            }
+                          },
+                          {
+                            ALT: () => {
+                              $.OPTION(() => {
+                                $.SUBRULE($.typeArguments);
+                              });
+                              $.MANY2({
+                                GATE: () =>
+                                  this.LA(2).tokenType !== tokens.Class,
+                                DEF: () => {
+                                  $.CONSUME(tokens.Dot);
+                                  $.SUBRULE2($.classOrInterfaceTypeElement);
+                                }
+                              });
+                            }
                           }
-                        });
+                        ]);
                       }
                     }
                   ]);
+                  $.OPTION2({
+                    GATE: () => !hasSemiColon,
+                    DEF: () => {
+                      // if not identifier statement
+                      $.MANY3(() => {
+                        $.CONSUME(tokens.LSquare);
+                        $.CONSUME(tokens.RSquare);
+                      });
+                      $.SUBRULE($.variableDeclarators);
+                      $.SUBRULE2($.semiColon);
+                    }
+                  });
                 }
-              }
+              },
+              // localTypeDeclaration
+              { ALT: () => $.SUBRULE($.classDeclaration) },
+              // localTypeDeclaration
+              { ALT: () => $.SUBRULE($.interfaceDeclaration) },
+              { ALT: () => $.SUBRULE($.statementWithStartingToken) }
             ]);
-            $.OPTION2({
-              GATE: () => !hasSemiColon,
-              DEF: () => {
-                // if not identifier statement
-                $.MANY3(() => {
-                  $.CONSUME(tokens.LSquare);
-                  $.CONSUME(tokens.RSquare);
-                });
-                $.SUBRULE($.variableDeclarators);
-                $.SUBRULE2($.semiColon);
-              }
-            });
           }
         },
-        // localTypeDeclaration
-        { ALT: () => $.SUBRULE($.classDeclaration) },
-        // localTypeDeclaration
-        { ALT: () => $.SUBRULE($.interfaceDeclaration) },
-        { ALT: () => $.SUBRULE($.statementWithStartingToken) }
+        {
+          ALT: () => {
+            $.CONSUME(tokens.LineCommentStandalone);
+          }
+        }
       ]);
     });
 

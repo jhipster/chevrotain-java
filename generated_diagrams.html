@@ -3397,21 +3397,21 @@
     "name": "blockStatement",
     "definition": [
       {
-        "type": "Repetition",
-        "definition": [
-          {
-            "type": "NonTerminal",
-            "name": "classOrInterfaceModifier",
-            "idx": 0
-          }
-        ]
-      },
-      {
         "type": "Alternation",
         "definition": [
           {
             "type": "Flat",
             "definition": [
+              {
+                "type": "Repetition",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "classOrInterfaceModifier",
+                    "idx": 0
+                  }
+                ]
+              },
               {
                 "type": "Alternation",
                 "definition": [
@@ -3419,109 +3419,149 @@
                     "type": "Flat",
                     "definition": [
                       {
-                        "type": "NonTerminal",
-                        "name": "expression",
-                        "idx": 0
-                      },
-                      {
                         "type": "Alternation",
                         "definition": [
                           {
                             "type": "Flat",
                             "definition": [
                               {
-                                "type": "Terminal",
-                                "name": "Colon",
-                                "label": "':'",
-                                "idx": 0,
-                                "pattern": ":"
+                                "type": "NonTerminal",
+                                "name": "expression",
+                                "idx": 0
                               },
                               {
-                                "type": "NonTerminal",
-                                "name": "statement",
-                                "idx": 0
-                              }
-                            ]
-                          },
-                          {
-                            "type": "Flat",
-                            "definition": [
-                              {
-                                "type": "NonTerminal",
-                                "name": "semiColon",
-                                "idx": 0
-                              }
-                            ]
-                          },
-                          {
-                            "type": "Flat",
-                            "definition": [
-                              {
-                                "type": "Option",
+                                "type": "Alternation",
                                 "definition": [
                                   {
-                                    "type": "NonTerminal",
-                                    "name": "typeArguments",
-                                    "idx": 0
-                                  }
-                                ]
-                              },
-                              {
-                                "type": "Repetition",
-                                "definition": [
-                                  {
-                                    "type": "Terminal",
-                                    "name": "Dot",
-                                    "label": "'.'",
-                                    "idx": 0,
-                                    "pattern": "\\."
+                                    "type": "Flat",
+                                    "definition": [
+                                      {
+                                        "type": "Terminal",
+                                        "name": "Colon",
+                                        "label": "':'",
+                                        "idx": 0,
+                                        "pattern": ":"
+                                      },
+                                      {
+                                        "type": "NonTerminal",
+                                        "name": "statement",
+                                        "idx": 0
+                                      }
+                                    ]
                                   },
                                   {
-                                    "type": "NonTerminal",
-                                    "name": "classOrInterfaceTypeElement",
-                                    "idx": 2
+                                    "type": "Flat",
+                                    "definition": [
+                                      {
+                                        "type": "NonTerminal",
+                                        "name": "semiColon",
+                                        "idx": 0
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "Flat",
+                                    "definition": [
+                                      {
+                                        "type": "Option",
+                                        "definition": [
+                                          {
+                                            "type": "NonTerminal",
+                                            "name": "typeArguments",
+                                            "idx": 0
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "type": "Repetition",
+                                        "definition": [
+                                          {
+                                            "type": "Terminal",
+                                            "name": "Dot",
+                                            "label": "'.'",
+                                            "idx": 0,
+                                            "pattern": "\\."
+                                          },
+                                          {
+                                            "type": "NonTerminal",
+                                            "name": "classOrInterfaceTypeElement",
+                                            "idx": 2
+                                          }
+                                        ]
+                                      }
+                                    ]
                                   }
                                 ]
                               }
                             ]
                           }
                         ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "type": "Option",
-                "definition": [
-                  {
-                    "type": "Repetition",
-                    "definition": [
-                      {
-                        "type": "Terminal",
-                        "name": "LSquare",
-                        "label": "'['",
-                        "idx": 0,
-                        "pattern": "\\["
                       },
                       {
-                        "type": "Terminal",
-                        "name": "RSquare",
-                        "label": "']'",
-                        "idx": 0,
-                        "pattern": "]"
+                        "type": "Option",
+                        "definition": [
+                          {
+                            "type": "Repetition",
+                            "definition": [
+                              {
+                                "type": "Terminal",
+                                "name": "LSquare",
+                                "label": "'['",
+                                "idx": 0,
+                                "pattern": "\\["
+                              },
+                              {
+                                "type": "Terminal",
+                                "name": "RSquare",
+                                "label": "']'",
+                                "idx": 0,
+                                "pattern": "]"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "NonTerminal",
+                            "name": "variableDeclarators",
+                            "idx": 0
+                          },
+                          {
+                            "type": "NonTerminal",
+                            "name": "semiColon",
+                            "idx": 2
+                          }
+                        ]
                       }
                     ]
                   },
                   {
-                    "type": "NonTerminal",
-                    "name": "variableDeclarators",
-                    "idx": 0
+                    "type": "Flat",
+                    "definition": [
+                      {
+                        "type": "NonTerminal",
+                        "name": "classDeclaration",
+                        "idx": 0
+                      }
+                    ]
                   },
                   {
-                    "type": "NonTerminal",
-                    "name": "semiColon",
-                    "idx": 2
+                    "type": "Flat",
+                    "definition": [
+                      {
+                        "type": "NonTerminal",
+                        "name": "interfaceDeclaration",
+                        "idx": 0
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Flat",
+                    "definition": [
+                      {
+                        "type": "NonTerminal",
+                        "name": "statementWithStartingToken",
+                        "idx": 0
+                      }
+                    ]
                   }
                 ]
               }
@@ -3531,29 +3571,11 @@
             "type": "Flat",
             "definition": [
               {
-                "type": "NonTerminal",
-                "name": "classDeclaration",
-                "idx": 0
-              }
-            ]
-          },
-          {
-            "type": "Flat",
-            "definition": [
-              {
-                "type": "NonTerminal",
-                "name": "interfaceDeclaration",
-                "idx": 0
-              }
-            ]
-          },
-          {
-            "type": "Flat",
-            "definition": [
-              {
-                "type": "NonTerminal",
-                "name": "statementWithStartingToken",
-                "idx": 0
+                "type": "Terminal",
+                "name": "LineCommentStandalone",
+                "label": "LineCommentStandalone",
+                "idx": 0,
+                "pattern": "\\/\\/[^\n\r]*[\n\r]{2,}"
               }
             ]
           }

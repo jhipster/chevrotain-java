@@ -1491,6 +1491,10 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   blockStatement(ctx) {
+    if (ctx.LineCommentStandalone) {
+      return this.LineCommentStandalone(ctx.LineCommentStandalone[0]);
+    }
+
     if (ctx.expression) {
       let expression = this.visit(ctx.expression);
 
