@@ -753,6 +753,10 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   interfaceBodyDeclaration(ctx) {
+    if (ctx.LineCommentStandalone) {
+      return this.LineCommentStandalone(ctx.LineCommentStandalone[0]);
+    }
+
     const modifiers = [];
     if (ctx.modifier) {
       ctx.modifier.map(modifier => modifiers.push(this.visit(modifier)));

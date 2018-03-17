@@ -617,10 +617,21 @@ class SelectParser extends chevrotain.Parser {
     // interfaceBodyDeclaration
     // : modifier* interfaceMemberDeclaration
     $.RULE("interfaceBodyDeclaration", () => {
-      $.MANY(() => {
-        $.SUBRULE($.modifier);
-      });
-      $.SUBRULE($.interfaceMemberDeclaration);
+      $.OR([
+        {
+          ALT: () => {
+            $.MANY(() => {
+              $.SUBRULE($.modifier);
+            });
+            $.SUBRULE($.interfaceMemberDeclaration);
+          }
+        },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.LineCommentStandalone);
+          }
+        }
+      ]);
     });
 
     // interfaceMemberDeclaration

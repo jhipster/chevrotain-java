@@ -1725,19 +1725,41 @@
     "name": "interfaceBodyDeclaration",
     "definition": [
       {
-        "type": "Repetition",
+        "type": "Alternation",
         "definition": [
           {
-            "type": "NonTerminal",
-            "name": "modifier",
-            "idx": 0
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "Repetition",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "modifier",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "NonTerminal",
+                "name": "interfaceMemberDeclaration",
+                "idx": 0
+              }
+            ]
+          },
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "Terminal",
+                "name": "LineCommentStandalone",
+                "label": "LineCommentStandalone",
+                "idx": 0,
+                "pattern": "\\/\\/[^\n\r]*((\n)|([\r][^\n])|(\r\n)){2,}"
+              }
+            ]
           }
         ]
-      },
-      {
-        "type": "NonTerminal",
-        "name": "interfaceMemberDeclaration",
-        "idx": 0
       }
     ]
   },

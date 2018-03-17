@@ -135,4 +135,15 @@ describe("interfaceBodyDeclaration", () => {
       followedEmptyLine: false
     });
   });
+
+  it("line comment standalone", () => {
+    expect(
+      Parser.parse("// comment\n\n", parser =>
+        parser.interfaceBodyDeclaration()
+      )
+    ).toEqual({
+      type: "LINE_COMMENT_STANDALONE",
+      value: "// comment"
+    });
+  });
 });
