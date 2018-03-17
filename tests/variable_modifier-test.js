@@ -2,12 +2,12 @@
 const Parser = require("../src/index");
 
 describe("variableModifier", () => {
-  // it("final", () => {
-  //   expect(Parser.parse("final", parser => parser.variableModifier())).toEqual({
-  //     type: "MODIFIER",
-  //     value: "final"
-  //   });
-  // });
+  it("final", () => {
+    expect(Parser.parse("final", parser => parser.variableModifier())).toEqual({
+      type: "MODIFIER",
+      value: "final"
+    });
+  });
 
   it("annotation", () => {
     expect(

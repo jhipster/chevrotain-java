@@ -1,5 +1,8 @@
 "use strict";
 const chevrotain = require("chevrotain");
+const {
+  END_OF_FILE
+} = require("../node_modules/chevrotain/lib/src/parse/parser_public");
 const { allTokens, tokens } = require("./tokens");
 
 const Parser = chevrotain.Parser;
@@ -2569,10 +2572,7 @@ class SelectParser extends chevrotain.Parser {
       $.MANY({
         // The gate condition is in addition to basic grammar lookahead, so this.LA(1) === dot
         // is always checked
-        GATE: () => {
-          console.log("this.LA inside", this.LA);
-          this.LA(2).tokenType === tokens.Identifier;
-        },
+        GATE: () => this.LA(2).tokenType === tokens.Identifier,
         DEF: () => {
           $.CONSUME(tokens.Dot);
           $.CONSUME2(tokens.Identifier);
@@ -2792,8 +2792,6 @@ class SelectParser extends chevrotain.Parser {
   }
 
   LA(howMuch) {
-    console.log("this.LA", this.LA);
-    console.log("howMuch", howMuch);
     if (howMuch === 1) {
       let token = super.LA(howMuch);
       while (chevrotain.tokenMatcher(token, tokens.LineComment)) {
@@ -2825,24 +2823,27 @@ class SelectParser extends chevrotain.Parser {
         }
       }
       this.lastToken = token;
-      console.log("token1", token);
       return token;
     }
 
+    if (howMuch > 1) {
+      return this.LAgreater1(howMuch);
+    }
+  }
+
+  LAgreater1(howMuch) {
     let nextSearchIdx = this.currIdx;
-    console.log("nextSearchIdx", nextSearchIdx);
-    for (var i = 0; i < howMuch; i++) {
+    for (let i = 0; i < howMuch; i++) {
       nextSearchIdx = this.skipComments(nextSearchIdx);
       nextSearchIdx++; // skip one real token
     }
-    console.log("nextSearchIdx", nextSearchIdx);
-    if (!this.input[nextSearchIdx]) {
-      console.log("END_OF_FILE");
-      return chevrotain.END_OF_FILE;
-    }
+
     const token = this.input[nextSearchIdx];
-    console.log("token2+", token);
-    return this.input[nextSearchIdx];
+    if (!token) {
+      return END_OF_FILE;
+    }
+
+    return token;
   }
 
   skipComments(nextSearchIdx) {
