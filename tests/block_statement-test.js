@@ -461,13 +461,4 @@ describe("blockStatement", () => {
       followedEmptyLine: false
     });
   });
-
-  it("line comment standalone", () => {
-    expect(
-      Parser.parse("// comment\n\n", parser => parser.blockStatement())
-    ).toEqual({
-      type: "COMMENT_STANDALONE",
-      value: "// comment"
-    });
-  });
 });

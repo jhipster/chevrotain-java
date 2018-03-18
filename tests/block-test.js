@@ -284,4 +284,32 @@ describe("block", () => {
       ]
     });
   });
+
+  it("line comment standalone", () => {
+    expect(
+      Parser.parse("{\n// comment\n\n }", parser => parser.block())
+    ).toEqual({
+      type: "BLOCK",
+      statements: [
+        {
+          type: "COMMENT_STANDALONE",
+          value: "// comment"
+        }
+      ]
+    });
+  });
+
+  it("line comment", () => {
+    expect(Parser.parse("{\n// comment\n }", parser => parser.block())).toEqual(
+      {
+        type: "BLOCK",
+        statements: [
+          {
+            type: "COMMENT_STANDALONE",
+            value: "// comment"
+          }
+        ]
+      }
+    );
+  });
 });

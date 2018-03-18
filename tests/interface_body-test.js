@@ -108,4 +108,32 @@ describe("interfaceBody", () => {
       ]
     });
   });
+
+  it("line comment standalone", () => {
+    expect(
+      Parser.parse("{\n// comment\n\n }", parser => parser.interfaceBody())
+    ).toEqual({
+      type: "INTERFACE_BODY",
+      declarations: [
+        {
+          type: "COMMENT_STANDALONE",
+          value: "// comment"
+        }
+      ]
+    });
+  });
+
+  it("line comment", () => {
+    expect(
+      Parser.parse("{\n// comment\n }", parser => parser.interfaceBody())
+    ).toEqual({
+      type: "INTERFACE_BODY",
+      declarations: [
+        {
+          type: "COMMENT_STANDALONE",
+          value: "// comment"
+        }
+      ]
+    });
+  });
 });

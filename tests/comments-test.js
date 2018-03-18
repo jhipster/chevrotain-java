@@ -40,6 +40,46 @@ describe("comment", () => {
     });
   });
 
+  it("line comment standalone before class", () => {
+    expect(
+      Parser.parse("// comment\n\nclass A {}", parser =>
+        parser.compilationUnit()
+      )
+    ).toEqual({
+      type: "COMPILATION_UNIT",
+      package: undefined,
+      imports: [],
+      types: [
+        {
+          type: "TYPE_DECLARATION",
+          modifiers: [],
+          declaration: {
+            type: "CLASS_DECLARATION",
+            name: {
+              type: "IDENTIFIER",
+              value: "A"
+            },
+            typeParameters: undefined,
+            body: {
+              type: "CLASS_BODY",
+              declarations: []
+            },
+            extends: undefined,
+            implements: undefined,
+            comments: [
+              {
+                ast_type: "comment",
+                leading: true,
+                trailing: false,
+                value: "// comment"
+              }
+            ]
+          }
+        }
+      ]
+    });
+  });
+
   it("line comment between class and name", () => {
     expect(
       Parser.parse("class \n// comment\n A {}", parser =>

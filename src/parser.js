@@ -259,39 +259,28 @@ class SelectParser extends chevrotain.Parser {
     // | modifier* memberDeclaration
     // | ';'
     $.RULE("classBodyDeclaration", () => {
+      $.OPTION(() => {
+        $.CONSUME(tokens.Static);
+      });
       $.OR([
         {
           ALT: () => {
-            $.OPTION(() => {
-              $.CONSUME(tokens.Static);
-            });
-            $.OR2([
-              {
-                ALT: () => {
-                  $.SUBRULE($.block);
-                }
-              },
-              {
-                // classBodyMemberDeclaration
-                ALT: () => {
-                  $.MANY(() => {
-                    $.SUBRULE($.modifier);
-                  });
-                  $.SUBRULE($.memberDeclaration);
-                }
-              },
-              {
-                // semiColon
-                ALT: () => {
-                  $.SUBRULE($.semiColon);
-                }
-              }
-            ]);
+            $.SUBRULE($.block);
           }
         },
         {
+          // classBodyMemberDeclaration
           ALT: () => {
-            $.SUBRULE($.commentStandalone);
+            $.MANY(() => {
+              $.SUBRULE($.modifier);
+            });
+            $.SUBRULE($.memberDeclaration);
+          }
+        },
+        {
+          // semiColon
+          ALT: () => {
+            $.SUBRULE($.semiColon);
           }
         }
       ]);
@@ -617,21 +606,10 @@ class SelectParser extends chevrotain.Parser {
     // interfaceBodyDeclaration
     // : modifier* interfaceMemberDeclaration
     $.RULE("interfaceBodyDeclaration", () => {
-      $.OR([
-        {
-          ALT: () => {
-            $.MANY(() => {
-              $.SUBRULE($.modifier);
-            });
-            $.SUBRULE($.interfaceMemberDeclaration);
-          }
-        },
-        {
-          ALT: () => {
-            $.SUBRULE($.commentStandalone);
-          }
-        }
-      ]);
+      $.MANY(() => {
+        $.SUBRULE($.modifier);
+      });
+      $.SUBRULE($.interfaceMemberDeclaration);
     });
 
     // interfaceMemberDeclaration
@@ -1234,83 +1212,71 @@ class SelectParser extends chevrotain.Parser {
     // | identifierStatement
     // | expressionStatement
     $.RULE("blockStatement", () => {
+      let hasSemiColon = false;
+      $.MANY(() => {
+        $.SUBRULE($.classOrInterfaceModifier);
+      });
       $.OR([
         {
+          // localeVariableDeclaration
           ALT: () => {
-            let hasSemiColon = false;
-            $.MANY(() => {
-              $.SUBRULE($.classOrInterfaceModifier);
-            });
             $.OR2([
               {
-                // localeVariableDeclaration
                 ALT: () => {
+                  $.SUBRULE($.expression);
+
                   $.OR3([
                     {
+                      // identifierStatement
                       ALT: () => {
-                        $.SUBRULE($.expression);
-
-                        $.OR4([
-                          {
-                            // identifierStatement
-                            ALT: () => {
-                              $.CONSUME(tokens.Colon);
-                              $.SUBRULE($.statement);
-                            }
-                          },
-                          {
-                            // expressionStatement
-                            ALT: () => {
-                              $.SUBRULE($.semiColon);
-                              hasSemiColon = true;
-                            }
-                          },
-                          {
-                            ALT: () => {
-                              $.OPTION(() => {
-                                $.SUBRULE($.typeArguments);
-                              });
-                              $.MANY2({
-                                GATE: () =>
-                                  this.LA(2).tokenType !== tokens.Class,
-                                DEF: () => {
-                                  $.CONSUME(tokens.Dot);
-                                  $.SUBRULE2($.classOrInterfaceTypeElement);
-                                }
-                              });
-                            }
+                        $.CONSUME(tokens.Colon);
+                        $.SUBRULE($.statement);
+                      }
+                    },
+                    {
+                      // expressionStatement
+                      ALT: () => {
+                        $.SUBRULE($.semiColon);
+                        hasSemiColon = true;
+                      }
+                    },
+                    {
+                      ALT: () => {
+                        $.OPTION(() => {
+                          $.SUBRULE($.typeArguments);
+                        });
+                        $.MANY2({
+                          GATE: () => this.LA(2).tokenType !== tokens.Class,
+                          DEF: () => {
+                            $.CONSUME(tokens.Dot);
+                            $.SUBRULE2($.classOrInterfaceTypeElement);
                           }
-                        ]);
+                        });
                       }
                     }
                   ]);
-                  $.OPTION2({
-                    GATE: () => !hasSemiColon,
-                    DEF: () => {
-                      // if not identifier statement
-                      $.MANY3(() => {
-                        $.CONSUME(tokens.LSquare);
-                        $.CONSUME(tokens.RSquare);
-                      });
-                      $.SUBRULE($.variableDeclarators);
-                      $.SUBRULE2($.semiColon);
-                    }
-                  });
                 }
-              },
-              // localTypeDeclaration
-              { ALT: () => $.SUBRULE($.classDeclaration) },
-              // localTypeDeclaration
-              { ALT: () => $.SUBRULE($.interfaceDeclaration) },
-              { ALT: () => $.SUBRULE($.statementWithStartingToken) }
+              }
             ]);
+            $.OPTION2({
+              GATE: () => !hasSemiColon,
+              DEF: () => {
+                // if not identifier statement
+                $.MANY3(() => {
+                  $.CONSUME(tokens.LSquare);
+                  $.CONSUME(tokens.RSquare);
+                });
+                $.SUBRULE($.variableDeclarators);
+                $.SUBRULE2($.semiColon);
+              }
+            });
           }
         },
-        {
-          ALT: () => {
-            $.SUBRULE($.commentStandalone);
-          }
-        }
+        // localTypeDeclaration
+        { ALT: () => $.SUBRULE($.classDeclaration) },
+        // localTypeDeclaration
+        { ALT: () => $.SUBRULE($.interfaceDeclaration) },
+        { ALT: () => $.SUBRULE($.statementWithStartingToken) }
       ]);
     });
 
@@ -2811,15 +2777,6 @@ class SelectParser extends chevrotain.Parser {
       ]);
     });
 
-    // standaloneComment (any comment with two or more line breaks afterwards)
-    $.RULE("commentStandalone", () => {
-      $.OR([
-        { ALT: () => $.CONSUME(tokens.LineCommentStandalone) },
-        { ALT: () => $.CONSUME(tokens.JavaDocCommentStandalone) },
-        { ALT: () => $.CONSUME(tokens.TraditionalCommentStandalone) }
-      ]);
-    });
-
     Parser.performSelfAnalysis(this);
   }
 
@@ -2829,30 +2786,72 @@ class SelectParser extends chevrotain.Parser {
       while (
         chevrotain.tokenMatcher(token, tokens.LineComment) ||
         chevrotain.tokenMatcher(token, tokens.JavaDocComment) ||
-        chevrotain.tokenMatcher(token, tokens.TraditionalComment)
+        chevrotain.tokenMatcher(token, tokens.TraditionalComment) ||
+        chevrotain.tokenMatcher(token, tokens.LineCommentStandalone) ||
+        chevrotain.tokenMatcher(token, tokens.JavaDocCommentStandalone) ||
+        chevrotain.tokenMatcher(token, tokens.TraditionalCommentStandalone)
       ) {
         const comment = token;
         super.consumeToken();
         token = super.LA(howMuch);
         if (!this.isEmptyComment(comment)) {
+          const prevToken = this.CST_STACK[this.CST_STACK.length - 1];
+          // If we are in a class or interface body
           if (
-            this.lastToken &&
-            this.lastToken.startLine !== comment.startLine &&
-            chevrotain.tokenMatcher(token, tokens.RCurly)
+            prevToken.name === "classBody" ||
+            prevToken.name === "interfaceBody" ||
+            prevToken.name === "block"
           ) {
-            const prevToken = this.CST_STACK[this.CST_STACK.length - 1];
-            if (prevToken.name === "classBody") {
-              this.addCommentStandAlone(
-                prevToken,
-                "classBodyDeclaration",
-                comment
-              );
-            } else if (prevToken.name === "interfaceBody") {
-              this.addCommentStandAlone(
-                prevToken,
-                "interfaceBodyDeclaration",
-                comment
-              );
+            if (
+              chevrotain.tokenMatcher(comment, tokens.LineCommentStandalone) ||
+              chevrotain.tokenMatcher(
+                comment,
+                tokens.JavaDocCommentStandalone
+              ) ||
+              chevrotain.tokenMatcher(
+                comment,
+                tokens.TraditionalCommentStandalone
+              )
+            ) {
+              if (prevToken.name === "classBody") {
+                this.addCommentStandAlone(
+                  prevToken,
+                  "classBodyDeclaration",
+                  comment
+                );
+              } else if (prevToken.name === "interfaceBody") {
+                this.addCommentStandAlone(
+                  prevToken,
+                  "interfaceBodyDeclaration",
+                  comment
+                );
+              } else if (prevToken.name === "block") {
+                this.addCommentStandAlone(prevToken, "blockStatement", comment);
+              }
+            } else if (
+              this.lastToken &&
+              this.lastToken.startLine !== comment.startLine &&
+              chevrotain.tokenMatcher(token, tokens.RCurly) &&
+              (chevrotain.tokenMatcher(comment, tokens.LineComment) ||
+                chevrotain.tokenMatcher(comment, tokens.JavaDocComment) ||
+                chevrotain.tokenMatcher(comment, tokens.TraditionalComment))
+            ) {
+              // if its the last comment we transform it into a standalone comment
+              if (prevToken.name === "classBody") {
+                this.addCommentStandAlone(
+                  prevToken,
+                  "classBodyDeclaration",
+                  comment
+                );
+              } else if (prevToken.name === "interfaceBody") {
+                this.addCommentStandAlone(
+                  prevToken,
+                  "interfaceBodyDeclaration",
+                  comment
+                );
+              } else if (prevToken.name === "block") {
+                this.addCommentStandAlone(prevToken, "blockStatement", comment);
+              }
             }
           }
         }
@@ -2898,7 +2897,10 @@ class SelectParser extends chevrotain.Parser {
       token &&
       (chevrotain.tokenMatcher(token, tokens.LineComment) ||
         chevrotain.tokenMatcher(token, tokens.JavaDocComment) ||
-        chevrotain.tokenMatcher(token, tokens.TraditionalComment))
+        chevrotain.tokenMatcher(token, tokens.TraditionalComment) ||
+        chevrotain.tokenMatcher(token, tokens.LineCommentStandalone) ||
+        chevrotain.tokenMatcher(token, tokens.JavaDocCommentStandalone) ||
+        chevrotain.tokenMatcher(token, tokens.TraditionalCommentStandalone))
     ) {
       nextSearchIdx++;
       token = this.input[nextSearchIdx];
@@ -2941,11 +2943,20 @@ class SelectParser extends chevrotain.Parser {
         !prevToken.added &&
         (chevrotain.tokenMatcher(prevToken, tokens.LineComment) ||
           chevrotain.tokenMatcher(prevToken, tokens.TraditionalComment) ||
-          chevrotain.tokenMatcher(prevToken, tokens.JavaDocComment))
+          chevrotain.tokenMatcher(prevToken, tokens.JavaDocComment) ||
+          chevrotain.tokenMatcher(prevToken, tokens.LineCommentStandalone) ||
+          chevrotain.tokenMatcher(
+            prevToken,
+            tokens.TraditionalCommentStandalone
+          ) ||
+          chevrotain.tokenMatcher(prevToken, tokens.JavaDocCommentStandalone))
       ) {
         // TODO replace with faster method instead of replace
         if (!this.isEmptyComment(prevToken)) {
-          super.cstPostTerminal(tokens.LineComment.tokenName, prevToken);
+          super.cstPostTerminal(
+            prevToken.tokenType.tokenName.replace("Standalone", ""),
+            prevToken
+          );
         }
         lookBehindIdx--;
         prevToken = super.LA(lookBehindIdx);
@@ -2954,12 +2965,19 @@ class SelectParser extends chevrotain.Parser {
   }
 
   isEmptyComment(comment) {
+    // TODO fix replace because SLOW
     return (
       (chevrotain.tokenMatcher(comment, tokens.LineComment) &&
         comment.image.replace(/[\s]*/g, "") === "//") ||
       (chevrotain.tokenMatcher(comment, tokens.JavaDocComment) &&
         comment.image.replace(/[\s\n\r*]*/g, "") === "//") ||
       (chevrotain.tokenMatcher(comment, tokens.TraditionalComment) &&
+        comment.image.replace(/[\s\n\r*]*/g, "") === "//") ||
+      (chevrotain.tokenMatcher(comment, tokens.LineCommentStandalone) &&
+        comment.image.replace(/[\s]*/g, "") === "//") ||
+      (chevrotain.tokenMatcher(comment, tokens.JavaDocCommentStandalone) &&
+        comment.image.replace(/[\s\n\r*]*/g, "") === "//") ||
+      (chevrotain.tokenMatcher(comment, tokens.TraditionalCommentStandalone) &&
         comment.image.replace(/[\s\n\r*]*/g, "") === "//")
     );
   }

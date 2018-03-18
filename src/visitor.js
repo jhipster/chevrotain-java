@@ -3729,27 +3729,45 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   addComment(node, astResult) {
-    if (!astResult || !node.children.LineComment) {
+    const hasComment =
+      node.children.LineComment ||
+      node.children.TraditionalComment ||
+      node.children.JavaDocComment;
+    if (!astResult || !hasComment) {
       return;
     }
 
-    if (!astResult.comment && node.children.LineComment) {
+    if (!astResult.comment && hasComment) {
       astResult.comments = [];
     }
 
     if (node.children.LineComment) {
       node.children.LineComment.map(lineComment =>
-        astResult.comments.unshift(this.getLineComment(lineComment))
+        astResult.comments.unshift(this.getComment(lineComment))
+      );
+    }
+
+    if (node.children.TraditionalComment) {
+      node.children.TraditionalComment.map(traditionalComment =>
+        astResult.comments.unshift(this.getComment(traditionalComment))
+      );
+    }
+
+    if (node.children.JavaDocComment) {
+      node.children.JavaDocComment.map(javaDocComment =>
+        astResult.comments.unshift(this.getComment(javaDocComment))
       );
     }
   }
 
-  getLineComment(endOfLineComment) {
+  getComment(comment) {
     return {
       ast_type: "comment",
-      value: endOfLineComment.image,
-      leading: !endOfLineComment.trailing,
-      trailing: !!endOfLineComment.trailing
+      value: comment.image.startsWith("//")
+        ? comment.image.replace(/[\n\r]*/g, "")
+        : comment.image.replace(/\*\/[\n\r]*/g, "*/"),
+      leading: !comment.trailing,
+      trailing: !!comment.trailing
     };
   }
 }

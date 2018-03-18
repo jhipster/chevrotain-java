@@ -86,4 +86,32 @@ describe("classBody", () => {
       ]
     });
   });
+
+  it("line comment standalone", () => {
+    expect(
+      Parser.parse("{\n// comment\n\n }", parser => parser.classBody())
+    ).toEqual({
+      type: "CLASS_BODY",
+      declarations: [
+        {
+          type: "COMMENT_STANDALONE",
+          value: "// comment"
+        }
+      ]
+    });
+  });
+
+  it("line comment", () => {
+    expect(
+      Parser.parse("{\n// comment\n }", parser => parser.classBody())
+    ).toEqual({
+      type: "CLASS_BODY",
+      declarations: [
+        {
+          type: "COMMENT_STANDALONE",
+          value: "// comment"
+        }
+      ]
+    });
+  });
 });
