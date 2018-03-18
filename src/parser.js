@@ -1,11 +1,20 @@
 "use strict";
 const chevrotain = require("chevrotain");
-const {
-  END_OF_FILE
-} = require("../node_modules/chevrotain/lib/src/parse/parser_public");
 const { allTokens, tokens } = require("./tokens");
 
 const Parser = chevrotain.Parser;
+
+const END_OF_FILE = chevrotain.createTokenInstance(
+  chevrotain.EOF,
+  "",
+  NaN,
+  NaN,
+  NaN,
+  NaN,
+  NaN,
+  NaN
+);
+Object.freeze(END_OF_FILE);
 
 class SelectParser extends chevrotain.Parser {
   constructor(input) {
