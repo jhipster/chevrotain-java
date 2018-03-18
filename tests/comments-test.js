@@ -824,4 +824,86 @@ describe("comment", () => {
       ]
     });
   });
+
+  it("traditional comments standalone in class body", () => {
+    expect(
+      Parser.parse(
+        "class A {\n/* Abc */\n\n/* XYZ */\n\n/* Something */\n}",
+        parser => parser.compilationUnit()
+      )
+    ).toEqual({
+      type: "COMPILATION_UNIT",
+      imports: [],
+      package: undefined,
+      types: [
+        {
+          type: "TYPE_DECLARATION",
+          modifiers: [],
+
+          declaration: {
+            type: "CLASS_DECLARATION",
+            name: { type: "IDENTIFIER", value: "A" },
+            typeParameters: undefined,
+            body: {
+              type: "CLASS_BODY",
+              declarations: [
+                {
+                  type: "COMMENT_STANDALONE",
+                  value: "/* Abc */"
+                },
+                {
+                  type: "COMMENT_STANDALONE",
+                  value: "/* XYZ */"
+                },
+                {
+                  type: "COMMENT_STANDALONE",
+                  value: "/* Something */"
+                }
+              ]
+            },
+            extends: undefined,
+            implements: undefined
+          }
+        }
+      ]
+    });
+  });
+
+  it("multi line comment as standalone comment", () => {
+    expect(
+      Parser.parse(
+        "class A {\n/** Something   \n * on two lines  */\n}",
+        parser => parser.compilationUnit()
+      )
+    ).toEqual({
+      type: "COMPILATION_UNIT",
+      package: undefined,
+      imports: [],
+      types: [
+        {
+          type: "TYPE_DECLARATION",
+          modifiers: [],
+          declaration: {
+            type: "CLASS_DECLARATION",
+            name: {
+              type: "IDENTIFIER",
+              value: "A"
+            },
+            typeParameters: undefined,
+            body: {
+              type: "CLASS_BODY",
+              declarations: [
+                {
+                  type: "COMMENT_STANDALONE",
+                  value: "/** Something   \n * on two lines  */"
+                }
+              ]
+            },
+            extends: undefined,
+            implements: undefined
+          }
+        }
+      ]
+    });
+  });
 });
