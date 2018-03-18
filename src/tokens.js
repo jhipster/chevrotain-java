@@ -691,7 +691,7 @@ const LineComment = createToken({
 
 const LineCommentStandalone = createToken({
   name: "LineCommentStandalone",
-  pattern: MAKE_PATTERN("//[^\n\r]*((\n)|([\r][^\n])|(\r\n)){2,}"),
+  pattern: MAKE_PATTERN("//[^\n\r]*(((\n)|([\r][^\n])|(\r\n))s*){2,}"),
   line_breaks: true
 });
 
@@ -703,7 +703,7 @@ const JavaDocComment = createToken({
 
 const JavaDocCommentStandalone = createToken({
   name: "JavaDocCommentStandalone",
-  pattern: /\/\*\*([^*]|\*(?!\/))*\*\/((\n)|([\r][^\n])|(\r\n)){2,}/,
+  pattern: /\/\*\*([^*]|\*(?!\/))*\*\/(((\n)|([\r][^\n])|(\r\n))\s*){2,}/,
   line_breaks: true
 });
 
@@ -715,7 +715,7 @@ const TraditionalComment = createToken({
 
 const TraditionalCommentStandalone = createToken({
   name: "TraditionalCommentStandalone",
-  pattern: /\/\*([^*]|\*(?!\/))*\*\/((\n)|([\r][^\n])|(\r\n)){2,}/,
+  pattern: /\/\*([^*]|\*(?!\/))*\*\/(((\n)|([\r][^\n])|(\r\n))\s*){2,}/,
   line_breaks: true
 });
 

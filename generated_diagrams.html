@@ -7764,7 +7764,7 @@
                 "name": "LineCommentStandalone",
                 "label": "LineCommentStandalone",
                 "idx": 0,
-                "pattern": "\\/\\/[^\n\r]*((\n)|([\r][^\n])|(\r\n)){2,}"
+                "pattern": "\\/\\/[^\n\r]*(((\n)|([\r][^\n])|(\r\n))s*){2,}"
               }
             ]
           },
@@ -7776,7 +7776,7 @@
                 "name": "JavaDocCommentStandalone",
                 "label": "JavaDocCommentStandalone",
                 "idx": 0,
-                "pattern": "\\/\\*\\*([^*]|\\*(?!\\/))*\\*\\/((\\n)|([\\r][^\\n])|(\\r\\n)){2,}"
+                "pattern": "\\/\\*\\*([^*]|\\*(?!\\/))*\\*\\/(((\\n)|([\\r][^\\n])|(\\r\\n))\\s*){2,}"
               }
             ]
           },
@@ -7788,7 +7788,7 @@
                 "name": "TraditionalCommentStandalone",
                 "label": "TraditionalCommentStandalone",
                 "idx": 0,
-                "pattern": "\\/\\*([^*]|\\*(?!\\/))*\\*\\/((\\n)|([\\r][^\\n])|(\\r\\n)){2,}"
+                "pattern": "\\/\\*([^*]|\\*(?!\\/))*\\*\\/(((\\n)|([\\r][^\\n])|(\\r\\n))\\s*){2,}"
               }
             ]
           }
