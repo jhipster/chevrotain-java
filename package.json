@@ -1,8 +1,8 @@
 {
   "name": "chevrotain-java",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "java parser based on chevrotain",
-  "main": "index.js",
+  "main": "src/index.js",
   "repository": "url",
   "author": "Thorben von Hacht",
   "license": "MIT",
