@@ -19,7 +19,6 @@ addons:
 install:
   - yarn
 script:
-  - yarn run lint
   - yarn run test --coverage
 
 
