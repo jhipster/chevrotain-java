@@ -19,6 +19,6 @@ addons:
 install:
   - yarn
 script:
-  - yarn run test --coverage
+  - yarn run test
 
 
