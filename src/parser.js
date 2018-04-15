@@ -1391,20 +1391,22 @@ class SelectParser extends chevrotain.Parser {
         $.SUBRULE($.resourceSpecification);
       });
       $.SUBRULE($.block);
-      $.OR([
-        {
-          ALT: () => {
-            $.SUBRULE($.catchClause);
-            $.MANY(() => {
-              $.SUBRULE2($.catchClause);
-            });
-            $.OPTION2(() => {
-              $.SUBRULE($.finallyBlock);
-            });
-          }
-        },
-        { ALT: () => $.SUBRULE2($.finallyBlock) }
-      ]);
+      $.OPTION1(() => {
+        $.OR([
+          {
+            ALT: () => {
+              $.SUBRULE($.catchClause);
+              $.MANY(() => {
+                $.SUBRULE2($.catchClause);
+              });
+              $.OPTION2(() => {
+                $.SUBRULE($.finallyBlock);
+              });
+            }
+          },
+          { ALT: () => $.SUBRULE2($.finallyBlock) }
+        ]);
+      });
     });
 
     // switchStatement

@@ -2,6 +2,19 @@
 const Parser = require("../src/index");
 
 describe("tryStatement", () => {
+  it("only try", () => {
+    expect(Parser.parse("try {}", parser => parser.tryStatement())).toEqual({
+      type: "TRY_STATEMENT",
+      resourceSpecification: undefined,
+      body: {
+        type: "BLOCK",
+        statements: []
+      },
+      catchClauses: [],
+      finally: undefined
+    });
+  });
+
   it("one catchClause", () => {
     expect(
       Parser.parse("try {} catch (A e) {}", parser => parser.tryStatement())
