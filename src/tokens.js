@@ -21,7 +21,10 @@ FRAGMENT("HexDigits", "{{HexDigit}}(({{HexDigit}}|'_')*{{HexDigit}})?");
 
 const createToken = chevrotain.createToken;
 
-const Identifier = createToken({ name: "Identifier", pattern: /[a-zA-Z]\w*/ });
+const Identifier = createToken({
+  name: "Identifier",
+  pattern: /[a-zA-Z_\\$][a-zA-Z_\\$0-9]*/
+});
 
 function createKeywordToken(options) {
   options.longer_alt = Identifier;
