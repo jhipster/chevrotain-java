@@ -351,7 +351,9 @@ const RBrace = createToken({
 
 const LCurly = createToken({
   name: "LCurly",
-  pattern: /{/,
+  // using a string literal to get around a bug in regexp-to-ast
+  // so lexer optimizations can be enabled.
+  pattern: "{",
   label: "'{'"
 });
 
@@ -689,12 +691,13 @@ const StringLiteral = createToken({
 
 const LineComment = createToken({
   name: "LineComment",
-  pattern: MAKE_PATTERN("//[^\n\r]*")
+  pattern: /\/\/[^\n\r]*/
 });
 
 const LineCommentStandalone = createToken({
   name: "LineCommentStandalone",
-  pattern: MAKE_PATTERN("//[^\n\r]*(((\n)|([\r][^\n])|(\r\n))s*){2,}"),
+  // TODO: I think the s* in the end is meant to be \s*
+  pattern: /\/\/[^\n\r]*((\n|[\r][^\n]|\r\n)s*){2,}/,
   line_breaks: true
 });
 
