@@ -61,6 +61,16 @@
     "name": "packageDeclaration",
     "definition": [
       {
+        "type": "Repetition",
+        "definition": [
+          {
+            "type": "NonTerminal",
+            "name": "annotation",
+            "idx": 0
+          }
+        ]
+      },
+      {
         "type": "Terminal",
         "name": "Package",
         "label": "'package'",
@@ -517,7 +527,7 @@
         "name": "Identifier",
         "label": "Identifier",
         "idx": 0,
-        "pattern": "[a-zA-Z]\\w*"
+        "pattern": "[a-zA-Z_\\\\$][a-zA-Z_\\\\$0-9]*"
       },
       {
         "type": "Terminal",
@@ -639,7 +649,7 @@
         "name": "Identifier",
         "label": "Identifier",
         "idx": 0,
-        "pattern": "[a-zA-Z]\\w*"
+        "pattern": "[a-zA-Z_\\\\$][a-zA-Z_\\\\$0-9]*"
       },
       {
         "type": "Option",
@@ -748,7 +758,7 @@
         "name": "Identifier",
         "label": "Identifier",
         "idx": 0,
-        "pattern": "[a-zA-Z]\\w*"
+        "pattern": "[a-zA-Z_\\\\$][a-zA-Z_\\\\$0-9]*"
       },
       {
         "type": "Option",
@@ -987,7 +997,7 @@
                         "name": "Identifier",
                         "label": "Identifier",
                         "idx": 0,
-                        "pattern": "[a-zA-Z]\\w*"
+                        "pattern": "[a-zA-Z_\\\\$][a-zA-Z_\\\\$0-9]*"
                       },
                       {
                         "type": "Alternation",
@@ -1118,7 +1128,7 @@
                 "name": "Identifier",
                 "label": "Identifier",
                 "idx": 2,
-                "pattern": "[a-zA-Z]\\w*"
+                "pattern": "[a-zA-Z_\\\\$][a-zA-Z_\\\\$0-9]*"
               },
               {
                 "type": "Alternation",
@@ -1263,7 +1273,7 @@
         "name": "Identifier",
         "label": "Identifier",
         "idx": 0,
-        "pattern": "[a-zA-Z]\\w*"
+        "pattern": "[a-zA-Z_\\\\$][a-zA-Z_\\\\$0-9]*"
       },
       {
         "type": "NonTerminal",
@@ -1322,7 +1332,7 @@
         "name": "Identifier",
         "label": "Identifier",
         "idx": 0,
-        "pattern": "[a-zA-Z]\\w*"
+        "pattern": "[a-zA-Z_\\\\$][a-zA-Z_\\\\$0-9]*"
       },
       {
         "type": "NonTerminal",
@@ -1457,7 +1467,7 @@
         "name": "Identifier",
         "label": "Identifier",
         "idx": 0,
-        "pattern": "[a-zA-Z]\\w*"
+        "pattern": "[a-zA-Z_\\\\$][a-zA-Z_\\\\$0-9]*"
       },
       {
         "type": "Option",
@@ -1571,7 +1581,7 @@
         "name": "Identifier",
         "label": "Identifier",
         "idx": 0,
-        "pattern": "[a-zA-Z]\\w*"
+        "pattern": "[a-zA-Z_\\\\$][a-zA-Z_\\\\$0-9]*"
       },
       {
         "type": "Option",
@@ -1632,7 +1642,7 @@
         "name": "Identifier",
         "label": "Identifier",
         "idx": 0,
-        "pattern": "[a-zA-Z]\\w*"
+        "pattern": "[a-zA-Z_\\\\$][a-zA-Z_\\\\$0-9]*"
       },
       {
         "type": "Option",
@@ -1875,7 +1885,7 @@
                         "name": "Identifier",
                         "label": "Identifier",
                         "idx": 0,
-                        "pattern": "[a-zA-Z]\\w*"
+                        "pattern": "[a-zA-Z_\\\\$][a-zA-Z_\\\\$0-9]*"
                       },
                       {
                         "type": "NonTerminal",
@@ -1979,7 +1989,7 @@
         "name": "Identifier",
         "label": "Identifier",
         "idx": 0,
-        "pattern": "[a-zA-Z]\\w*"
+        "pattern": "[a-zA-Z_\\\\$][a-zA-Z_\\\\$0-9]*"
       },
       {
         "type": "Repetition",
@@ -2058,7 +2068,7 @@
         "name": "Identifier",
         "label": "Identifier",
         "idx": 0,
-        "pattern": "[a-zA-Z]\\w*"
+        "pattern": "[a-zA-Z_\\\\$][a-zA-Z_\\\\$0-9]*"
       },
       {
         "type": "NonTerminal",
@@ -2249,7 +2259,7 @@
         "name": "Identifier",
         "label": "Identifier",
         "idx": 0,
-        "pattern": "[a-zA-Z]\\w*"
+        "pattern": "[a-zA-Z_\\\\$][a-zA-Z_\\\\$0-9]*"
       },
       {
         "type": "Repetition",
@@ -2414,7 +2424,7 @@
         "name": "Identifier",
         "label": "Identifier",
         "idx": 0,
-        "pattern": "[a-zA-Z]\\w*"
+        "pattern": "[a-zA-Z_\\\\$][a-zA-Z_\\\\$0-9]*"
       },
       {
         "type": "NonTerminal",
@@ -2625,7 +2635,7 @@
         "name": "Identifier",
         "label": "Identifier",
         "idx": 0,
-        "pattern": "[a-zA-Z]\\w*"
+        "pattern": "[a-zA-Z_\\\\$][a-zA-Z_\\\\$0-9]*"
       },
       {
         "type": "Terminal",
@@ -2894,7 +2904,7 @@
         "name": "Identifier",
         "label": "Identifier",
         "idx": 0,
-        "pattern": "[a-zA-Z]\\w*"
+        "pattern": "[a-zA-Z_\\\\$][a-zA-Z_\\\\$0-9]*"
       },
       {
         "type": "Option",
@@ -3243,7 +3253,7 @@
             "name": "Identifier",
             "label": "Identifier",
             "idx": 0,
-            "pattern": "[a-zA-Z]\\w*"
+            "pattern": "[a-zA-Z_\\\\$][a-zA-Z_\\\\$0-9]*"
           }
         ]
       }
@@ -3938,45 +3948,50 @@
         "idx": 0
       },
       {
-        "type": "Alternation",
+        "type": "Option",
         "definition": [
           {
-            "type": "Flat",
+            "type": "Alternation",
             "definition": [
               {
-                "type": "NonTerminal",
-                "name": "catchClause",
-                "idx": 0
-              },
-              {
-                "type": "Repetition",
+                "type": "Flat",
                 "definition": [
                   {
                     "type": "NonTerminal",
                     "name": "catchClause",
-                    "idx": 2
+                    "idx": 0
+                  },
+                  {
+                    "type": "Repetition",
+                    "definition": [
+                      {
+                        "type": "NonTerminal",
+                        "name": "catchClause",
+                        "idx": 2
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Option",
+                    "definition": [
+                      {
+                        "type": "NonTerminal",
+                        "name": "finallyBlock",
+                        "idx": 0
+                      }
+                    ]
                   }
                 ]
               },
               {
-                "type": "Option",
+                "type": "Flat",
                 "definition": [
                   {
                     "type": "NonTerminal",
                     "name": "finallyBlock",
-                    "idx": 0
+                    "idx": 2
                   }
                 ]
-              }
-            ]
-          },
-          {
-            "type": "Flat",
-            "definition": [
-              {
-                "type": "NonTerminal",
-                "name": "finallyBlock",
-                "idx": 2
               }
             ]
           }
@@ -4147,7 +4162,7 @@
             "name": "Identifier",
             "label": "Identifier",
             "idx": 0,
-            "pattern": "[a-zA-Z]\\w*"
+            "pattern": "[a-zA-Z_\\\\$][a-zA-Z_\\\\$0-9]*"
           }
         ]
       },
@@ -4177,7 +4192,7 @@
             "name": "Identifier",
             "label": "Identifier",
             "idx": 0,
-            "pattern": "[a-zA-Z]\\w*"
+            "pattern": "[a-zA-Z_\\\\$][a-zA-Z_\\\\$0-9]*"
           }
         ]
       },
@@ -4224,7 +4239,7 @@
         "name": "Identifier",
         "label": "Identifier",
         "idx": 0,
-        "pattern": "[a-zA-Z]\\w*"
+        "pattern": "[a-zA-Z_\\\\$][a-zA-Z_\\\\$0-9]*"
       },
       {
         "type": "Terminal",
@@ -4278,7 +4293,7 @@
         "name": "Identifier",
         "label": "Identifier",
         "idx": 0,
-        "pattern": "[a-zA-Z]\\w*"
+        "pattern": "[a-zA-Z_\\\\$][a-zA-Z_\\\\$0-9]*"
       },
       {
         "type": "Terminal",
@@ -4824,7 +4839,7 @@
         "name": "Identifier",
         "label": "Identifier",
         "idx": 0,
-        "pattern": "[a-zA-Z]\\w*"
+        "pattern": "[a-zA-Z_\\\\$][a-zA-Z_\\\\$0-9]*"
       },
       {
         "type": "NonTerminal",
@@ -4928,7 +4943,7 @@
         "name": "Identifier",
         "label": "Identifier",
         "idx": 0,
-        "pattern": "[a-zA-Z]\\w*"
+        "pattern": "[a-zA-Z_\\\\$][a-zA-Z_\\\\$0-9]*"
       },
       {
         "type": "Option",
@@ -4999,7 +5014,7 @@
         "name": "Identifier",
         "label": "Identifier",
         "idx": 0,
-        "pattern": "[a-zA-Z]\\w*"
+        "pattern": "[a-zA-Z_\\\\$][a-zA-Z_\\\\$0-9]*"
       },
       {
         "type": "Terminal",
@@ -5436,7 +5451,7 @@
                 "name": "Identifier",
                 "label": "Identifier",
                 "idx": 0,
-                "pattern": "[a-zA-Z]\\w*"
+                "pattern": "[a-zA-Z_\\\\$][a-zA-Z_\\\\$0-9]*"
               },
               {
                 "type": "Option",
@@ -6351,7 +6366,7 @@
                 "name": "Identifier",
                 "label": "Identifier",
                 "idx": 0,
-                "pattern": "[a-zA-Z]\\w*"
+                "pattern": "[a-zA-Z_\\\\$][a-zA-Z_\\\\$0-9]*"
               }
             ]
           },
@@ -6409,7 +6424,7 @@
                 "name": "Identifier",
                 "label": "Identifier",
                 "idx": 0,
-                "pattern": "[a-zA-Z]\\w*"
+                "pattern": "[a-zA-Z_\\\\$][a-zA-Z_\\\\$0-9]*"
               }
             ]
           },
@@ -6694,7 +6709,7 @@
         "name": "Identifier",
         "label": "Identifier",
         "idx": 0,
-        "pattern": "[a-zA-Z]\\w*"
+        "pattern": "[a-zA-Z_\\\\$][a-zA-Z_\\\\$0-9]*"
       },
       {
         "type": "Option",
@@ -6717,7 +6732,7 @@
         "name": "Identifier",
         "label": "Identifier",
         "idx": 0,
-        "pattern": "[a-zA-Z]\\w*"
+        "pattern": "[a-zA-Z_\\\\$][a-zA-Z_\\\\$0-9]*"
       },
       {
         "type": "Option",
@@ -7003,7 +7018,7 @@
         "name": "Identifier",
         "label": "Identifier",
         "idx": 0,
-        "pattern": "[a-zA-Z]\\w*"
+        "pattern": "[a-zA-Z_\\\\$][a-zA-Z_\\\\$0-9]*"
       },
       {
         "type": "Repetition",
@@ -7020,7 +7035,7 @@
             "name": "Identifier",
             "label": "Identifier",
             "idx": 2,
-            "pattern": "[a-zA-Z]\\w*"
+            "pattern": "[a-zA-Z_\\\\$][a-zA-Z_\\\\$0-9]*"
           }
         ]
       }
@@ -7081,7 +7096,7 @@
                                     "name": "Identifier",
                                     "label": "Identifier",
                                     "idx": 0,
-                                    "pattern": "[a-zA-Z]\\w*"
+                                    "pattern": "[a-zA-Z_\\\\$][a-zA-Z_\\\\$0-9]*"
                                   },
                                   {
                                     "type": "Option",
@@ -7241,7 +7256,7 @@
         "name": "Identifier",
         "label": "Identifier",
         "idx": 0,
-        "pattern": "[a-zA-Z]\\w*"
+        "pattern": "[a-zA-Z_\\\\$][a-zA-Z_\\\\$0-9]*"
       },
       {
         "type": "Option",

@@ -36,10 +36,17 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   packageDeclaration(ctx) {
+    const annotations = [];
+    if (ctx.annotation) {
+      ctx.annotation.map(annotation =>
+        annotations.push(this.visit(annotation))
+      );
+    }
     const name = this.visit(ctx.qualifiedName);
 
     return {
       type: "PACKAGE_DECLARATION",
+      modifiers: annotations,
       name: name
     };
   }

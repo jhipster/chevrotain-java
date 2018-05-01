@@ -39,6 +39,7 @@ class SelectParser extends chevrotain.Parser {
     // packageDeclaration
     // : annotation* PACKAGE qualifiedName ';'
     $.RULE("packageDeclaration", () => {
+      $.MANY(() => $.SUBRULE($.annotation));
       $.CONSUME(tokens.Package);
       $.SUBRULE($.qualifiedName);
       $.SUBRULE($.semiColon);

@@ -448,6 +448,7 @@ describe("comment", () => {
       imports: [],
       package: {
         type: "PACKAGE_DECLARATION",
+        modifiers: [],
         name: {
           type: "QUALIFIED_NAME",
           name: [

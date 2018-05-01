@@ -18,6 +18,7 @@ describe("compilationUnit", () => {
       type: "COMPILATION_UNIT",
       package: {
         type: "PACKAGE_DECLARATION",
+        modifiers: [],
         name: {
           type: "QUALIFIED_NAME",
           name: [
