@@ -428,11 +428,7 @@ describe("memberDeclaration", () => {
             type: "VARIABLE_DECLARATOR",
             id: {
               type: "VARIABLE_DECLARATOR_ID",
-              dimensions: [
-                {
-                  type: "DIMENSION"
-                }
-              ],
+              dimensions: [],
               id: {
                 type: "IDENTIFIER",
                 value: "expandRatios"

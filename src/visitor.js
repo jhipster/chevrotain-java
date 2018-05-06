@@ -557,8 +557,8 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       ) {
         const id = this.identifier(ctx.Identifier[ctx.primitiveType ? 0 : 1]);
         const dimensions = [];
-        if (ctx.LSquare) {
-          ctx.LSquare.map(() =>
+        if (ctx.identifierDimension) {
+          ctx.identifierDimension.map(() =>
             dimensions.push({
               type: "DIMENSION"
             })

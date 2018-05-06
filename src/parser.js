@@ -434,7 +434,9 @@ class SelectParser extends chevrotain.Parser {
                   // fieldDeclaration
                   ALT: () => {
                     $.MANY3(() => {
-                      $.CONSUME2(tokens.LSquare);
+                      $.CONSUME2(tokens.LSquare, {
+                        LABEL: "identifierDimension"
+                      });
                       $.CONSUME2(tokens.RSquare);
                     });
                     $.OPTION4(() => {
