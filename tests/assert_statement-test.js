@@ -7,11 +7,9 @@ describe("assertStatement", () => {
       Parser.parse("assert this;", parser => parser.assertStatement())
     ).toEqual({
       type: "ASSERT_STATEMENT",
-      expressions: [
-        {
-          type: "THIS"
-        }
-      ]
+      booleanExpression: {
+        type: "THIS"
+      }
     });
   });
 
@@ -20,14 +18,12 @@ describe("assertStatement", () => {
       Parser.parse("assert this:super;", parser => parser.assertStatement())
     ).toEqual({
       type: "ASSERT_STATEMENT",
-      expressions: [
-        {
-          type: "THIS"
-        },
-        {
-          type: "SUPER"
-        }
-      ]
+      booleanExpression: {
+        type: "THIS"
+      },
+      valueExpression: {
+        type: "SUPER"
+      }
     });
   });
 });

@@ -1782,16 +1782,16 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   assertStatement(ctx) {
-    const expressions = [];
-    if (ctx.expression) {
-      ctx.expression.map(expression =>
-        expressions.push(this.visit(expression))
-      );
+    const booleanExpression = this.visit(ctx.expression[0]);
+    let valueExpression = undefined;
+    if (ctx.expression.length > 1) {
+      valueExpression = this.visit(ctx.expression[1]);
     }
 
     return {
       type: "ASSERT_STATEMENT",
-      expressions: expressions
+      booleanExpression: booleanExpression,
+      valueExpression: valueExpression
     };
   }
 

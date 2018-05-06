@@ -18,11 +18,9 @@ describe("statementWithStartingToken", () => {
       )
     ).toEqual({
       type: "ASSERT_STATEMENT",
-      expressions: [
-        {
-          type: "THIS"
-        }
-      ]
+      booleanExpression: {
+        type: "THIS"
+      }
     });
   });
 

@@ -12,11 +12,9 @@ describe("statement", () => {
   it("assertStatement", () => {
     expect(Parser.parse("assert this;", parser => parser.statement())).toEqual({
       type: "ASSERT_STATEMENT",
-      expressions: [
-        {
-          type: "THIS"
-        }
-      ]
+      booleanExpression: {
+        type: "THIS"
+      }
     });
   });
 
