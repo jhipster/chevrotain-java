@@ -2933,7 +2933,8 @@ class SQLToAstVisitor extends BaseSQLVisitor {
         value.type !== "IDENTIFIER" &&
         value.type !== "CLASS_OR_INTERFACE_TYPE_ELEMENT" &&
         value.type !== "TYPE_TYPE" &&
-        value.type !== "PRIMITIVE_TYPE"
+        value.type !== "PRIMITIVE_TYPE" &&
+        value.type !== "QUALIFIED_EXPRESSION"
       ) {
         throw new MismatchedTokenException(
           "Found cast expression but cast expression is not an Identifier",

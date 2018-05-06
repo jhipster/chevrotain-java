@@ -248,6 +248,38 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
     });
   });
 
+  it("castExpression: cast contains dots", () => {
+    expect(
+      Parser.parse("(java.lang.Exception) cause", parser =>
+        parser.parExpressionOrCastExpressionOrLambdaExpression()
+      )
+    ).toEqual({
+      type: "CAST_EXPRESSION",
+      castType: {
+        type: "QUALIFIED_EXPRESSION",
+        expression: {
+          type: "IDENTIFIER",
+          value: "java"
+        },
+        rest: {
+          type: "QUALIFIED_EXPRESSION",
+          expression: {
+            type: "IDENTIFIER",
+            value: "lang"
+          },
+          rest: {
+            type: "IDENTIFIER",
+            value: "Exception"
+          }
+        }
+      },
+      expression: {
+        type: "IDENTIFIER",
+        value: "cause"
+      }
+    });
+  });
+
   it("error castExpression: cast expression is not an identifier", () => {
     expect(() =>
       Parser.parse("(1+1) this", parser =>
