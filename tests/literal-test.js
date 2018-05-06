@@ -16,10 +16,33 @@ describe("literal", () => {
     });
   });
 
-  it("charLiteral", () => {
+  it("charLiteral: simple", () => {
     expect(Parser.parse("'A'", parser => parser.literal())).toEqual({
       type: "CHAR_LITERAL",
       value: "'A'"
+    });
+  });
+
+  it("charLiteral: backslash", () => {
+    expect(Parser.parse("'\\'", parser => parser.literal())).toEqual({
+      type: "CHAR_LITERAL",
+      value: "'\\'"
+    });
+  });
+
+  it("charLiteral: singleQuote", () => {
+    // prettier-ignore
+    // eslint-disable-next-line no-useless-escape
+    expect(Parser.parse("'\''", parser => parser.literal())).toEqual({
+      type: "CHAR_LITERAL",
+      value: "'''"
+    });
+  });
+
+  it("charLiteral: newLine", () => {
+    expect(Parser.parse("'\n'", parser => parser.literal())).toEqual({
+      type: "CHAR_LITERAL",
+      value: "'\n'"
     });
   });
 
