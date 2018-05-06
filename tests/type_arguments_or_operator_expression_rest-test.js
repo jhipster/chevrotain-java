@@ -66,7 +66,10 @@ describe("typeArgumentsOrOperatorExpressionRest", () => {
       )
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: "<",
+      operator: {
+        type: "OPERATOR",
+        operator: "<"
+      },
       expression: {
         type: "TYPE_ARGUMENT",
         argument: {
@@ -95,7 +98,10 @@ describe("typeArgumentsOrOperatorExpressionRest", () => {
       )
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: "<",
+      operator: {
+        type: "OPERATOR",
+        operator: "<"
+      },
       expression: {
         type: "METHOD_INVOCATION",
         name: {
@@ -115,7 +121,10 @@ describe("typeArgumentsOrOperatorExpressionRest", () => {
       )
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: "<",
+      operator: {
+        type: "OPERATOR",
+        operator: "<"
+      },
       expression: {
         type: "METHOD_INVOCATION",
         name: {
@@ -143,7 +152,10 @@ describe("typeArgumentsOrOperatorExpressionRest", () => {
       )
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: "<",
+      operator: {
+        type: "OPERATOR",
+        operator: "<"
+      },
       expression: {
         type: "METHOD_INVOCATION",
         name: {
@@ -170,7 +182,10 @@ describe("typeArgumentsOrOperatorExpressionRest", () => {
       )
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: "<",
+      operator: {
+        type: "OPERATOR",
+        operator: "<"
+      },
       expression: {
         type: "QUALIFIED_EXPRESSION",
         expression: {
@@ -197,7 +212,10 @@ describe("typeArgumentsOrOperatorExpressionRest", () => {
       )
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: "<",
+      operator: {
+        type: "OPERATOR",
+        operator: "<"
+      },
       expression: {
         type: "DECIMAL_LITERAL",
         value: "3"
@@ -212,7 +230,10 @@ describe("typeArgumentsOrOperatorExpressionRest", () => {
       )
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: "<",
+      operator: {
+        type: "OPERATOR",
+        operator: "<"
+      },
       expression: {
         type: "THIS"
       }
@@ -226,7 +247,10 @@ describe("typeArgumentsOrOperatorExpressionRest", () => {
       )
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: "<",
+      operator: {
+        type: "OPERATOR",
+        operator: "<"
+      },
       expression: {
         type: "SUPER"
       }

@@ -55,7 +55,10 @@ describe("identifierOrIdentifierWithTypeArgumentsOrOperatorExpression", () => {
         type: "IDENTIFIER",
         value: "i"
       },
-      operator: "<",
+      operator: {
+        type: "OPERATOR",
+        operator: "<"
+      },
       right: {
         type: "TYPE_ARGUMENT",
         argument: {

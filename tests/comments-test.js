@@ -963,8 +963,8 @@ describe("comment", () => {
           value: "true"
         },
         operator: {
-          type: "STRING_LITERAL",
-          value: "||",
+          type: "OPERATOR",
+          operator: "||",
           comments: [
             {
               ast_type: "comment",
@@ -984,7 +984,10 @@ describe("comment", () => {
         expression: {
           type: "OPERATOR_EXPRESSION",
           left: { type: "IDENTIFIER", value: "x" },
-          operator: "=",
+          operator: {
+            type: "OPERATOR",
+            operator: "="
+          },
           right: { type: "STRING_LITERAL", value: '"foo"' }
         },
         followedEmptyLine: false

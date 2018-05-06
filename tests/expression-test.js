@@ -47,7 +47,10 @@ describe("expression", () => {
           value: "boolean"
         }
       },
-      operator: "&&",
+      operator: {
+        type: "OPERATOR",
+        operator: "&&"
+      },
       right: {
         type: "BOOLEAN_LITERAL",
         value: "true"
@@ -167,7 +170,10 @@ describe("expression", () => {
           dimensions: []
         }
       },
-      operator: "<",
+      operator: {
+        type: "OPERATOR",
+        operator: "<"
+      },
       right: {
         type: "QUALIFIED_EXPRESSION",
         expression: {
@@ -206,7 +212,10 @@ describe("expression", () => {
           }
         }
       },
-      operator: "&&",
+      operator: {
+        type: "OPERATOR",
+        operator: "&&"
+      },
       right: {
         type: "IF_ELSE_EXPRESSION",
         condition: {
@@ -249,7 +258,10 @@ describe("expression", () => {
           }
         }
       },
-      operator: "<",
+      operator: {
+        type: "OPERATOR",
+        operator: "<"
+      },
       right: {
         type: "IF_ELSE_EXPRESSION",
         condition: {
@@ -331,7 +343,10 @@ describe("expression", () => {
       left: {
         type: "THIS"
       },
-      operator: "*",
+      operator: {
+        type: "OPERATOR",
+        operator: "*"
+      },
       right: {
         type: "SUPER"
       }
@@ -347,7 +362,10 @@ describe("expression", () => {
         type: "IDENTIFIER",
         value: "a"
       },
-      operator: "=",
+      operator: {
+        type: "OPERATOR",
+        operator: "="
+      },
       right: {
         type: "IF_ELSE_EXPRESSION",
         condition: {
@@ -385,7 +403,10 @@ describe("expression", () => {
         type: "IDENTIFIER",
         value: "a"
       },
-      operator: "<",
+      operator: {
+        type: "OPERATOR",
+        operator: "<"
+      },
       right: {
         type: "PAR_EXPRESSION",
         expression: {
@@ -394,7 +415,10 @@ describe("expression", () => {
             type: "IDENTIFIER",
             value: "b"
           },
-          operator: "-",
+          operator: {
+            type: "OPERATOR",
+            operator: "-"
+          },
           right: {
             type: "IDENTIFIER",
             value: "c"
@@ -413,7 +437,10 @@ describe("expression", () => {
         type: "IDENTIFIER",
         value: "i"
       },
-      operator: "<",
+      operator: {
+        type: "OPERATOR",
+        operator: "<"
+      },
       right: {
         argument: {
           elements: [
@@ -437,13 +464,19 @@ describe("expression", () => {
       left: {
         type: "THIS"
       },
-      operator: "*",
+      operator: {
+        type: "OPERATOR",
+        operator: "*"
+      },
       right: {
         type: "OPERATOR_EXPRESSION",
         left: {
           type: "SUPER"
         },
-        operator: "+",
+        operator: {
+          type: "OPERATOR",
+          operator: "+"
+        },
         right: {
           type: "NULL"
         }

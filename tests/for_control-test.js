@@ -206,7 +206,10 @@ describe("forControl", () => {
           type: "IDENTIFIER",
           value: "i"
         },
-        operator: "<",
+        operator: {
+          type: "OPERATOR",
+          operator: "<"
+        },
         right: {
           argument: {
             elements: [

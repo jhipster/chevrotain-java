@@ -1259,7 +1259,10 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     if (ctx.This) {
       return {
         type: "OPERATOR_EXPRESSION_REST",
-        operator: "<",
+        operator: {
+          type: "OPERATOR",
+          operator: "<"
+        },
         expression: {
           type: "THIS"
         }
@@ -1269,7 +1272,10 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     if (ctx.Super) {
       return {
         type: "OPERATOR_EXPRESSION_REST",
-        operator: "<",
+        operator: {
+          type: "OPERATOR",
+          operator: "<"
+        },
         expression: {
           type: "SUPER"
         }
@@ -1349,7 +1355,10 @@ class SQLToAstVisitor extends BaseSQLVisitor {
 
           return {
             type: "OPERATOR_EXPRESSION_REST",
-            operator: "<",
+            operator: {
+              type: "OPERATOR",
+              operator: "<"
+            },
             expression: right
           };
         }
@@ -1365,7 +1374,10 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       const literal = this.visit(ctx.literal);
       return {
         type: "OPERATOR_EXPRESSION_REST",
-        operator: "<",
+        operator: {
+          type: "OPERATOR",
+          operator: "<"
+        },
         expression: literal
       };
     }
@@ -1374,7 +1386,10 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       const expression = this.visit(ctx.expression);
       return {
         type: "OPERATOR_EXPRESSION_REST",
-        operator: "<",
+        operator: {
+          type: "OPERATOR",
+          operator: "<"
+        },
         expression: {
           type: "PAR_EXPRESSION",
           expression: expression
@@ -2685,7 +2700,10 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       operator = "%=";
     }
 
-    return operator;
+    return {
+      type: "OPERATOR",
+      operator: operator
+    };
   }
 
   operatorExpressionRest(ctx) {
@@ -3737,9 +3755,9 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   addCommentsToAst(node, astResult) {
     if (node) {
       if (node.constructor === Array) {
-        node.map(n => (astResult = this.addComment(n, astResult)));
+        node.map(n => this.addComment(n, astResult));
       } else {
-        astResult = this.addComment(node, astResult);
+        this.addComment(node, astResult);
       }
     }
     return astResult;
@@ -3751,16 +3769,10 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       node.children.TraditionalComment ||
       node.children.JavaDocComment;
     if (!astResult || !hasComment) {
-      return astResult;
+      return;
     }
 
     if (!astResult.comment && hasComment) {
-      if (typeof astResult === "string") {
-        astResult = {
-          type: "STRING_LITERAL",
-          value: astResult
-        };
-      }
       astResult.comments = [];
     }
 
@@ -3781,8 +3793,6 @@ class SQLToAstVisitor extends BaseSQLVisitor {
         astResult.comments.unshift(this.getComment(javaDocComment))
       );
     }
-
-    return astResult;
   }
 
   getComment(comment) {

@@ -29,7 +29,10 @@ describe("instanceofExpressionRest", () => {
       },
       operatorExpressionRest: {
         type: "OPERATOR_EXPRESSION_REST",
-        operator: "&&",
+        operator: {
+          type: "OPERATOR",
+          operator: "&&"
+        },
         expression: {
           type: "BOOLEAN_LITERAL",
           value: "true"
@@ -51,14 +54,20 @@ describe("instanceofExpressionRest", () => {
       },
       operatorExpressionRest: {
         type: "OPERATOR_EXPRESSION_REST",
-        operator: "&&",
+        operator: {
+          type: "OPERATOR",
+          operator: "&&"
+        },
         expression: {
           type: "OPERATOR_EXPRESSION",
           left: {
             type: "BOOLEAN_LITERAL",
             value: "true"
           },
-          operator: "&&",
+          operator: {
+            type: "OPERATOR",
+            operator: "&&"
+          },
           right: {
             type: "BOOLEAN_LITERAL",
             value: "false"
@@ -82,21 +91,30 @@ describe("instanceofExpressionRest", () => {
       },
       operatorExpressionRest: {
         type: "OPERATOR_EXPRESSION_REST",
-        operator: "&&",
+        operator: {
+          type: "OPERATOR",
+          operator: "&&"
+        },
         expression: {
           type: "OPERATOR_EXPRESSION",
           left: {
             type: "BOOLEAN_LITERAL",
             value: "true"
           },
-          operator: "&&",
+          operator: {
+            type: "OPERATOR",
+            operator: "&&"
+          },
           right: {
             type: "OPERATOR_EXPRESSION",
             left: {
               type: "BOOLEAN_LITERAL",
               value: "false"
             },
-            operator: "&&",
+            operator: {
+              type: "OPERATOR",
+              operator: "&&"
+            },
             right: {
               type: "INSTANCEOF_EXPRESSION",
               expression: {

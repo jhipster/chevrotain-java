@@ -7,7 +7,10 @@ describe("operatorExpressionRest", () => {
       Parser.parse("*super", parser => parser.operatorExpressionRest())
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: "*",
+      operator: {
+        type: "OPERATOR",
+        operator: "*"
+      },
       expression: {
         type: "SUPER"
       }
@@ -19,7 +22,10 @@ describe("operatorExpressionRest", () => {
       Parser.parse("/super", parser => parser.operatorExpressionRest())
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: "/",
+      operator: {
+        type: "OPERATOR",
+        operator: "/"
+      },
       expression: {
         type: "SUPER"
       }
@@ -31,7 +37,10 @@ describe("operatorExpressionRest", () => {
       Parser.parse("%super", parser => parser.operatorExpressionRest())
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: "%",
+      operator: {
+        type: "OPERATOR",
+        operator: "%"
+      },
       expression: {
         type: "SUPER"
       }
@@ -43,7 +52,10 @@ describe("operatorExpressionRest", () => {
       Parser.parse("+super", parser => parser.operatorExpressionRest())
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: "+",
+      operator: {
+        type: "OPERATOR",
+        operator: "+"
+      },
       expression: {
         type: "SUPER"
       }
@@ -55,7 +67,10 @@ describe("operatorExpressionRest", () => {
       Parser.parse("-super", parser => parser.operatorExpressionRest())
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: "-",
+      operator: {
+        type: "OPERATOR",
+        operator: "-"
+      },
       expression: {
         type: "SUPER"
       }
@@ -67,7 +82,10 @@ describe("operatorExpressionRest", () => {
       Parser.parse("<<super", parser => parser.operatorExpressionRest())
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: "<<",
+      operator: {
+        type: "OPERATOR",
+        operator: "<<"
+      },
       expression: {
         type: "SUPER"
       }
@@ -79,7 +97,10 @@ describe("operatorExpressionRest", () => {
       Parser.parse(">>super", parser => parser.operatorExpressionRest())
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: ">>",
+      operator: {
+        type: "OPERATOR",
+        operator: ">>"
+      },
       expression: {
         type: "SUPER"
       }
@@ -91,7 +112,10 @@ describe("operatorExpressionRest", () => {
       Parser.parse(">>>super", parser => parser.operatorExpressionRest())
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: ">>>",
+      operator: {
+        type: "OPERATOR",
+        operator: ">>>"
+      },
       expression: {
         type: "SUPER"
       }
@@ -103,7 +127,10 @@ describe("operatorExpressionRest", () => {
       Parser.parse("<=super", parser => parser.operatorExpressionRest())
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: "<=",
+      operator: {
+        type: "OPERATOR",
+        operator: "<="
+      },
       expression: {
         type: "SUPER"
       }
@@ -115,7 +142,10 @@ describe("operatorExpressionRest", () => {
       Parser.parse(">=super", parser => parser.operatorExpressionRest())
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: ">=",
+      operator: {
+        type: "OPERATOR",
+        operator: ">="
+      },
       expression: {
         type: "SUPER"
       }
@@ -127,7 +157,10 @@ describe("operatorExpressionRest", () => {
       Parser.parse(">super", parser => parser.operatorExpressionRest())
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: ">",
+      operator: {
+        type: "OPERATOR",
+        operator: ">"
+      },
       expression: {
         type: "SUPER"
       }
@@ -139,7 +172,10 @@ describe("operatorExpressionRest", () => {
       Parser.parse("<super", parser => parser.operatorExpressionRest())
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: "<",
+      operator: {
+        type: "OPERATOR",
+        operator: "<"
+      },
       expression: {
         type: "SUPER"
       }
@@ -151,7 +187,10 @@ describe("operatorExpressionRest", () => {
       Parser.parse("==super", parser => parser.operatorExpressionRest())
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: "==",
+      operator: {
+        type: "OPERATOR",
+        operator: "=="
+      },
       expression: {
         type: "SUPER"
       }
@@ -163,7 +202,10 @@ describe("operatorExpressionRest", () => {
       Parser.parse("!=super", parser => parser.operatorExpressionRest())
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: "!=",
+      operator: {
+        type: "OPERATOR",
+        operator: "!="
+      },
       expression: {
         type: "SUPER"
       }
@@ -175,7 +217,10 @@ describe("operatorExpressionRest", () => {
       Parser.parse("&super", parser => parser.operatorExpressionRest())
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: "&",
+      operator: {
+        type: "OPERATOR",
+        operator: "&"
+      },
       expression: {
         type: "SUPER"
       }
@@ -187,7 +232,10 @@ describe("operatorExpressionRest", () => {
       Parser.parse("^super", parser => parser.operatorExpressionRest())
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: "^",
+      operator: {
+        type: "OPERATOR",
+        operator: "^"
+      },
       expression: {
         type: "SUPER"
       }
@@ -199,7 +247,10 @@ describe("operatorExpressionRest", () => {
       Parser.parse("|super", parser => parser.operatorExpressionRest())
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: "|",
+      operator: {
+        type: "OPERATOR",
+        operator: "|"
+      },
       expression: {
         type: "SUPER"
       }
@@ -211,7 +262,10 @@ describe("operatorExpressionRest", () => {
       Parser.parse("&&super", parser => parser.operatorExpressionRest())
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: "&&",
+      operator: {
+        type: "OPERATOR",
+        operator: "&&"
+      },
       expression: {
         type: "SUPER"
       }
@@ -223,7 +277,10 @@ describe("operatorExpressionRest", () => {
       Parser.parse("||super", parser => parser.operatorExpressionRest())
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: "||",
+      operator: {
+        type: "OPERATOR",
+        operator: "||"
+      },
       expression: {
         type: "SUPER"
       }
@@ -235,7 +292,10 @@ describe("operatorExpressionRest", () => {
       Parser.parse("=super", parser => parser.operatorExpressionRest())
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: "=",
+      operator: {
+        type: "OPERATOR",
+        operator: "="
+      },
       expression: {
         type: "SUPER"
       }
@@ -247,7 +307,10 @@ describe("operatorExpressionRest", () => {
       Parser.parse("+=super", parser => parser.operatorExpressionRest())
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: "+=",
+      operator: {
+        type: "OPERATOR",
+        operator: "+="
+      },
       expression: {
         type: "SUPER"
       }
@@ -259,7 +322,10 @@ describe("operatorExpressionRest", () => {
       Parser.parse("-=super", parser => parser.operatorExpressionRest())
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: "-=",
+      operator: {
+        type: "OPERATOR",
+        operator: "-="
+      },
       expression: {
         type: "SUPER"
       }
@@ -271,7 +337,10 @@ describe("operatorExpressionRest", () => {
       Parser.parse("*=super", parser => parser.operatorExpressionRest())
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: "*=",
+      operator: {
+        type: "OPERATOR",
+        operator: "*="
+      },
       expression: {
         type: "SUPER"
       }
@@ -283,7 +352,10 @@ describe("operatorExpressionRest", () => {
       Parser.parse("/=super", parser => parser.operatorExpressionRest())
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: "/=",
+      operator: {
+        type: "OPERATOR",
+        operator: "/="
+      },
       expression: {
         type: "SUPER"
       }
@@ -295,7 +367,10 @@ describe("operatorExpressionRest", () => {
       Parser.parse("&=super", parser => parser.operatorExpressionRest())
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: "&=",
+      operator: {
+        type: "OPERATOR",
+        operator: "&="
+      },
       expression: {
         type: "SUPER"
       }
@@ -307,7 +382,10 @@ describe("operatorExpressionRest", () => {
       Parser.parse("|=super", parser => parser.operatorExpressionRest())
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: "|=",
+      operator: {
+        type: "OPERATOR",
+        operator: "|="
+      },
       expression: {
         type: "SUPER"
       }
@@ -319,7 +397,10 @@ describe("operatorExpressionRest", () => {
       Parser.parse("^=super", parser => parser.operatorExpressionRest())
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: "^=",
+      operator: {
+        type: "OPERATOR",
+        operator: "^="
+      },
       expression: {
         type: "SUPER"
       }
@@ -331,7 +412,10 @@ describe("operatorExpressionRest", () => {
       Parser.parse(">>=super", parser => parser.operatorExpressionRest())
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: ">>=",
+      operator: {
+        type: "OPERATOR",
+        operator: ">>="
+      },
       expression: {
         type: "SUPER"
       }
@@ -343,7 +427,10 @@ describe("operatorExpressionRest", () => {
       Parser.parse(">>>=super", parser => parser.operatorExpressionRest())
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: ">>>=",
+      operator: {
+        type: "OPERATOR",
+        operator: ">>>="
+      },
       expression: {
         type: "SUPER"
       }
@@ -355,7 +442,10 @@ describe("operatorExpressionRest", () => {
       Parser.parse("<<=super", parser => parser.operatorExpressionRest())
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: "<<=",
+      operator: {
+        type: "OPERATOR",
+        operator: "<<="
+      },
       expression: {
         type: "SUPER"
       }
@@ -367,7 +457,10 @@ describe("operatorExpressionRest", () => {
       Parser.parse("%=super", parser => parser.operatorExpressionRest())
     ).toEqual({
       type: "OPERATOR_EXPRESSION_REST",
-      operator: "%=",
+      operator: {
+        type: "OPERATOR",
+        operator: "%="
+      },
       expression: {
         type: "SUPER"
       }

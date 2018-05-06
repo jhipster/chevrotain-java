@@ -232,7 +232,10 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
           dimensions: []
         }
       },
-      operator: "==",
+      operator: {
+        type: "OPERATOR",
+        operator: "=="
+      },
       right: {
         type: "METHOD_INVOCATION",
         name: {
@@ -528,7 +531,10 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
           type: "IDENTIFIER",
           value: "a"
         },
-        operator: "-",
+        operator: {
+          type: "OPERATOR",
+          operator: "-"
+        },
         right: {
           type: "PAR_EXPRESSION",
           expression: {
@@ -537,12 +543,18 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
               type: "IDENTIFIER",
               value: "b"
             },
-            operator: "*",
+            operator: {
+              type: "OPERATOR",
+              operator: "*"
+            },
             right: { type: "IDENTIFIER", value: "c" }
           }
         }
       },
-      operator: "<",
+      operator: {
+        type: "OPERATOR",
+        operator: "<"
+      },
       right: { type: "IDENTIFIER", value: "d" }
     });
   });
@@ -657,7 +669,10 @@ describe("parExpressionOrCastExpressionOrLambdaExpression", () => {
           dimensions: []
         }
       },
-      operator: "&&",
+      operator: {
+        type: "OPERATOR",
+        operator: "&&"
+      },
       right: {
         type: "IF_ELSE_EXPRESSION",
         condition: {
