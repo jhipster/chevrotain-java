@@ -1,6 +1,6 @@
 {
   "name": "chevrotain-java",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "java parser based on chevrotain",
   "main": "src/index.js",
   "repository": "url",
