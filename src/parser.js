@@ -25,21 +25,37 @@ class SelectParser extends chevrotain.Parser {
     // compilationUnit
     // : packageDeclaration? importDeclaration* typeDeclaration* EOF
     $.RULE("compilationUnit", () => {
+      let foundTypeDeclaration = false;
       $.OPTION(() => {
-        $.SUBRULE($.packageDeclaration);
+        $.MANY(() => $.SUBRULE($.annotation));
+        $.OR([
+          { ALT: () => $.SUBRULE($.packageDeclaration) },
+          {
+            ALT: () => {
+              $.MANY2(() => {
+                $.SUBRULE($.typeDeclaration);
+                foundTypeDeclaration = true;
+              });
+            }
+          }
+        ]);
       });
-      $.MANY(() => {
-        $.SUBRULE($.importDeclaration);
-      });
-      $.MANY2(() => {
-        $.SUBRULE($.typeDeclaration);
+      $.OPTION2({
+        GATE: () => !foundTypeDeclaration,
+        DEF: () => {
+          $.MANY3(() => {
+            $.SUBRULE2($.importDeclaration);
+          });
+          $.MANY4(() => {
+            $.SUBRULE2($.typeDeclaration);
+          });
+        }
       });
     });
 
     // packageDeclaration
     // : annotation* PACKAGE qualifiedName ';'
     $.RULE("packageDeclaration", () => {
-      $.MANY(() => $.SUBRULE($.annotation));
       $.CONSUME(tokens.Package);
       $.SUBRULE($.qualifiedName);
       $.SUBRULE($.semiColon);

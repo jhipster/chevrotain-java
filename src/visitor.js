@@ -13,7 +13,17 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   compilationUnit(ctx) {
+    let annotations = [];
+    if (ctx.annotation) {
+      ctx.annotation.map(annotation =>
+        annotations.push(this.visit(annotation))
+      );
+    }
     const pkg = this.visit(ctx.packageDeclaration);
+    if (pkg != undefined && annotations.length > 0) {
+      pkg.modifiers = annotations;
+      annotations = [];
+    }
     const imports = [];
     if (ctx.importDeclaration) {
       ctx.importDeclaration.map(importDeclaration =>
@@ -25,6 +35,11 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       ctx.typeDeclaration.map(typeDeclaration =>
         types.push(this.visit(typeDeclaration))
       );
+      if (types.length > 0 && annotations.length > 0) {
+        for (let index = annotations.length - 1; index >= 0; index--) {
+          types[0].modifiers.unshift(annotations[index]);
+        }
+      }
     }
 
     return {
@@ -36,17 +51,11 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   packageDeclaration(ctx) {
-    const annotations = [];
-    if (ctx.annotation) {
-      ctx.annotation.map(annotation =>
-        annotations.push(this.visit(annotation))
-      );
-    }
     const name = this.visit(ctx.qualifiedName);
 
     return {
       type: "PACKAGE_DECLARATION",
-      modifiers: annotations,
+      modifiers: [],
       name: name
     };
   }

@@ -28,29 +28,69 @@
         "type": "Option",
         "definition": [
           {
-            "type": "NonTerminal",
-            "name": "packageDeclaration",
-            "idx": 0
+            "type": "Repetition",
+            "definition": [
+              {
+                "type": "NonTerminal",
+                "name": "annotation",
+                "idx": 0
+              }
+            ]
+          },
+          {
+            "type": "Alternation",
+            "definition": [
+              {
+                "type": "Flat",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "packageDeclaration",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Flat",
+                "definition": [
+                  {
+                    "type": "Repetition",
+                    "definition": [
+                      {
+                        "type": "NonTerminal",
+                        "name": "typeDeclaration",
+                        "idx": 0
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
       {
-        "type": "Repetition",
+        "type": "Option",
         "definition": [
           {
-            "type": "NonTerminal",
-            "name": "importDeclaration",
-            "idx": 0
-          }
-        ]
-      },
-      {
-        "type": "Repetition",
-        "definition": [
+            "type": "Repetition",
+            "definition": [
+              {
+                "type": "NonTerminal",
+                "name": "importDeclaration",
+                "idx": 2
+              }
+            ]
+          },
           {
-            "type": "NonTerminal",
-            "name": "typeDeclaration",
-            "idx": 0
+            "type": "Repetition",
+            "definition": [
+              {
+                "type": "NonTerminal",
+                "name": "typeDeclaration",
+                "idx": 2
+              }
+            ]
           }
         ]
       }
@@ -60,16 +100,6 @@
     "type": "Rule",
     "name": "packageDeclaration",
     "definition": [
-      {
-        "type": "Repetition",
-        "definition": [
-          {
-            "type": "NonTerminal",
-            "name": "annotation",
-            "idx": 0
-          }
-        ]
-      },
       {
         "type": "Terminal",
         "name": "Package",

@@ -142,6 +142,48 @@ describe("compilationUnit", () => {
     });
   });
 
+  it("single class annotation", () => {
+    expect(
+      Parser.parse("@Annotation class A{}", parser => parser.compilationUnit())
+    ).toEqual({
+      type: "COMPILATION_UNIT",
+      package: undefined,
+      imports: [],
+      types: [
+        {
+          type: "TYPE_DECLARATION",
+          modifiers: [
+            {
+              type: "ANNOTATION",
+              name: {
+                name: [
+                  {
+                    type: "IDENTIFIER",
+                    value: "Annotation"
+                  }
+                ],
+                type: "QUALIFIED_NAME"
+              },
+              hasBraces: false,
+              values: undefined
+            }
+          ],
+          declaration: {
+            type: "CLASS_DECLARATION",
+            name: {
+              type: "IDENTIFIER",
+              value: "A"
+            },
+            body: {
+              type: "CLASS_BODY",
+              declarations: []
+            }
+          }
+        }
+      ]
+    });
+  });
+
   it("multiple classes", () => {
     expect(
       Parser.parse("class A{}\nclass B{}", parser => parser.compilationUnit())
@@ -380,6 +422,100 @@ describe("compilationUnit", () => {
           }
         }
       ]
+    });
+  });
+
+  it("package single annotation", () => {
+    expect(
+      Parser.parse("@Annotation package pkg;", parser =>
+        parser.compilationUnit()
+      )
+    ).toEqual({
+      type: "COMPILATION_UNIT",
+      package: {
+        type: "PACKAGE_DECLARATION",
+        modifiers: [
+          {
+            type: "ANNOTATION",
+            name: {
+              name: [
+                {
+                  type: "IDENTIFIER",
+                  value: "Annotation"
+                }
+              ],
+              type: "QUALIFIED_NAME"
+            },
+            hasBraces: false,
+            values: undefined
+          }
+        ],
+        name: {
+          type: "QUALIFIED_NAME",
+          name: [
+            {
+              type: "IDENTIFIER",
+              value: "pkg"
+            }
+          ]
+        }
+      },
+      imports: [],
+      types: []
+    });
+  });
+
+  it("package multiple annotation", () => {
+    expect(
+      Parser.parse("@Annotation1 @Annotation2 package pkg;", parser =>
+        parser.compilationUnit()
+      )
+    ).toEqual({
+      type: "COMPILATION_UNIT",
+      package: {
+        type: "PACKAGE_DECLARATION",
+        modifiers: [
+          {
+            type: "ANNOTATION",
+            name: {
+              name: [
+                {
+                  type: "IDENTIFIER",
+                  value: "Annotation1"
+                }
+              ],
+              type: "QUALIFIED_NAME"
+            },
+            hasBraces: false,
+            values: undefined
+          },
+          {
+            type: "ANNOTATION",
+            name: {
+              name: [
+                {
+                  type: "IDENTIFIER",
+                  value: "Annotation2"
+                }
+              ],
+              type: "QUALIFIED_NAME"
+            },
+            hasBraces: false,
+            values: undefined
+          }
+        ],
+        name: {
+          type: "QUALIFIED_NAME",
+          name: [
+            {
+              type: "IDENTIFIER",
+              value: "pkg"
+            }
+          ]
+        }
+      },
+      imports: [],
+      types: []
     });
   });
 });
