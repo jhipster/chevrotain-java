@@ -2,17 +2,31 @@
 const Parser = require("../src/index");
 
 describe("literal", () => {
-  it("integerLiteral", () => {
+  it("integerLiteral: positive", () => {
     expect(Parser.parse("10", parser => parser.literal())).toEqual({
       type: "DECIMAL_LITERAL",
       value: "10"
     });
   });
 
-  it("floatLiteral", () => {
+  it("integerLiteral: negative", () => {
+    expect(Parser.parse("-10", parser => parser.literal())).toEqual({
+      type: "DECIMAL_LITERAL",
+      value: "-10"
+    });
+  });
+
+  it("floatLiteral: positive", () => {
     expect(Parser.parse("0.1", parser => parser.literal())).toEqual({
       type: "FLOAT_LITERAL",
       value: "0.1"
+    });
+  });
+
+  it("floatLiteral: negative", () => {
+    expect(Parser.parse("-0.1", parser => parser.literal())).toEqual({
+      type: "FLOAT_LITERAL",
+      value: "-0.1"
     });
   });
 

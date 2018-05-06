@@ -655,7 +655,7 @@ const HexLiteral = createToken({
 const FloatLiteral = createToken({
   name: "FloatLiteral",
   pattern: MAKE_PATTERN(
-    "({{Digits}}\\.{{Digits}}?|\\.{{Digits}}){{ExponentPart}}?[fFdD]?|{{Digits}}({{ExponentPart}}[fFdD]?|[fFdD])"
+    "-?({{Digits}}\\.{{Digits}}?|\\.{{Digits}}){{ExponentPart}}?[fFdD]?|{{Digits}}({{ExponentPart}}[fFdD]?|[fFdD])"
   ),
   label: "'FloatLiteral'"
 });
@@ -670,7 +670,7 @@ const HexFloatLiteral = createToken({
 
 const DecimalLiteral = createToken({
   name: "DecimalLiteral",
-  pattern: MAKE_PATTERN("(0|[1-9]({{Digits}}?|_+{{Digits}}))[lL]?"),
+  pattern: MAKE_PATTERN("-?(0|[1-9]({{Digits}}?|_+{{Digits}}))[lL]?"),
   label: "'DecimalLiteral'"
 });
 
