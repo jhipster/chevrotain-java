@@ -3727,9 +3727,9 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   visit(node) {
-    const astResult = super.visit(node);
+    let astResult = super.visit(node);
 
-    this.addCommentsToAst(node, astResult);
+    astResult = this.addCommentsToAst(node, astResult);
 
     return astResult;
   }
@@ -3737,11 +3737,12 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   addCommentsToAst(node, astResult) {
     if (node) {
       if (node.constructor === Array) {
-        node.map(n => this.addComment(n, astResult));
+        node.map(n => (astResult = this.addComment(n, astResult)));
       } else {
-        this.addComment(node, astResult);
+        astResult = this.addComment(node, astResult);
       }
     }
+    return astResult;
   }
 
   addComment(node, astResult) {
@@ -3750,10 +3751,16 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       node.children.TraditionalComment ||
       node.children.JavaDocComment;
     if (!astResult || !hasComment) {
-      return;
+      return astResult;
     }
 
     if (!astResult.comment && hasComment) {
+      if (typeof astResult === "string") {
+        astResult = {
+          type: "STRING_LITERAL",
+          value: astResult
+        };
+      }
       astResult.comments = [];
     }
 
@@ -3774,6 +3781,8 @@ class SQLToAstVisitor extends BaseSQLVisitor {
         astResult.comments.unshift(this.getComment(javaDocComment))
       );
     }
+
+    return astResult;
   }
 
   getComment(comment) {

@@ -947,4 +947,49 @@ describe("comment", () => {
       ]
     });
   });
+
+  it("comment inside of if statement", () => {
+    expect(
+      Parser.parse(
+        'if (true\n// this is a sample comment\n|| true)\nx = "foo";',
+        parser => parser.ifStatement()
+      )
+    ).toEqual({
+      type: "IF_STATEMENT",
+      condition: {
+        type: "OPERATOR_EXPRESSION",
+        left: {
+          type: "BOOLEAN_LITERAL",
+          value: "true"
+        },
+        operator: {
+          type: "STRING_LITERAL",
+          value: "||",
+          comments: [
+            {
+              ast_type: "comment",
+              value: "// this is a sample comment",
+              leading: true,
+              trailing: false
+            }
+          ]
+        },
+        right: {
+          type: "BOOLEAN_LITERAL",
+          value: "true"
+        }
+      },
+      body: {
+        type: "EXPRESSION_STATEMENT",
+        expression: {
+          type: "OPERATOR_EXPRESSION",
+          left: { type: "IDENTIFIER", value: "x" },
+          operator: "=",
+          right: { type: "STRING_LITERAL", value: '"foo"' }
+        },
+        followedEmptyLine: false
+      },
+      else: undefined
+    });
+  });
 });
