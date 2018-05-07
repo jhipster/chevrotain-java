@@ -51,6 +51,13 @@ describe("literal", () => {
     });
   });
 
+  it("charLiteral: colon", () => {
+    expect(Parser.parse("':'", parser => parser.literal())).toEqual({
+      type: "CHAR_LITERAL",
+      value: "':'"
+    });
+  });
+
   it("charLiteral: tab", () => {
     expect(Parser.parse("'\t'", parser => parser.literal())).toEqual({
       type: "CHAR_LITERAL",
@@ -77,7 +84,8 @@ describe("literal", () => {
     // eslint-disable-next-line no-useless-escape
     expect(Parser.parse("'\''", parser => parser.literal())).toEqual({
       type: "CHAR_LITERAL",
-      value: "'''"
+      // eslint-disable-next-line no-useless-escape
+      value: "'\''"
     });
   });
 
