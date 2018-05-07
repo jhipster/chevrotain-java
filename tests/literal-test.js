@@ -85,7 +85,17 @@ describe("literal", () => {
     expect(Parser.parse("'\''", parser => parser.literal())).toEqual({
       type: "CHAR_LITERAL",
       // eslint-disable-next-line no-useless-escape
-      value: "'\''"
+      value: "'\\''"
+    });
+  });
+
+  it("charLiteral: singleQuote without error", () => {
+    // prettier-ignore
+    // eslint-disable-next-line no-useless-escape
+    expect(Parser.parse("'''", parser => parser.literal())).toEqual({
+      type: "CHAR_LITERAL",
+      // eslint-disable-next-line no-useless-escape
+      value: "'\\''"
     });
   });
 
