@@ -30,10 +30,31 @@ describe("literal", () => {
     });
   });
 
-  it("charLiteral: simple", () => {
+  it("charLiteral: small letter", () => {
+    expect(Parser.parse("'a'", parser => parser.literal())).toEqual({
+      type: "CHAR_LITERAL",
+      value: "'a'"
+    });
+  });
+
+  it("charLiteral: big letter", () => {
     expect(Parser.parse("'A'", parser => parser.literal())).toEqual({
       type: "CHAR_LITERAL",
       value: "'A'"
+    });
+  });
+
+  it("charLiteral: number", () => {
+    expect(Parser.parse("'A'", parser => parser.literal())).toEqual({
+      type: "CHAR_LITERAL",
+      value: "'A'"
+    });
+  });
+
+  it("charLiteral: tab", () => {
+    expect(Parser.parse("'\t'", parser => parser.literal())).toEqual({
+      type: "CHAR_LITERAL",
+      value: "'\t'"
     });
   });
 
@@ -41,6 +62,13 @@ describe("literal", () => {
     expect(Parser.parse("'\\'", parser => parser.literal())).toEqual({
       type: "CHAR_LITERAL",
       value: "'\\'"
+    });
+  });
+
+  it("charLiteral: unicode", () => {
+    expect(Parser.parse("'\\uFFFF'", parser => parser.literal())).toEqual({
+      type: "CHAR_LITERAL",
+      value: "'\\uFFFF'"
     });
   });
 

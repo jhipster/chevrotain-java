@@ -677,8 +677,7 @@ const DecimalLiteral = createToken({
 const CharLiteral = createToken({
   name: "CharLiteral",
   pattern: MAKE_PATTERN(
-    // TODO: fix with better implementation
-    "'([^']|[\\'])*'"
+    "'([a-zA-Z0-9\t\b\n\r\f'\"]|(\\\\(u[a-zA-Z0-9]{4})?))'"
   ),
   label: "'CharLiteral'"
 });
