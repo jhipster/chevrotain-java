@@ -58,53 +58,51 @@ describe("literal", () => {
     });
   });
 
-  it("charLiteral: tab", () => {
+  // tbnrf'\
+  it("charLiteral: t", () => {
     expect(Parser.parse("'\t'", parser => parser.literal())).toEqual({
       type: "CHAR_LITERAL",
-      value: "'\t'"
+      value: "'\\t'"
     });
   });
-
-  it("charLiteral: backslash", () => {
-    expect(Parser.parse("'\\'", parser => parser.literal())).toEqual({
-      type: "CHAR_LITERAL",
-      value: "'\\'"
-    });
-  });
-
-  it("charLiteral: unicode", () => {
-    expect(Parser.parse("'\\uFFFF'", parser => parser.literal())).toEqual({
-      type: "CHAR_LITERAL",
-      value: "'\\uFFFF'"
-    });
-  });
-
-  it("charLiteral: singleQuote", () => {
-    // prettier-ignore
-    // eslint-disable-next-line no-useless-escape
-    expect(Parser.parse("'\''", parser => parser.literal())).toEqual({
-      type: "CHAR_LITERAL",
-      // eslint-disable-next-line no-useless-escape
-      value: "'\\''"
-    });
-  });
-
-  it("charLiteral: singleQuote without error", () => {
-    // prettier-ignore
-    // eslint-disable-next-line no-useless-escape
-    expect(Parser.parse("'''", parser => parser.literal())).toEqual({
-      type: "CHAR_LITERAL",
-      // eslint-disable-next-line no-useless-escape
-      value: "'\\''"
-    });
-  });
-
-  it("charLiteral: newLine", () => {
+  it("charLiteral: n", () => {
     expect(Parser.parse("'\n'", parser => parser.literal())).toEqual({
       type: "CHAR_LITERAL",
-      value: "'\n'"
+      value: "'\\n'"
     });
   });
+  it("charLiteral: r", () => {
+    expect(Parser.parse("'\r'", parser => parser.literal())).toEqual({
+      type: "CHAR_LITERAL",
+      value: "'\\r'"
+    });
+  });
+  it("charLiteral: f", () => {
+    expect(Parser.parse("'\f'", parser => parser.literal())).toEqual({
+      type: "CHAR_LITERAL",
+      value: "'\\f'"
+    });
+  });
+  it("charLiteral: '", () => {
+    expect(Parser.parse("'''", parser => parser.literal())).toEqual({
+      type: "CHAR_LITERAL",
+      value: "'\\''"
+    });
+  });
+  it("charLiteral: \\", () => {
+    expect(Parser.parse("'\\'", parser => parser.literal())).toEqual({
+      type: "CHAR_LITERAL",
+      value: "'\\\\'"
+    });
+  });
+
+  // TODO unicode not supported
+  // it("charLiteral: unicode", () => {
+  //   expect(Parser.parse("'\uFFFF'", parser => parser.literal())).toEqual({
+  //     type: "CHAR_LITERAL",
+  //     value: "'\\uFFFF'"
+  //   });
+  // });
 
   it("stringLiteral", () => {
     expect(Parser.parse('"A"', parser => parser.literal())).toEqual({
