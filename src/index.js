@@ -3,7 +3,7 @@ const SelectLexer = require("./lexer");
 const JavaParser = require("./parser");
 const SQLToAstVisitor = require("./visitor");
 
-const parser = new JavaParser([]);
+const parser = new JavaParser();
 
 // Our visitor has no state, so a single instance is sufficient.
 const toAstVisitorInstance = new SQLToAstVisitor();

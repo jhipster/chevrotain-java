@@ -569,12 +569,12 @@ chardet@^0.4.0:
   resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.4.2.tgz#b5473b33dc97c424e5d98dc87d55d4d8a29c8bf2"
   integrity sha1-tUc7M9yXxCTl2Y3IfVXU2KKci/I=
 
-chevrotain@^3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/chevrotain/-/chevrotain-3.2.0.tgz#576fbaf2bbed9c6254185a435e8a5c4d9283ced5"
-  integrity sha512-RgvVAVcVzX3P4jCxdC2ZeqFeRc6wrlUZWcpWYQigUfVSBzYGwsC/yPFbVtp/boOBpP38N+7VXQ12PFR/ifmQ+Q==
+chevrotain@4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/chevrotain/-/chevrotain-4.1.0.tgz#61b3cf734e182b3164eb12c2c2452f4f5282337f"
+  integrity sha512-iwuK4FOV+vZlvKonoXVw6G+rXJm4jWk17aJFkm6FloVYcVSrAaJLdCdQo+IIyX98jm0WJVcdK9cllRZQpNBnBg==
   dependencies:
-    regexp-to-ast "0.2.2"
+    regexp-to-ast "0.3.5"
 
 ci-info@^1.0.0:
   version "1.1.2"
@@ -2610,7 +2610,7 @@ normalize-path@^2.0.0, normalize-path@^2.0.1:
   dependencies:
     remove-trailing-separator "^1.0.1"
 
-npm-run-all@^4.1.3:
+npm-run-all@4.1.3:
   version "4.1.3"
   resolved "https://registry.yarnpkg.com/npm-run-all/-/npm-run-all-4.1.3.tgz#49f15b55a66bb4101664ce270cb18e7103f8f185"
   integrity sha512-aOG0N3Eo/WW+q6sUIdzcV2COS8VnTZCmdji0VQIAZF3b+a3YWb0AD0vFIyjKec18A7beLGbaQ5jFTNI2bPt9Cg==
@@ -3084,10 +3084,10 @@ regex-cache@^0.4.2:
   dependencies:
     is-equal-shallow "^0.1.3"
 
-regexp-to-ast@0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/regexp-to-ast/-/regexp-to-ast-0.2.2.tgz#58edee54a1157b9c20b205b9c05cc0d81be698d8"
-  integrity sha512-ZfBsQSnrKrM7jHEOtyVKZu1XtCXkMCFkTuwqhRYnc8z+b7lvjgTAcd+TixmuCM6ZbZP7g1ixQISxB+zXZzbecw==
+regexp-to-ast@0.3.5:
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/regexp-to-ast/-/regexp-to-ast-0.3.5.tgz#dedadd11bbb5f849df76b4e84b0b5335831c0473"
+  integrity sha512-1CJygtdvsfNFwiyjaMLBWtg2tfEqx/jSZ8S6TV+GlNL8kiH8rb4cm5Pb7A/C2BpyM/fA8ZJEudlCwi/jvAY+Ow==
 
 remove-trailing-separator@^1.0.1:
   version "1.1.0"

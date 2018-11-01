@@ -9,12 +9,12 @@
 </style>
 
 
-<link rel='stylesheet' href='https://unpkg.com/chevrotain@3.2.0/diagrams/diagrams.css'>
+<link rel='stylesheet' href='https://unpkg.com/chevrotain@4.1.0/diagrams/diagrams.css'>
 
-<script src='https://unpkg.com/chevrotain@3.2.0/diagrams/vendor/railroad-diagrams.js'></script>
-<script src='https://unpkg.com/chevrotain@3.2.0/diagrams/src/diagrams_builder.js'></script>
-<script src='https://unpkg.com/chevrotain@3.2.0/diagrams/src/diagrams_behavior.js'></script>
-<script src='https://unpkg.com/chevrotain@3.2.0/diagrams/src/main.js'></script>
+<script src='https://unpkg.com/chevrotain@4.1.0/diagrams/vendor/railroad-diagrams.js'></script>
+<script src='https://unpkg.com/chevrotain@4.1.0/diagrams/src/diagrams_builder.js'></script>
+<script src='https://unpkg.com/chevrotain@4.1.0/diagrams/src/diagrams_behavior.js'></script>
+<script src='https://unpkg.com/chevrotain@4.1.0/diagrams/src/main.js'></script>
 
 <div id="diagrams" align="center"></div>    
 
@@ -23,12 +23,15 @@
   {
     "type": "Rule",
     "name": "compilationUnit",
+    "orgText": "() => {\n      let foundTypeDeclaration = false;\n      $.OPTION(() => {\n        $.MANY(() => $.SUBRULE($.annotation));\n        $.OR([\n          { ALT: () => $.SUBRULE($.packageDeclaration) },\n          {\n            ALT: () => {\n              $.MANY2(() => {\n                $.SUBRULE($.typeDeclaration);\n                foundTypeDeclaration = true;\n              });\n            }\n          }\n        ]);\n      });\n      $.OPTION2({\n        GATE: () => !foundTypeDeclaration,\n        DEF: () => {\n          $.MANY3(() => {\n            $.SUBRULE2($.importDeclaration);\n          });\n          $.MANY4(() => {\n            $.SUBRULE2($.typeDeclaration);\n          });\n        }\n      });\n    }",
     "definition": [
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "Repetition",
+            "idx": 0,
             "definition": [
               {
                 "type": "NonTerminal",
@@ -39,6 +42,7 @@
           },
           {
             "type": "Alternation",
+            "idx": 0,
             "definition": [
               {
                 "type": "Flat",
@@ -55,6 +59,7 @@
                 "definition": [
                   {
                     "type": "Repetition",
+                    "idx": 2,
                     "definition": [
                       {
                         "type": "NonTerminal",
@@ -71,9 +76,11 @@
       },
       {
         "type": "Option",
+        "idx": 2,
         "definition": [
           {
             "type": "Repetition",
+            "idx": 3,
             "definition": [
               {
                 "type": "NonTerminal",
@@ -84,6 +91,7 @@
           },
           {
             "type": "Repetition",
+            "idx": 4,
             "definition": [
               {
                 "type": "NonTerminal",
@@ -99,6 +107,7 @@
   {
     "type": "Rule",
     "name": "packageDeclaration",
+    "orgText": "() => {\n      $.CONSUME(tokens.Package);\n      $.SUBRULE($.qualifiedName);\n      $.SUBRULE($.semiColon);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -122,6 +131,7 @@
   {
     "type": "Rule",
     "name": "importDeclaration",
+    "orgText": "() => {\n      $.CONSUME(tokens.Import);\n      $.OPTION(() => {\n        $.CONSUME(tokens.Static);\n      });\n      $.SUBRULE($.qualifiedName);\n      $.OPTION2(() => {\n        $.CONSUME(tokens.Dot);\n        $.CONSUME(tokens.Star);\n      });\n      $.SUBRULE($.semiColon);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -132,6 +142,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "Terminal",
@@ -149,6 +160,7 @@
       },
       {
         "type": "Option",
+        "idx": 2,
         "definition": [
           {
             "type": "Terminal",
@@ -176,9 +188,11 @@
   {
     "type": "Rule",
     "name": "typeDeclaration",
+    "orgText": "() => {\n      $.MANY(() => {\n        $.SUBRULE($.classOrInterfaceModifier);\n      });\n      $.OR([\n        { ALT: () => $.SUBRULE($.classDeclaration) },\n        { ALT: () => $.SUBRULE($.enumDeclaration) },\n        { ALT: () => $.SUBRULE($.interfaceDeclaration) },\n        { ALT: () => $.SUBRULE($.annotationTypeDeclaration) }\n      ]);\n    }",
     "definition": [
       {
         "type": "Repetition",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -189,6 +203,7 @@
       },
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -237,9 +252,11 @@
   {
     "type": "Rule",
     "name": "modifier",
+    "orgText": "() => {\n      $.OR([\n        { ALT: () => $.SUBRULE($.classOrInterfaceModifier) },\n        { ALT: () => $.CONSUME(tokens.Native) },\n        { ALT: () => $.CONSUME(tokens.Synchronized) },\n        { ALT: () => $.CONSUME(tokens.Transient) },\n        { ALT: () => $.CONSUME(tokens.Volatile) }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -306,9 +323,11 @@
   {
     "type": "Rule",
     "name": "classOrInterfaceModifier",
+    "orgText": "() => {\n      $.OR([\n        { ALT: () => $.SUBRULE($.annotation) },\n        { ALT: () => $.CONSUME(tokens.Public) },\n        { ALT: () => $.CONSUME(tokens.Protected) },\n        { ALT: () => $.CONSUME(tokens.Private) },\n        { ALT: () => $.CONSUME(tokens.Static) },\n        { ALT: () => $.CONSUME(tokens.Abstract) },\n        { ALT: () => $.CONSUME(tokens.Final) },\n        { ALT: () => $.CONSUME(tokens.Strictfp) }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -411,9 +430,11 @@
   {
     "type": "Rule",
     "name": "variableModifier",
+    "orgText": "() => {\n      $.OR([\n        { ALT: () => $.SUBRULE($.annotation) },\n        { ALT: () => $.CONSUME(tokens.Final) }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -444,6 +465,7 @@
   {
     "type": "Rule",
     "name": "annotation",
+    "orgText": "() => {\n      $.CONSUME(tokens.At);\n      $.SUBRULE($.qualifiedName);\n      $.OPTION(() => {\n        $.CONSUME(tokens.LBrace);\n        $.OPTION2(() => {\n          $.OR([\n            {\n              ALT: () => {\n                $.SUBRULE($.expression);\n              }\n            },\n            { ALT: () => $.SUBRULE($.elementValueArrayInitializer) }\n          ]);\n          $.MANY(() => {\n            $.CONSUME(tokens.Comma);\n            $.SUBRULE2($.elementValuePair);\n          });\n        });\n        $.CONSUME(tokens.RBrace);\n      });\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -459,6 +481,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "Terminal",
@@ -469,9 +492,11 @@
           },
           {
             "type": "Option",
+            "idx": 2,
             "definition": [
               {
                 "type": "Alternation",
+                "idx": 0,
                 "definition": [
                   {
                     "type": "Flat",
@@ -497,6 +522,7 @@
               },
               {
                 "type": "Repetition",
+                "idx": 0,
                 "definition": [
                   {
                     "type": "Terminal",
@@ -528,9 +554,11 @@
   {
     "type": "Rule",
     "name": "elementValuePairs",
+    "orgText": "() => {\n      $.AT_LEAST_ONE_SEP({\n        SEP: tokens.Comma,\n        DEF: () => {\n          $.SUBRULE($.elementValuePair);\n        }\n      });\n    }",
     "definition": [
       {
         "type": "RepetitionMandatoryWithSeparator",
+        "idx": 0,
         "separator": {
           "type": "Terminal",
           "name": "Comma",
@@ -551,6 +579,7 @@
   {
     "type": "Rule",
     "name": "elementValuePair",
+    "orgText": "() => {\n      $.CONSUME(tokens.Identifier);\n      $.CONSUME(tokens.Equals);\n      $.SUBRULE($.elementValue);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -576,9 +605,11 @@
   {
     "type": "Rule",
     "name": "elementValue",
+    "orgText": "() => {\n      $.OR([\n        { ALT: () => $.SUBRULE($.expression) },\n        { ALT: () => $.SUBRULE($.elementValueArrayInitializer) }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -607,6 +638,7 @@
   {
     "type": "Rule",
     "name": "elementValueArrayInitializer",
+    "orgText": "() => {\n      $.CONSUME(tokens.LCurly);\n      $.OPTION(() => {\n        $.SUBRULE($.elementValue);\n        $.MANY(() => {\n          $.CONSUME(tokens.Comma);\n          $.SUBRULE2($.elementValue);\n        });\n      });\n      $.OPTION2(() => {\n        $.CONSUME2(tokens.Comma);\n      });\n      $.CONSUME(tokens.RCurly);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -617,6 +649,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -625,6 +658,7 @@
           },
           {
             "type": "Repetition",
+            "idx": 0,
             "definition": [
               {
                 "type": "Terminal",
@@ -644,6 +678,7 @@
       },
       {
         "type": "Option",
+        "idx": 2,
         "definition": [
           {
             "type": "Terminal",
@@ -666,6 +701,7 @@
   {
     "type": "Rule",
     "name": "classDeclaration",
+    "orgText": "() => {\n      $.CONSUME(tokens.Class);\n      $.CONSUME(tokens.Identifier);\n      $.OPTION(() => {\n        $.SUBRULE($.typeParameters);\n      });\n      $.OPTION2(() => {\n        $.CONSUME(tokens.Extends);\n        $.SUBRULE($.typeType);\n      });\n      $.OPTION3(() => {\n        $.CONSUME(tokens.Implements);\n        $.SUBRULE($.typeList);\n      });\n      $.SUBRULE($.classBody);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -683,6 +719,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -693,6 +730,7 @@
       },
       {
         "type": "Option",
+        "idx": 2,
         "definition": [
           {
             "type": "Terminal",
@@ -710,6 +748,7 @@
       },
       {
         "type": "Option",
+        "idx": 3,
         "definition": [
           {
             "type": "Terminal",
@@ -735,6 +774,7 @@
   {
     "type": "Rule",
     "name": "typeParameters",
+    "orgText": "() => {\n      $.CONSUME(tokens.Less);\n      $.AT_LEAST_ONE_SEP({\n        SEP: tokens.Comma,\n        DEF: () => {\n          $.SUBRULE($.typeParameter);\n        }\n      });\n      $.CONSUME(tokens.Greater);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -745,6 +785,7 @@
       },
       {
         "type": "RepetitionMandatoryWithSeparator",
+        "idx": 0,
         "separator": {
           "type": "Terminal",
           "name": "Comma",
@@ -772,9 +813,11 @@
   {
     "type": "Rule",
     "name": "typeParameter",
+    "orgText": "() => {\n      $.MANY(() => {\n        $.SUBRULE($.annotation);\n      });\n      $.CONSUME(tokens.Identifier);\n      $.OPTION(() => {\n        $.CONSUME(tokens.Extends);\n        $.SUBRULE($.typeBound);\n      });\n    }",
     "definition": [
       {
         "type": "Repetition",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -792,6 +835,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "Terminal",
@@ -812,9 +856,11 @@
   {
     "type": "Rule",
     "name": "typeBound",
+    "orgText": "() => {\n      $.AT_LEAST_ONE_SEP({\n        SEP: tokens.And,\n        DEF: () => {\n          $.SUBRULE($.typeType);\n        }\n      });\n    }",
     "definition": [
       {
         "type": "RepetitionMandatoryWithSeparator",
+        "idx": 0,
         "separator": {
           "type": "Terminal",
           "name": "And",
@@ -835,6 +881,7 @@
   {
     "type": "Rule",
     "name": "classBody",
+    "orgText": "() => {\n      $.CONSUME(tokens.LCurly);\n      $.MANY(() => {\n        $.SUBRULE($.classBodyDeclaration);\n      });\n      $.CONSUME(tokens.RCurly);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -845,6 +892,7 @@
       },
       {
         "type": "Repetition",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -865,9 +913,11 @@
   {
     "type": "Rule",
     "name": "classBodyDeclaration",
+    "orgText": "() => {\n      $.OPTION(() => {\n        $.CONSUME(tokens.Static);\n      });\n      $.OR([\n        {\n          ALT: () => {\n            $.SUBRULE($.block);\n          }\n        },\n        {\n          // classBodyMemberDeclaration\n          ALT: () => {\n            $.MANY(() => {\n              $.SUBRULE($.modifier);\n            });\n            $.SUBRULE($.memberDeclaration);\n          }\n        },\n        {\n          // semiColon\n          ALT: () => {\n            $.SUBRULE($.semiColon);\n          }\n        }\n      ]);\n    }",
     "definition": [
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "Terminal",
@@ -880,6 +930,7 @@
       },
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -896,6 +947,7 @@
             "definition": [
               {
                 "type": "Repetition",
+                "idx": 0,
                 "definition": [
                   {
                     "type": "NonTerminal",
@@ -928,9 +980,11 @@
   {
     "type": "Rule",
     "name": "memberDeclaration",
+    "orgText": "() => {\n      $.OR([\n        {\n          ALT: () =>\n            $.SUBRULE(\n              $.fieldDeclarationOrMethodDeclarationOrConstructorDeclaration\n            )\n        },\n        {\n          ALT: () =>\n            $.SUBRULE($.genericMethodDeclarationOrGenericConstructorDeclaration)\n        },\n        { ALT: () => $.SUBRULE($.interfaceDeclaration) },\n        { ALT: () => $.SUBRULE($.annotationTypeDeclaration) },\n        { ALT: () => $.SUBRULE($.classDeclaration) },\n        { ALT: () => $.SUBRULE($.enumDeclaration) }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -999,15 +1053,18 @@
   {
     "type": "Rule",
     "name": "fieldDeclarationOrMethodDeclarationOrConstructorDeclaration",
+    "orgText": "() => {\n        let isFieldDeclaration = true;\n        let isMethodDeclaration = true;\n        let isConstructorDeclaration = true;\n        let firstType = undefined;\n        // typeTypeOrVoid\n        $.OR([\n          {\n            // typeType\n            ALT: () => {\n              $.OPTION(() => {\n                $.SUBRULE($.annotation);\n                isConstructorDeclaration = false;\n              });\n              $.OR2([\n                {\n                  ALT: () => {\n                    firstType = $.CONSUME(tokens.Identifier);\n\n                    $.OR3([\n                      {\n                        // constructorDeclaration\n                        GATE: () => isConstructorDeclaration,\n                        ALT: () => {\n                          $.SUBRULE($.formalParameters);\n                          $.OPTION2(() => {\n                            $.CONSUME(tokens.Throws);\n                            $.SUBRULE($.qualifiedNameList);\n                          });\n                          $.SUBRULE($.methodBody);\n                          isFieldDeclaration = false;\n                          isMethodDeclaration = false;\n                          firstType.isConstructorDeclaration = true;\n                        }\n                      },\n                      {\n                        ALT: () => {\n                          $.OPTION3(() => {\n                            $.SUBRULE($.typeArguments);\n                          });\n                          $.MANY({\n                            GATE: () => this.LA(2).tokenType !== tokens.Class,\n                            DEF: () => {\n                              $.CONSUME(tokens.Dot);\n                              $.SUBRULE2($.classOrInterfaceTypeElement);\n                            }\n                          });\n                          isConstructorDeclaration = false;\n                        }\n                      }\n                    ]);\n                  }\n                },\n                {\n                  ALT: () => {\n                    firstType = $.SUBRULE($.primitiveType);\n                    isConstructorDeclaration = false;\n                  }\n                }\n              ]);\n              $.MANY2({\n                GATE: () => !isConstructorDeclaration,\n                DEF: () => {\n                  const lSquare = $.CONSUME(tokens.LSquare);\n                  lSquare.isTypeType = true;\n                  $.CONSUME(tokens.RSquare);\n                }\n              });\n            }\n          },\n          {\n            // Void\n            ALT: () => {\n              firstType = $.CONSUME(tokens.Void);\n              isConstructorDeclaration = false;\n              isFieldDeclaration = false;\n            }\n          }\n        ]);\n        $.OR4([\n          {\n            GATE: () => isMethodDeclaration || isFieldDeclaration,\n            ALT: () => {\n              $.CONSUME2(tokens.Identifier);\n\n              $.OR5([\n                {\n                  // fieldDeclaration\n                  ALT: () => {\n                    $.MANY3(() => {\n                      $.CONSUME2(tokens.LSquare, {\n                        LABEL: \"identifierDimension\"\n                      });\n                      $.CONSUME2(tokens.RSquare);\n                    });\n                    $.OPTION4(() => {\n                      $.CONSUME(tokens.Equals);\n                      $.SUBRULE($.variableInitializer);\n                    });\n                    $.MANY4(() => {\n                      $.CONSUME(tokens.Comma);\n                      $.SUBRULE($.variableDeclarator);\n                    });\n                    $.SUBRULE($.semiColon);\n                    if (firstType) {\n                      firstType.isFieldDeclaration = true;\n                    }\n                  }\n                },\n                {\n                  // methodDeclaration\n                  ALT: () => {\n                    $.SUBRULE2($.formalParameters);\n                    $.MANY5(() => {\n                      $.CONSUME3(tokens.LSquare);\n                      $.CONSUME3(tokens.RSquare);\n                    });\n                    $.OPTION5(() => {\n                      $.CONSUME2(tokens.Throws);\n                      $.SUBRULE2($.qualifiedNameList);\n                    });\n                    $.SUBRULE2($.methodBody);\n                    if (firstType) {\n                      firstType.isMethodDeclaration = true;\n                    }\n                  }\n                }\n              ]);\n            }\n          },\n          {\n            ALT: () => {\n              // empty\n            }\n          }\n        ]);\n      }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
             "definition": [
               {
                 "type": "Option",
+                "idx": 0,
                 "definition": [
                   {
                     "type": "NonTerminal",
@@ -1018,6 +1075,7 @@
               },
               {
                 "type": "Alternation",
+                "idx": 2,
                 "definition": [
                   {
                     "type": "Flat",
@@ -1031,6 +1089,7 @@
                       },
                       {
                         "type": "Alternation",
+                        "idx": 3,
                         "definition": [
                           {
                             "type": "Flat",
@@ -1042,6 +1101,7 @@
                               },
                               {
                                 "type": "Option",
+                                "idx": 2,
                                 "definition": [
                                   {
                                     "type": "Terminal",
@@ -1069,6 +1129,7 @@
                             "definition": [
                               {
                                 "type": "Option",
+                                "idx": 3,
                                 "definition": [
                                   {
                                     "type": "NonTerminal",
@@ -1079,6 +1140,7 @@
                               },
                               {
                                 "type": "Repetition",
+                                "idx": 0,
                                 "definition": [
                                   {
                                     "type": "Terminal",
@@ -1114,6 +1176,7 @@
               },
               {
                 "type": "Repetition",
+                "idx": 2,
                 "definition": [
                   {
                     "type": "Terminal",
@@ -1149,6 +1212,7 @@
       },
       {
         "type": "Alternation",
+        "idx": 4,
         "definition": [
           {
             "type": "Flat",
@@ -1162,12 +1226,14 @@
               },
               {
                 "type": "Alternation",
+                "idx": 5,
                 "definition": [
                   {
                     "type": "Flat",
                     "definition": [
                       {
                         "type": "Repetition",
+                        "idx": 3,
                         "definition": [
                           {
                             "type": "Terminal",
@@ -1187,6 +1253,7 @@
                       },
                       {
                         "type": "Option",
+                        "idx": 4,
                         "definition": [
                           {
                             "type": "Terminal",
@@ -1204,6 +1271,7 @@
                       },
                       {
                         "type": "Repetition",
+                        "idx": 4,
                         "definition": [
                           {
                             "type": "Terminal",
@@ -1236,6 +1304,7 @@
                       },
                       {
                         "type": "Repetition",
+                        "idx": 5,
                         "definition": [
                           {
                             "type": "Terminal",
@@ -1255,6 +1324,7 @@
                       },
                       {
                         "type": "Option",
+                        "idx": 5,
                         "definition": [
                           {
                             "type": "Terminal",
@@ -1292,6 +1362,7 @@
   {
     "type": "Rule",
     "name": "methodDeclaration",
+    "orgText": "() => {\n      $.SUBRULE($.typeTypeOrVoid);\n      $.CONSUME(tokens.Identifier);\n      $.SUBRULE($.formalParameters);\n      $.MANY(() => {\n        $.CONSUME(tokens.LSquare);\n        $.CONSUME(tokens.RSquare);\n      });\n      $.OPTION(() => {\n        $.CONSUME(tokens.Throws);\n        $.SUBRULE($.qualifiedNameList);\n      });\n      $.SUBRULE($.methodBody);\n    }",
     "definition": [
       {
         "type": "NonTerminal",
@@ -1312,6 +1383,7 @@
       },
       {
         "type": "Repetition",
+        "idx": 0,
         "definition": [
           {
             "type": "Terminal",
@@ -1331,6 +1403,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "Terminal",
@@ -1356,6 +1429,7 @@
   {
     "type": "Rule",
     "name": "constructorDeclaration",
+    "orgText": "() => {\n      $.CONSUME(tokens.Identifier);\n      $.SUBRULE($.formalParameters);\n      $.OPTION(() => {\n        $.CONSUME(tokens.Throws);\n        $.SUBRULE($.qualifiedNameList);\n      });\n      $.SUBRULE($.methodBody);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -1371,6 +1445,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "Terminal",
@@ -1396,6 +1471,7 @@
   {
     "type": "Rule",
     "name": "genericMethodDeclarationOrGenericConstructorDeclaration",
+    "orgText": "() => {\n      $.SUBRULE($.typeParameters);\n      $.OR([\n        { ALT: () => $.SUBRULE($.methodDeclaration) },\n        { ALT: () => $.SUBRULE($.constructorDeclaration) }\n      ]);\n    }",
     "definition": [
       {
         "type": "NonTerminal",
@@ -1404,6 +1480,7 @@
       },
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -1432,6 +1509,7 @@
   {
     "type": "Rule",
     "name": "fieldDeclaration",
+    "orgText": "() => {\n      $.SUBRULE($.typeType);\n      $.SUBRULE($.variableDeclarators);\n      $.SUBRULE($.semiColon);\n    }",
     "definition": [
       {
         "type": "NonTerminal",
@@ -1453,9 +1531,11 @@
   {
     "type": "Rule",
     "name": "methodBody",
+    "orgText": "() => {\n      $.OR([\n        { ALT: () => $.SUBRULE($.block) },\n        { ALT: () => $.SUBRULE($.semiColon) }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -1484,6 +1564,7 @@
   {
     "type": "Rule",
     "name": "enumDeclaration",
+    "orgText": "() => {\n      $.CONSUME(tokens.Enum);\n      $.CONSUME(tokens.Identifier);\n      $.OPTION(() => {\n        $.CONSUME(tokens.Implements);\n        $.SUBRULE($.typeList);\n      });\n      $.CONSUME(tokens.LCurly);\n      $.OPTION2(() => {\n        $.SUBRULE($.enumConstants);\n      });\n      $.OPTION3(() => {\n        $.CONSUME(tokens.Comma);\n      });\n      $.OPTION4(() => {\n        $.SUBRULE($.enumBodyDeclarations);\n      });\n      $.CONSUME(tokens.RCurly);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -1501,6 +1582,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "Terminal",
@@ -1525,6 +1607,7 @@
       },
       {
         "type": "Option",
+        "idx": 2,
         "definition": [
           {
             "type": "NonTerminal",
@@ -1535,6 +1618,7 @@
       },
       {
         "type": "Option",
+        "idx": 3,
         "definition": [
           {
             "type": "Terminal",
@@ -1547,6 +1631,7 @@
       },
       {
         "type": "Option",
+        "idx": 4,
         "definition": [
           {
             "type": "NonTerminal",
@@ -1567,6 +1652,7 @@
   {
     "type": "Rule",
     "name": "enumConstants",
+    "orgText": "() => {\n      $.SUBRULE($.enumConstant);\n      $.MANY({\n        // It can have a single comma at the end\n        // What should follow is a right curly OR\n        // a semi colon for a start of a enumBodyDeclarations\n        GATE: () =>\n          this.LA(2).tokenType !== tokens.RCurly &&\n          this.LA(2).tokenType !== tokens.SemiColon,\n        DEF: () => {\n          $.CONSUME(tokens.Comma);\n          $.SUBRULE2($.enumConstant);\n        }\n      });\n    }",
     "definition": [
       {
         "type": "NonTerminal",
@@ -1575,6 +1661,7 @@
       },
       {
         "type": "Repetition",
+        "idx": 0,
         "definition": [
           {
             "type": "Terminal",
@@ -1595,9 +1682,11 @@
   {
     "type": "Rule",
     "name": "enumConstant",
+    "orgText": "() => {\n      $.MANY(() => {\n        $.SUBRULE($.annotation);\n      });\n      $.CONSUME(tokens.Identifier);\n      $.OPTION(() => {\n        $.SUBRULE($.arguments);\n      });\n      $.OPTION2(() => {\n        $.SUBRULE($.classBody);\n      });\n    }",
     "definition": [
       {
         "type": "Repetition",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -1615,6 +1704,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -1625,6 +1715,7 @@
       },
       {
         "type": "Option",
+        "idx": 2,
         "definition": [
           {
             "type": "NonTerminal",
@@ -1638,6 +1729,7 @@
   {
     "type": "Rule",
     "name": "enumBodyDeclarations",
+    "orgText": "() => {\n      $.SUBRULE($.semiColon);\n      $.MANY(() => {\n        $.SUBRULE($.classBodyDeclaration);\n      });\n    }",
     "definition": [
       {
         "type": "NonTerminal",
@@ -1646,6 +1738,7 @@
       },
       {
         "type": "Repetition",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -1659,6 +1752,7 @@
   {
     "type": "Rule",
     "name": "interfaceDeclaration",
+    "orgText": "() => {\n      $.CONSUME(tokens.Interface);\n      $.CONSUME(tokens.Identifier);\n      $.OPTION(() => {\n        $.SUBRULE($.typeParameters);\n      });\n      $.OPTION2(() => {\n        $.CONSUME(tokens.Extends);\n        $.SUBRULE($.typeList);\n      });\n      $.SUBRULE($.interfaceBody);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -1676,6 +1770,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -1686,6 +1781,7 @@
       },
       {
         "type": "Option",
+        "idx": 2,
         "definition": [
           {
             "type": "Terminal",
@@ -1711,6 +1807,7 @@
   {
     "type": "Rule",
     "name": "interfaceBody",
+    "orgText": "() => {\n      $.CONSUME(tokens.LCurly);\n      $.MANY(() => {\n        $.SUBRULE($.interfaceBodyDeclaration);\n      });\n      $.CONSUME(tokens.RCurly);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -1721,6 +1818,7 @@
       },
       {
         "type": "Repetition",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -1741,9 +1839,11 @@
   {
     "type": "Rule",
     "name": "interfaceBodyDeclaration",
+    "orgText": "() => {\n      $.MANY(() => {\n        $.SUBRULE($.modifier);\n      });\n      $.SUBRULE($.interfaceMemberDeclaration);\n    }",
     "definition": [
       {
         "type": "Repetition",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -1762,9 +1862,11 @@
   {
     "type": "Rule",
     "name": "interfaceMemberDeclaration",
+    "orgText": "() => {\n      $.OR([\n        {\n          ALT: () =>\n            $.SUBRULE($.constantDeclarationOrInterfaceMethodDeclaration)\n        },\n        { ALT: () => $.SUBRULE($.interfaceDeclaration) },\n        { ALT: () => $.SUBRULE($.classDeclaration) },\n        { ALT: () => $.SUBRULE($.enumDeclaration) }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -1813,15 +1915,18 @@
   {
     "type": "Rule",
     "name": "constantDeclarationOrInterfaceMethodDeclaration",
+    "orgText": "() => {\n      let isConstantDeclaration = true;\n      let isInterfaceMethodDeclaration = true;\n\n      $.OR([\n        {\n          ALT: () => {\n            // interfaceMethodDeclaration\n            $.MANY(() => {\n              $.SUBRULE($.interfaceMethodModifier);\n              isConstantDeclaration = false;\n            });\n            $.OPTION(() => {\n              $.SUBRULE($.typeParameters);\n              isConstantDeclaration = false;\n            });\n            $.MANY2(() => {\n              $.SUBRULE($.annotation);\n              isConstantDeclaration = false;\n            });\n            $.OR2([\n              {\n                ALT: () => {\n                  $.SUBRULE($.typeType);\n\n                  $.OPTION2({\n                    GATE: () => isConstantDeclaration,\n                    DEF: () => {\n                      $.AT_LEAST_ONE_SEP({\n                        SEP: tokens.Comma,\n                        DEF: () => {\n                          $.SUBRULE($.constantDeclarator);\n                        }\n                      });\n                      $.SUBRULE($.semiColon);\n                      isInterfaceMethodDeclaration = false;\n                    }\n                  });\n                }\n              },\n              { ALT: () => $.CONSUME(tokens.Void) }\n            ]);\n\n            $.OR3([\n              {\n                GATE: () => isInterfaceMethodDeclaration,\n                ALT: () => {\n                  $.CONSUME(tokens.Identifier);\n                  $.SUBRULE($.formalParameters);\n                  $.MANY3(() => {\n                    $.CONSUME(tokens.LSquare);\n                    $.CONSUME(tokens.RSquare);\n                  });\n                  $.OPTION3(() => {\n                    $.CONSUME(tokens.Throws);\n                    $.SUBRULE($.qualifiedNameList);\n                  });\n                  $.SUBRULE($.methodBody);\n                }\n              },\n              {\n                ALT: () => {\n                  // empty for constant declaration\n                }\n              }\n            ]);\n          }\n        }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
             "definition": [
               {
                 "type": "Repetition",
+                "idx": 0,
                 "definition": [
                   {
                     "type": "NonTerminal",
@@ -1832,6 +1937,7 @@
               },
               {
                 "type": "Option",
+                "idx": 0,
                 "definition": [
                   {
                     "type": "NonTerminal",
@@ -1842,6 +1948,7 @@
               },
               {
                 "type": "Repetition",
+                "idx": 2,
                 "definition": [
                   {
                     "type": "NonTerminal",
@@ -1852,6 +1959,7 @@
               },
               {
                 "type": "Alternation",
+                "idx": 2,
                 "definition": [
                   {
                     "type": "Flat",
@@ -1863,9 +1971,11 @@
                       },
                       {
                         "type": "Option",
+                        "idx": 2,
                         "definition": [
                           {
                             "type": "RepetitionMandatoryWithSeparator",
+                            "idx": 0,
                             "separator": {
                               "type": "Terminal",
                               "name": "Comma",
@@ -1906,6 +2016,7 @@
               },
               {
                 "type": "Alternation",
+                "idx": 3,
                 "definition": [
                   {
                     "type": "Flat",
@@ -1924,6 +2035,7 @@
                       },
                       {
                         "type": "Repetition",
+                        "idx": 3,
                         "definition": [
                           {
                             "type": "Terminal",
@@ -1943,6 +2055,7 @@
                       },
                       {
                         "type": "Option",
+                        "idx": 3,
                         "definition": [
                           {
                             "type": "Terminal",
@@ -1980,6 +2093,7 @@
   {
     "type": "Rule",
     "name": "constantDeclaration",
+    "orgText": "() => {\n      $.SUBRULE($.typeType);\n      $.AT_LEAST_ONE_SEP({\n        SEP: tokens.Comma,\n        DEF: () => {\n          $.SUBRULE($.constantDeclarator);\n        }\n      });\n      $.SUBRULE($.semiColon);\n    }",
     "definition": [
       {
         "type": "NonTerminal",
@@ -1988,6 +2102,7 @@
       },
       {
         "type": "RepetitionMandatoryWithSeparator",
+        "idx": 0,
         "separator": {
           "type": "Terminal",
           "name": "Comma",
@@ -2013,6 +2128,7 @@
   {
     "type": "Rule",
     "name": "constantDeclarator",
+    "orgText": "() => {\n      $.CONSUME(tokens.Identifier);\n      $.MANY(() => {\n        $.CONSUME(tokens.LSquare);\n        $.CONSUME(tokens.RSquare);\n      });\n      $.CONSUME(tokens.Equals);\n      $.SUBRULE($.variableInitializer);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -2023,6 +2139,7 @@
       },
       {
         "type": "Repetition",
+        "idx": 0,
         "definition": [
           {
             "type": "Terminal",
@@ -2057,9 +2174,11 @@
   {
     "type": "Rule",
     "name": "interfaceMethodDeclaration",
+    "orgText": "() => {\n      $.MANY(() => {\n        $.SUBRULE($.interfaceMethodModifier);\n      });\n      $.OPTION(() => {\n        $.SUBRULE($.typeParameters);\n      });\n      $.MANY2(() => {\n        $.SUBRULE($.annotation);\n      });\n      $.SUBRULE($.typeTypeOrVoid);\n      $.CONSUME(tokens.Identifier);\n      $.SUBRULE($.formalParameters);\n      $.MANY3(() => {\n        $.CONSUME(tokens.LSquare);\n        $.CONSUME(tokens.RSquare);\n      });\n      $.OPTION2(() => {\n        $.CONSUME(tokens.Throws);\n        $.SUBRULE($.qualifiedNameList);\n      });\n      $.SUBRULE($.methodBody);\n    }",
     "definition": [
       {
         "type": "Repetition",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -2070,6 +2189,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -2080,6 +2200,7 @@
       },
       {
         "type": "Repetition",
+        "idx": 2,
         "definition": [
           {
             "type": "NonTerminal",
@@ -2107,6 +2228,7 @@
       },
       {
         "type": "Repetition",
+        "idx": 3,
         "definition": [
           {
             "type": "Terminal",
@@ -2126,6 +2248,7 @@
       },
       {
         "type": "Option",
+        "idx": 2,
         "definition": [
           {
             "type": "Terminal",
@@ -2151,9 +2274,11 @@
   {
     "type": "Rule",
     "name": "interfaceMethodModifier",
+    "orgText": "() => {\n      $.OR([\n        { ALT: () => $.SUBRULE($.annotation) },\n        { ALT: () => $.CONSUME(tokens.Public) },\n        { ALT: () => $.CONSUME(tokens.Abstract) },\n        { ALT: () => $.CONSUME(tokens.Default) },\n        { ALT: () => $.CONSUME(tokens.Static) },\n        { ALT: () => $.CONSUME(tokens.Strictfp) }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -2232,9 +2357,11 @@
   {
     "type": "Rule",
     "name": "variableDeclarators",
+    "orgText": "() => {\n      $.AT_LEAST_ONE_SEP({\n        SEP: tokens.Comma,\n        DEF: () => {\n          $.SUBRULE($.variableDeclarator);\n        }\n      });\n    }",
     "definition": [
       {
         "type": "RepetitionMandatoryWithSeparator",
+        "idx": 0,
         "separator": {
           "type": "Terminal",
           "name": "Comma",
@@ -2255,6 +2382,7 @@
   {
     "type": "Rule",
     "name": "variableDeclarator",
+    "orgText": "() => {\n      $.SUBRULE($.variableDeclaratorId);\n      $.OPTION(() => {\n        $.CONSUME(tokens.Equals);\n        $.SUBRULE($.variableInitializer);\n      });\n    }",
     "definition": [
       {
         "type": "NonTerminal",
@@ -2263,6 +2391,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "Terminal",
@@ -2283,6 +2412,7 @@
   {
     "type": "Rule",
     "name": "variableDeclaratorId",
+    "orgText": "() => {\n      $.CONSUME(tokens.Identifier);\n      $.MANY(() => {\n        $.CONSUME(tokens.LSquare);\n        $.CONSUME(tokens.RSquare);\n      });\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -2293,6 +2423,7 @@
       },
       {
         "type": "Repetition",
+        "idx": 0,
         "definition": [
           {
             "type": "Terminal",
@@ -2315,9 +2446,11 @@
   {
     "type": "Rule",
     "name": "variableInitializer",
+    "orgText": "() => {\n      $.OR([\n        { ALT: () => $.SUBRULE($.arrayInitializer) },\n        {\n          ALT: () => {\n            $.SUBRULE($.expression);\n            $.OPTION(() => {\n              $.CONSUME(tokens.Questionmark);\n              $.SUBRULE2($.expression);\n              $.CONSUME(tokens.Colon);\n              $.SUBRULE3($.expression);\n            });\n          }\n        }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -2339,6 +2472,7 @@
               },
               {
                 "type": "Option",
+                "idx": 0,
                 "definition": [
                   {
                     "type": "Terminal",
@@ -2375,6 +2509,7 @@
   {
     "type": "Rule",
     "name": "arrayInitializer",
+    "orgText": "() => {\n      $.CONSUME(tokens.LCurly);\n      $.OPTION(() => {\n        $.SUBRULE($.variableInitializer);\n        $.MANY({\n          GATE: () =>\n            this.LA(2).tokenType !== tokens.Comma &&\n            this.LA(2).tokenType !== tokens.RCurly,\n          DEF: () => {\n            $.CONSUME(tokens.Comma);\n            $.SUBRULE2($.variableInitializer);\n          }\n        });\n      });\n      $.OPTION2(() => {\n        $.CONSUME2(tokens.Comma);\n      });\n      $.CONSUME(tokens.RCurly);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -2385,6 +2520,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -2393,6 +2529,7 @@
           },
           {
             "type": "Repetition",
+            "idx": 0,
             "definition": [
               {
                 "type": "Terminal",
@@ -2412,6 +2549,7 @@
       },
       {
         "type": "Option",
+        "idx": 2,
         "definition": [
           {
             "type": "Terminal",
@@ -2434,6 +2572,7 @@
   {
     "type": "Rule",
     "name": "annotationTypeDeclaration",
+    "orgText": "() => {\n      $.CONSUME(tokens.At);\n      $.CONSUME(tokens.Interface);\n      $.CONSUME(tokens.Identifier);\n      $.SUBRULE($.annotationTypeBody);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -2466,6 +2605,7 @@
   {
     "type": "Rule",
     "name": "annotationTypeBody",
+    "orgText": "() => {\n      $.CONSUME(tokens.LCurly);\n      $.MANY(() => {\n        $.SUBRULE($.annotationTypeElementDeclaration);\n      });\n      $.CONSUME(tokens.RCurly);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -2476,6 +2616,7 @@
       },
       {
         "type": "Repetition",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -2496,9 +2637,11 @@
   {
     "type": "Rule",
     "name": "annotationTypeElementDeclaration",
+    "orgText": "() => {\n      $.MANY(() => {\n        $.SUBRULE($.modifier);\n      });\n      $.SUBRULE($.annotationTypeElementRest);\n    }",
     "definition": [
       {
         "type": "Repetition",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -2517,9 +2660,11 @@
   {
     "type": "Rule",
     "name": "annotationTypeElementRest",
+    "orgText": "() => {\n      $.OR([\n        {\n          ALT: () => {\n            $.SUBRULE($.typeType);\n            $.SUBRULE($.annotationMethodRestOrConstantRest);\n            $.SUBRULE($.semiColon);\n          }\n        },\n        {\n          ALT: () => {\n            $.SUBRULE($.classDeclaration);\n            $.OPTION(() => {\n              $.SUBRULE2($.semiColon);\n            });\n          }\n        },\n        {\n          ALT: () => {\n            $.SUBRULE($.interfaceDeclaration);\n            $.OPTION2(() => {\n              $.SUBRULE3($.semiColon);\n            });\n          }\n        },\n        {\n          ALT: () => {\n            $.SUBRULE($.enumDeclaration);\n            $.OPTION3(() => {\n              $.SUBRULE4($.semiColon);\n            });\n          }\n        },\n        {\n          ALT: () => {\n            $.SUBRULE($.annotationTypeDeclaration);\n            $.OPTION4(() => {\n              $.SUBRULE5($.semiColon);\n            });\n          }\n        }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -2551,6 +2696,7 @@
               },
               {
                 "type": "Option",
+                "idx": 0,
                 "definition": [
                   {
                     "type": "NonTerminal",
@@ -2571,6 +2717,7 @@
               },
               {
                 "type": "Option",
+                "idx": 2,
                 "definition": [
                   {
                     "type": "NonTerminal",
@@ -2591,6 +2738,7 @@
               },
               {
                 "type": "Option",
+                "idx": 3,
                 "definition": [
                   {
                     "type": "NonTerminal",
@@ -2611,6 +2759,7 @@
               },
               {
                 "type": "Option",
+                "idx": 4,
                 "definition": [
                   {
                     "type": "NonTerminal",
@@ -2628,9 +2777,11 @@
   {
     "type": "Rule",
     "name": "annotationMethodRestOrConstantRest",
+    "orgText": "() => {\n      $.OR([\n        { ALT: () => $.SUBRULE($.annotationMethodRest) },\n        { ALT: () => $.SUBRULE($.annotationConstantRest) }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -2659,6 +2810,7 @@
   {
     "type": "Rule",
     "name": "annotationMethodRest",
+    "orgText": "() => {\n      $.CONSUME(tokens.Identifier);\n      $.CONSUME(tokens.LBrace);\n      $.CONSUME(tokens.RBrace);\n      $.OPTION(() => {\n        $.SUBRULE($.defaultValue);\n      });\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -2683,6 +2835,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -2696,6 +2849,7 @@
   {
     "type": "Rule",
     "name": "annotationConstantRest",
+    "orgText": "() => {\n      $.SUBRULE($.variableDeclarators);\n    }",
     "definition": [
       {
         "type": "NonTerminal",
@@ -2707,6 +2861,7 @@
   {
     "type": "Rule",
     "name": "defaultValue",
+    "orgText": "() => {\n      $.CONSUME(tokens.Default);\n      $.SUBRULE($.elementValue);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -2725,9 +2880,11 @@
   {
     "type": "Rule",
     "name": "typeList",
+    "orgText": "() => {\n      $.AT_LEAST_ONE_SEP({\n        SEP: tokens.Comma,\n        DEF: () => {\n          $.SUBRULE($.typeType);\n        }\n      });\n    }",
     "definition": [
       {
         "type": "RepetitionMandatoryWithSeparator",
+        "idx": 0,
         "separator": {
           "type": "Terminal",
           "name": "Comma",
@@ -2748,9 +2905,11 @@
   {
     "type": "Rule",
     "name": "typeType",
+    "orgText": "() => {\n      $.OR([\n        {\n          ALT: () => {\n            $.SUBRULE($.annotation);\n            $.OPTION(() => {\n              $.OR2([\n                { ALT: () => $.SUBRULE($.classOrInterfaceType) },\n                { ALT: () => $.SUBRULE($.primitiveType) }\n              ]);\n              $.MANY(() => {\n                $.CONSUME(tokens.LSquare);\n                $.CONSUME(tokens.RSquare);\n              });\n            });\n          }\n        },\n        {\n          ALT: () => {\n            $.OR3([\n              { ALT: () => $.SUBRULE2($.classOrInterfaceType) },\n              { ALT: () => $.SUBRULE2($.primitiveType) }\n            ]);\n            $.MANY2(() => {\n              $.CONSUME2(tokens.LSquare);\n              $.CONSUME2(tokens.RSquare);\n            });\n          }\n        }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -2762,9 +2921,11 @@
               },
               {
                 "type": "Option",
+                "idx": 0,
                 "definition": [
                   {
                     "type": "Alternation",
+                    "idx": 2,
                     "definition": [
                       {
                         "type": "Flat",
@@ -2790,6 +2951,7 @@
                   },
                   {
                     "type": "Repetition",
+                    "idx": 0,
                     "definition": [
                       {
                         "type": "Terminal",
@@ -2816,6 +2978,7 @@
             "definition": [
               {
                 "type": "Alternation",
+                "idx": 3,
                 "definition": [
                   {
                     "type": "Flat",
@@ -2841,6 +3004,7 @@
               },
               {
                 "type": "Repetition",
+                "idx": 2,
                 "definition": [
                   {
                     "type": "Terminal",
@@ -2867,9 +3031,11 @@
   {
     "type": "Rule",
     "name": "typeTypeOrVoid",
+    "orgText": "() => {\n      $.OR([\n        { ALT: () => $.SUBRULE($.typeType) },\n        { ALT: () => $.CONSUME(tokens.Void) }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -2900,6 +3066,7 @@
   {
     "type": "Rule",
     "name": "classOrInterfaceType",
+    "orgText": "() => {\n      $.SUBRULE($.classOrInterfaceTypeElement);\n      $.MANY({\n        GATE: () => this.LA(2).tokenType !== tokens.Class,\n        DEF: () => {\n          $.CONSUME(tokens.Dot);\n          $.SUBRULE2($.classOrInterfaceTypeElement);\n        }\n      });\n    }",
     "definition": [
       {
         "type": "NonTerminal",
@@ -2908,6 +3075,7 @@
       },
       {
         "type": "Repetition",
+        "idx": 0,
         "definition": [
           {
             "type": "Terminal",
@@ -2928,6 +3096,7 @@
   {
     "type": "Rule",
     "name": "classOrInterfaceTypeElement",
+    "orgText": "() => {\n      $.CONSUME(tokens.Identifier);\n      $.OPTION(() => {\n        $.SUBRULE($.typeArguments);\n      });\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -2938,6 +3107,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -2951,6 +3121,7 @@
   {
     "type": "Rule",
     "name": "typeArguments",
+    "orgText": "() => {\n      $.CONSUME(tokens.Less);\n      $.AT_LEAST_ONE_SEP({\n        SEP: tokens.Comma,\n        DEF: () => {\n          $.SUBRULE($.typeArgument);\n        }\n      });\n      $.CONSUME(tokens.Greater);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -2961,6 +3132,7 @@
       },
       {
         "type": "RepetitionMandatoryWithSeparator",
+        "idx": 0,
         "separator": {
           "type": "Terminal",
           "name": "Comma",
@@ -2988,6 +3160,7 @@
   {
     "type": "Rule",
     "name": "typeArgumentsOrOperatorExpressionRest",
+    "orgText": "() => {\n      $.CONSUME(tokens.Less);\n      $.OR([\n        { ALT: () => $.CONSUME(tokens.This) },\n        { ALT: () => $.CONSUME(tokens.Super) },\n        { ALT: () => $.SUBRULE($.literal) },\n        {\n          ALT: () => {\n            let canBeOperatorExpression = true;\n            $.SUBRULE($.typeArgument);\n            $.MANY(() => {\n              $.CONSUME(tokens.Comma);\n              $.SUBRULE2($.typeArgument);\n              canBeOperatorExpression = false;\n            });\n\n            let isOperatorExpression = false;\n            $.OPTION3({\n              GATE: () => canBeOperatorExpression,\n              DEF: () => {\n                $.CONSUME(tokens.LBrace);\n                $.OPTION4(() => {\n                  $.SUBRULE($.expressionList);\n                });\n                $.CONSUME(tokens.RBrace);\n                $.MANY2(() => {\n                  $.SUBRULE($.dimension);\n                });\n                isOperatorExpression = true;\n              }\n            });\n            $.OPTION5({\n              GATE: () => !isOperatorExpression,\n              DEF: () => {\n                $.CONSUME(tokens.Greater);\n              }\n            });\n          }\n        },\n        {\n          ALT: () => {\n            $.CONSUME2(tokens.LBrace);\n            $.SUBRULE2($.expression);\n            $.CONSUME2(tokens.RBrace);\n          }\n        }\n      ]);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -2998,6 +3171,7 @@
       },
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -3043,6 +3217,7 @@
               },
               {
                 "type": "Repetition",
+                "idx": 0,
                 "definition": [
                   {
                     "type": "Terminal",
@@ -3060,6 +3235,7 @@
               },
               {
                 "type": "Option",
+                "idx": 3,
                 "definition": [
                   {
                     "type": "Terminal",
@@ -3070,6 +3246,7 @@
                   },
                   {
                     "type": "Option",
+                    "idx": 4,
                     "definition": [
                       {
                         "type": "NonTerminal",
@@ -3087,6 +3264,7 @@
                   },
                   {
                     "type": "Repetition",
+                    "idx": 2,
                     "definition": [
                       {
                         "type": "NonTerminal",
@@ -3099,6 +3277,7 @@
               },
               {
                 "type": "Option",
+                "idx": 5,
                 "definition": [
                   {
                     "type": "Terminal",
@@ -3142,9 +3321,11 @@
   {
     "type": "Rule",
     "name": "typeArgument",
+    "orgText": "() => {\n      $.OR([\n        { ALT: () => $.SUBRULE($.typeType) },\n        { ALT: () => $.CONSUME(tokens.Questionmark) }\n      ]);\n      $.OPTION(() => {\n        $.OR2([\n          { ALT: () => $.CONSUME(tokens.Extends) },\n          { ALT: () => $.CONSUME(tokens.Super) }\n        ]);\n        $.SUBRULE2($.typeType);\n      });\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -3172,9 +3353,11 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "Alternation",
+            "idx": 2,
             "definition": [
               {
                 "type": "Flat",
@@ -3214,9 +3397,11 @@
   {
     "type": "Rule",
     "name": "qualifiedNameList",
+    "orgText": "() => {\n      $.AT_LEAST_ONE_SEP({\n        SEP: tokens.Comma,\n        DEF: () => {\n          $.SUBRULE($.qualifiedName);\n        }\n      });\n    }",
     "definition": [
       {
         "type": "RepetitionMandatoryWithSeparator",
+        "idx": 0,
         "separator": {
           "type": "Terminal",
           "name": "Comma",
@@ -3237,6 +3422,7 @@
   {
     "type": "Rule",
     "name": "identifiers",
+    "orgText": "() => {\n      $.CONSUME(tokens.LBrace);\n      $.OPTION(() => {\n        $.SUBRULE($.identifierList);\n      });\n      $.CONSUME(tokens.RBrace);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -3247,6 +3433,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -3267,9 +3454,11 @@
   {
     "type": "Rule",
     "name": "identifierList",
+    "orgText": "() => {\n      $.AT_LEAST_ONE_SEP({\n        SEP: tokens.Comma,\n        DEF: () => {\n          $.CONSUME(tokens.Identifier);\n        }\n      });\n    }",
     "definition": [
       {
         "type": "RepetitionMandatoryWithSeparator",
+        "idx": 0,
         "separator": {
           "type": "Terminal",
           "name": "Comma",
@@ -3292,6 +3481,7 @@
   {
     "type": "Rule",
     "name": "formalParameters",
+    "orgText": "() => {\n      $.CONSUME(tokens.LBrace);\n      $.OPTION(() => {\n        $.SUBRULE($.formalParameterList);\n      });\n      $.CONSUME(tokens.RBrace);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -3302,6 +3492,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -3322,9 +3513,11 @@
   {
     "type": "Rule",
     "name": "formalParameterList",
+    "orgText": "() => {\n      $.AT_LEAST_ONE_SEP({\n        SEP: tokens.Comma,\n        DEF: () => {\n          $.SUBRULE($.formalParameter);\n        }\n      });\n    }",
     "definition": [
       {
         "type": "RepetitionMandatoryWithSeparator",
+        "idx": 0,
         "separator": {
           "type": "Terminal",
           "name": "Comma",
@@ -3345,9 +3538,11 @@
   {
     "type": "Rule",
     "name": "formalParameter",
+    "orgText": "() => {\n      $.MANY(() => {\n        $.SUBRULE($.variableModifier);\n      });\n      $.SUBRULE($.typeType);\n      $.OPTION(() => {\n        $.CONSUME(tokens.DotDotDot);\n      });\n      $.SUBRULE($.variableDeclaratorId);\n    }",
     "definition": [
       {
         "type": "Repetition",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -3363,6 +3558,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "Terminal",
@@ -3383,6 +3579,7 @@
   {
     "type": "Rule",
     "name": "block",
+    "orgText": "() => {\n      $.CONSUME(tokens.LCurly);\n      $.MANY(() => {\n        $.SUBRULE($.blockStatement);\n      });\n      $.CONSUME(tokens.RCurly);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -3393,6 +3590,7 @@
       },
       {
         "type": "Repetition",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -3413,9 +3611,11 @@
   {
     "type": "Rule",
     "name": "blockStatement",
+    "orgText": "() => {\n      let hasSemiColon = false;\n      $.MANY(() => {\n        $.SUBRULE($.classOrInterfaceModifier);\n      });\n      $.OR([\n        {\n          // localeVariableDeclaration\n          ALT: () => {\n            $.OR2([\n              {\n                ALT: () => {\n                  $.SUBRULE($.expression);\n\n                  $.OR3([\n                    {\n                      // identifierStatement\n                      ALT: () => {\n                        $.CONSUME(tokens.Colon);\n                        $.SUBRULE($.statement);\n                      }\n                    },\n                    {\n                      // expressionStatement\n                      ALT: () => {\n                        $.SUBRULE($.semiColon);\n                        hasSemiColon = true;\n                      }\n                    },\n                    {\n                      ALT: () => {\n                        $.OPTION(() => {\n                          $.SUBRULE($.typeArguments);\n                        });\n                        $.MANY2({\n                          GATE: () => this.LA(2).tokenType !== tokens.Class,\n                          DEF: () => {\n                            $.CONSUME(tokens.Dot);\n                            $.SUBRULE2($.classOrInterfaceTypeElement);\n                          }\n                        });\n                      }\n                    }\n                  ]);\n                }\n              }\n            ]);\n            $.OPTION2({\n              GATE: () => !hasSemiColon,\n              DEF: () => {\n                // if not identifier statement\n                $.MANY3(() => {\n                  $.CONSUME(tokens.LSquare);\n                  $.CONSUME(tokens.RSquare);\n                });\n                $.SUBRULE($.variableDeclarators);\n                $.SUBRULE2($.semiColon);\n              }\n            });\n          }\n        },\n        // localTypeDeclaration\n        { ALT: () => $.SUBRULE($.classDeclaration) },\n        // localTypeDeclaration\n        { ALT: () => $.SUBRULE($.interfaceDeclaration) },\n        { ALT: () => $.SUBRULE($.statementWithStartingToken) }\n      ]);\n    }",
     "definition": [
       {
         "type": "Repetition",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -3426,12 +3626,14 @@
       },
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
             "definition": [
               {
                 "type": "Alternation",
+                "idx": 2,
                 "definition": [
                   {
                     "type": "Flat",
@@ -3443,6 +3645,7 @@
                       },
                       {
                         "type": "Alternation",
+                        "idx": 3,
                         "definition": [
                           {
                             "type": "Flat",
@@ -3476,6 +3679,7 @@
                             "definition": [
                               {
                                 "type": "Option",
+                                "idx": 0,
                                 "definition": [
                                   {
                                     "type": "NonTerminal",
@@ -3486,6 +3690,7 @@
                               },
                               {
                                 "type": "Repetition",
+                                "idx": 2,
                                 "definition": [
                                   {
                                     "type": "Terminal",
@@ -3511,9 +3716,11 @@
               },
               {
                 "type": "Option",
+                "idx": 2,
                 "definition": [
                   {
                     "type": "Repetition",
+                    "idx": 3,
                     "definition": [
                       {
                         "type": "Terminal",
@@ -3582,9 +3789,11 @@
   {
     "type": "Rule",
     "name": "statement",
+    "orgText": "() => {\n      $.OR([\n        { ALT: () => $.SUBRULE($.statementWithStartingToken) },\n        { ALT: () => $.SUBRULE($.expressionStatement) },\n        { ALT: () => $.SUBRULE($.identifierStatement) }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -3623,9 +3832,11 @@
   {
     "type": "Rule",
     "name": "statementWithStartingToken",
+    "orgText": "() => {\n      $.OR([\n        { ALT: () => $.SUBRULE($.block) },\n        { ALT: () => $.SUBRULE($.assertStatement) },\n        { ALT: () => $.SUBRULE($.ifStatement) },\n        { ALT: () => $.SUBRULE($.forStatement) },\n        { ALT: () => $.SUBRULE($.whileStatement) },\n        { ALT: () => $.SUBRULE($.doWhileStatement) },\n        { ALT: () => $.SUBRULE($.tryStatement) },\n        { ALT: () => $.SUBRULE($.switchStatement) },\n        { ALT: () => $.SUBRULE($.synchronizedStatement) },\n        { ALT: () => $.SUBRULE($.returnStatement) },\n        { ALT: () => $.SUBRULE($.throwStatement) },\n        { ALT: () => $.SUBRULE($.breakStatement) },\n        { ALT: () => $.SUBRULE($.continueStatement) },\n        { ALT: () => $.SUBRULE($.semiColonStatement) }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -3774,6 +3985,7 @@
   {
     "type": "Rule",
     "name": "assertStatement",
+    "orgText": "() => {\n      $.CONSUME(tokens.Assert);\n      $.SUBRULE($.expression);\n      $.OPTION(() => {\n        $.CONSUME(tokens.Colon);\n        $.SUBRULE2($.expression);\n      });\n      $.SUBRULE($.semiColon);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -3789,6 +4001,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "Terminal",
@@ -3814,6 +4027,7 @@
   {
     "type": "Rule",
     "name": "ifStatement",
+    "orgText": "() => {\n      $.CONSUME(tokens.If);\n      $.CONSUME(tokens.LBrace);\n      $.SUBRULE($.expression);\n      $.CONSUME(tokens.RBrace);\n      $.SUBRULE($.statement);\n      $.OPTION(() => {\n        $.CONSUME(tokens.Else);\n        $.SUBRULE2($.statement);\n      });\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -3848,6 +4062,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "Terminal",
@@ -3868,6 +4083,7 @@
   {
     "type": "Rule",
     "name": "whileStatement",
+    "orgText": "() => {\n      $.CONSUME(tokens.While);\n      $.CONSUME(tokens.LBrace);\n      $.SUBRULE($.expression);\n      $.CONSUME(tokens.RBrace);\n      $.SUBRULE($.statement);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -3905,6 +4121,7 @@
   {
     "type": "Rule",
     "name": "doWhileStatement",
+    "orgText": "() => {\n      $.CONSUME(tokens.Do);\n      $.SUBRULE($.statement);\n      $.CONSUME(tokens.While);\n      $.CONSUME(tokens.LBrace);\n      $.SUBRULE($.expression);\n      $.CONSUME(tokens.RBrace);\n      $.SUBRULE($.semiColon);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -3954,6 +4171,7 @@
   {
     "type": "Rule",
     "name": "tryStatement",
+    "orgText": "() => {\n      $.CONSUME(tokens.Try);\n      $.OPTION(() => {\n        $.SUBRULE($.resourceSpecification);\n      });\n      $.SUBRULE($.block);\n      $.OPTION1(() => {\n        $.OR([\n          {\n            ALT: () => {\n              $.SUBRULE($.catchClause);\n              $.MANY(() => {\n                $.SUBRULE2($.catchClause);\n              });\n              $.OPTION2(() => {\n                $.SUBRULE($.finallyBlock);\n              });\n            }\n          },\n          { ALT: () => $.SUBRULE2($.finallyBlock) }\n        ]);\n      });\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -3964,6 +4182,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -3979,9 +4198,11 @@
       },
       {
         "type": "Option",
+        "idx": 1,
         "definition": [
           {
             "type": "Alternation",
+            "idx": 0,
             "definition": [
               {
                 "type": "Flat",
@@ -3993,6 +4214,7 @@
                   },
                   {
                     "type": "Repetition",
+                    "idx": 0,
                     "definition": [
                       {
                         "type": "NonTerminal",
@@ -4003,6 +4225,7 @@
                   },
                   {
                     "type": "Option",
+                    "idx": 2,
                     "definition": [
                       {
                         "type": "NonTerminal",
@@ -4032,6 +4255,7 @@
   {
     "type": "Rule",
     "name": "switchStatement",
+    "orgText": "() => {\n      $.CONSUME(tokens.Switch);\n      $.CONSUME(tokens.LBrace);\n      $.SUBRULE($.expression);\n      $.CONSUME(tokens.RBrace);\n      $.CONSUME(tokens.LCurly);\n      $.MANY(() => {\n        $.SUBRULE($.switchBlockStatementGroup);\n      });\n      $.CONSUME(tokens.RCurly);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -4068,6 +4292,7 @@
       },
       {
         "type": "Repetition",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -4088,6 +4313,7 @@
   {
     "type": "Rule",
     "name": "synchronizedStatement",
+    "orgText": "() => {\n      $.CONSUME(tokens.Synchronized);\n      $.CONSUME(tokens.LBrace);\n      $.SUBRULE($.expression);\n      $.CONSUME(tokens.RBrace);\n      $.SUBRULE($.block);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -4125,6 +4351,7 @@
   {
     "type": "Rule",
     "name": "returnStatement",
+    "orgText": "() => {\n      $.CONSUME(tokens.Return);\n      $.OPTION(() => {\n        $.SUBRULE($.expression);\n      });\n      $.SUBRULE($.semiColon);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -4135,6 +4362,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -4153,6 +4381,7 @@
   {
     "type": "Rule",
     "name": "throwStatement",
+    "orgText": "() => {\n      $.CONSUME(tokens.Throw);\n      $.SUBRULE($.expression);\n      $.SUBRULE($.semiColon);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -4176,6 +4405,7 @@
   {
     "type": "Rule",
     "name": "breakStatement",
+    "orgText": "() => {\n      $.CONSUME(tokens.Break);\n      $.OPTION(() => {\n        $.CONSUME(tokens.Identifier);\n      });\n      $.SUBRULE($.semiColon);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -4186,6 +4416,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "Terminal",
@@ -4206,6 +4437,7 @@
   {
     "type": "Rule",
     "name": "continueStatement",
+    "orgText": "() => {\n      $.CONSUME(tokens.Continue);\n      $.OPTION(() => {\n        $.CONSUME(tokens.Identifier);\n      });\n      $.SUBRULE($.semiColon);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -4216,6 +4448,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "Terminal",
@@ -4236,6 +4469,7 @@
   {
     "type": "Rule",
     "name": "semiColonStatement",
+    "orgText": "() => {\n      $.SUBRULE($.semiColon);\n    }",
     "definition": [
       {
         "type": "NonTerminal",
@@ -4247,6 +4481,7 @@
   {
     "type": "Rule",
     "name": "expressionStatement",
+    "orgText": "() => {\n      $.SUBRULE($.expression);\n      $.SUBRULE($.semiColon);\n    }",
     "definition": [
       {
         "type": "NonTerminal",
@@ -4263,6 +4498,7 @@
   {
     "type": "Rule",
     "name": "identifierStatement",
+    "orgText": "() => {\n      $.CONSUME(tokens.Identifier);\n      $.CONSUME(tokens.Colon);\n      $.SUBRULE($.statement);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -4288,6 +4524,7 @@
   {
     "type": "Rule",
     "name": "catchClause",
+    "orgText": "() => {\n      $.CONSUME(tokens.Catch);\n      $.CONSUME(tokens.LBrace);\n      $.MANY(() => {\n        $.SUBRULE($.variableModifier);\n      });\n      $.SUBRULE($.catchType);\n      $.CONSUME(tokens.Identifier);\n      $.CONSUME(tokens.RBrace);\n      $.SUBRULE($.block);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -4305,6 +4542,7 @@
       },
       {
         "type": "Repetition",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -4342,9 +4580,11 @@
   {
     "type": "Rule",
     "name": "catchType",
+    "orgText": "() => {\n      $.AT_LEAST_ONE_SEP({\n        SEP: tokens.Or,\n        DEF: () => {\n          $.SUBRULE($.qualifiedName);\n        }\n      });\n    }",
     "definition": [
       {
         "type": "RepetitionMandatoryWithSeparator",
+        "idx": 0,
         "separator": {
           "type": "Terminal",
           "name": "Or",
@@ -4365,6 +4605,7 @@
   {
     "type": "Rule",
     "name": "finallyBlock",
+    "orgText": "() => {\n      $.CONSUME(tokens.Finally);\n      $.SUBRULE($.block);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -4383,6 +4624,7 @@
   {
     "type": "Rule",
     "name": "resourceSpecification",
+    "orgText": "() => {\n      $.CONSUME(tokens.LBrace);\n      $.SUBRULE($.resources);\n      $.OPTION(() => {\n        $.SUBRULE($.semiColon);\n      });\n      $.CONSUME(tokens.RBrace);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -4398,6 +4640,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -4418,6 +4661,7 @@
   {
     "type": "Rule",
     "name": "resources",
+    "orgText": "() => {\n      $.SUBRULE($.resource);\n      $.MANY({\n        GATE: () => this.LA(2).tokenType !== tokens.RBrace,\n        DEF: () => {\n          $.SUBRULE($.semiColon);\n          $.SUBRULE2($.resource);\n        }\n      });\n    }",
     "definition": [
       {
         "type": "NonTerminal",
@@ -4426,6 +4670,7 @@
       },
       {
         "type": "Repetition",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -4444,9 +4689,11 @@
   {
     "type": "Rule",
     "name": "resource",
+    "orgText": "() => {\n      $.MANY(() => {\n        $.SUBRULE($.variableModifier);\n      });\n      $.SUBRULE($.classOrInterfaceType);\n      $.SUBRULE($.variableDeclaratorId);\n      $.CONSUME(tokens.Equals);\n      $.SUBRULE($.expression);\n    }",
     "definition": [
       {
         "type": "Repetition",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -4482,6 +4729,7 @@
   {
     "type": "Rule",
     "name": "switchBlockStatementGroup",
+    "orgText": "() => {\n      $.SUBRULE($.switchLabel);\n      $.MANY(() => {\n        $.SUBRULE2($.switchLabel);\n      });\n      $.MANY2(() => {\n        $.SUBRULE2($.blockStatement);\n      });\n    }",
     "definition": [
       {
         "type": "NonTerminal",
@@ -4490,6 +4738,7 @@
       },
       {
         "type": "Repetition",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -4500,6 +4749,7 @@
       },
       {
         "type": "Repetition",
+        "idx": 2,
         "definition": [
           {
             "type": "NonTerminal",
@@ -4513,9 +4763,11 @@
   {
     "type": "Rule",
     "name": "switchLabel",
+    "orgText": "() => {\n      $.OR([\n        { ALT: () => $.SUBRULE($.switchLabelCase) },\n        { ALT: () => $.SUBRULE($.switchLabelDefault) }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -4544,6 +4796,7 @@
   {
     "type": "Rule",
     "name": "switchLabelCase",
+    "orgText": "() => {\n      $.CONSUME(tokens.Case);\n      $.SUBRULE($.expression);\n      $.CONSUME(tokens.Colon);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -4569,6 +4822,7 @@
   {
     "type": "Rule",
     "name": "switchLabelDefault",
+    "orgText": "() => {\n      $.CONSUME(tokens.Default);\n      $.CONSUME(tokens.Colon);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -4589,6 +4843,7 @@
   {
     "type": "Rule",
     "name": "forStatement",
+    "orgText": "() => {\n      $.CONSUME(tokens.For);\n      $.CONSUME(tokens.LBrace);\n      $.SUBRULE($.forControl);\n      $.CONSUME(tokens.RBrace);\n      $.SUBRULE($.statement);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -4626,12 +4881,15 @@
   {
     "type": "Rule",
     "name": "forControl",
+    "orgText": "() => {\n      let enhancedForStatement = false;\n      $.OPTION(() => {\n        let localVariableDeclaration = false;\n        $.MANY(() => {\n          $.SUBRULE($.variableModifier);\n          localVariableDeclaration = true;\n        });\n        $.SUBRULE($.expression);\n        $.OR([\n          {\n            ALT: () => {\n              $.SUBRULE($.variableDeclaratorId);\n\n              $.OR2([\n                {\n                  // enhancedForStatement\n                  ALT: () => {\n                    $.CONSUME(tokens.Colon);\n                    $.SUBRULE2($.expression);\n                    enhancedForStatement = true;\n                  }\n                },\n                {\n                  ALT: () => {\n                    $.OPTION2(() => {\n                      $.CONSUME(tokens.Equals);\n                      $.SUBRULE($.variableInitializer);\n                    });\n                  }\n                }\n              ]);\n\n              $.MANY2({\n                GATE: () => !enhancedForStatement,\n                DEF: () => {\n                  $.CONSUME(tokens.Comma);\n                  $.SUBRULE($.variableDeclarator);\n                }\n              });\n            }\n          },\n          {\n            GATE: !localVariableDeclaration,\n            ALT: () => {\n              $.MANY3(() => {\n                $.CONSUME2(tokens.Comma);\n                $.SUBRULE3($.expression);\n              });\n            }\n          }\n        ]);\n      });\n      $.OR3([\n        {\n          GATE: () => !enhancedForStatement,\n          ALT: () => {\n            $.SUBRULE($.semiColon);\n            $.OPTION3(() => {\n              const optionalExpression = $.SUBRULE4($.expression);\n              optionalExpression.optionalExpression = true;\n            });\n            $.SUBRULE2($.semiColon);\n            $.OPTION4(() => {\n              $.SUBRULE($.expressionList);\n            });\n          }\n        },\n        {\n          ALT: () => {\n            // Just here for enhancedForStatement\n          }\n        }\n      ]);\n    }",
     "definition": [
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "Repetition",
+            "idx": 0,
             "definition": [
               {
                 "type": "NonTerminal",
@@ -4647,6 +4905,7 @@
           },
           {
             "type": "Alternation",
+            "idx": 0,
             "definition": [
               {
                 "type": "Flat",
@@ -4658,6 +4917,7 @@
                   },
                   {
                     "type": "Alternation",
+                    "idx": 2,
                     "definition": [
                       {
                         "type": "Flat",
@@ -4681,6 +4941,7 @@
                         "definition": [
                           {
                             "type": "Option",
+                            "idx": 2,
                             "definition": [
                               {
                                 "type": "Terminal",
@@ -4702,6 +4963,7 @@
                   },
                   {
                     "type": "Repetition",
+                    "idx": 2,
                     "definition": [
                       {
                         "type": "Terminal",
@@ -4724,6 +4986,7 @@
                 "definition": [
                   {
                     "type": "Repetition",
+                    "idx": 3,
                     "definition": [
                       {
                         "type": "Terminal",
@@ -4747,6 +5010,7 @@
       },
       {
         "type": "Alternation",
+        "idx": 3,
         "definition": [
           {
             "type": "Flat",
@@ -4758,6 +5022,7 @@
               },
               {
                 "type": "Option",
+                "idx": 3,
                 "definition": [
                   {
                     "type": "NonTerminal",
@@ -4773,6 +5038,7 @@
               },
               {
                 "type": "Option",
+                "idx": 4,
                 "definition": [
                   {
                     "type": "NonTerminal",
@@ -4794,9 +5060,11 @@
   {
     "type": "Rule",
     "name": "enhancedForControl",
+    "orgText": "() => {\n      $.MANY(() => {\n        $.SUBRULE($.variableModifier);\n      });\n      $.SUBRULE($.typeType);\n      $.SUBRULE($.variableDeclaratorId);\n      $.CONSUME(tokens.Colon);\n      $.SUBRULE($.expression);\n    }",
     "definition": [
       {
         "type": "Repetition",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -4832,9 +5100,11 @@
   {
     "type": "Rule",
     "name": "explicitGenericInvocationSuffix",
+    "orgText": "() => {\n      $.OR([\n        { ALT: () => $.SUBRULE($.super) },\n        { ALT: () => $.SUBRULE($.identifierArguments) }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -4863,6 +5133,7 @@
   {
     "type": "Rule",
     "name": "identifierArguments",
+    "orgText": "() => {\n      $.CONSUME(tokens.Identifier);\n      $.SUBRULE($.arguments);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -4881,6 +5152,7 @@
   {
     "type": "Rule",
     "name": "super",
+    "orgText": "() => {\n      $.CONSUME(tokens.Super);\n      $.SUBRULE($.superSuffix);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -4899,9 +5171,11 @@
   {
     "type": "Rule",
     "name": "superSuffix",
+    "orgText": "() => {\n      $.OR([\n        { ALT: () => $.SUBRULE($.arguments) },\n        { ALT: () => $.SUBRULE($.dotIdentifierArguments) }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -4930,6 +5204,7 @@
   {
     "type": "Rule",
     "name": "arguments",
+    "orgText": "() => {\n      $.CONSUME(tokens.LBrace);\n      $.OPTION(() => {\n        $.SUBRULE($.expressionList);\n      });\n      $.CONSUME(tokens.RBrace);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -4940,6 +5215,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -4960,6 +5236,7 @@
   {
     "type": "Rule",
     "name": "dotIdentifierArguments",
+    "orgText": "() => {\n      $.CONSUME(tokens.Dot);\n      $.CONSUME(tokens.Identifier);\n      $.OPTION(() => {\n        $.SUBRULE($.arguments);\n      });\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -4977,6 +5254,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -4990,6 +5268,7 @@
   {
     "type": "Rule",
     "name": "parExpression",
+    "orgText": "() => {\n      $.CONSUME(tokens.LBrace);\n      $.SUBRULE($.expression);\n      $.CONSUME(tokens.RBrace);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -5015,9 +5294,11 @@
   {
     "type": "Rule",
     "name": "expressionList",
+    "orgText": "() => {\n      $.AT_LEAST_ONE_SEP({\n        SEP: tokens.Comma,\n        DEF: () => {\n          $.SUBRULE($.expression);\n        }\n      });\n    }",
     "definition": [
       {
         "type": "RepetitionMandatoryWithSeparator",
+        "idx": 0,
         "separator": {
           "type": "Terminal",
           "name": "Comma",
@@ -5038,6 +5319,7 @@
   {
     "type": "Rule",
     "name": "methodInvocation",
+    "orgText": "() => {\n      $.CONSUME(tokens.Identifier);\n      $.CONSUME(tokens.LBrace);\n      $.OPTION(() => {\n        $.SUBRULE($.expressionList);\n      });\n      $.CONSUME(tokens.RBrace);\n      $.MANY(() => {\n        $.SUBRULE($.dimension);\n      });\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -5055,6 +5337,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -5072,6 +5355,7 @@
       },
       {
         "type": "Repetition",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -5085,9 +5369,11 @@
   {
     "type": "Rule",
     "name": "expression",
+    "orgText": "() => {\n      $.OR([\n        {\n          ALT: () => {\n            $.SUBRULE($.atomic);\n            $.OR2([\n              { ALT: () => $.SUBRULE($.instanceofExpressionRest) },\n              { ALT: () => $.SUBRULE($.squareExpressionRest) },\n              { ALT: () => $.SUBRULE($.postfixExpressionRest) },\n              {\n                ALT: () => {\n                  $.SUBRULE($.ifElseExpressionRest);\n                }\n              },\n              {\n                ALT: () => {\n                  $.SUBRULE($.qualifiedExpressionRest);\n                  $.OR3([\n                    {\n                      ALT: () => $.SUBRULE2($.postfixExpressionRest)\n                    },\n                    {\n                      ALT: () => {\n                        $.OR4([\n                          { ALT: () => $.SUBRULE2($.instanceofExpressionRest) },\n                          {\n                            ALT: () =>\n                              $.MANY(() => {\n                                $.SUBRULE($.operatorExpressionRest);\n                              })\n                          }\n                        ]);\n                        $.OPTION(() => $.SUBRULE2($.ifElseExpressionRest));\n                      }\n                    }\n                  ]);\n                }\n              },\n              {\n                // lambdaExpression\n                ALT: () => {\n                  $.CONSUME(tokens.Pointer);\n                  $.SUBRULE($.lambdaBody);\n                }\n              },\n              { ALT: () => $.SUBRULE($.methodReferenceRest) },\n              {\n                ALT: () => {\n                  $.MANY2(() => {\n                    $.SUBRULE2($.operatorExpressionRest);\n                    $.OPTION2(() => {\n                      $.SUBRULE3($.ifElseExpressionRest);\n                    });\n                  });\n                }\n              }\n            ]);\n          }\n        },\n        {\n          ALT: () => {\n            $.SUBRULE($.prefixExpression);\n          }\n        },\n        {\n          ALT: () => {\n            $.SUBRULE($.parExpressionOrCastExpressionOrLambdaExpression);\n          }\n        }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -5099,6 +5385,7 @@
               },
               {
                 "type": "Alternation",
+                "idx": 2,
                 "definition": [
                   {
                     "type": "Flat",
@@ -5150,6 +5437,7 @@
                       },
                       {
                         "type": "Alternation",
+                        "idx": 3,
                         "definition": [
                           {
                             "type": "Flat",
@@ -5166,6 +5454,7 @@
                             "definition": [
                               {
                                 "type": "Alternation",
+                                "idx": 4,
                                 "definition": [
                                   {
                                     "type": "Flat",
@@ -5182,6 +5471,7 @@
                                     "definition": [
                                       {
                                         "type": "Repetition",
+                                        "idx": 0,
                                         "definition": [
                                           {
                                             "type": "NonTerminal",
@@ -5196,6 +5486,7 @@
                               },
                               {
                                 "type": "Option",
+                                "idx": 0,
                                 "definition": [
                                   {
                                     "type": "NonTerminal",
@@ -5242,6 +5533,7 @@
                     "definition": [
                       {
                         "type": "Repetition",
+                        "idx": 2,
                         "definition": [
                           {
                             "type": "NonTerminal",
@@ -5250,6 +5542,7 @@
                           },
                           {
                             "type": "Option",
+                            "idx": 2,
                             "definition": [
                               {
                                 "type": "NonTerminal",
@@ -5293,9 +5586,11 @@
   {
     "type": "Rule",
     "name": "atomic",
+    "orgText": "() => {\n      $.OR([\n        { ALT: () => $.SUBRULE($.methodInvocation) },\n        { ALT: () => $.SUBRULE($.primary) },\n        { ALT: () => $.SUBRULE($.creator) }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -5334,6 +5629,7 @@
   {
     "type": "Rule",
     "name": "instanceofExpressionRest",
+    "orgText": "() => {\n      $.CONSUME(tokens.Instanceof);\n      $.SUBRULE($.typeType);\n      $.MANY(() => {\n        $.SUBRULE($.operatorExpressionRest);\n      });\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -5349,6 +5645,7 @@
       },
       {
         "type": "Repetition",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -5362,6 +5659,7 @@
   {
     "type": "Rule",
     "name": "squareExpressionRest",
+    "orgText": "() => {\n      $.CONSUME(tokens.LSquare);\n      $.SUBRULE($.expression);\n      $.CONSUME(tokens.RSquare);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -5387,9 +5685,11 @@
   {
     "type": "Rule",
     "name": "postfixExpressionRest",
+    "orgText": "() => {\n      $.OR([\n        {\n          ALT: () => {\n            $.CONSUME(tokens.PlusPlus);\n          }\n        },\n        {\n          ALT: () => {\n            $.CONSUME(tokens.MinusMinus);\n          }\n        }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -5422,6 +5722,7 @@
   {
     "type": "Rule",
     "name": "ifElseExpressionRest",
+    "orgText": "() => {\n      $.CONSUME(tokens.Questionmark);\n      $.SUBRULE($.expression);\n      $.CONSUME(tokens.Colon);\n      $.SUBRULE2($.expression);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -5452,6 +5753,7 @@
   {
     "type": "Rule",
     "name": "qualifiedExpressionRest",
+    "orgText": "() => {\n      $.CONSUME(tokens.Dot);\n      $.OR([\n        { ALT: () => $.SUBRULE($.methodInvocation) },\n        {\n          ALT: () => {\n            $.CONSUME(tokens.Identifier);\n            $.OPTION(() => {\n              $.SUBRULE($.typeArgumentsOrOperatorExpressionRest);\n            });\n            $.MANY(() => {\n              $.SUBRULE($.dimension);\n            });\n          }\n        },\n        { ALT: () => $.CONSUME(tokens.Class) },\n        { ALT: () => $.CONSUME(tokens.This) },\n        { ALT: () => $.CONSUME(tokens.Super) },\n        { ALT: () => $.SUBRULE($.creatorOptionalNonWildcardInnerCreator) },\n        { ALT: () => $.SUBRULE($.explicitGenericInvocation) }\n      ]);\n\n      $.OR2([\n        { ALT: () => $.SUBRULE($.qualifiedExpressionRest) },\n        { ALT: () => $.SUBRULE($.methodReferenceRest) },\n        {\n          ALT: () => {\n            // or nothing\n          }\n        }\n      ]);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -5462,6 +5764,7 @@
       },
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -5485,6 +5788,7 @@
               },
               {
                 "type": "Option",
+                "idx": 0,
                 "definition": [
                   {
                     "type": "NonTerminal",
@@ -5495,6 +5799,7 @@
               },
               {
                 "type": "Repetition",
+                "idx": 0,
                 "definition": [
                   {
                     "type": "NonTerminal",
@@ -5565,6 +5870,7 @@
       },
       {
         "type": "Alternation",
+        "idx": 2,
         "definition": [
           {
             "type": "Flat",
@@ -5597,6 +5903,7 @@
   {
     "type": "Rule",
     "name": "creatorOptionalNonWildcardInnerCreator",
+    "orgText": "() => {\n      $.CONSUME(tokens.New);\n      $.OPTION(() => {\n        $.SUBRULE($.nonWildcardTypeArguments);\n      });\n      $.SUBRULE($.innerCreator);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -5607,6 +5914,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -5625,9 +5933,11 @@
   {
     "type": "Rule",
     "name": "prefixExpression",
+    "orgText": "() => {\n      $.OR([\n        {\n          ALT: () => {\n            $.CONSUME(tokens.Plus);\n          }\n        },\n        {\n          ALT: () => {\n            $.CONSUME(tokens.Minus);\n          }\n        },\n        {\n          ALT: () => {\n            $.CONSUME(tokens.PlusPlus);\n          }\n        },\n        {\n          ALT: () => {\n            $.CONSUME(tokens.MinusMinus);\n          }\n        },\n        {\n          ALT: () => {\n            $.CONSUME(tokens.Tilde);\n          }\n        },\n        {\n          ALT: () => {\n            $.CONSUME(tokens.Exclamationmark);\n          }\n        }\n      ]);\n      $.SUBRULE($.expression);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -5713,6 +6023,7 @@
   {
     "type": "Rule",
     "name": "parExpressionOrCastExpressionOrLambdaExpression",
+    "orgText": "() => {\n      $.CONSUME(tokens.LBrace);\n      // if parExpression\n      // -> no\n      //       - annotations\n      //       - typeArguments\n      //       - LSquare/RSquare\n      // -> only one expression\n      $.OR([\n        {\n          // empty parameters lambda expression\n          ALT: () => {\n            $.CONSUME(tokens.RBrace);\n            $.CONSUME(tokens.Pointer);\n            $.SUBRULE($.lambdaBody);\n          }\n        },\n        {\n          ALT: () => {\n            let formalParameters = false;\n            let i = 0;\n            $.OPTION(() => {\n              const final = $.CONSUME(tokens.Final);\n              final.cnt = i;\n              formalParameters = true;\n            });\n            $.SUBRULE($.expression);\n            if (!formalParameters) {\n              $.OPTION2(() => {\n                $.SUBRULE($.variableDeclaratorId);\n                formalParameters = true;\n              });\n            } else {\n              $.SUBRULE2($.variableDeclaratorId);\n            }\n\n            // For potentielle formalParameterList or identifierList\n            $.MANY(() => {\n              i++;\n              $.CONSUME(tokens.Comma);\n              if (formalParameters) {\n                $.OPTION3(() => {\n                  const final = $.CONSUME2(tokens.Final);\n                  final.cnt = i;\n                });\n              }\n              $.SUBRULE2($.expression);\n              if (formalParameters) {\n                $.SUBRULE3($.variableDeclaratorId);\n              }\n            });\n\n            $.CONSUME2(tokens.RBrace);\n            $.OR2([\n              // lambda expression\n              {\n                ALT: () => {\n                  $.CONSUME2(tokens.Pointer);\n                  $.SUBRULE2($.lambdaBody);\n                }\n              },\n              {\n                GATE: () => !formalParameters,\n                ALT: () => {\n                  // for potentielle cast expression\n                  // or operator expression\n                  let isOperatorExpression = false;\n                  $.OPTION4(() => {\n                    $.SUBRULE($.operator);\n                    isOperatorExpression = true;\n                  });\n                  $.SUBRULE3($.expression);\n                  $.MANY2({\n                    GATE: () => isOperatorExpression,\n                    DEF: () => {\n                      $.SUBRULE($.operatorExpressionRest);\n                    }\n                  });\n                  $.OPTION5({\n                    GATE: () => isOperatorExpression,\n                    DEF: () => {\n                      $.SUBRULE($.ifElseExpressionRest);\n                    }\n                  });\n                }\n              },\n              {\n                GATE: () => !formalParameters,\n                ALT: () => {\n                  // Cast expression with following method or variable\n                  $.SUBRULE($.qualifiedExpressionRest);\n                  $.MANY3(() => {\n                    $.SUBRULE2($.operatorExpressionRest);\n                  });\n                  // followed by a short if else\n                  $.OR3([\n                    { ALT: () => $.SUBRULE2($.ifElseExpressionRest) },\n                    { ALT: () => {} }\n                  ]);\n                }\n              },\n              {\n                GATE: () => !formalParameters,\n                ALT: () => {\n                  // followed by a short if else\n                  $.SUBRULE3($.ifElseExpressionRest);\n                }\n              },\n              {\n                // if the first expression is not an identifier, second expression should be empty\n                GATE: () => !formalParameters,\n                ALT: () => {}\n              }\n            ]);\n          }\n        }\n      ]);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -5723,6 +6034,7 @@
       },
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -5753,6 +6065,7 @@
             "definition": [
               {
                 "type": "Option",
+                "idx": 0,
                 "definition": [
                   {
                     "type": "Terminal",
@@ -5770,6 +6083,7 @@
               },
               {
                 "type": "Option",
+                "idx": 2,
                 "definition": [
                   {
                     "type": "NonTerminal",
@@ -5785,6 +6099,7 @@
               },
               {
                 "type": "Repetition",
+                "idx": 0,
                 "definition": [
                   {
                     "type": "Terminal",
@@ -5795,6 +6110,7 @@
                   },
                   {
                     "type": "Option",
+                    "idx": 3,
                     "definition": [
                       {
                         "type": "Terminal",
@@ -5826,6 +6142,7 @@
               },
               {
                 "type": "Alternation",
+                "idx": 2,
                 "definition": [
                   {
                     "type": "Flat",
@@ -5849,6 +6166,7 @@
                     "definition": [
                       {
                         "type": "Option",
+                        "idx": 4,
                         "definition": [
                           {
                             "type": "NonTerminal",
@@ -5864,6 +6182,7 @@
                       },
                       {
                         "type": "Repetition",
+                        "idx": 2,
                         "definition": [
                           {
                             "type": "NonTerminal",
@@ -5874,6 +6193,7 @@
                       },
                       {
                         "type": "Option",
+                        "idx": 5,
                         "definition": [
                           {
                             "type": "NonTerminal",
@@ -5894,6 +6214,7 @@
                       },
                       {
                         "type": "Repetition",
+                        "idx": 3,
                         "definition": [
                           {
                             "type": "NonTerminal",
@@ -5904,6 +6225,7 @@
                       },
                       {
                         "type": "Alternation",
+                        "idx": 3,
                         "definition": [
                           {
                             "type": "Flat",
@@ -5948,9 +6270,11 @@
   {
     "type": "Rule",
     "name": "operator",
+    "orgText": "() => {\n      $.OR([\n        // ('*'|'/'|'%')\n        {\n          ALT: () => {\n            $.CONSUME(tokens.Star);\n          }\n        },\n        {\n          ALT: () => {\n            $.CONSUME(tokens.Dash);\n          }\n        },\n        {\n          ALT: () => {\n            $.CONSUME(tokens.Percentage);\n          }\n        },\n        // ('+'|'-')\n        {\n          ALT: () => {\n            $.CONSUME(tokens.Plus);\n          }\n        },\n        {\n          ALT: () => {\n            $.CONSUME(tokens.Minus);\n          }\n        },\n        // ('<<')\n        {\n          ALT: () => {\n            $.CONSUME(tokens.LessLess);\n          }\n        },\n        // ('<=' | '>=' | '>' | '>>' | '>>>' | '<')\n        {\n          ALT: () => {\n            $.CONSUME(tokens.LessEquals);\n          }\n        },\n        {\n          ALT: () => {\n            $.CONSUME(tokens.GreaterEquals);\n          }\n        },\n        {\n          ALT: () => {\n            $.CONSUME(tokens.Greater);\n            $.OPTION(() => {\n              $.CONSUME2(tokens.Greater);\n              $.OPTION2(() => {\n                $.CONSUME3(tokens.Greater);\n              });\n            });\n          }\n        },\n        {\n          ALT: () => {\n            $.CONSUME(tokens.Less);\n          }\n        },\n        // ('==' | '!=')\n        {\n          ALT: () => {\n            $.CONSUME(tokens.EqualsEquals);\n          }\n        },\n        {\n          ALT: () => {\n            $.CONSUME(tokens.ExclamationmarkEquals);\n          }\n        },\n        // '&'\n        {\n          ALT: () => {\n            $.CONSUME(tokens.And);\n          }\n        },\n        // | '^'\n        {\n          ALT: () => {\n            $.CONSUME(tokens.Caret);\n          }\n        },\n        // | '|'\n        {\n          ALT: () => {\n            $.CONSUME(tokens.Or);\n          }\n        },\n        // | '&&'\n        {\n          ALT: () => {\n            $.CONSUME(tokens.AndAnd);\n          }\n        },\n        // | '||'\n        {\n          ALT: () => {\n            $.CONSUME(tokens.OrOr);\n          }\n        },\n        // ('=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^=' | '>>=' | '>>>=' | '<<=' | '%=')\n        {\n          ALT: () => {\n            $.CONSUME(tokens.Equals);\n          }\n        },\n        {\n          ALT: () => {\n            $.CONSUME(tokens.PlusEquals);\n          }\n        },\n        {\n          ALT: () => {\n            $.CONSUME(tokens.MinusEquals);\n          }\n        },\n        {\n          ALT: () => {\n            $.CONSUME(tokens.StarEquals);\n          }\n        },\n        {\n          ALT: () => {\n            $.CONSUME(tokens.DashEquals);\n          }\n        },\n        {\n          ALT: () => {\n            $.CONSUME(tokens.AndEquals);\n          }\n        },\n        {\n          ALT: () => {\n            $.CONSUME(tokens.OrEquals);\n          }\n        },\n        {\n          ALT: () => {\n            $.CONSUME(tokens.CaretEquals);\n          }\n        },\n        {\n          ALT: () => {\n            $.CONSUME(tokens.GreaterGreaterEquals);\n          }\n        },\n        {\n          ALT: () => {\n            $.CONSUME(tokens.GreaterGreaterGreaterEquals);\n          }\n        },\n        {\n          ALT: () => {\n            $.CONSUME(tokens.LessLessEquals);\n          }\n        },\n        {\n          ALT: () => {\n            $.CONSUME(tokens.PercentageEquals);\n          }\n        }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -6060,6 +6384,7 @@
               },
               {
                 "type": "Option",
+                "idx": 0,
                 "definition": [
                   {
                     "type": "Terminal",
@@ -6070,6 +6395,7 @@
                   },
                   {
                     "type": "Option",
+                    "idx": 2,
                     "definition": [
                       {
                         "type": "Terminal",
@@ -6331,6 +6657,7 @@
   {
     "type": "Rule",
     "name": "operatorExpressionRest",
+    "orgText": "() => {\n      const operator = $.SUBRULE($.operator);\n      $.OR([\n        { ALT: () => $.SUBRULE($.expression) },\n        {\n          GATE: () => operator.children.Equals.length > 0,\n          ALT: () => $.SUBRULE($.elementValueArrayInitializer)\n        }\n      ]);\n    }",
     "definition": [
       {
         "type": "NonTerminal",
@@ -6339,6 +6666,7 @@
       },
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -6367,6 +6695,7 @@
   {
     "type": "Rule",
     "name": "methodReferenceRest",
+    "orgText": "() => {\n      $.CONSUME(tokens.ColonColon);\n      $.OPTION(() => {\n        $.SUBRULE($.typeArguments);\n      });\n      $.OR([\n        {\n          ALT: () => {\n            $.CONSUME(tokens.Identifier);\n          }\n        },\n        {\n          ALT: () => {\n            $.CONSUME(tokens.New);\n          }\n        }\n      ]);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -6377,6 +6706,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -6387,6 +6717,7 @@
       },
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -6419,6 +6750,7 @@
   {
     "type": "Rule",
     "name": "lambdaExpression",
+    "orgText": "() => {\n      $.SUBRULE($.lambdaParameters);\n      $.CONSUME(tokens.Pointer);\n      $.SUBRULE($.lambdaBody);\n    }",
     "definition": [
       {
         "type": "NonTerminal",
@@ -6442,9 +6774,11 @@
   {
     "type": "Rule",
     "name": "lambdaParameters",
+    "orgText": "() => {\n      $.OR([\n        { ALT: () => $.CONSUME(tokens.Identifier) },\n        {\n          ALT: () => {\n            $.CONSUME(tokens.LBrace);\n            $.CONSUME(tokens.RBrace);\n          }\n        },\n        {\n          ALT: () => {\n            $.CONSUME2(tokens.LBrace);\n            $.SUBRULE($.formalParameterList);\n            $.CONSUME2(tokens.RBrace);\n          }\n        },\n        {\n          ALT: () => {\n            $.CONSUME3(tokens.LBrace);\n            $.SUBRULE($.identifierList);\n            $.CONSUME3(tokens.RBrace);\n          }\n        }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -6532,9 +6866,11 @@
   {
     "type": "Rule",
     "name": "lambdaBody",
+    "orgText": "() => {\n      $.OR([\n        { ALT: () => $.SUBRULE($.expression) },\n        { ALT: () => $.SUBRULE($.block) }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -6563,9 +6899,11 @@
   {
     "type": "Rule",
     "name": "classType",
+    "orgText": "() => {\n      $.MANY(() => {\n        $.SUBRULE($.annotation);\n      });\n      $.SUBRULE($.classOrInterfaceType);\n    }",
     "definition": [
       {
         "type": "Repetition",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -6584,6 +6922,7 @@
   {
     "type": "Rule",
     "name": "creator",
+    "orgText": "() => {\n      $.CONSUME(tokens.New);\n      $.OR([\n        { ALT: () => $.SUBRULE($.nonWildcardCreator) },\n        { ALT: () => $.SUBRULE($.simpleCreator) }\n      ]);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -6594,6 +6933,7 @@
       },
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -6622,6 +6962,7 @@
   {
     "type": "Rule",
     "name": "nonWildcardCreator",
+    "orgText": "() => {\n      $.SUBRULE($.nonWildcardTypeArguments);\n      $.SUBRULE($.createdName);\n      $.SUBRULE($.classCreatorRest);\n    }",
     "definition": [
       {
         "type": "NonTerminal",
@@ -6643,6 +6984,7 @@
   {
     "type": "Rule",
     "name": "simpleCreator",
+    "orgText": "() => {\n      $.SUBRULE($.createdName);\n      $.OR([\n        { ALT: () => $.SUBRULE($.arrayCreatorRest) },\n        { ALT: () => $.SUBRULE($.classCreatorRest) }\n      ]);\n    }",
     "definition": [
       {
         "type": "NonTerminal",
@@ -6651,6 +6993,7 @@
       },
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -6679,9 +7022,11 @@
   {
     "type": "Rule",
     "name": "createdName",
+    "orgText": "() => {\n      $.OR([\n        { ALT: () => $.SUBRULE($.identifierName) },\n        { ALT: () => $.SUBRULE($.primitiveType) }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -6710,9 +7055,11 @@
   {
     "type": "Rule",
     "name": "identifierName",
+    "orgText": "() => {\n      $.AT_LEAST_ONE_SEP({\n        SEP: tokens.Dot,\n        DEF: () => {\n          $.SUBRULE($.identifierNameElement);\n        }\n      });\n    }",
     "definition": [
       {
         "type": "RepetitionMandatoryWithSeparator",
+        "idx": 0,
         "separator": {
           "type": "Terminal",
           "name": "Dot",
@@ -6733,6 +7080,7 @@
   {
     "type": "Rule",
     "name": "identifierNameElement",
+    "orgText": "() => {\n      $.CONSUME(tokens.Identifier);\n      $.OPTION(() => {\n        $.SUBRULE($.nonWildcardTypeArgumentsOrDiamond);\n      });\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -6743,6 +7091,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -6756,6 +7105,7 @@
   {
     "type": "Rule",
     "name": "innerCreator",
+    "orgText": "() => {\n      $.CONSUME(tokens.Identifier);\n      $.OPTION(() => {\n        $.SUBRULE($.nonWildcardTypeArgumentsOrDiamond);\n      });\n      $.SUBRULE($.classCreatorRest);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -6766,6 +7116,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -6784,6 +7135,7 @@
   {
     "type": "Rule",
     "name": "arrayCreatorRest",
+    "orgText": "() => {\n      $.CONSUME(tokens.LSquare);\n      $.OR([\n        {\n          ALT: () => {\n            $.CONSUME(tokens.RSquare);\n            $.MANY(() => {\n              $.CONSUME2(tokens.LSquare);\n              $.CONSUME2(tokens.RSquare);\n            });\n            $.SUBRULE($.arrayInitializer);\n          }\n        },\n        {\n          ALT: () => {\n            $.SUBRULE($.expression);\n            $.CONSUME3(tokens.RSquare);\n            $.MANY2(() => {\n              $.CONSUME4(tokens.LSquare);\n              $.SUBRULE2($.expression);\n              $.CONSUME4(tokens.RSquare);\n            });\n            $.MANY3(() => {\n              $.CONSUME5(tokens.LSquare);\n              $.CONSUME5(tokens.RSquare);\n            });\n          }\n        }\n      ]);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -6794,6 +7146,7 @@
       },
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -6807,6 +7160,7 @@
               },
               {
                 "type": "Repetition",
+                "idx": 0,
                 "definition": [
                   {
                     "type": "Terminal",
@@ -6848,6 +7202,7 @@
               },
               {
                 "type": "Repetition",
+                "idx": 2,
                 "definition": [
                   {
                     "type": "Terminal",
@@ -6872,6 +7227,7 @@
               },
               {
                 "type": "Repetition",
+                "idx": 3,
                 "definition": [
                   {
                     "type": "Terminal",
@@ -6898,6 +7254,7 @@
   {
     "type": "Rule",
     "name": "classCreatorRest",
+    "orgText": "() => {\n      $.SUBRULE($.arguments);\n      $.OPTION(() => {\n        $.SUBRULE($.classBody);\n      });\n    }",
     "definition": [
       {
         "type": "NonTerminal",
@@ -6906,6 +7263,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -6919,6 +7277,7 @@
   {
     "type": "Rule",
     "name": "explicitGenericInvocation",
+    "orgText": "() => {\n      $.SUBRULE($.nonWildcardTypeArguments);\n      $.SUBRULE($.explicitGenericInvocationSuffix);\n    }",
     "definition": [
       {
         "type": "NonTerminal",
@@ -6935,9 +7294,11 @@
   {
     "type": "Rule",
     "name": "typeArgumentsOrDiamond",
+    "orgText": "() => {\n      $.OR([\n        { ALT: () => $.SUBRULE($.emptyDiamond) },\n        { ALT: () => $.SUBRULE($.typeArguments) }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -6966,9 +7327,11 @@
   {
     "type": "Rule",
     "name": "nonWildcardTypeArgumentsOrDiamond",
+    "orgText": "() => {\n      $.OR([\n        { ALT: () => $.SUBRULE($.emptyDiamond) },\n        { ALT: () => $.SUBRULE($.nonWildcardTypeArguments) }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -6997,6 +7360,7 @@
   {
     "type": "Rule",
     "name": "emptyDiamond",
+    "orgText": "() => {\n      $.CONSUME(tokens.Less);\n      $.CONSUME(tokens.Greater);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -7017,6 +7381,7 @@
   {
     "type": "Rule",
     "name": "nonWildcardTypeArguments",
+    "orgText": "() => {\n      $.CONSUME(tokens.Less);\n      $.SUBRULE($.typeList);\n      $.CONSUME(tokens.Greater);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -7042,6 +7407,7 @@
   {
     "type": "Rule",
     "name": "qualifiedName",
+    "orgText": "() => {\n      $.CONSUME(tokens.Identifier);\n      $.MANY({\n        // The gate condition is in addition to basic grammar lookahead, so this.LA(1) === dot\n        // is always checked\n        GATE: () => this.LA(2).tokenType === tokens.Identifier,\n        DEF: () => {\n          $.CONSUME(tokens.Dot);\n          $.CONSUME2(tokens.Identifier);\n        }\n      });\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -7052,6 +7418,7 @@
       },
       {
         "type": "Repetition",
+        "idx": 0,
         "definition": [
           {
             "type": "Terminal",
@@ -7074,9 +7441,11 @@
   {
     "type": "Rule",
     "name": "primary",
+    "orgText": "() => {\n      $.OR([\n        {\n          ALT: () => {\n            $.SUBRULE($.thisOrSuper);\n          }\n        },\n        { ALT: () => $.SUBRULE($.literal) },\n        {\n          ALT: () => {\n            $.OR2([\n              {\n                ALT: () => {\n                  $.SUBRULE($.annotation);\n                  $.OPTION2(() => {\n                    $.OR3([\n                      {\n                        ALT: () => {\n                          $.CONSUME(tokens.Identifier);\n                          $.OPTION3(() => {\n                            $.SUBRULE($.typeArguments);\n                          });\n                        }\n                      },\n                      { ALT: () => $.SUBRULE($.primitiveType) }\n                    ]);\n                    $.MANY(() => {\n                      $.CONSUME(tokens.LSquare);\n                      $.CONSUME(tokens.RSquare);\n                    });\n                  });\n                }\n              },\n              {\n                ALT: () => {\n                  $.OR4([\n                    {\n                      ALT: () => {\n                        $.SUBRULE(\n                          $.identifierOrIdentifierWithTypeArgumentsOrOperatorExpression\n                        );\n                      }\n                    },\n                    { ALT: () => $.SUBRULE2($.primitiveType) }\n                  ]);\n                  $.MANY2(() => {\n                    $.SUBRULE($.dimension);\n                  });\n                }\n              }\n            ]);\n          }\n        },\n        { ALT: () => $.CONSUME(tokens.Void) },\n        {\n          ALT: () => {\n            $.SUBRULE($.nonWildcardTypeArguments);\n            $.OR5([\n              { ALT: () => $.SUBRULE($.explicitGenericInvocationSuffix) },\n              {\n                ALT: () => {\n                  $.CONSUME2(tokens.This);\n                  $.SUBRULE2($.arguments);\n                }\n              }\n            ]);\n          }\n        }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -7103,6 +7472,7 @@
             "definition": [
               {
                 "type": "Alternation",
+                "idx": 2,
                 "definition": [
                   {
                     "type": "Flat",
@@ -7114,9 +7484,11 @@
                       },
                       {
                         "type": "Option",
+                        "idx": 2,
                         "definition": [
                           {
                             "type": "Alternation",
+                            "idx": 3,
                             "definition": [
                               {
                                 "type": "Flat",
@@ -7130,6 +7502,7 @@
                                   },
                                   {
                                     "type": "Option",
+                                    "idx": 3,
                                     "definition": [
                                       {
                                         "type": "NonTerminal",
@@ -7154,6 +7527,7 @@
                           },
                           {
                             "type": "Repetition",
+                            "idx": 0,
                             "definition": [
                               {
                                 "type": "Terminal",
@@ -7180,6 +7554,7 @@
                     "definition": [
                       {
                         "type": "Alternation",
+                        "idx": 4,
                         "definition": [
                           {
                             "type": "Flat",
@@ -7205,6 +7580,7 @@
                       },
                       {
                         "type": "Repetition",
+                        "idx": 2,
                         "definition": [
                           {
                             "type": "NonTerminal",
@@ -7241,6 +7617,7 @@
               },
               {
                 "type": "Alternation",
+                "idx": 5,
                 "definition": [
                   {
                     "type": "Flat",
@@ -7280,6 +7657,7 @@
   {
     "type": "Rule",
     "name": "identifierOrIdentifierWithTypeArgumentsOrOperatorExpression",
+    "orgText": "() => {\n        $.CONSUME(tokens.Identifier);\n        $.OPTION(() => {\n          $.SUBRULE($.typeArgumentsOrOperatorExpressionRest);\n        });\n      }",
     "definition": [
       {
         "type": "Terminal",
@@ -7290,6 +7668,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -7303,6 +7682,7 @@
   {
     "type": "Rule",
     "name": "dimension",
+    "orgText": "() => {\n      $.CONSUME(tokens.LSquare);\n      $.OPTION(() => $.SUBRULE($.expression));\n      $.CONSUME(tokens.RSquare);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -7313,6 +7693,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -7333,9 +7714,11 @@
   {
     "type": "Rule",
     "name": "thisOrSuper",
+    "orgText": "() => {\n      $.OR([\n        {\n          ALT: () => {\n            $.CONSUME(tokens.This);\n          }\n        },\n        {\n          ALT: () => {\n            $.CONSUME(tokens.Super);\n          }\n        }\n      ]);\n      $.OPTION(() => $.SUBRULE($.arguments));\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -7365,6 +7748,7 @@
       },
       {
         "type": "Option",
+        "idx": 0,
         "definition": [
           {
             "type": "NonTerminal",
@@ -7378,9 +7762,11 @@
   {
     "type": "Rule",
     "name": "literal",
+    "orgText": "() => {\n      $.OR([\n        { ALT: () => $.SUBRULE($.integerLiteral) },\n        { ALT: () => $.SUBRULE($.floatLiteral) },\n        { ALT: () => $.CONSUME(tokens.CharLiteral) },\n        { ALT: () => $.SUBRULE($.stringLiteral) },\n        { ALT: () => $.SUBRULE($.booleanLiteral) },\n        { ALT: () => $.CONSUME(tokens.Null) }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -7453,6 +7839,7 @@
   {
     "type": "Rule",
     "name": "stringLiteral",
+    "orgText": "() => {\n      $.CONSUME(tokens.StringLiteral);\n    }",
     "definition": [
       {
         "type": "Terminal",
@@ -7466,9 +7853,11 @@
   {
     "type": "Rule",
     "name": "booleanLiteral",
+    "orgText": "() => {\n      $.OR([\n        { ALT: () => $.CONSUME(tokens.True) },\n        { ALT: () => $.CONSUME(tokens.False) }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -7501,9 +7890,11 @@
   {
     "type": "Rule",
     "name": "integerLiteral",
+    "orgText": "() => {\n      $.OR([\n        { ALT: () => $.CONSUME(tokens.DecimalLiteral) },\n        { ALT: () => $.CONSUME(tokens.HexLiteral) },\n        { ALT: () => $.CONSUME(tokens.OctLiteral) },\n        { ALT: () => $.CONSUME(tokens.BinaryLiteral) }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -7560,9 +7951,11 @@
   {
     "type": "Rule",
     "name": "floatLiteral",
+    "orgText": "() => {\n      $.OR([\n        { ALT: () => $.CONSUME(tokens.FloatLiteral) },\n        { ALT: () => $.CONSUME(tokens.HexFloatLiteral) }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -7595,9 +7988,11 @@
   {
     "type": "Rule",
     "name": "primitiveType",
+    "orgText": "() => {\n      $.OR([\n        { ALT: () => $.CONSUME(tokens.Boolean) },\n        { ALT: () => $.CONSUME(tokens.Char) },\n        { ALT: () => $.CONSUME(tokens.Byte) },\n        { ALT: () => $.CONSUME(tokens.Short) },\n        { ALT: () => $.CONSUME(tokens.Int) },\n        { ALT: () => $.CONSUME(tokens.Long) },\n        { ALT: () => $.CONSUME(tokens.Float) },\n        { ALT: () => $.CONSUME(tokens.Double) }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",
@@ -7702,9 +8097,11 @@
   {
     "type": "Rule",
     "name": "semiColon",
+    "orgText": "() => {\n      $.OR([\n        { ALT: () => $.CONSUME(tokens.SemiColon) },\n        { ALT: () => $.CONSUME(tokens.SemiColonWithFollowEmptyLine) }\n      ]);\n    }",
     "definition": [
       {
         "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
             "type": "Flat",

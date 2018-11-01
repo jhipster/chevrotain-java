@@ -16,9 +16,9 @@ const END_OF_FILE = chevrotain.createTokenInstance(
 );
 Object.freeze(END_OF_FILE);
 
-class SelectParser extends chevrotain.Parser {
-  constructor(input) {
-    super(input, allTokens, { outputCst: true });
+class JavaParser extends chevrotain.Parser {
+  constructor() {
+    super(allTokens);
 
     const $ = this;
 
@@ -3013,4 +3013,4 @@ class SelectParser extends chevrotain.Parser {
   }
 }
 
-module.exports = SelectParser;
+module.exports = JavaParser;
