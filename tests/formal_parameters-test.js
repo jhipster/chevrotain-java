@@ -1,9 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("empty", () => {
   it("empty", () => {
-    expect(Parser.parse("()", parser => parser.formalParameters())).toEqual({
+    expect(
+      Parser.parse("()", parser => parser.formalParameters())
+    ).to.deep.equal({
       type: "FORMAL_PARAMETERS",
       parameters: []
     });
@@ -12,7 +15,7 @@ describe("empty", () => {
   it("parameter", () => {
     expect(
       Parser.parse("(boolean a)", parser => parser.formalParameters())
-    ).toEqual({
+    ).to.deep.equal({
       type: "FORMAL_PARAMETERS",
       parameters: [
         {

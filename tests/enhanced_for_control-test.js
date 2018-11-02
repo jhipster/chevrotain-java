@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("enhancedForControl", () => {
   it("empty", () => {
     expect(
       Parser.parse("boolean a : this", parser => parser.enhancedForControl())
-    ).toEqual({
+    ).to.deep.equal({
       type: "ENHANCED_FOR_CONTROL",
       modifiers: [],
       typeType: {
@@ -31,7 +32,7 @@ describe("enhancedForControl", () => {
       Parser.parse("@Bean boolean a : this", parser =>
         parser.enhancedForControl()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "ENHANCED_FOR_CONTROL",
       modifiers: [
         {
@@ -71,7 +72,7 @@ describe("enhancedForControl", () => {
       Parser.parse("@Bean final boolean a : this", parser =>
         parser.enhancedForControl()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "ENHANCED_FOR_CONTROL",
       modifiers: [
         {

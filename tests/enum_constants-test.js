@@ -1,9 +1,10 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("enumConstants", () => {
   it("single", () => {
-    expect(Parser.parse("A", parser => parser.enumConstants())).toEqual({
+    expect(Parser.parse("A", parser => parser.enumConstants())).to.deep.equal({
       type: "ENUM_CONSTANTS",
       list: [
         {
@@ -21,7 +22,9 @@ describe("enumConstants", () => {
   });
 
   it("multiple", () => {
-    expect(Parser.parse("A, B", parser => parser.enumConstants())).toEqual({
+    expect(
+      Parser.parse("A, B", parser => parser.enumConstants())
+    ).to.deep.equal({
       type: "ENUM_CONSTANTS",
       list: [
         {

@@ -1,24 +1,25 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("classBodyDeclaration", () => {
   it("classBodyBlock", () => {
-    expect(Parser.parse("{}", parser => parser.classBodyDeclaration())).toEqual(
-      {
-        type: "CLASS_BODY_BLOCK",
-        static: false,
-        block: {
-          type: "BLOCK",
-          statements: []
-        }
+    expect(
+      Parser.parse("{}", parser => parser.classBodyDeclaration())
+    ).to.deep.equal({
+      type: "CLASS_BODY_BLOCK",
+      static: false,
+      block: {
+        type: "BLOCK",
+        statements: []
       }
-    );
+    });
   });
 
   it("classBodyBlock - static", () => {
     expect(
       Parser.parse("static {}", parser => parser.classBodyDeclaration())
-    ).toEqual({
+    ).to.deep.equal({
       type: "CLASS_BODY_BLOCK",
       static: true,
       block: {
@@ -31,7 +32,7 @@ describe("classBodyDeclaration", () => {
   it("classBodyMemberDeclaration", () => {
     expect(
       Parser.parse("void a() {}", parser => parser.classBodyDeclaration())
-    ).toEqual({
+    ).to.deep.equal({
       type: "CLASS_BODY_MEMBER_DECLARATION",
       modifiers: [],
       declaration: {
@@ -61,7 +62,7 @@ describe("classBodyDeclaration", () => {
   it("classBodyMemberDeclaration - one modifier", () => {
     expect(
       Parser.parse("@Bean void a() {}", parser => parser.classBodyDeclaration())
-    ).toEqual({
+    ).to.deep.equal({
       type: "CLASS_BODY_MEMBER_DECLARATION",
       modifiers: [
         {
@@ -76,7 +77,7 @@ describe("classBodyDeclaration", () => {
             ]
           },
           hasBraces: false,
-          values: undefined
+          values: []
         }
       ],
       declaration: {
@@ -108,7 +109,7 @@ describe("classBodyDeclaration", () => {
       Parser.parse("@Bean public void a() {}", parser =>
         parser.classBodyDeclaration()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "CLASS_BODY_MEMBER_DECLARATION",
       modifiers: [
         {
@@ -123,7 +124,7 @@ describe("classBodyDeclaration", () => {
             ]
           },
           hasBraces: false,
-          values: undefined
+          values: []
         },
         {
           type: "MODIFIER",
@@ -159,7 +160,7 @@ describe("classBodyDeclaration", () => {
       Parser.parse("static void a() {}", parser =>
         parser.classBodyDeclaration()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "CLASS_BODY_MEMBER_DECLARATION",
       modifiers: [
         {
@@ -192,7 +193,9 @@ describe("classBodyDeclaration", () => {
   });
 
   it("semiColon", () => {
-    expect(Parser.parse(";", parser => parser.classBodyDeclaration())).toEqual({
+    expect(
+      Parser.parse(";", parser => parser.classBodyDeclaration())
+    ).to.deep.equal({
       type: "SEMI_COLON_STATEMENT"
     });
   });

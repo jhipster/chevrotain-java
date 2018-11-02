@@ -1,15 +1,16 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("primary", () => {
   it("this", () => {
-    expect(Parser.parse("this", parser => parser.primary())).toEqual({
+    expect(Parser.parse("this", parser => parser.primary())).to.deep.equal({
       type: "THIS"
     });
   });
 
   it("this invocation", () => {
-    expect(Parser.parse("this()", parser => parser.primary())).toEqual({
+    expect(Parser.parse("this()", parser => parser.primary())).to.deep.equal({
       type: "THIS",
       arguments: {
         type: "EXPRESSION_LIST",
@@ -19,13 +20,13 @@ describe("primary", () => {
   });
 
   it("super", () => {
-    expect(Parser.parse("super", parser => parser.primary())).toEqual({
+    expect(Parser.parse("super", parser => parser.primary())).to.deep.equal({
       type: "SUPER"
     });
   });
 
   it("super invocation", () => {
-    expect(Parser.parse("super()", parser => parser.primary())).toEqual({
+    expect(Parser.parse("super()", parser => parser.primary())).to.deep.equal({
       type: "SUPER",
       arguments: {
         type: "EXPRESSION_LIST",
@@ -35,27 +36,27 @@ describe("primary", () => {
   });
 
   it("floatLiteral", () => {
-    expect(Parser.parse("0.1", parser => parser.primary())).toEqual({
+    expect(Parser.parse("0.1", parser => parser.primary())).to.deep.equal({
       type: "FLOAT_LITERAL",
       value: "0.1"
     });
   });
 
   it("void", () => {
-    expect(Parser.parse("void", parser => parser.primary())).toEqual({
+    expect(Parser.parse("void", parser => parser.primary())).to.deep.equal({
       type: "VOID"
     });
   });
 
   it("identifier", () => {
-    expect(Parser.parse("A", parser => parser.primary())).toEqual({
+    expect(Parser.parse("A", parser => parser.primary())).to.deep.equal({
       type: "IDENTIFIER",
       value: "A"
     });
   });
 
   it("identifier with typeArguments", () => {
-    expect(Parser.parse("A<B>", parser => parser.primary())).toEqual({
+    expect(Parser.parse("A<B>", parser => parser.primary())).to.deep.equal({
       type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
       name: {
         type: "IDENTIFIER",
@@ -84,7 +85,7 @@ describe("primary", () => {
   it("genericInvocation", () => {
     expect(
       Parser.parse("<boolean> this()", parser => parser.primary())
-    ).toEqual({
+    ).to.deep.equal({
       type: "GENERIC_INVOCATION",
       typeArguments: {
         type: "TYPE_ARGUMENTS",
@@ -109,7 +110,9 @@ describe("primary", () => {
   });
 
   it("identifier with annotation", () => {
-    expect(Parser.parse("@Bean A", parser => parser.expression())).toEqual({
+    expect(
+      Parser.parse("@Bean A", parser => parser.expression())
+    ).to.deep.equal({
       type: "TYPE_TYPE",
       modifiers: [
         {
@@ -124,7 +127,7 @@ describe("primary", () => {
             ]
           },
           hasBraces: false,
-          values: undefined
+          values: []
         }
       ],
       value: {

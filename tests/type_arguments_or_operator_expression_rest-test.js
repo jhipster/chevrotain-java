@@ -1,5 +1,6 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("typeArgumentsOrOperatorExpressionRest", () => {
   it("single", () => {
@@ -7,7 +8,7 @@ describe("typeArgumentsOrOperatorExpressionRest", () => {
       Parser.parse("<boolean>", parser =>
         parser.typeArgumentsOrOperatorExpressionRest()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "TYPE_ARGUMENTS",
       value: {
         type: "TYPE_LIST",
@@ -31,7 +32,7 @@ describe("typeArgumentsOrOperatorExpressionRest", () => {
       Parser.parse("<boolean, char>", parser =>
         parser.typeArgumentsOrOperatorExpressionRest()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "TYPE_ARGUMENTS",
       value: {
         type: "TYPE_LIST",
@@ -64,7 +65,7 @@ describe("typeArgumentsOrOperatorExpressionRest", () => {
       Parser.parse("< array.length", parser =>
         parser.typeArgumentsOrOperatorExpressionRest()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "OPERATOR_EXPRESSION_REST",
       operator: {
         type: "OPERATOR",
@@ -96,7 +97,7 @@ describe("typeArgumentsOrOperatorExpressionRest", () => {
       Parser.parse("< size()", parser =>
         parser.typeArgumentsOrOperatorExpressionRest()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "OPERATOR_EXPRESSION_REST",
       operator: {
         type: "OPERATOR",
@@ -119,7 +120,7 @@ describe("typeArgumentsOrOperatorExpressionRest", () => {
       Parser.parse("< size()[0]", parser =>
         parser.typeArgumentsOrOperatorExpressionRest()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "OPERATOR_EXPRESSION_REST",
       operator: {
         type: "OPERATOR",
@@ -150,7 +151,7 @@ describe("typeArgumentsOrOperatorExpressionRest", () => {
       Parser.parse("< size(this)", parser =>
         parser.typeArgumentsOrOperatorExpressionRest()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "OPERATOR_EXPRESSION_REST",
       operator: {
         type: "OPERATOR",
@@ -180,7 +181,7 @@ describe("typeArgumentsOrOperatorExpressionRest", () => {
       Parser.parse("< list.size()", parser =>
         parser.typeArgumentsOrOperatorExpressionRest()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "OPERATOR_EXPRESSION_REST",
       operator: {
         type: "OPERATOR",
@@ -210,7 +211,7 @@ describe("typeArgumentsOrOperatorExpressionRest", () => {
       Parser.parse("< 3", parser =>
         parser.typeArgumentsOrOperatorExpressionRest()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "OPERATOR_EXPRESSION_REST",
       operator: {
         type: "OPERATOR",
@@ -228,7 +229,7 @@ describe("typeArgumentsOrOperatorExpressionRest", () => {
       Parser.parse("< this", parser =>
         parser.typeArgumentsOrOperatorExpressionRest()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "OPERATOR_EXPRESSION_REST",
       operator: {
         type: "OPERATOR",
@@ -245,7 +246,7 @@ describe("typeArgumentsOrOperatorExpressionRest", () => {
       Parser.parse("< super", parser =>
         parser.typeArgumentsOrOperatorExpressionRest()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "OPERATOR_EXPRESSION_REST",
       operator: {
         type: "OPERATOR",

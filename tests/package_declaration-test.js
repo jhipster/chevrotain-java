@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("package", () => {
   it("single qualifiers", () => {
     expect(
       Parser.parse("package pkg;", parser => parser.packageDeclaration())
-    ).toEqual({
+    ).to.deep.equal({
       type: "PACKAGE_DECLARATION",
       modifiers: [],
       name: {
@@ -23,7 +24,7 @@ describe("package", () => {
   it("multiple qualifiers", () => {
     expect(
       Parser.parse("package pkg.name;", parser => parser.packageDeclaration())
-    ).toEqual({
+    ).to.deep.equal({
       type: "PACKAGE_DECLARATION",
       modifiers: [],
       name: {

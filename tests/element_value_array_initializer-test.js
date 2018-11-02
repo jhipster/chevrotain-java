@@ -1,5 +1,6 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("elementValueArrayInitializer", () => {
   it("single", () => {
@@ -7,7 +8,7 @@ describe("elementValueArrayInitializer", () => {
       Parser.parse("{@Something}", parser =>
         parser.elementValueArrayInitializer()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "ELEMENT_VALUE_ARRAY_INITIALIZER",
       values: [
         {
@@ -22,7 +23,7 @@ describe("elementValueArrayInitializer", () => {
             ]
           },
           hasBraces: false,
-          values: undefined
+          values: []
         }
       ]
     });
@@ -33,7 +34,7 @@ describe("elementValueArrayInitializer", () => {
       Parser.parse("{@Something, @Another}", parser =>
         parser.elementValueArrayInitializer()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "ELEMENT_VALUE_ARRAY_INITIALIZER",
       values: [
         {
@@ -48,7 +49,7 @@ describe("elementValueArrayInitializer", () => {
             ]
           },
           hasBraces: false,
-          values: undefined
+          values: []
         },
         {
           type: "ANNOTATION",
@@ -62,7 +63,7 @@ describe("elementValueArrayInitializer", () => {
             ]
           },
           hasBraces: false,
-          values: undefined
+          values: []
         }
       ]
     });
@@ -72,7 +73,7 @@ describe("elementValueArrayInitializer", () => {
       Parser.parse("{@Something,}", parser =>
         parser.elementValueArrayInitializer()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "ELEMENT_VALUE_ARRAY_INITIALIZER",
       values: [
         {
@@ -87,7 +88,7 @@ describe("elementValueArrayInitializer", () => {
             ]
           },
           hasBraces: false,
-          values: undefined
+          values: []
         }
       ]
     });

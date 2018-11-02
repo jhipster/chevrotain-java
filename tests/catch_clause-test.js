@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("catchClause", () => {
   it("simple", () => {
     expect(
       Parser.parse("catch (A e) {}", parser => parser.catchClause())
-    ).toEqual({
+    ).to.deep.equal({
       type: "CATCH_CLAUSE",
       modifiers: [],
       catchType: {
@@ -36,7 +37,7 @@ describe("catchClause", () => {
   it("one modifier", () => {
     expect(
       Parser.parse("catch (@Bean A e) {}", parser => parser.catchClause())
-    ).toEqual({
+    ).to.deep.equal({
       type: "CATCH_CLAUSE",
       modifiers: [
         {
@@ -81,7 +82,7 @@ describe("catchClause", () => {
   it("multiple modifiers", () => {
     expect(
       Parser.parse("catch (@Bean final A e) {}", parser => parser.catchClause())
-    ).toEqual({
+    ).to.deep.equal({
       type: "CATCH_CLAUSE",
       modifiers: [
         {

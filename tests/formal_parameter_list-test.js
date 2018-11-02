@@ -1,5 +1,6 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 const MismatchedTokenException = require("chevrotain").MismatchedTokenException;
 
@@ -7,7 +8,7 @@ describe("formalParameterList", () => {
   it("one formalParameter", () => {
     expect(
       Parser.parse("boolean a", parser => parser.formalParameterList())
-    ).toEqual([
+    ).to.deep.equal([
       {
         type: "FORMAL_PARAMETER",
         modifiers: [],
@@ -33,7 +34,7 @@ describe("formalParameterList", () => {
       Parser.parse("boolean a, boolean b", parser =>
         parser.formalParameterList()
       )
-    ).toEqual([
+    ).to.deep.equal([
       {
         type: "FORMAL_PARAMETER",
         modifiers: [],
@@ -76,7 +77,7 @@ describe("formalParameterList", () => {
       Parser.parse("boolean a, boolean... b", parser =>
         parser.formalParameterList()
       )
-    ).toEqual([
+    ).to.deep.equal([
       {
         type: "FORMAL_PARAMETER",
         modifiers: [],

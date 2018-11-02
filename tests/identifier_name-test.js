@@ -1,9 +1,10 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("identifierName", () => {
   it("one element", () => {
-    expect(Parser.parse("a", parser => parser.identifierName())).toEqual({
+    expect(Parser.parse("a", parser => parser.identifierName())).to.deep.equal({
       type: "IDENTIFIER_NAME",
       elements: [
         {
@@ -19,7 +20,9 @@ describe("identifierName", () => {
   });
 
   it("two elements", () => {
-    expect(Parser.parse("a.b", parser => parser.identifierName())).toEqual({
+    expect(
+      Parser.parse("a.b", parser => parser.identifierName())
+    ).to.deep.equal({
       type: "IDENTIFIER_NAME",
       elements: [
         {

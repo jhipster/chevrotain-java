@@ -1,9 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("resources", () => {
   it("one resource", () => {
-    expect(Parser.parse("A.B a = this", parser => parser.resources())).toEqual({
+    expect(
+      Parser.parse("A.B a = this", parser => parser.resources())
+    ).to.deep.equal({
       type: "RESOURCES",
       resources: [
         {
@@ -41,7 +44,7 @@ describe("resources", () => {
   it("multiple resources", () => {
     expect(
       Parser.parse("A.B a = this; B.C b = this", parser => parser.resources())
-    ).toEqual({
+    ).to.deep.equal({
       type: "RESOURCES",
       resources: [
         {

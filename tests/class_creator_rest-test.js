@@ -1,9 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("classCreatorRest", () => {
   it("without body", () => {
-    expect(Parser.parse("()", parser => parser.classCreatorRest())).toEqual({
+    expect(
+      Parser.parse("()", parser => parser.classCreatorRest())
+    ).to.deep.equal({
       type: "CLASS_CREATOR_REST",
       arguments: {
         type: "EXPRESSION_LIST",
@@ -14,7 +17,9 @@ describe("classCreatorRest", () => {
   });
 
   it("with body", () => {
-    expect(Parser.parse("() {}", parser => parser.classCreatorRest())).toEqual({
+    expect(
+      Parser.parse("() {}", parser => parser.classCreatorRest())
+    ).to.deep.equal({
       type: "CLASS_CREATOR_REST",
       arguments: {
         type: "EXPRESSION_LIST",

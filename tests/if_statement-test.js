@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("ifStatement", () => {
   it("if", () => {
     expect(
       Parser.parse("if (this) {}", parser => parser.ifStatement())
-    ).toEqual({
+    ).to.deep.equal({
       type: "IF_STATEMENT",
       condition: {
         type: "THIS"
@@ -21,7 +22,7 @@ describe("ifStatement", () => {
   it("else", () => {
     expect(
       Parser.parse("if (this) {} else {}", parser => parser.ifStatement())
-    ).toEqual({
+    ).to.deep.equal({
       type: "IF_STATEMENT",
       condition: {
         type: "THIS"

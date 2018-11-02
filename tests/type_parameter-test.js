@@ -1,9 +1,10 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("typeParameter", () => {
   it("identifier", () => {
-    expect(Parser.parse("A", parser => parser.typeParameter())).toEqual({
+    expect(Parser.parse("A", parser => parser.typeParameter())).to.deep.equal({
       type: "TYPE_PARAMETER",
       modifiers: [],
       name: {
@@ -15,7 +16,9 @@ describe("typeParameter", () => {
   });
 
   it("annotations", () => {
-    expect(Parser.parse("@Bean A", parser => parser.typeParameter())).toEqual({
+    expect(
+      Parser.parse("@Bean A", parser => parser.typeParameter())
+    ).to.deep.equal({
       type: "TYPE_PARAMETER",
       modifiers: [
         {
@@ -30,7 +33,7 @@ describe("typeParameter", () => {
             ]
           },
           hasBraces: false,
-          values: undefined
+          values: []
         }
       ],
       name: {
@@ -44,7 +47,7 @@ describe("typeParameter", () => {
   it("typeBound", () => {
     expect(
       Parser.parse("A extends boolean", parser => parser.typeParameter())
-    ).toEqual({
+    ).to.deep.equal({
       type: "TYPE_PARAMETER",
       modifiers: [],
       name: {

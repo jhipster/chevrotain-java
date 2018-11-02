@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("qualifiedExpressionRest", () => {
   it("methodInvocation", () => {
     expect(
       Parser.parse(".a()", parser => parser.qualifiedExpressionRest())
-    ).toEqual({
+    ).to.deep.equal({
       type: "METHOD_INVOCATION",
       name: {
         type: "IDENTIFIER",
@@ -19,7 +20,7 @@ describe("qualifiedExpressionRest", () => {
   it("multiple methodInvocations", () => {
     expect(
       Parser.parse(".a().b()", parser => parser.qualifiedExpressionRest())
-    ).toEqual({
+    ).to.deep.equal({
       type: "QUALIFIED_EXPRESSION",
       expression: {
         type: "METHOD_INVOCATION",
@@ -45,7 +46,7 @@ describe("qualifiedExpressionRest", () => {
   it("identifier", () => {
     expect(
       Parser.parse(".a", parser => parser.qualifiedExpressionRest())
-    ).toEqual({
+    ).to.deep.equal({
       type: "IDENTIFIER",
       value: "a"
     });
@@ -54,7 +55,7 @@ describe("qualifiedExpressionRest", () => {
   it("this", () => {
     expect(
       Parser.parse(".this", parser => parser.qualifiedExpressionRest())
-    ).toEqual({
+    ).to.deep.equal({
       type: "THIS"
     });
   });
@@ -62,7 +63,7 @@ describe("qualifiedExpressionRest", () => {
   it("super", () => {
     expect(
       Parser.parse(".super", parser => parser.qualifiedExpressionRest())
-    ).toEqual({
+    ).to.deep.equal({
       type: "SUPER"
     });
   });
@@ -70,7 +71,7 @@ describe("qualifiedExpressionRest", () => {
   it("class", () => {
     expect(
       Parser.parse(".class", parser => parser.qualifiedExpressionRest())
-    ).toEqual({
+    ).to.deep.equal({
       type: "CLASS"
     });
   });
@@ -78,7 +79,7 @@ describe("qualifiedExpressionRest", () => {
   it("creatorOptionalNonWildcardInnerCreator", () => {
     expect(
       Parser.parse(".new a()", parser => parser.qualifiedExpressionRest())
-    ).toEqual({
+    ).to.deep.equal({
       type: "CREATOR_OPTIONAL_NON_WILDCARD_INNER_CREATOR",
       typeArguments: undefined,
       innerCreator: {
@@ -105,7 +106,7 @@ describe("qualifiedExpressionRest", () => {
       Parser.parse(".<boolean> super()", parser =>
         parser.qualifiedExpressionRest()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "GENERIC_INVOCATION",
       typeArguments: {
         type: "TYPE_ARGUMENTS",

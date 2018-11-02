@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("constructorDeclaration", () => {
   it("simple", () => {
     expect(
       Parser.parse("a() {}", parser => parser.constructorDeclaration())
-    ).toEqual({
+    ).to.deep.equal({
       type: "CONSTRUCTOR_DECLARATION",
       name: {
         type: "IDENTIFIER",
@@ -28,7 +29,7 @@ describe("constructorDeclaration", () => {
       Parser.parse("a() throws Something {}", parser =>
         parser.constructorDeclaration()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "CONSTRUCTOR_DECLARATION",
       name: {
         type: "IDENTIFIER",

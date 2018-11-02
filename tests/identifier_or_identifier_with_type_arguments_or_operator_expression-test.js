@@ -1,5 +1,6 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("identifierOrIdentifierWithTypeArgumentsOrOperatorExpression", () => {
   it("identifier", () => {
@@ -7,7 +8,7 @@ describe("identifierOrIdentifierWithTypeArgumentsOrOperatorExpression", () => {
       Parser.parse("i", parser =>
         parser.identifierOrIdentifierWithTypeArgumentsOrOperatorExpression()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "IDENTIFIER",
       value: "i"
     });
@@ -18,7 +19,7 @@ describe("identifierOrIdentifierWithTypeArgumentsOrOperatorExpression", () => {
       Parser.parse("i<boolean>", parser =>
         parser.identifierOrIdentifierWithTypeArgumentsOrOperatorExpression()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
       name: {
         type: "IDENTIFIER",
@@ -49,7 +50,7 @@ describe("identifierOrIdentifierWithTypeArgumentsOrOperatorExpression", () => {
       Parser.parse("i < array.length", parser =>
         parser.identifierOrIdentifierWithTypeArgumentsOrOperatorExpression()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "OPERATOR_EXPRESSION",
       left: {
         type: "IDENTIFIER",

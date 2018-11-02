@@ -1,9 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("variableModifier", () => {
   it("final", () => {
-    expect(Parser.parse("final", parser => parser.variableModifier())).toEqual({
+    expect(
+      Parser.parse("final", parser => parser.variableModifier())
+    ).to.deep.equal({
       type: "MODIFIER",
       value: "final"
     });
@@ -12,7 +15,7 @@ describe("variableModifier", () => {
   it("annotation", () => {
     expect(
       Parser.parse("@Bean", parser => parser.classOrInterfaceModifier())
-    ).toEqual({
+    ).to.deep.equal({
       type: "ANNOTATION",
       name: {
         type: "QUALIFIED_NAME",

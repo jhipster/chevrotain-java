@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("nonWildcardCreator", () => {
   it("simple", () => {
     expect(
       Parser.parse("<boolean> a()", parser => parser.nonWildcardCreator())
-    ).toEqual({
+    ).to.deep.equal({
       type: "NON_WILDCARD_CREATOR",
       typeArguments: {
         type: "TYPE_ARGUMENTS",

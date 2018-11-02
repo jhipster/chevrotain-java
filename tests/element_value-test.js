@@ -1,9 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("elementValue", () => {
   it("elementValue is annotation", () => {
-    expect(Parser.parse("@Bean", parser => parser.elementValue())).toEqual({
+    expect(
+      Parser.parse("@Bean", parser => parser.elementValue())
+    ).to.deep.equal({
       type: "ANNOTATION",
       name: {
         type: "QUALIFIED_NAME",
@@ -15,20 +18,22 @@ describe("elementValue", () => {
         ]
       },
       hasBraces: false,
-      values: undefined
+      values: []
     });
   });
 
   it("elementValue is expression", () => {
-    expect(Parser.parse("this", parser => parser.elementValue())).toEqual({
-      type: "THIS"
-    });
+    expect(Parser.parse("this", parser => parser.elementValue())).to.deep.equal(
+      {
+        type: "THIS"
+      }
+    );
   });
 
   it("elementValue is elementValueArrayInitializer", () => {
     expect(
       Parser.parse("{@Something}", parser => parser.elementValue())
-    ).toEqual({
+    ).to.deep.equal({
       type: "ELEMENT_VALUE_ARRAY_INITIALIZER",
       values: [
         {
@@ -43,7 +48,7 @@ describe("elementValue", () => {
             ]
           },
           hasBraces: false,
-          values: undefined
+          values: []
         }
       ]
     });

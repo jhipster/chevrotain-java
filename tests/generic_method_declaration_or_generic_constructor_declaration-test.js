@@ -1,5 +1,6 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("genericMethodDeclarationOrGenericConstructorDeclaration", () => {
   it("genericMethodDeclaration: simple", () => {
@@ -7,7 +8,7 @@ describe("genericMethodDeclarationOrGenericConstructorDeclaration", () => {
       Parser.parse("<A> void a() {}", parser =>
         parser.genericMethodDeclarationOrGenericConstructorDeclaration()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "GENERIC_METHOD_DECLARATION",
       typeParameters: {
         type: "TYPE_PARAMETERS",
@@ -51,7 +52,7 @@ describe("genericMethodDeclarationOrGenericConstructorDeclaration", () => {
       Parser.parse("<A> a() {}", parser =>
         parser.genericMethodDeclarationOrGenericConstructorDeclaration()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "GENERIC_CONSTRUCTOR_DECLARATION",
       typeParameters: {
         type: "TYPE_PARAMETERS",

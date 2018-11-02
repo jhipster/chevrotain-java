@@ -1,9 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("typeArgument", () => {
   it("primitiveType", () => {
-    expect(Parser.parse("boolean", parser => parser.typeArgument())).toEqual({
+    expect(
+      Parser.parse("boolean", parser => parser.typeArgument())
+    ).to.deep.equal({
       type: "TYPE_ARGUMENT",
       argument: {
         type: "PRIMITIVE_TYPE",
@@ -15,7 +18,7 @@ describe("typeArgument", () => {
   });
 
   it("questionmark", () => {
-    expect(Parser.parse("?", parser => parser.typeArgument())).toEqual({
+    expect(Parser.parse("?", parser => parser.typeArgument())).to.deep.equal({
       type: "TYPE_ARGUMENT",
       argument: {
         type: "QUESTIONMARK"
@@ -28,7 +31,7 @@ describe("typeArgument", () => {
   it("primitiveType extends primitiveType", () => {
     expect(
       Parser.parse("boolean extends char", parser => parser.typeArgument())
-    ).toEqual({
+    ).to.deep.equal({
       type: "TYPE_ARGUMENT",
       argument: {
         type: "PRIMITIVE_TYPE",
@@ -45,7 +48,7 @@ describe("typeArgument", () => {
   it("primitiveType super primitiveType", () => {
     expect(
       Parser.parse("boolean super char", parser => parser.typeArgument())
-    ).toEqual({
+    ).to.deep.equal({
       type: "TYPE_ARGUMENT",
       argument: {
         type: "PRIMITIVE_TYPE",
@@ -62,7 +65,7 @@ describe("typeArgument", () => {
   it("questionmark extends primitiveType", () => {
     expect(
       Parser.parse("? extends char", parser => parser.typeArgument())
-    ).toEqual({
+    ).to.deep.equal({
       type: "TYPE_ARGUMENT",
       argument: {
         type: "QUESTIONMARK"
@@ -78,7 +81,7 @@ describe("typeArgument", () => {
   it("questionmark super primitiveType", () => {
     expect(
       Parser.parse("? super char", parser => parser.typeArgument())
-    ).toEqual({
+    ).to.deep.equal({
       type: "TYPE_ARGUMENT",
       argument: {
         type: "QUESTIONMARK"

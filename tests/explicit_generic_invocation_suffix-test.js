@@ -1,5 +1,6 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("explicitGenericInvocationSuffix", () => {
   it("super", () => {
@@ -7,7 +8,7 @@ describe("explicitGenericInvocationSuffix", () => {
       Parser.parse("super ()", parser =>
         parser.explicitGenericInvocationSuffix()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "SUPER",
       arguments: {
         type: "EXPRESSION_LIST",
@@ -19,7 +20,7 @@ describe("explicitGenericInvocationSuffix", () => {
   it("identifierArguments", () => {
     expect(
       Parser.parse("a()", parser => parser.explicitGenericInvocationSuffix())
-    ).toEqual({
+    ).to.deep.equal({
       type: "IDENTIFIER_ARGUMENTS",
       name: {
         type: "IDENTIFIER",

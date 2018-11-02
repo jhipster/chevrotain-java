@@ -1,9 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("methodInvocation", () => {
   it("empty parameters", () => {
-    expect(Parser.parse("a()", parser => parser.methodInvocation())).toEqual({
+    expect(
+      Parser.parse("a()", parser => parser.methodInvocation())
+    ).to.deep.equal({
       type: "METHOD_INVOCATION",
       name: {
         type: "IDENTIFIER",
@@ -17,7 +20,7 @@ describe("methodInvocation", () => {
   it("with parameters", () => {
     expect(
       Parser.parse("a(this)", parser => parser.methodInvocation())
-    ).toEqual({
+    ).to.deep.equal({
       type: "METHOD_INVOCATION",
       name: {
         type: "IDENTIFIER",
@@ -36,24 +39,24 @@ describe("methodInvocation", () => {
   });
 
   it("with dimensions", () => {
-    expect(Parser.parse("a()[0]", parser => parser.methodInvocation())).toEqual(
-      {
-        type: "METHOD_INVOCATION",
-        name: {
-          type: "IDENTIFIER",
-          value: "a"
-        },
-        parameters: undefined,
-        dimensions: [
-          {
-            type: "DIMENSION",
-            expression: {
-              type: "DECIMAL_LITERAL",
-              value: "0"
-            }
+    expect(
+      Parser.parse("a()[0]", parser => parser.methodInvocation())
+    ).to.deep.equal({
+      type: "METHOD_INVOCATION",
+      name: {
+        type: "IDENTIFIER",
+        value: "a"
+      },
+      parameters: undefined,
+      dimensions: [
+        {
+          type: "DIMENSION",
+          expression: {
+            type: "DECIMAL_LITERAL",
+            value: "0"
           }
-        ]
-      }
-    );
+        }
+      ]
+    });
   });
 });

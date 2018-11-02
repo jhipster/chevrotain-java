@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("typeDeclaration", () => {
   it("empty", () => {
     expect(
       Parser.parse("class A{}", parser => parser.typeDeclaration())
-    ).toEqual({
+    ).to.deep.equal({
       type: "TYPE_DECLARATION",
       modifiers: [],
       declaration: {
@@ -25,7 +26,7 @@ describe("typeDeclaration", () => {
   it("public", () => {
     expect(
       Parser.parse("public class A{}", parser => parser.typeDeclaration())
-    ).toEqual({
+    ).to.deep.equal({
       type: "TYPE_DECLARATION",
       modifiers: [
         {
@@ -50,7 +51,7 @@ describe("typeDeclaration", () => {
   it("protected", () => {
     expect(
       Parser.parse("protected class A{}", parser => parser.typeDeclaration())
-    ).toEqual({
+    ).to.deep.equal({
       type: "TYPE_DECLARATION",
       modifiers: [
         {
@@ -75,7 +76,7 @@ describe("typeDeclaration", () => {
   it("private", () => {
     expect(
       Parser.parse("private class A{}", parser => parser.typeDeclaration())
-    ).toEqual({
+    ).to.deep.equal({
       type: "TYPE_DECLARATION",
       modifiers: [
         {
@@ -100,7 +101,7 @@ describe("typeDeclaration", () => {
   it("static", () => {
     expect(
       Parser.parse("static class A{}", parser => parser.typeDeclaration())
-    ).toEqual({
+    ).to.deep.equal({
       type: "TYPE_DECLARATION",
       modifiers: [
         {
@@ -125,7 +126,7 @@ describe("typeDeclaration", () => {
   it("abstract", () => {
     expect(
       Parser.parse("abstract class A{}", parser => parser.typeDeclaration())
-    ).toEqual({
+    ).to.deep.equal({
       type: "TYPE_DECLARATION",
       modifiers: [
         {
@@ -150,7 +151,7 @@ describe("typeDeclaration", () => {
   it("final", () => {
     expect(
       Parser.parse("final class A{}", parser => parser.typeDeclaration())
-    ).toEqual({
+    ).to.deep.equal({
       type: "TYPE_DECLARATION",
       modifiers: [
         {
@@ -175,7 +176,7 @@ describe("typeDeclaration", () => {
   it("strictfp", () => {
     expect(
       Parser.parse("strictfp class A{}", parser => parser.typeDeclaration())
-    ).toEqual({
+    ).to.deep.equal({
       type: "TYPE_DECLARATION",
       modifiers: [
         {
@@ -202,7 +203,7 @@ describe("typeDeclaration", () => {
       Parser.parse("public abstract class A{}", parser =>
         parser.typeDeclaration()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "TYPE_DECLARATION",
       modifiers: [
         {

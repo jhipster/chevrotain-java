@@ -1,5 +1,6 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("creatorOptionalNonWildcardInnerCreator", () => {
   it("without typeArguments", () => {
@@ -7,7 +8,7 @@ describe("creatorOptionalNonWildcardInnerCreator", () => {
       Parser.parse("new a()", parser =>
         parser.creatorOptionalNonWildcardInnerCreator()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "CREATOR_OPTIONAL_NON_WILDCARD_INNER_CREATOR",
       typeArguments: undefined,
       innerCreator: {
@@ -34,7 +35,7 @@ describe("creatorOptionalNonWildcardInnerCreator", () => {
       Parser.parse("new <boolean> a()", parser =>
         parser.creatorOptionalNonWildcardInnerCreator()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "CREATOR_OPTIONAL_NON_WILDCARD_INNER_CREATOR",
       typeArguments: {
         type: "TYPE_ARGUMENTS",

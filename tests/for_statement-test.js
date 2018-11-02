@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("forStatement", () => {
   it("basicForStatement: empty", () => {
     expect(
       Parser.parse("for (;;) {}", parser => parser.forStatement())
-    ).toEqual({
+    ).to.deep.equal({
       type: "FOR_STATEMENT",
       forControl: {
         type: "BASIC_FOR_CONTROL",

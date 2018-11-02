@@ -1,9 +1,10 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("enumConstant", () => {
   it("identifier", () => {
-    expect(Parser.parse("A", parser => parser.enumConstant())).toEqual({
+    expect(Parser.parse("A", parser => parser.enumConstant())).to.deep.equal({
       type: "ENUM_CONSTANT",
       modifiers: [],
       name: {
@@ -16,7 +17,9 @@ describe("enumConstant", () => {
   });
 
   it("one annotation", () => {
-    expect(Parser.parse("@Bean A", parser => parser.enumConstant())).toEqual({
+    expect(
+      Parser.parse("@Bean A", parser => parser.enumConstant())
+    ).to.deep.equal({
       type: "ENUM_CONSTANT",
       modifiers: [
         {
@@ -31,7 +34,7 @@ describe("enumConstant", () => {
             ]
           },
           hasBraces: false,
-          values: undefined
+          values: []
         }
       ],
       name: {
@@ -46,7 +49,7 @@ describe("enumConstant", () => {
   it("multiple annotations", () => {
     expect(
       Parser.parse("@Bean @Something A", parser => parser.enumConstant())
-    ).toEqual({
+    ).to.deep.equal({
       type: "ENUM_CONSTANT",
       modifiers: [
         {
@@ -61,7 +64,7 @@ describe("enumConstant", () => {
             ]
           },
           hasBraces: false,
-          values: undefined
+          values: []
         },
         {
           type: "ANNOTATION",
@@ -75,7 +78,7 @@ describe("enumConstant", () => {
             ]
           },
           hasBraces: false,
-          values: undefined
+          values: []
         }
       ],
       name: {
@@ -88,7 +91,7 @@ describe("enumConstant", () => {
   });
 
   it("arguments", () => {
-    expect(Parser.parse("A()", parser => parser.enumConstant())).toEqual({
+    expect(Parser.parse("A()", parser => parser.enumConstant())).to.deep.equal({
       type: "ENUM_CONSTANT",
       modifiers: [],
       name: {
@@ -104,18 +107,20 @@ describe("enumConstant", () => {
   });
 
   it("body", () => {
-    expect(Parser.parse("A {}", parser => parser.enumConstant())).toEqual({
-      type: "ENUM_CONSTANT",
-      modifiers: [],
-      name: {
-        type: "IDENTIFIER",
-        value: "A"
-      },
-      arguments: undefined,
-      body: {
-        type: "CLASS_BODY",
-        declarations: []
+    expect(Parser.parse("A {}", parser => parser.enumConstant())).to.deep.equal(
+      {
+        type: "ENUM_CONSTANT",
+        modifiers: [],
+        name: {
+          type: "IDENTIFIER",
+          value: "A"
+        },
+        arguments: undefined,
+        body: {
+          type: "CLASS_BODY",
+          declarations: []
+        }
       }
-    });
+    );
   });
 });

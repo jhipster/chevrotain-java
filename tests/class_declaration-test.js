@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("classDeclaration", () => {
   it("empty", () => {
     expect(
       Parser.parse("class A{}", parser => parser.classDeclaration())
-    ).toEqual({
+    ).to.deep.equal({
       type: "CLASS_DECLARATION",
       name: {
         type: "IDENTIFIER",
@@ -24,7 +25,7 @@ describe("classDeclaration", () => {
   it("typeParameters", () => {
     expect(
       Parser.parse("class A<B>{}", parser => parser.classDeclaration())
-    ).toEqual({
+    ).to.deep.equal({
       type: "CLASS_DECLARATION",
       name: {
         type: "IDENTIFIER",
@@ -58,7 +59,7 @@ describe("classDeclaration", () => {
       Parser.parse("class A extends boolean{}", parser =>
         parser.classDeclaration()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "CLASS_DECLARATION",
       name: {
         type: "IDENTIFIER",
@@ -82,7 +83,7 @@ describe("classDeclaration", () => {
       Parser.parse("class A implements boolean{}", parser =>
         parser.classDeclaration()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "CLASS_DECLARATION",
       name: {
         type: "IDENTIFIER",

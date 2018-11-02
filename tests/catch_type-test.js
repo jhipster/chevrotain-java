@@ -1,9 +1,10 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("catchType", () => {
   it("single", () => {
-    expect(Parser.parse("pkg", parser => parser.catchType())).toEqual({
+    expect(Parser.parse("pkg", parser => parser.catchType())).to.deep.equal({
       type: "CATCH_TYPE",
       list: [
         {
@@ -20,7 +21,9 @@ describe("catchType", () => {
   });
 
   it("multiple", () => {
-    expect(Parser.parse("pkg | abc", parser => parser.catchType())).toEqual({
+    expect(
+      Parser.parse("pkg | abc", parser => parser.catchType())
+    ).to.deep.equal({
       type: "CATCH_TYPE",
       list: [
         {

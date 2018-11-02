@@ -1,16 +1,19 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("block", () => {
   it("empty", () => {
-    expect(Parser.parse("{}", parser => parser.block())).toEqual({
+    expect(Parser.parse("{}", parser => parser.block())).to.deep.equal({
       type: "BLOCK",
       statements: []
     });
   });
 
   it("single statement", () => {
-    expect(Parser.parse("{ boolean A; }", parser => parser.block())).toEqual({
+    expect(
+      Parser.parse("{ boolean A; }", parser => parser.block())
+    ).to.deep.equal({
       type: "BLOCK",
       statements: [
         {
@@ -49,7 +52,7 @@ describe("block", () => {
   it("multiple statement", () => {
     expect(
       Parser.parse("{ boolean A; class A {} }", parser => parser.block())
-    ).toEqual({
+    ).to.deep.equal({
       type: "BLOCK",
       statements: [
         {
@@ -104,22 +107,24 @@ describe("block", () => {
   });
 
   it("this()", () => {
-    expect(Parser.parse("{ this(); }", parser => parser.block())).toEqual({
-      type: "BLOCK",
-      statements: [
-        {
-          type: "EXPRESSION_STATEMENT",
-          expression: {
-            type: "THIS",
-            arguments: {
-              type: "EXPRESSION_LIST",
-              list: []
-            }
-          },
-          followedEmptyLine: false
-        }
-      ]
-    });
+    expect(Parser.parse("{ this(); }", parser => parser.block())).to.deep.equal(
+      {
+        type: "BLOCK",
+        statements: [
+          {
+            type: "EXPRESSION_STATEMENT",
+            expression: {
+              type: "THIS",
+              arguments: {
+                type: "EXPRESSION_LIST",
+                list: []
+              }
+            },
+            followedEmptyLine: false
+          }
+        ]
+      }
+    );
   });
 
   it('System.out.println("please work")', () => {
@@ -127,7 +132,7 @@ describe("block", () => {
       Parser.parse('{ System.out.println("please work"); }', parser =>
         parser.block()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "BLOCK",
       statements: [
         {
@@ -174,7 +179,7 @@ describe("block", () => {
       Parser.parse('{ System.out.println("please work"); this(); }', parser =>
         parser.block()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "BLOCK",
       statements: [
         {
@@ -232,7 +237,7 @@ describe("block", () => {
       Parser.parse('{ this(); System.out.println("please work"); }', parser =>
         parser.block()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "BLOCK",
       statements: [
         {
@@ -288,7 +293,7 @@ describe("block", () => {
   it("line comment standalone", () => {
     expect(
       Parser.parse("{\n// comment\n\n }", parser => parser.block())
-    ).toEqual({
+    ).to.deep.equal({
       type: "BLOCK",
       statements: [
         {
@@ -300,16 +305,16 @@ describe("block", () => {
   });
 
   it("line comment", () => {
-    expect(Parser.parse("{\n// comment\n }", parser => parser.block())).toEqual(
-      {
-        type: "BLOCK",
-        statements: [
-          {
-            type: "COMMENT_STANDALONE",
-            value: "// comment"
-          }
-        ]
-      }
-    );
+    expect(
+      Parser.parse("{\n// comment\n }", parser => parser.block())
+    ).to.deep.equal({
+      type: "BLOCK",
+      statements: [
+        {
+          type: "COMMENT_STANDALONE",
+          value: "// comment"
+        }
+      ]
+    });
   });
 });

@@ -1,5 +1,6 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("instanceofExpressionRest", () => {
   it("simple", () => {
@@ -7,7 +8,7 @@ describe("instanceofExpressionRest", () => {
       Parser.parse("instanceof boolean", parser =>
         parser.instanceofExpressionRest()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "INSTANCEOF_EXPRESSION_REST",
       typeType: {
         type: "PRIMITIVE_TYPE",
@@ -21,7 +22,7 @@ describe("instanceofExpressionRest", () => {
       Parser.parse("instanceof boolean && true", parser =>
         parser.instanceofExpressionRest()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "INSTANCEOF_EXPRESSION_REST",
       typeType: {
         type: "PRIMITIVE_TYPE",
@@ -46,7 +47,7 @@ describe("instanceofExpressionRest", () => {
       Parser.parse("instanceof boolean && true && false", parser =>
         parser.instanceofExpressionRest()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "INSTANCEOF_EXPRESSION_REST",
       typeType: {
         type: "PRIMITIVE_TYPE",
@@ -83,7 +84,7 @@ describe("instanceofExpressionRest", () => {
         "instanceof boolean && true && false && i instanceof Integer",
         parser => parser.instanceofExpressionRest()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "INSTANCEOF_EXPRESSION_REST",
       typeType: {
         type: "PRIMITIVE_TYPE",

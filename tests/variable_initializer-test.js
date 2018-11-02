@@ -1,17 +1,20 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("variableInitializer", () => {
   it("expression", () => {
     expect(
       Parser.parse("this", parser => parser.variableInitializer())
-    ).toEqual({
+    ).to.deep.equal({
       type: "THIS"
     });
   });
 
   it("arrayInitializer", () => {
-    expect(Parser.parse("{}", parser => parser.variableInitializer())).toEqual({
+    expect(
+      Parser.parse("{}", parser => parser.variableInitializer())
+    ).to.deep.equal({
       type: "ARRAY_INITIALIZER",
       variableInitializers: []
     });
@@ -22,7 +25,7 @@ describe("variableInitializer", () => {
       Parser.parse("this ? true : false", parser =>
         parser.variableInitializer()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "IF_ELSE_EXPRESSION",
       condition: { type: "THIS" },
       if: {

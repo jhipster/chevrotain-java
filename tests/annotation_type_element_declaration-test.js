@@ -1,5 +1,6 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("annotationTypeElementDeclaration", () => {
   it("without modifiers", () => {
@@ -7,7 +8,7 @@ describe("annotationTypeElementDeclaration", () => {
       Parser.parse("class A{}", parser =>
         parser.annotationTypeElementDeclaration()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "ANNOTATION_TYPE_ELEMENT_DECLARATION",
       modifiers: [],
       declaration: {
@@ -19,7 +20,10 @@ describe("annotationTypeElementDeclaration", () => {
         body: {
           type: "CLASS_BODY",
           declarations: []
-        }
+        },
+        extends: undefined,
+        implements: undefined,
+        typeParameters: undefined
       }
     });
   });
@@ -29,7 +33,7 @@ describe("annotationTypeElementDeclaration", () => {
       Parser.parse("native transient class A{}", parser =>
         parser.annotationTypeElementDeclaration()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "ANNOTATION_TYPE_ELEMENT_DECLARATION",
       modifiers: [
         { type: "MODIFIER", value: "native" },
@@ -44,7 +48,10 @@ describe("annotationTypeElementDeclaration", () => {
         body: {
           type: "CLASS_BODY",
           declarations: []
-        }
+        },
+        extends: undefined,
+        implements: undefined,
+        typeParameters: undefined
       }
     });
   });

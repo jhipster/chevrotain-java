@@ -1,9 +1,10 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("interfaceBody", () => {
   it("empty", () => {
-    expect(Parser.parse("{}", parser => parser.interfaceBody())).toEqual({
+    expect(Parser.parse("{}", parser => parser.interfaceBody())).to.deep.equal({
       type: "INTERFACE_BODY",
       declarations: []
     });
@@ -12,7 +13,7 @@ describe("interfaceBody", () => {
   it("one declaration", () => {
     expect(
       Parser.parse("{ void a() {} }", parser => parser.interfaceBody())
-    ).toEqual({
+    ).to.deep.equal({
       type: "INTERFACE_BODY",
       declarations: [
         {
@@ -50,7 +51,7 @@ describe("interfaceBody", () => {
       Parser.parse("{ void a() {} void b() {} }", parser =>
         parser.interfaceBody()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "INTERFACE_BODY",
       declarations: [
         {
@@ -112,7 +113,7 @@ describe("interfaceBody", () => {
   it("line comment standalone", () => {
     expect(
       Parser.parse("{\n// comment\n\n }", parser => parser.interfaceBody())
-    ).toEqual({
+    ).to.deep.equal({
       type: "INTERFACE_BODY",
       declarations: [
         {
@@ -126,7 +127,7 @@ describe("interfaceBody", () => {
   it("line comment", () => {
     expect(
       Parser.parse("{\n// comment\n }", parser => parser.interfaceBody())
-    ).toEqual({
+    ).to.deep.equal({
       type: "INTERFACE_BODY",
       declarations: [
         {

@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("classOrInterfaceModifier", () => {
   it("public", () => {
     expect(
       Parser.parse("public", parser => parser.classOrInterfaceModifier())
-    ).toEqual({
+    ).to.deep.equal({
       type: "MODIFIER",
       value: "public"
     });
@@ -14,7 +15,7 @@ describe("classOrInterfaceModifier", () => {
   it("protected", () => {
     expect(
       Parser.parse("protected", parser => parser.classOrInterfaceModifier())
-    ).toEqual({
+    ).to.deep.equal({
       type: "MODIFIER",
       value: "protected"
     });
@@ -23,7 +24,7 @@ describe("classOrInterfaceModifier", () => {
   it("private", () => {
     expect(
       Parser.parse("private", parser => parser.classOrInterfaceModifier())
-    ).toEqual({
+    ).to.deep.equal({
       type: "MODIFIER",
       value: "private"
     });
@@ -32,7 +33,7 @@ describe("classOrInterfaceModifier", () => {
   it("static", () => {
     expect(
       Parser.parse("static", parser => parser.classOrInterfaceModifier())
-    ).toEqual({
+    ).to.deep.equal({
       type: "MODIFIER",
       value: "static"
     });
@@ -41,7 +42,7 @@ describe("classOrInterfaceModifier", () => {
   it("abstract", () => {
     expect(
       Parser.parse("abstract", parser => parser.classOrInterfaceModifier())
-    ).toEqual({
+    ).to.deep.equal({
       type: "MODIFIER",
       value: "abstract"
     });
@@ -50,7 +51,7 @@ describe("classOrInterfaceModifier", () => {
   it("final", () => {
     expect(
       Parser.parse("final", parser => parser.classOrInterfaceModifier())
-    ).toEqual({
+    ).to.deep.equal({
       type: "MODIFIER",
       value: "final"
     });
@@ -59,7 +60,7 @@ describe("classOrInterfaceModifier", () => {
   it("strictfp", () => {
     expect(
       Parser.parse("strictfp", parser => parser.classOrInterfaceModifier())
-    ).toEqual({
+    ).to.deep.equal({
       type: "MODIFIER",
       value: "strictfp"
     });
@@ -68,7 +69,7 @@ describe("classOrInterfaceModifier", () => {
   it("annotation", () => {
     expect(
       Parser.parse("@Bean", parser => parser.classOrInterfaceModifier())
-    ).toEqual({
+    ).to.deep.equal({
       type: "ANNOTATION",
       name: {
         type: "QUALIFIED_NAME",
@@ -86,7 +87,7 @@ describe("classOrInterfaceModifier", () => {
   it("annotation with braces", () => {
     expect(
       Parser.parse("@Bean()", parser => parser.classOrInterfaceModifier())
-    ).toEqual({
+    ).to.deep.equal({
       type: "ANNOTATION",
       name: {
         type: "QUALIFIED_NAME",
@@ -98,7 +99,7 @@ describe("classOrInterfaceModifier", () => {
         ]
       },
       hasBraces: true,
-      values: undefined
+      values: []
     });
   });
 
@@ -107,7 +108,7 @@ describe("classOrInterfaceModifier", () => {
       Parser.parse("@Bean(@Something)", parser =>
         parser.classOrInterfaceModifier()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "ANNOTATION",
       name: {
         type: "QUALIFIED_NAME",
@@ -143,7 +144,7 @@ describe("classOrInterfaceModifier", () => {
       Parser.parse("@Bean({@Something})", parser =>
         parser.classOrInterfaceModifier()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "ANNOTATION",
       name: {
         type: "QUALIFIED_NAME",
@@ -184,7 +185,7 @@ describe("classOrInterfaceModifier", () => {
       Parser.parse("@Bean(key=@Value)", parser =>
         parser.classOrInterfaceModifier()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "ANNOTATION",
       name: {
         type: "QUALIFIED_NAME",
@@ -215,7 +216,7 @@ describe("classOrInterfaceModifier", () => {
               ]
             },
             hasBraces: false,
-            values: undefined
+            values: []
           }
         }
       ]

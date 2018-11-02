@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("annotationConstantRest", () => {
   it("simple", () => {
     expect(
       Parser.parse("A", parser => parser.annotationConstantRest())
-    ).toEqual({
+    ).to.deep.equal({
       type: "VARIABLE_DECLARATORS",
       list: [
         {

@@ -1,5 +1,6 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("constantDeclarationOrInterfaceMethodDeclaration", () => {
   it("interfaceMethodDeclaration: void", () => {
@@ -7,7 +8,7 @@ describe("constantDeclarationOrInterfaceMethodDeclaration", () => {
       Parser.parse("void a() {}", parser =>
         parser.constantDeclarationOrInterfaceMethodDeclaration()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "INTERFACE_METHOD_DECLARATION",
       modifiers: [],
       typeParameters: undefined,
@@ -36,7 +37,7 @@ describe("constantDeclarationOrInterfaceMethodDeclaration", () => {
       Parser.parse("public void a() {}", parser =>
         parser.constantDeclarationOrInterfaceMethodDeclaration()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "INTERFACE_METHOD_DECLARATION",
       modifiers: [{ type: "MODIFIER", value: "public" }],
       typeParameters: undefined,
@@ -65,7 +66,7 @@ describe("constantDeclarationOrInterfaceMethodDeclaration", () => {
       Parser.parse("public static void a() {}", parser =>
         parser.constantDeclarationOrInterfaceMethodDeclaration()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "INTERFACE_METHOD_DECLARATION",
       modifiers: [
         { type: "MODIFIER", value: "public" },
@@ -97,7 +98,7 @@ describe("constantDeclarationOrInterfaceMethodDeclaration", () => {
       Parser.parse("<Abc> void a() {}", parser =>
         parser.constantDeclarationOrInterfaceMethodDeclaration()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "INTERFACE_METHOD_DECLARATION",
       modifiers: [],
       typeParameters: {
@@ -139,7 +140,7 @@ describe("constantDeclarationOrInterfaceMethodDeclaration", () => {
       Parser.parse("void a()[] {}", parser =>
         parser.constantDeclarationOrInterfaceMethodDeclaration()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "INTERFACE_METHOD_DECLARATION",
       modifiers: [],
       typeParameters: undefined,
@@ -172,7 +173,7 @@ describe("constantDeclarationOrInterfaceMethodDeclaration", () => {
       Parser.parse("void a()[][] {}", parser =>
         parser.constantDeclarationOrInterfaceMethodDeclaration()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "INTERFACE_METHOD_DECLARATION",
       modifiers: [],
       typeParameters: undefined,
@@ -208,7 +209,7 @@ describe("constantDeclarationOrInterfaceMethodDeclaration", () => {
       Parser.parse("void a() throws Something {}", parser =>
         parser.constantDeclarationOrInterfaceMethodDeclaration()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "INTERFACE_METHOD_DECLARATION",
       modifiers: [],
       typeParameters: undefined,
@@ -250,7 +251,7 @@ describe("constantDeclarationOrInterfaceMethodDeclaration", () => {
       Parser.parse("<A> void a() {}", parser =>
         parser.constantDeclarationOrInterfaceMethodDeclaration()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "INTERFACE_METHOD_DECLARATION",
       modifiers: [],
       typeParameters: {
@@ -292,7 +293,7 @@ describe("constantDeclarationOrInterfaceMethodDeclaration", () => {
       Parser.parse("boolean A = this;", parser =>
         parser.constantDeclarationOrInterfaceMethodDeclaration()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "CONSTANT_DECLARATION",
       typeType: {
         type: "PRIMITIVE_TYPE",
@@ -320,7 +321,7 @@ describe("constantDeclarationOrInterfaceMethodDeclaration", () => {
       Parser.parse("boolean A = this, B = super;", parser =>
         parser.constantDeclarationOrInterfaceMethodDeclaration()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "CONSTANT_DECLARATION",
       typeType: {
         type: "PRIMITIVE_TYPE",

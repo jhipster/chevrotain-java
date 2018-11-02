@@ -1,5 +1,6 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 const MismatchedTokenException = require("chevrotain").MismatchedTokenException;
 
@@ -7,7 +8,7 @@ describe("blockStatement", () => {
   it("localVariableDeclaration: primitive", () => {
     expect(
       Parser.parse("boolean A;", parser => parser.blockStatement())
-    ).toEqual({
+    ).to.deep.equal({
       type: "EXPRESSION_STATEMENT",
       expression: {
         type: "LOCAL_VARIABLE_DECLARATION",
@@ -41,7 +42,7 @@ describe("blockStatement", () => {
   it("localVariableDeclaration: complex", () => {
     expect(
       Parser.parse("Byte byteVariable;", parser => parser.blockStatement())
-    ).toEqual({
+    ).to.deep.equal({
       type: "EXPRESSION_STATEMENT",
       expression: {
         type: "LOCAL_VARIABLE_DECLARATION",
@@ -72,7 +73,7 @@ describe("blockStatement", () => {
   it("localVariableDeclaration: one modifier", () => {
     expect(
       Parser.parse("@Bean boolean A;", parser => parser.blockStatement())
-    ).toEqual({
+    ).to.deep.equal({
       type: "EXPRESSION_STATEMENT",
       expression: {
         type: "LOCAL_VARIABLE_DECLARATION",
@@ -89,7 +90,7 @@ describe("blockStatement", () => {
               ]
             },
             hasBraces: false,
-            values: undefined
+            values: []
           }
         ],
         typeType: {
@@ -157,7 +158,7 @@ describe("blockStatement", () => {
   it("classDeclaration", () => {
     expect(
       Parser.parse("class A{}", parser => parser.blockStatement())
-    ).toEqual({
+    ).to.deep.equal({
       type: "LOCAL_TYPE_DECLARATION",
       modifiers: [],
       declaration: {
@@ -180,7 +181,7 @@ describe("blockStatement", () => {
   it("localTypeDeclaration: interface", () => {
     expect(
       Parser.parse("interface A{}", parser => parser.blockStatement())
-    ).toEqual({
+    ).to.deep.equal({
       type: "LOCAL_TYPE_DECLARATION",
       modifiers: [],
       declaration: {
@@ -202,7 +203,7 @@ describe("blockStatement", () => {
   it("localTypeDeclaration: class", () => {
     expect(
       Parser.parse("class A{}", parser => parser.blockStatement())
-    ).toEqual({
+    ).to.deep.equal({
       type: "LOCAL_TYPE_DECLARATION",
       modifiers: [],
       declaration: {
@@ -225,7 +226,7 @@ describe("blockStatement", () => {
   it("localTypeDeclaration: one modifier", () => {
     expect(
       Parser.parse("public class A{}", parser => parser.blockStatement())
-    ).toEqual({
+    ).to.deep.equal({
       type: "LOCAL_TYPE_DECLARATION",
       modifiers: [
         {
@@ -253,7 +254,7 @@ describe("blockStatement", () => {
   it("localTypeDeclaration: multiple modifiers", () => {
     expect(
       Parser.parse("public static class A{}", parser => parser.blockStatement())
-    ).toEqual({
+    ).to.deep.equal({
       type: "LOCAL_TYPE_DECLARATION",
       modifiers: [
         {
@@ -283,7 +284,9 @@ describe("blockStatement", () => {
   });
 
   it("identifierStatement", () => {
-    expect(Parser.parse("a:this;", parser => parser.blockStatement())).toEqual({
+    expect(
+      Parser.parse("a:this;", parser => parser.blockStatement())
+    ).to.deep.equal({
       type: "IDENTIFIER_STATEMENT",
       identifier: {
         type: "IDENTIFIER",
@@ -300,7 +303,9 @@ describe("blockStatement", () => {
   });
 
   it("expressionStatement this", () => {
-    expect(Parser.parse("this;", parser => parser.blockStatement())).toEqual({
+    expect(
+      Parser.parse("this;", parser => parser.blockStatement())
+    ).to.deep.equal({
       type: "EXPRESSION_STATEMENT",
       expression: {
         type: "THIS"
@@ -310,7 +315,9 @@ describe("blockStatement", () => {
   });
 
   it("expressionStatement this()", () => {
-    expect(Parser.parse("this();", parser => parser.blockStatement())).toEqual({
+    expect(
+      Parser.parse("this();", parser => parser.blockStatement())
+    ).to.deep.equal({
       type: "EXPRESSION_STATEMENT",
       expression: {
         type: "THIS",
@@ -328,7 +335,7 @@ describe("blockStatement", () => {
       Parser.parse('System.out.println("please work");', parser =>
         parser.blockStatement()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "EXPRESSION_STATEMENT",
       expression: {
         type: "QUALIFIED_EXPRESSION",
@@ -368,7 +375,7 @@ describe("blockStatement", () => {
   it("return ", () => {
     expect(
       Parser.parse("return this;", parser => parser.blockStatement())
-    ).toEqual({
+    ).to.deep.equal({
       type: "RETURN_STATEMENT",
       expression: {
         type: "THIS"
@@ -382,7 +389,7 @@ describe("blockStatement", () => {
         "final List<Filter> filterList = new ArrayList<>();",
         parser => parser.blockStatement()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "FIELD_DECLARATION",
       typeType: {
         type: "TYPE_TYPE",

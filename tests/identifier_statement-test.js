@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("identifierStatement", () => {
   it("simple", () => {
     expect(
       Parser.parse("a:this;", parser => parser.identifierStatement())
-    ).toEqual({
+    ).to.deep.equal({
       type: "IDENTIFIER_STATEMENT",
       identifier: {
         type: "IDENTIFIER",

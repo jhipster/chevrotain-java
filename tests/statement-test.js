@@ -1,16 +1,19 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("statement", () => {
   it("block", () => {
-    expect(Parser.parse("{}", parser => parser.statement())).toEqual({
+    expect(Parser.parse("{}", parser => parser.statement())).to.deep.equal({
       type: "BLOCK",
       statements: []
     });
   });
 
   it("assertStatement", () => {
-    expect(Parser.parse("assert this;", parser => parser.statement())).toEqual({
+    expect(
+      Parser.parse("assert this;", parser => parser.statement())
+    ).to.deep.equal({
       type: "ASSERT_STATEMENT",
       booleanExpression: {
         type: "THIS"
@@ -19,7 +22,9 @@ describe("statement", () => {
   });
 
   it("ifStatement", () => {
-    expect(Parser.parse("if (this) {}", parser => parser.statement())).toEqual({
+    expect(
+      Parser.parse("if (this) {}", parser => parser.statement())
+    ).to.deep.equal({
       type: "IF_STATEMENT",
       condition: {
         type: "THIS"
@@ -33,7 +38,9 @@ describe("statement", () => {
   });
 
   it("forStatement", () => {
-    expect(Parser.parse("for (;;) {}", parser => parser.statement())).toEqual({
+    expect(
+      Parser.parse("for (;;) {}", parser => parser.statement())
+    ).to.deep.equal({
       type: "FOR_STATEMENT",
       forControl: {
         type: "BASIC_FOR_CONTROL",
@@ -51,7 +58,7 @@ describe("statement", () => {
   it("whileStatement", () => {
     expect(
       Parser.parse("while (this) {}", parser => parser.statement())
-    ).toEqual({
+    ).to.deep.equal({
       type: "WHILE_STATEMENT",
       condition: {
         type: "THIS"
@@ -67,7 +74,7 @@ describe("statement", () => {
   it("doWhileStatement", () => {
     expect(
       Parser.parse("do {} while (this);", parser => parser.statement())
-    ).toEqual({
+    ).to.deep.equal({
       type: "DO_WHILE_STATEMENT",
       body: {
         type: "BLOCK",
@@ -82,7 +89,7 @@ describe("statement", () => {
   it("tryStatement", () => {
     expect(
       Parser.parse("try {} catch (A e) {}", parser => parser.statement())
-    ).toEqual({
+    ).to.deep.equal({
       type: "TRY_STATEMENT",
       resourceSpecification: undefined,
       body: {
@@ -124,7 +131,7 @@ describe("statement", () => {
   it("switchStatement", () => {
     expect(
       Parser.parse("switch (this) {}", parser => parser.statement())
-    ).toEqual({
+    ).to.deep.equal({
       type: "SWITCH_STATEMENT",
       condition: {
         type: "THIS"
@@ -136,7 +143,7 @@ describe("statement", () => {
   it("synchronizedStatement", () => {
     expect(
       Parser.parse("synchronized (this) {}", parser => parser.statement())
-    ).toEqual({
+    ).to.deep.equal({
       type: "SYNCHRONIZED_STATEMENT",
       condition: {
         type: "THIS"
@@ -149,7 +156,9 @@ describe("statement", () => {
   });
 
   it("returnStatement", () => {
-    expect(Parser.parse("return this;", parser => parser.statement())).toEqual({
+    expect(
+      Parser.parse("return this;", parser => parser.statement())
+    ).to.deep.equal({
       type: "RETURN_STATEMENT",
       expression: {
         type: "THIS"
@@ -158,7 +167,9 @@ describe("statement", () => {
   });
 
   it("throwStatement", () => {
-    expect(Parser.parse("throw this;", parser => parser.statement())).toEqual({
+    expect(
+      Parser.parse("throw this;", parser => parser.statement())
+    ).to.deep.equal({
       type: "THROW_STATEMENT",
       expression: {
         type: "THIS"
@@ -167,7 +178,9 @@ describe("statement", () => {
   });
 
   it("breakStatement", () => {
-    expect(Parser.parse("break a;", parser => parser.statement())).toEqual({
+    expect(
+      Parser.parse("break a;", parser => parser.statement())
+    ).to.deep.equal({
       type: "BREAK_STATEMENT",
       identifier: {
         type: "IDENTIFIER",
@@ -177,7 +190,9 @@ describe("statement", () => {
   });
 
   it("continueStatement", () => {
-    expect(Parser.parse("continue a;", parser => parser.statement())).toEqual({
+    expect(
+      Parser.parse("continue a;", parser => parser.statement())
+    ).to.deep.equal({
       type: "CONTINUE_STATEMENT",
       identifier: {
         type: "IDENTIFIER",
@@ -187,13 +202,13 @@ describe("statement", () => {
   });
 
   it("semiColonStatement", () => {
-    expect(Parser.parse(";", parser => parser.statement())).toEqual({
+    expect(Parser.parse(";", parser => parser.statement())).to.deep.equal({
       type: "SEMI_COLON_STATEMENT"
     });
   });
 
   it("expressionStatement", () => {
-    expect(Parser.parse("this;", parser => parser.statement())).toEqual({
+    expect(Parser.parse("this;", parser => parser.statement())).to.deep.equal({
       type: "EXPRESSION_STATEMENT",
       expression: {
         type: "THIS"
@@ -203,19 +218,21 @@ describe("statement", () => {
   });
 
   it("identifierStatement", () => {
-    expect(Parser.parse("a:this;", parser => parser.statement())).toEqual({
-      type: "IDENTIFIER_STATEMENT",
-      identifier: {
-        type: "IDENTIFIER",
-        value: "a"
-      },
-      statement: {
-        type: "EXPRESSION_STATEMENT",
-        expression: {
-          type: "THIS"
+    expect(Parser.parse("a:this;", parser => parser.statement())).to.deep.equal(
+      {
+        type: "IDENTIFIER_STATEMENT",
+        identifier: {
+          type: "IDENTIFIER",
+          value: "a"
         },
-        followedEmptyLine: false
+        statement: {
+          type: "EXPRESSION_STATEMENT",
+          expression: {
+            type: "THIS"
+          },
+          followedEmptyLine: false
+        }
       }
-    });
+    );
   });
 });

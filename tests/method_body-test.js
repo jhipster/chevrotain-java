@@ -1,16 +1,19 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("methodBody", () => {
   it("block", () => {
-    expect(Parser.parse("{}", parser => parser.methodBody())).toEqual({
+    expect(Parser.parse("{}", parser => parser.methodBody())).to.deep.equal({
       type: "BLOCK",
       statements: []
     });
   });
 
   it("semiColon", () => {
-    expect(Parser.parse(";", parser => parser.methodBody())).toEqual(undefined);
+    expect(Parser.parse(";", parser => parser.methodBody())).to.deep.equal(
+      undefined
+    );
   });
 
   it("charLiteral", () => {
@@ -19,7 +22,7 @@ describe("methodBody", () => {
         "{\nif (message.indexOf('h') > 0) {}\nint destination = message.indexOf('d');\n}",
         parser => parser.methodBody()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "BLOCK",
       statements: [
         {

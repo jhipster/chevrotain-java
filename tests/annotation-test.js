@@ -1,9 +1,10 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("annotation", () => {
   it("annotation", () => {
-    expect(Parser.parse("@Bean", parser => parser.annotation())).toEqual({
+    expect(Parser.parse("@Bean", parser => parser.annotation())).to.deep.equal({
       type: "ANNOTATION",
       name: {
         type: "QUALIFIED_NAME",
@@ -14,12 +15,15 @@ describe("annotation", () => {
           }
         ]
       },
-      hasBraces: false
+      hasBraces: false,
+      values: []
     });
   });
 
   it("annotation with braces", () => {
-    expect(Parser.parse("@Bean()", parser => parser.annotation())).toEqual({
+    expect(
+      Parser.parse("@Bean()", parser => parser.annotation())
+    ).to.deep.equal({
       type: "ANNOTATION",
       name: {
         type: "QUALIFIED_NAME",
@@ -31,14 +35,14 @@ describe("annotation", () => {
         ]
       },
       hasBraces: true,
-      values: undefined
+      values: []
     });
   });
 
   it("annotation with element value (annotation)", () => {
     expect(
       Parser.parse("@Bean(@Something)", parser => parser.annotation())
-    ).toEqual({
+    ).to.deep.equal({
       type: "ANNOTATION",
       name: {
         type: "QUALIFIED_NAME",
@@ -63,7 +67,7 @@ describe("annotation", () => {
             ]
           },
           hasBraces: false,
-          values: undefined
+          values: []
         }
       ]
     });
@@ -72,7 +76,7 @@ describe("annotation", () => {
   it("annotation with element value (elementValueArrayInitializer)", () => {
     expect(
       Parser.parse("@Bean({@Something})", parser => parser.annotation())
-    ).toEqual({
+    ).to.deep.equal({
       type: "ANNOTATION",
       name: {
         type: "QUALIFIED_NAME",
@@ -100,7 +104,7 @@ describe("annotation", () => {
                 ]
               },
               hasBraces: false,
-              values: undefined
+              values: []
             }
           ]
         }
@@ -111,7 +115,7 @@ describe("annotation", () => {
   it("annotation with element value pairs", () => {
     expect(
       Parser.parse("@Bean(key=@Value)", parser => parser.annotation())
-    ).toEqual({
+    ).to.deep.equal({
       type: "ANNOTATION",
       name: {
         type: "QUALIFIED_NAME",
@@ -142,7 +146,7 @@ describe("annotation", () => {
               ]
             },
             hasBraces: false,
-            values: undefined
+            values: []
           }
         }
       ]
@@ -152,7 +156,7 @@ describe("annotation", () => {
   it("annotation with element value pair with array initialization", () => {
     expect(
       Parser.parse('@Bean(key={"Abc"})', parser => parser.annotation())
-    ).toEqual({
+    ).to.deep.equal({
       type: "ANNOTATION",
       name: {
         type: "QUALIFIED_NAME",
@@ -190,7 +194,7 @@ describe("annotation", () => {
       Parser.parse('@Bean(key={"Abc"}, key2={"Def"})', parser =>
         parser.annotation()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "ANNOTATION",
       name: {
         type: "QUALIFIED_NAME",

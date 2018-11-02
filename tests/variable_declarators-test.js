@@ -1,9 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("variableDeclarators", () => {
   it("single", () => {
-    expect(Parser.parse("A", parser => parser.variableDeclarators())).toEqual({
+    expect(
+      Parser.parse("A", parser => parser.variableDeclarators())
+    ).to.deep.equal({
       type: "VARIABLE_DECLARATORS",
       list: [
         {
@@ -25,7 +28,7 @@ describe("variableDeclarators", () => {
   it("multiple", () => {
     expect(
       Parser.parse("A, B", parser => parser.variableDeclarators())
-    ).toEqual({
+    ).to.deep.equal({
       type: "VARIABLE_DECLARATORS",
       list: [
         {

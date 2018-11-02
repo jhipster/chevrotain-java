@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("statementWithStartingToken", () => {
   it("block", () => {
     expect(
       Parser.parse("{}", parser => parser.statementWithStartingToken())
-    ).toEqual({
+    ).to.deep.equal({
       type: "BLOCK",
       statements: []
     });
@@ -16,7 +17,7 @@ describe("statementWithStartingToken", () => {
       Parser.parse("assert this;", parser =>
         parser.statementWithStartingToken()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "ASSERT_STATEMENT",
       booleanExpression: {
         type: "THIS"
@@ -29,7 +30,7 @@ describe("statementWithStartingToken", () => {
       Parser.parse("if (this) {}", parser =>
         parser.statementWithStartingToken()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "IF_STATEMENT",
       condition: {
         type: "THIS"
@@ -45,7 +46,7 @@ describe("statementWithStartingToken", () => {
   it("forStatement", () => {
     expect(
       Parser.parse("for (;;) {}", parser => parser.statementWithStartingToken())
-    ).toEqual({
+    ).to.deep.equal({
       type: "FOR_STATEMENT",
       forControl: {
         type: "BASIC_FOR_CONTROL",
@@ -65,7 +66,7 @@ describe("statementWithStartingToken", () => {
       Parser.parse("while (this) {}", parser =>
         parser.statementWithStartingToken()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "WHILE_STATEMENT",
       condition: {
         type: "THIS"
@@ -83,7 +84,7 @@ describe("statementWithStartingToken", () => {
       Parser.parse("do {} while (this);", parser =>
         parser.statementWithStartingToken()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "DO_WHILE_STATEMENT",
       body: {
         type: "BLOCK",
@@ -100,7 +101,7 @@ describe("statementWithStartingToken", () => {
       Parser.parse("try {} catch (A e) {}", parser =>
         parser.statementWithStartingToken()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "TRY_STATEMENT",
       resourceSpecification: undefined,
       body: {
@@ -144,7 +145,7 @@ describe("statementWithStartingToken", () => {
       Parser.parse("switch (this) {}", parser =>
         parser.statementWithStartingToken()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "SWITCH_STATEMENT",
       condition: {
         type: "THIS"
@@ -158,7 +159,7 @@ describe("statementWithStartingToken", () => {
       Parser.parse("synchronized (this) {}", parser =>
         parser.statementWithStartingToken()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "SYNCHRONIZED_STATEMENT",
       condition: {
         type: "THIS"
@@ -175,7 +176,7 @@ describe("statementWithStartingToken", () => {
       Parser.parse("return this;", parser =>
         parser.statementWithStartingToken()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "RETURN_STATEMENT",
       expression: {
         type: "THIS"
@@ -186,7 +187,7 @@ describe("statementWithStartingToken", () => {
   it("throwStatement", () => {
     expect(
       Parser.parse("throw this;", parser => parser.statementWithStartingToken())
-    ).toEqual({
+    ).to.deep.equal({
       type: "THROW_STATEMENT",
       expression: {
         type: "THIS"
@@ -197,7 +198,7 @@ describe("statementWithStartingToken", () => {
   it("breakStatement", () => {
     expect(
       Parser.parse("break a;", parser => parser.statementWithStartingToken())
-    ).toEqual({
+    ).to.deep.equal({
       type: "BREAK_STATEMENT",
       identifier: {
         type: "IDENTIFIER",
@@ -209,7 +210,7 @@ describe("statementWithStartingToken", () => {
   it("continueStatement", () => {
     expect(
       Parser.parse("continue a;", parser => parser.statementWithStartingToken())
-    ).toEqual({
+    ).to.deep.equal({
       type: "CONTINUE_STATEMENT",
       identifier: {
         type: "IDENTIFIER",
@@ -221,7 +222,7 @@ describe("statementWithStartingToken", () => {
   it("semiColonStatement", () => {
     expect(
       Parser.parse(";", parser => parser.statementWithStartingToken())
-    ).toEqual({
+    ).to.deep.equal({
       type: "SEMI_COLON_STATEMENT"
     });
   });

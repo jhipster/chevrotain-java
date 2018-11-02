@@ -1,9 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("typeParameters", () => {
   it("single", () => {
-    expect(Parser.parse("<A>", parser => parser.typeParameters())).toEqual({
+    expect(
+      Parser.parse("<A>", parser => parser.typeParameters())
+    ).to.deep.equal({
       type: "TYPE_PARAMETERS",
       list: [
         {
@@ -20,7 +23,9 @@ describe("typeParameters", () => {
   });
 
   it("multiple", () => {
-    expect(Parser.parse("<A, B>", parser => parser.typeParameters())).toEqual({
+    expect(
+      Parser.parse("<A, B>", parser => parser.typeParameters())
+    ).to.deep.equal({
       type: "TYPE_PARAMETERS",
       list: [
         {

@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("switchStatement", () => {
   it("empty", () => {
     expect(
       Parser.parse("switch (this) {}", parser => parser.switchStatement())
-    ).toEqual({
+    ).to.deep.equal({
       type: "SWITCH_STATEMENT",
       condition: {
         type: "THIS"
@@ -19,7 +20,7 @@ describe("switchStatement", () => {
       Parser.parse("switch (this) { case a: boolean A; }", parser =>
         parser.switchStatement()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "SWITCH_STATEMENT",
       condition: {
         type: "THIS"
@@ -78,7 +79,7 @@ describe("switchStatement", () => {
         "switch (this) { case a: boolean A; case b: boolean B; }",
         parser => parser.switchStatement()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "SWITCH_STATEMENT",
       condition: {
         type: "THIS"
@@ -179,7 +180,7 @@ describe("switchStatement", () => {
       Parser.parse("switch (this) { case a: boolean A; case b: }", parser =>
         parser.switchStatement()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "SWITCH_STATEMENT",
       condition: {
         type: "THIS"

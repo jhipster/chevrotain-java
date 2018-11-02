@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("classOrInterfaceType", () => {
   it("identifiers", () => {
     expect(
       Parser.parse("A.B", parser => parser.classOrInterfaceType())
-    ).toEqual({
+    ).to.deep.equal({
       type: "CLASS_OR_INTERFACE_TYPE",
       elements: [
         {
@@ -25,7 +26,7 @@ describe("classOrInterfaceType", () => {
       Parser.parse("A<boolean>.B<char>", parser =>
         parser.classOrInterfaceType()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "CLASS_OR_INTERFACE_TYPE",
       elements: [
         {

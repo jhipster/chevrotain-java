@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("methodDeclaration", () => {
   it("void", () => {
     expect(
       Parser.parse("void a() {}", parser => parser.methodDeclaration())
-    ).toEqual({
+    ).to.deep.equal({
       type: "METHOD_DECLARATION",
       typeType: {
         type: "VOID"
@@ -32,7 +33,7 @@ describe("methodDeclaration", () => {
       Parser.parse("void create_a_range_from_$_to_$() {}", parser =>
         parser.methodDeclaration()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "METHOD_DECLARATION",
       typeType: {
         type: "VOID"
@@ -57,7 +58,7 @@ describe("methodDeclaration", () => {
   it("typeParameter", () => {
     expect(
       Parser.parse("boolean a() {}", parser => parser.methodDeclaration())
-    ).toEqual({
+    ).to.deep.equal({
       type: "METHOD_DECLARATION",
       typeType: {
         type: "PRIMITIVE_TYPE",
@@ -83,7 +84,7 @@ describe("methodDeclaration", () => {
   it("single square", () => {
     expect(
       Parser.parse("void a()[] {}", parser => parser.methodDeclaration())
-    ).toEqual({
+    ).to.deep.equal({
       type: "METHOD_DECLARATION",
       typeType: {
         type: "VOID"
@@ -112,7 +113,7 @@ describe("methodDeclaration", () => {
   it("multiple squares", () => {
     expect(
       Parser.parse("void a()[][] {}", parser => parser.methodDeclaration())
-    ).toEqual({
+    ).to.deep.equal({
       type: "METHOD_DECLARATION",
       typeType: {
         type: "VOID"
@@ -146,7 +147,7 @@ describe("methodDeclaration", () => {
       Parser.parse("void a() throws Something {}", parser =>
         parser.methodDeclaration()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "METHOD_DECLARATION",
       typeType: {
         type: "VOID"

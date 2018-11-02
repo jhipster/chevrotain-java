@@ -1,9 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("resource", () => {
   it("simple", () => {
-    expect(Parser.parse("A.B a = this", parser => parser.resource())).toEqual({
+    expect(
+      Parser.parse("A.B a = this", parser => parser.resource())
+    ).to.deep.equal({
       type: "RESOURCE",
       modifiers: [],
       typeType: {
@@ -36,7 +39,7 @@ describe("resource", () => {
   it("one annotation", () => {
     expect(
       Parser.parse("final A.B a = this", parser => parser.resource())
-    ).toEqual({
+    ).to.deep.equal({
       type: "RESOURCE",
       modifiers: [{ type: "MODIFIER", value: "final" }],
       typeType: {
@@ -69,7 +72,7 @@ describe("resource", () => {
   it("multiple annotations", () => {
     expect(
       Parser.parse("@Bean final A.B a = this", parser => parser.resource())
-    ).toEqual({
+    ).to.deep.equal({
       type: "RESOURCE",
       modifiers: [
         {
@@ -84,7 +87,7 @@ describe("resource", () => {
             ]
           },
           hasBraces: false,
-          values: undefined
+          values: []
         },
         { type: "MODIFIER", value: "final" }
       ],

@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("postfixExpressionRest", () => {
   it("postfixExpression PlusPlus", () => {
     expect(
       Parser.parse("++", parser => parser.postfixExpressionRest())
-    ).toEqual({
+    ).to.deep.equal({
       type: "POSTFIX_EXPRESSION_REST",
       value: "++"
     });
@@ -14,7 +15,7 @@ describe("postfixExpressionRest", () => {
   it("postfixExpression MinusMinus", () => {
     expect(
       Parser.parse("--", parser => parser.postfixExpressionRest())
-    ).toEqual({
+    ).to.deep.equal({
       type: "POSTFIX_EXPRESSION_REST",
       value: "--"
     });

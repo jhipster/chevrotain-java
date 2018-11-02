@@ -1,9 +1,10 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("forControl", () => {
   it("basicForStatement: empty", () => {
-    expect(Parser.parse(";;", parser => parser.forControl())).toEqual({
+    expect(Parser.parse(";;", parser => parser.forControl())).to.deep.equal({
       type: "BASIC_FOR_CONTROL",
       forInit: undefined,
       expression: undefined,
@@ -12,25 +13,27 @@ describe("forControl", () => {
   });
 
   it("basicForStatement: expressionList: one", () => {
-    expect(Parser.parse("this;;", parser => parser.forControl())).toEqual({
-      type: "BASIC_FOR_CONTROL",
-      forInit: {
-        type: "EXPRESSION_LIST",
-        list: [
-          {
-            type: "THIS"
-          }
-        ]
-      },
-      expression: undefined,
-      expressionList: undefined
-    });
+    expect(Parser.parse("this;;", parser => parser.forControl())).to.deep.equal(
+      {
+        type: "BASIC_FOR_CONTROL",
+        forInit: {
+          type: "EXPRESSION_LIST",
+          list: [
+            {
+              type: "THIS"
+            }
+          ]
+        },
+        expression: undefined,
+        expressionList: undefined
+      }
+    );
   });
 
   it("basicForStatement: expressionList: multiple", () => {
     expect(
       Parser.parse("this, super;;", parser => parser.forControl())
-    ).toEqual({
+    ).to.deep.equal({
       type: "BASIC_FOR_CONTROL",
       forInit: {
         type: "EXPRESSION_LIST",
@@ -49,7 +52,9 @@ describe("forControl", () => {
   });
 
   it("basicForStatement: variableDeclaration: simple", () => {
-    expect(Parser.parse("int i = 0;;", parser => parser.forControl())).toEqual({
+    expect(
+      Parser.parse("int i = 0;;", parser => parser.forControl())
+    ).to.deep.equal({
       type: "BASIC_FOR_CONTROL",
       forInit: {
         type: "LOCAL_VARIABLE_DECLARATION",
@@ -87,7 +92,7 @@ describe("forControl", () => {
   it("basicForStatement: variableDeclaration: multiple", () => {
     expect(
       Parser.parse("int i = 0, j = 0;;", parser => parser.forControl())
-    ).toEqual({
+    ).to.deep.equal({
       type: "BASIC_FOR_CONTROL",
       forInit: {
         type: "LOCAL_VARIABLE_DECLARATION",
@@ -140,7 +145,7 @@ describe("forControl", () => {
   it("basicForStatement: variableDeclaration with annotations", () => {
     expect(
       Parser.parse("@Bean final int i = 0;;", parser => parser.forControl())
-    ).toEqual({
+    ).to.deep.equal({
       type: "BASIC_FOR_CONTROL",
       forInit: {
         type: "LOCAL_VARIABLE_DECLARATION",
@@ -157,7 +162,7 @@ describe("forControl", () => {
               ]
             },
             hasBraces: false,
-            values: undefined
+            values: []
           },
           {
             type: "MODIFIER",
@@ -197,7 +202,7 @@ describe("forControl", () => {
   it("basicForStatement: optionalExpression operatorExpression", () => {
     expect(
       Parser.parse("; i < array.length;", parser => parser.forControl())
-    ).toEqual({
+    ).to.deep.equal({
       type: "BASIC_FOR_CONTROL",
       forInit: undefined,
       expression: {
@@ -228,36 +233,40 @@ describe("forControl", () => {
   });
 
   it("basicForStatement: optionalExpression", () => {
-    expect(Parser.parse(";this;", parser => parser.forControl())).toEqual({
-      type: "BASIC_FOR_CONTROL",
-      forInit: undefined,
-      expression: {
-        type: "THIS"
-      },
-      expressionList: undefined
-    });
+    expect(Parser.parse(";this;", parser => parser.forControl())).to.deep.equal(
+      {
+        type: "BASIC_FOR_CONTROL",
+        forInit: undefined,
+        expression: {
+          type: "THIS"
+        },
+        expressionList: undefined
+      }
+    );
   });
 
   it("basicForStatement: optionalExpressionList", () => {
-    expect(Parser.parse(";;this", parser => parser.forControl())).toEqual({
-      type: "BASIC_FOR_CONTROL",
-      forInit: undefined,
-      expression: undefined,
-      expressionList: {
-        type: "EXPRESSION_LIST",
-        list: [
-          {
-            type: "THIS"
-          }
-        ]
+    expect(Parser.parse(";;this", parser => parser.forControl())).to.deep.equal(
+      {
+        type: "BASIC_FOR_CONTROL",
+        forInit: undefined,
+        expression: undefined,
+        expressionList: {
+          type: "EXPRESSION_LIST",
+          list: [
+            {
+              type: "THIS"
+            }
+          ]
+        }
       }
-    });
+    );
   });
 
   it("enhancedForStatement", () => {
     expect(
       Parser.parse("Bean bean : Beans", parser => parser.forControl())
-    ).toEqual({
+    ).to.deep.equal({
       type: "ENHANCED_FOR_CONTROL",
       declaration: {
         type: "LOCAL_VARIABLE_DECLARATION",
@@ -296,7 +305,7 @@ describe("forControl", () => {
       Parser.parse("@Bean final Bean bean : Beans", parser =>
         parser.forControl()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "ENHANCED_FOR_CONTROL",
       declaration: {
         type: "LOCAL_VARIABLE_DECLARATION",
@@ -313,7 +322,7 @@ describe("forControl", () => {
               ]
             },
             hasBraces: false,
-            values: undefined
+            values: []
           },
           {
             type: "MODIFIER",

@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("elementValuePair", () => {
   it("elementValuePair", () => {
     expect(
       Parser.parse("key=@Value", parser => parser.elementValuePair())
-    ).toEqual({
+    ).to.deep.equal({
       type: "ELEMENT_VALUE_PAIR",
       key: {
         type: "IDENTIFIER",
@@ -23,7 +24,7 @@ describe("elementValuePair", () => {
           ]
         },
         hasBraces: false,
-        values: undefined
+        values: []
       }
     });
   });

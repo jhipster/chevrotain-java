@@ -1,5 +1,6 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("annotationTypeDeclaration", () => {
   it("empty", () => {
@@ -7,7 +8,7 @@ describe("annotationTypeDeclaration", () => {
       Parser.parse("@interface A{}", parser =>
         parser.annotationTypeDeclaration()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "ANNOTATION_TYPE_DECLARATION",
       name: {
         type: "IDENTIFIER",

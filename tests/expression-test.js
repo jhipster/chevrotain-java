@@ -1,15 +1,16 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("expression", () => {
   it("primary", () => {
-    expect(Parser.parse("this", parser => parser.expression())).toEqual({
+    expect(Parser.parse("this", parser => parser.expression())).to.deep.equal({
       type: "THIS"
     });
   });
 
   it("identifier", () => {
-    expect(Parser.parse("abc", parser => parser.expression())).toEqual({
+    expect(Parser.parse("abc", parser => parser.expression())).to.deep.equal({
       type: "IDENTIFIER",
       value: "abc"
     });
@@ -18,7 +19,7 @@ describe("expression", () => {
   it("instanceofExpression", () => {
     expect(
       Parser.parse("this instanceof boolean", parser => parser.expression())
-    ).toEqual({
+    ).to.deep.equal({
       type: "INSTANCEOF_EXPRESSION",
       expression: {
         type: "THIS"
@@ -35,7 +36,7 @@ describe("expression", () => {
       Parser.parse("this instanceof boolean && true", parser =>
         parser.expression()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "OPERATOR_EXPRESSION",
       left: {
         type: "INSTANCEOF_EXPRESSION",
@@ -59,7 +60,9 @@ describe("expression", () => {
   });
 
   it("squareExpression", () => {
-    expect(Parser.parse("this[super]", parser => parser.expression())).toEqual({
+    expect(
+      Parser.parse("this[super]", parser => parser.expression())
+    ).to.deep.equal({
       type: "SQUARE_EXPRESSION",
       expression: {
         type: "THIS"
@@ -71,19 +74,21 @@ describe("expression", () => {
   });
 
   it("postfixExpression", () => {
-    expect(Parser.parse("this++", parser => parser.expression())).toEqual({
-      type: "POSTFIX_EXPRESSION",
-      postfix: "++",
-      expression: {
-        type: "THIS"
+    expect(Parser.parse("this++", parser => parser.expression())).to.deep.equal(
+      {
+        type: "POSTFIX_EXPRESSION",
+        postfix: "++",
+        expression: {
+          type: "THIS"
+        }
       }
-    });
+    );
   });
 
   it("ifElseExpression", () => {
     expect(
       Parser.parse("this ? super : null", parser => parser.expression())
-    ).toEqual({
+    ).to.deep.equal({
       type: "IF_ELSE_EXPRESSION",
       condition: {
         type: "THIS"
@@ -98,7 +103,9 @@ describe("expression", () => {
   });
 
   it("qualifiedExpression", () => {
-    expect(Parser.parse("this.a()", parser => parser.expression())).toEqual({
+    expect(
+      Parser.parse("this.a()", parser => parser.expression())
+    ).to.deep.equal({
       type: "QUALIFIED_EXPRESSION",
       expression: {
         type: "THIS"
@@ -116,7 +123,9 @@ describe("expression", () => {
   });
 
   it("qualifiedExpression with postfixExpression", () => {
-    expect(Parser.parse("this.a++", parser => parser.expression())).toEqual({
+    expect(
+      Parser.parse("this.a++", parser => parser.expression())
+    ).to.deep.equal({
       type: "POSTFIX_EXPRESSION",
       postfix: "++",
       expression: {
@@ -133,7 +142,7 @@ describe("expression", () => {
   });
 
   it("qualifiedExpression with starting identifier", () => {
-    expect(Parser.parse("a.b()", parser => parser.expression())).toEqual({
+    expect(Parser.parse("a.b()", parser => parser.expression())).to.deep.equal({
       type: "QUALIFIED_EXPRESSION",
       expression: {
         type: "IDENTIFIER",
@@ -152,7 +161,9 @@ describe("expression", () => {
   });
 
   it("qualifiedExpression and operator", () => {
-    expect(Parser.parse("a.b() < c.d", parser => parser.expression())).toEqual({
+    expect(
+      Parser.parse("a.b() < c.d", parser => parser.expression())
+    ).to.deep.equal({
       type: "OPERATOR_EXPRESSION",
       left: {
         type: "QUALIFIED_EXPRESSION",
@@ -193,7 +204,7 @@ describe("expression", () => {
       Parser.parse('this.list.isEmpty() && true ? "a" : "b"', parser =>
         parser.expression()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "OPERATOR_EXPRESSION",
       left: {
         type: "QUALIFIED_EXPRESSION",
@@ -239,7 +250,7 @@ describe("expression", () => {
       Parser.parse('this.list.isEmpty() < true ? "a" : "b"', parser =>
         parser.expression()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "OPERATOR_EXPRESSION",
       left: {
         type: "QUALIFIED_EXPRESSION",
@@ -285,7 +296,7 @@ describe("expression", () => {
       Parser.parse('this.list.isEmpty() ? "a" : "b"', parser =>
         parser.expression()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "IF_ELSE_EXPRESSION",
       condition: {
         type: "QUALIFIED_EXPRESSION",
@@ -318,7 +329,7 @@ describe("expression", () => {
   it("instanceofExpression with qualifiedExpression", () => {
     expect(
       Parser.parse("this.b instanceof Boolean", parser => parser.expression())
-    ).toEqual({
+    ).to.deep.equal({
       type: "INSTANCEOF_EXPRESSION",
       expression: {
         type: "QUALIFIED_EXPRESSION",
@@ -338,7 +349,9 @@ describe("expression", () => {
   });
 
   it("operatorExpression Star", () => {
-    expect(Parser.parse("this*super", parser => parser.expression())).toEqual({
+    expect(
+      Parser.parse("this*super", parser => parser.expression())
+    ).to.deep.equal({
       type: "OPERATOR_EXPRESSION",
       left: {
         type: "THIS"
@@ -356,7 +369,7 @@ describe("expression", () => {
   it("operatorExpression with qualifiedNameExpressiona and if else statement", () => {
     expect(
       Parser.parse('a = some.call() ? "a" : "b"', parser => parser.expression())
-    ).toEqual({
+    ).to.deep.equal({
       type: "OPERATOR_EXPRESSION",
       left: {
         type: "IDENTIFIER",
@@ -397,7 +410,9 @@ describe("expression", () => {
   });
 
   it("operatorExpression with right side in parExpression", () => {
-    expect(Parser.parse("a < (b - c)", parser => parser.expression())).toEqual({
+    expect(
+      Parser.parse("a < (b - c)", parser => parser.expression())
+    ).to.deep.equal({
       type: "OPERATOR_EXPRESSION",
       left: {
         type: "IDENTIFIER",
@@ -431,7 +446,7 @@ describe("expression", () => {
   it("operatorExpression Less", () => {
     expect(
       Parser.parse("i < array.length", parser => parser.expression())
-    ).toEqual({
+    ).to.deep.equal({
       type: "OPERATOR_EXPRESSION",
       left: {
         type: "IDENTIFIER",
@@ -459,7 +474,7 @@ describe("expression", () => {
   it("multiple operatorExpressions", () => {
     expect(
       Parser.parse("this*super+null", parser => parser.expression())
-    ).toEqual({
+    ).to.deep.equal({
       type: "OPERATOR_EXPRESSION",
       left: {
         type: "THIS"
@@ -485,7 +500,7 @@ describe("expression", () => {
   });
 
   it("PrefixExpression", () => {
-    expect(Parser.parse("+this", parser => parser.expression())).toEqual({
+    expect(Parser.parse("+this", parser => parser.expression())).to.deep.equal({
       type: "PREFIX_EXPRESSION",
       prefix: "+",
       expression: {
@@ -495,16 +510,20 @@ describe("expression", () => {
   });
 
   it("parExpression", () => {
-    expect(Parser.parse("(this)", parser => parser.expression())).toEqual({
-      type: "PAR_EXPRESSION",
-      expression: {
-        type: "THIS"
+    expect(Parser.parse("(this)", parser => parser.expression())).to.deep.equal(
+      {
+        type: "PAR_EXPRESSION",
+        expression: {
+          type: "THIS"
+        }
       }
-    });
+    );
   });
 
   it("lambdaExpression: one identifier with parens", () => {
-    expect(Parser.parse("(a) -> {}", parser => parser.expression())).toEqual({
+    expect(
+      Parser.parse("(a) -> {}", parser => parser.expression())
+    ).to.deep.equal({
       type: "LAMBDA_EXPRESSION",
       parameters: {
         type: "IDENTIFIERS",
@@ -526,7 +545,9 @@ describe("expression", () => {
   });
 
   it("lambdaExpression: one identifier without parens", () => {
-    expect(Parser.parse("a -> {}", parser => parser.expression())).toEqual({
+    expect(
+      Parser.parse("a -> {}", parser => parser.expression())
+    ).to.deep.equal({
       type: "LAMBDA_EXPRESSION",
       parameters: {
         type: "IDENTIFIERS",
@@ -548,29 +569,31 @@ describe("expression", () => {
   });
 
   it("methodReference: identifier", () => {
-    expect(Parser.parse("B.C::A", parser => parser.expression())).toEqual({
-      type: "QUALIFIED_EXPRESSION",
-      expression: {
-        type: "IDENTIFIER",
-        value: "B"
-      },
-      rest: {
-        type: "METHOD_REFERENCE",
-        reference: {
+    expect(Parser.parse("B.C::A", parser => parser.expression())).to.deep.equal(
+      {
+        type: "QUALIFIED_EXPRESSION",
+        expression: {
           type: "IDENTIFIER",
-          value: "C"
+          value: "B"
         },
-        name: {
-          type: "IDENTIFIER",
-          value: "A"
-        },
-        typeArguments: undefined
+        rest: {
+          type: "METHOD_REFERENCE",
+          reference: {
+            type: "IDENTIFIER",
+            value: "C"
+          },
+          name: {
+            type: "IDENTIFIER",
+            value: "A"
+          },
+          typeArguments: undefined
+        }
       }
-    });
+    );
   });
 
   it("identifier.identifier", () => {
-    expect(Parser.parse("A.B", parser => parser.expression())).toEqual({
+    expect(Parser.parse("A.B", parser => parser.expression())).to.deep.equal({
       type: "QUALIFIED_EXPRESSION",
       expression: {
         type: "IDENTIFIER",
@@ -584,7 +607,9 @@ describe("expression", () => {
   });
 
   it("identifier.class", () => {
-    expect(Parser.parse("A.class", parser => parser.expression())).toEqual({
+    expect(
+      Parser.parse("A.class", parser => parser.expression())
+    ).to.deep.equal({
       type: "QUALIFIED_EXPRESSION",
       expression: {
         type: "IDENTIFIER",
@@ -599,7 +624,7 @@ describe("expression", () => {
   it("identifier.class with annotation", () => {
     expect(
       Parser.parse("@Bean A.class", parser => parser.expression())
-    ).toEqual({
+    ).to.deep.equal({
       type: "QUALIFIED_EXPRESSION",
       expression: {
         type: "TYPE_TYPE",
@@ -616,7 +641,7 @@ describe("expression", () => {
               type: "QUALIFIED_NAME"
             },
             type: "ANNOTATION",
-            values: undefined
+            values: []
           }
         ],
         value: {
@@ -630,7 +655,9 @@ describe("expression", () => {
   });
 
   it("identifier.identifier.class", () => {
-    expect(Parser.parse("A.B.class", parser => parser.expression())).toEqual({
+    expect(
+      Parser.parse("A.B.class", parser => parser.expression())
+    ).to.deep.equal({
       type: "QUALIFIED_EXPRESSION",
       expression: {
         type: "IDENTIFIER",
@@ -648,7 +675,9 @@ describe("expression", () => {
   });
 
   it("array[i]", () => {
-    expect(Parser.parse("array[i]", parser => parser.expression())).toEqual({
+    expect(
+      Parser.parse("array[i]", parser => parser.expression())
+    ).to.deep.equal({
       type: "TYPE_TYPE",
       modifiers: [],
       value: {

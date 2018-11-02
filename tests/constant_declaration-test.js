@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("constantDeclaration", () => {
   it("single declaration", () => {
     expect(
       Parser.parse("boolean A = this;", parser => parser.constantDeclaration())
-    ).toEqual({
+    ).to.deep.equal({
       type: "CONSTANT_DECLARATION",
       typeType: {
         type: "PRIMITIVE_TYPE",
@@ -33,7 +34,7 @@ describe("constantDeclaration", () => {
       Parser.parse("boolean A = this, B = super;", parser =>
         parser.constantDeclaration()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "CONSTANT_DECLARATION",
       typeType: {
         type: "PRIMITIVE_TYPE",

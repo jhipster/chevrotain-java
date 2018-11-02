@@ -1,5 +1,6 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("explicitGenericInvocation", () => {
   it("simple", () => {
@@ -7,7 +8,7 @@ describe("explicitGenericInvocation", () => {
       Parser.parse("<boolean> super()", parser =>
         parser.explicitGenericInvocation()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "GENERIC_INVOCATION",
       typeArguments: {
         type: "TYPE_ARGUMENTS",

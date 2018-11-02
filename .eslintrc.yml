@@ -1,8 +1,6 @@
 ---
 extends:
 - eslint:recommended
-- plugin:prettier/recommended
-- plugin:jest/recommended
 plugins:
 - import
 root: true

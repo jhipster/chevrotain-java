@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("typeArgumentsOrDiamond", () => {
   it("typeArguments", () => {
     expect(
       Parser.parse("<boolean>", parser => parser.typeArgumentsOrDiamond())
-    ).toEqual({
+    ).to.deep.equal({
       type: "TYPE_ARGUMENTS",
       value: {
         type: "TYPE_LIST",
@@ -27,7 +28,7 @@ describe("typeArgumentsOrDiamond", () => {
   it("emptyDiamond", () => {
     expect(
       Parser.parse("<>", parser => parser.typeArgumentsOrDiamond())
-    ).toEqual({
+    ).to.deep.equal({
       type: "TYPE_ARGUMENTS",
       value: undefined
     });

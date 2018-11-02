@@ -1,5 +1,6 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("switchBlockStatementGroup", () => {
   it("single", () => {
@@ -7,7 +8,7 @@ describe("switchBlockStatementGroup", () => {
       Parser.parse("case a: boolean A;", parser =>
         parser.switchBlockStatementGroup()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "SWITCH_BLOCK_STATEMENT_GROUP",
       labels: [
         {
@@ -57,7 +58,7 @@ describe("switchBlockStatementGroup", () => {
       Parser.parse("case a: case b: default: boolean A; a:this;", parser =>
         parser.switchBlockStatementGroup()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "SWITCH_BLOCK_STATEMENT_GROUP",
       labels: [
         {
@@ -129,7 +130,7 @@ describe("switchBlockStatementGroup", () => {
   it("no statements", () => {
     expect(
       Parser.parse("case a:", parser => parser.switchBlockStatementGroup())
-    ).toEqual({
+    ).to.deep.equal({
       type: "SWITCH_BLOCK_STATEMENT_GROUP",
       labels: [
         {

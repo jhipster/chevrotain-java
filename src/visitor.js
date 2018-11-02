@@ -174,10 +174,9 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   annotation(ctx) {
     const name = this.visit(ctx.qualifiedName);
     const hasBraces = !!ctx.LBrace;
-    let values = undefined;
+    let values = [];
     if (hasBraces) {
       if (ctx.expression) {
-        values = [];
         let expression = this.visit(ctx.expression);
         if (expression.type === "OPERATOR_EXPRESSION") {
           expression = {

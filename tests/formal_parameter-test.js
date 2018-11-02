@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("formalParameter", () => {
   it("simple", () => {
     expect(
       Parser.parse("boolean a", parser => parser.formalParameter())
-    ).toEqual({
+    ).to.deep.equal({
       type: "FORMAL_PARAMETER",
       modifiers: [],
       typeType: {
@@ -27,7 +28,7 @@ describe("formalParameter", () => {
   it("one annotation", () => {
     expect(
       Parser.parse("final boolean a", parser => parser.formalParameter())
-    ).toEqual({
+    ).to.deep.equal({
       type: "FORMAL_PARAMETER",
       modifiers: [{ type: "MODIFIER", value: "final" }],
       typeType: {
@@ -49,7 +50,7 @@ describe("formalParameter", () => {
   it("two annotation", () => {
     expect(
       Parser.parse("@Bean final boolean a", parser => parser.formalParameter())
-    ).toEqual({
+    ).to.deep.equal({
       type: "FORMAL_PARAMETER",
       modifiers: [
         {
@@ -64,7 +65,7 @@ describe("formalParameter", () => {
             ]
           },
           hasBraces: false,
-          values: undefined
+          values: []
         },
         { type: "MODIFIER", value: "final" }
       ],
@@ -87,7 +88,7 @@ describe("formalParameter", () => {
   it("dotDotDot", () => {
     expect(
       Parser.parse("boolean... a", parser => parser.formalParameter())
-    ).toEqual({
+    ).to.deep.equal({
       type: "FORMAL_PARAMETER",
       modifiers: [],
       typeType: {

@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("comment", () => {
   it("line comment before class", () => {
     expect(
       Parser.parse("// comment\nclass A {}", parser => parser.compilationUnit())
-    ).toEqual({
+    ).to.deep.equal({
       type: "COMPILATION_UNIT",
       package: undefined,
       imports: [],
@@ -45,7 +46,7 @@ describe("comment", () => {
       Parser.parse("// comment\n\nclass A {}", parser =>
         parser.compilationUnit()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "COMPILATION_UNIT",
       package: undefined,
       imports: [],
@@ -85,7 +86,7 @@ describe("comment", () => {
       Parser.parse("class \n// comment\n A {}", parser =>
         parser.compilationUnit()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "COMPILATION_UNIT",
       package: undefined,
       imports: [],
@@ -125,7 +126,7 @@ describe("comment", () => {
       Parser.parse("// comment1\n// comment2\nclass A {}", parser =>
         parser.compilationUnit()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "COMPILATION_UNIT",
       package: undefined,
       imports: [],
@@ -171,7 +172,7 @@ describe("comment", () => {
       Parser.parse("class A {\nint i = 0; // GHI\n}", parser =>
         parser.compilationUnit()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "COMPILATION_UNIT",
       imports: [],
       package: undefined,
@@ -240,7 +241,7 @@ describe("comment", () => {
       Parser.parse("// ABC\nclass A {\n// DEF\nint i = 0; // GHI\n}", parser =>
         parser.compilationUnit()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "COMPILATION_UNIT",
       imports: [],
       package: undefined,
@@ -328,7 +329,7 @@ describe("comment", () => {
       Parser.parse("class A {\n// Abc\n\n// XYZ\n\n// Something\n}", parser =>
         parser.compilationUnit()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "COMPILATION_UNIT",
       imports: [],
       package: undefined,
@@ -372,7 +373,7 @@ describe("comment", () => {
         "interface A {\n// Abc\n\n// XYZ\n\n// Something\n}",
         parser => parser.compilationUnit()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "COMPILATION_UNIT",
       imports: [],
       package: undefined,
@@ -413,7 +414,7 @@ describe("comment", () => {
       Parser.parse("class A {\n//         \n}", parser =>
         parser.compilationUnit()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "COMPILATION_UNIT",
       imports: [],
       package: undefined,
@@ -443,7 +444,7 @@ describe("comment", () => {
       Parser.parse("package abc;\n\n// ABC\nclass A {}", parser =>
         parser.compilationUnit()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "COMPILATION_UNIT",
       imports: [],
       package: {
@@ -493,7 +494,7 @@ describe("comment", () => {
       Parser.parse("/** comment \n comment \n */\nclass A {}", parser =>
         parser.compilationUnit()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "COMPILATION_UNIT",
       package: undefined,
       imports: [],
@@ -533,7 +534,7 @@ describe("comment", () => {
       Parser.parse("class A {\n/**     \n   \r     */\n}", parser =>
         parser.compilationUnit()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "COMPILATION_UNIT",
       imports: [],
       package: undefined,
@@ -563,7 +564,7 @@ describe("comment", () => {
       Parser.parse("/* comment \n comment \n */\nclass A {}", parser =>
         parser.compilationUnit()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "COMPILATION_UNIT",
       package: undefined,
       imports: [],
@@ -603,7 +604,7 @@ describe("comment", () => {
       Parser.parse("class A {\n/*     \n   \r     */\n}", parser =>
         parser.compilationUnit()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "COMPILATION_UNIT",
       imports: [],
       package: undefined,
@@ -634,7 +635,7 @@ describe("comment", () => {
         "class A {\n// comment\n@Annotation\nprivate String str;\n}",
         parser => parser.compilationUnit()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "COMPILATION_UNIT",
       package: undefined,
       imports: [],
@@ -666,7 +667,7 @@ describe("comment", () => {
                         ],
                         type: "QUALIFIED_NAME"
                       },
-                      values: undefined,
+                      values: [],
                       hasBraces: false,
                       comments: [
                         {
@@ -725,7 +726,7 @@ describe("comment", () => {
         "class A {\nvoid doSomething() {\n// comment\n\n}\n}",
         parser => parser.compilationUnit()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "COMPILATION_UNIT",
       package: undefined,
       imports: [],
@@ -781,7 +782,7 @@ describe("comment", () => {
         "class A {\n@Annotation\n// comment\r\nprivate String str;\n}",
         parser => parser.compilationUnit()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "COMPILATION_UNIT",
       package: undefined,
       imports: [],
@@ -813,7 +814,7 @@ describe("comment", () => {
                         ],
                         type: "QUALIFIED_NAME"
                       },
-                      values: undefined,
+                      values: [],
                       hasBraces: false
                     },
                     {
@@ -872,7 +873,7 @@ describe("comment", () => {
         "class A {\n/* Abc */\n\n/* XYZ */\n\n/* Something */\n}",
         parser => parser.compilationUnit()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "COMPILATION_UNIT",
       imports: [],
       package: undefined,
@@ -916,7 +917,7 @@ describe("comment", () => {
         "class A {\n/** Something   \n * on two lines  */\n}",
         parser => parser.compilationUnit()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "COMPILATION_UNIT",
       package: undefined,
       imports: [],
@@ -954,7 +955,7 @@ describe("comment", () => {
         'if (true\n// this is a sample comment\n|| true)\nx = "foo";',
         parser => parser.ifStatement()
       )
-    ).toEqual({
+    ).to.deep.equal({
       type: "IF_STATEMENT",
       condition: {
         type: "OPERATOR_EXPRESSION",

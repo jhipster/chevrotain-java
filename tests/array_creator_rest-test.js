@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("arrayCreatorRest", () => {
   it("without expressions", () => {
     expect(
       Parser.parse("[][][]{}", parser => parser.arrayCreatorRest())
-    ).toEqual({
+    ).to.deep.equal({
       type: "ARRAY_CREATOR_REST",
       dimensions: [
         {
@@ -25,7 +26,7 @@ describe("arrayCreatorRest", () => {
   it("with expressions", () => {
     expect(
       Parser.parse("[this][super][]", parser => parser.arrayCreatorRest())
-    ).toEqual({
+    ).to.deep.equal({
       type: "ARRAY_CREATOR_REST",
       dimensions: [
         {

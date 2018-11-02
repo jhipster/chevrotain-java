@@ -1,9 +1,10 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("innerCreator", () => {
   it("without typeArguments", () => {
-    expect(Parser.parse("a()", parser => parser.innerCreator())).toEqual({
+    expect(Parser.parse("a()", parser => parser.innerCreator())).to.deep.equal({
       type: "INNER_CREATOR",
       id: {
         type: "IDENTIFIER",
@@ -22,7 +23,9 @@ describe("innerCreator", () => {
   });
 
   it("with typeArguments", () => {
-    expect(Parser.parse("a<>()", parser => parser.innerCreator())).toEqual({
+    expect(
+      Parser.parse("a<>()", parser => parser.innerCreator())
+    ).to.deep.equal({
       type: "INNER_CREATOR",
       id: {
         type: "IDENTIFIER",

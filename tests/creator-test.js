@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("creator", () => {
   it("nonWildcardCreator", () => {
     expect(
       Parser.parse("new <boolean> a()", parser => parser.creator())
-    ).toEqual({
+    ).to.deep.equal({
       type: "NON_WILDCARD_CREATOR",
       typeArguments: {
         type: "TYPE_ARGUMENTS",
@@ -44,7 +45,7 @@ describe("creator", () => {
   });
 
   it("simpleCreator", () => {
-    expect(Parser.parse("new a()", parser => parser.creator())).toEqual({
+    expect(Parser.parse("new a()", parser => parser.creator())).to.deep.equal({
       type: "SIMPLE_CREATOR",
       name: {
         type: "IDENTIFIER_NAME",

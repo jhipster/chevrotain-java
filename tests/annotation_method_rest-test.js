@@ -1,11 +1,12 @@
 "use strict";
 const Parser = require("../src/index");
+const { expect } = require("chai");
 
 describe("annotationMethodRest", () => {
   it("identifier", () => {
     expect(
       Parser.parse("a()", parser => parser.annotationMethodRest())
-    ).toEqual({
+    ).to.deep.equal({
       type: "ANNOTATION_METHOD_REST",
       name: {
         type: "IDENTIFIER",
@@ -18,7 +19,7 @@ describe("annotationMethodRest", () => {
   it("defaultValue", () => {
     expect(
       Parser.parse("a() default @Bean", parser => parser.annotationMethodRest())
-    ).toEqual({
+    ).to.deep.equal({
       type: "ANNOTATION_METHOD_REST",
       name: {
         type: "IDENTIFIER",
@@ -37,7 +38,8 @@ describe("annotationMethodRest", () => {
               }
             ]
           },
-          hasBraces: false
+          hasBraces: false,
+          values: []
         }
       }
     });
