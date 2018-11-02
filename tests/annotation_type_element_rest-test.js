@@ -51,7 +51,8 @@ describe("annotationTypeElementRest", () => {
       name: {
         type: "IDENTIFIER",
         value: "A"
-      }
+      },
+      implements: undefined
     });
   });
 

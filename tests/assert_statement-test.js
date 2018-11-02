@@ -10,7 +10,8 @@ describe("assertStatement", () => {
       type: "ASSERT_STATEMENT",
       booleanExpression: {
         type: "THIS"
-      }
+      },
+      valueExpression: undefined
     });
   });
 

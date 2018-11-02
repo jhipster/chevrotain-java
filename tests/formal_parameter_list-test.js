@@ -120,6 +120,6 @@ describe("formalParameterList", () => {
       Parser.parse("boolean... a, boolean b", parser =>
         parser.formalParameterList()
       )
-    ).toThrowError(MismatchedTokenException);
+    ).to.throwError(MismatchedTokenException);
   });
 });

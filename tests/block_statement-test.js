@@ -2,8 +2,6 @@
 const Parser = require("../src/index");
 const { expect } = require("chai");
 
-const MismatchedTokenException = require("chevrotain").MismatchedTokenException;
-
 describe("blockStatement", () => {
   it("localVariableDeclaration: primitive", () => {
     expect(
@@ -122,37 +120,55 @@ describe("blockStatement", () => {
   it("localVariableDeclaration: wrong modifier 'public'", () => {
     expect(() =>
       Parser.parse("public boolean A;", parser => parser.blockStatement())
-    ).toThrow(MismatchedTokenException);
+    ).to.throw(
+      "Locale variable declaration can't have" +
+        " a public, protected, private, static, abstract or strictfp modifier."
+    );
   });
 
   it("localVariableDeclaration: wrong modifier 'protected'", () => {
     expect(() =>
       Parser.parse("protected boolean A;", parser => parser.blockStatement())
-    ).toThrow(MismatchedTokenException);
+    ).to.throw(
+      "Locale variable declaration can't have a" +
+        " public, protected, private, static, abstract or strictfp modifier."
+    );
   });
 
   it("localVariableDeclaration: wrong modifier 'private'", () => {
     expect(() =>
       Parser.parse("private boolean A;", parser => parser.blockStatement())
-    ).toThrow(MismatchedTokenException);
+    ).to.throw(
+      "Locale variable declaration can't have a public, protected, " +
+        "private, static, abstract or strictfp modifier."
+    );
   });
 
   it("localVariableDeclaration: wrong modifier 'static'", () => {
     expect(() =>
       Parser.parse("static boolean A;", parser => parser.blockStatement())
-    ).toThrow(MismatchedTokenException);
+    ).to.throw(
+      "Locale variable declaration can't have a public, protected, " +
+        "private, static, abstract or strictfp modifier."
+    );
   });
 
   it("localVariableDeclaration: wrong modifier 'abstract'", () => {
     expect(() =>
       Parser.parse("abstract boolean A;", parser => parser.blockStatement())
-    ).toThrow(MismatchedTokenException);
+    ).to.throw(
+      "Locale variable declaration can't have a public, protected, " +
+        "private, static, abstract or strictfp modifier."
+    );
   });
 
   it("localVariableDeclaration: wrong modifier 'strictfp'", () => {
     expect(() =>
       Parser.parse("strictfp boolean A;", parser => parser.blockStatement())
-    ).toThrow(MismatchedTokenException);
+    ).to.throw(
+      "Locale variable declaration can't have a public, protected, " +
+        "private, static, abstract or strictfp modifier."
+    );
   });
 
   it("classDeclaration", () => {
@@ -191,7 +207,7 @@ describe("blockStatement", () => {
           value: "A"
         },
         typeParameters: undefined,
-        typeList: undefined,
+        extends: undefined,
         body: {
           type: "INTERFACE_BODY",
           declarations: []
